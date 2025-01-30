@@ -3,12 +3,11 @@ import Home from "../Pages/Home/Home";
 import PageNotFound from "../Pages/PageNotFound/PageNotFound";
 
 const PublicRoutes = () => {
-
     return (
         <>
             <Routes>
-                <Route path="/" component={<Home />} />
-                <Route path="/home" element={<PageNotFound />} />
+                <Route path="/" element={<Home />} />
+                <Route path="*" element={<PageNotFound />} />
             </Routes>
         </>
     )

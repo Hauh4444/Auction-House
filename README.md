@@ -18,7 +18,8 @@
 ### React Frontend
 
 1. In a terminal, change to the `react-frontend` directory.
-2. Run the `npm run dev` command to launch the React app.
+2. Run the `npm install` command to install node modules.
+3. Run the `npm run dev` command to launch the React app.
 
 ### Flask Backend
 
