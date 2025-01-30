@@ -1,28 +1,49 @@
 import { useState } from 'react'
-import Select from '@mui/material/Select'
-import MenuItem from '@mui/material/MenuItem'
-import Button from "@mui/material/Button";
+import { FaSearch } from "react-icons/fa";
+import { useNavigate, createSearchParams } from "react-router-dom";
+import { TextField, Button } from "@mui/material";
+import './SearchBar.scss'
 
 const SearchBar = () => {
     const [query, setQuery] = useState('');
-    const category = "All";
+    const navigate = useNavigate();
 
-    const searchChange = (e) => {
-        setQuery(e.target.value);
-    }
-
-    const selectChange = (e) => {
-        setQuery(e.target.value);
+    function navigateToSearch() {
+        navigate({
+            pathname: '/search',
+            search: createSearchParams({
+                q: query,
+            }).toString(),
+        });
     }
 
     return (
         <div className="searchBar">
-            <Select labelId="categorySelect" id="categorySelect" value={category} label="Category" onChange={selectChange} variant="outlined">
-                <MenuItem value="All">All</MenuItem>
-                <MenuItem value=""></MenuItem>
-            </Select>
-            <input className="searchInput" type="text" value={query} onChange={searchChange} placeholder="Search" />
-            <Button className="searchBtn"></Button>
+            <TextField
+                className="searchInput"
+                value={query}
+                placeholder="Search"
+                onChange={(e) => setQuery(e.target.value)}
+                onKeyDown={(e) => {if (e.key === 'Enter') {navigateToSearch()}}}
+                variant="outlined"
+                type="text"
+                sx={{
+                    '& .MuiOutlinedInput-root': {
+                        '& fieldset': {
+                            border: `none`,
+                        },
+                    },
+                }}
+            />
+            <Button className="searchButton" onClick={navigateToSearch}>
+                <svg width="0" height="0">
+                    <linearGradient id="gradient" x1="0%" y1="50%" x2="100%" y2="50%">
+                        <stop stopColor="#d53a9d" offset="0%" />
+                        <stop stopColor="#743ad5" offset="100%" />
+                    </linearGradient>
+                </svg>
+                <FaSearch className="searchIcon" style={{ fill: "url(#gradient)" }} />
+            </Button>
         </div>
     )
 }

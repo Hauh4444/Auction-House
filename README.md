@@ -3,22 +3,25 @@
 ## Setup
 
 1. Ensure you have [Node.js](https://nodejs.org/en/download) installed on your machine.
-2. In a terminal, change to the `react-frontend` directory. 
-3. Run the `npm install` command to install node modules. 
-4. If you wish to install Flask directly onto your machine:
-   1. Run the `pip install Flask` command to install Flask. 
-5. If you wish to install Flask using a virtual environment:
-   1. In a terminal, change to the `flask-server` directory. 
-   2. Run the `python -m venv .venv` command to install a virtual environment. 
-   3. Run the `.venv/Scripts/activate` command to activate the virtual environment. 
-   4. Run the `pip install Flask` command to install Flask into the virtual environment.
+
+### React Frontend
+1. In a terminal, change to the `react-frontend` directory. 
+2. Run the `npm install` command to install node modules.
+3. Run the `npm install react react-router-dom react-icons @mui/material @mui/styled-engine-sc styled-components axios` command to install the necessary dependencies.
+
+### Flask Server
+1. In a terminal, change to the `flask-server` directory. 
+2. Run the `python -m venv .venv` command to install a virtual environment. 
+3. Run the `.venv/Scripts/activate` command to activate the virtual environment. 
+4. Run the `pip install flask flask-cors` command to install the necessary dependencies.
 
 ## Usage
 
 ### React Frontend
 
 1. In a terminal, change to the `react-frontend` directory.
-2. Run the `npm run dev` command to launch the React app.
+2. Run the `npm install` command to install node modules.
+3. Run the `npm run dev` command to launch the React app.
 
 ### Flask Backend
 

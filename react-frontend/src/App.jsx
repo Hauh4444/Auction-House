@@ -1,12 +1,19 @@
-import Home from './Pages/Home/Home';
 import PublicRoutes from './Routes/PublicRoutes';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 import './App.scss';
+
+const darkTheme = createTheme({
+    palette: {
+        mode: 'dark',
+    }
+})
 
 function App() {
     return (
         <>
-            <Home />
-            <PublicRoutes />
+            <ThemeProvider theme={darkTheme}>
+                <PublicRoutes />
+            </ThemeProvider>
         </>
   )
 };

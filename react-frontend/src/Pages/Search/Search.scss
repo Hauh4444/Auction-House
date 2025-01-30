@@ -1,0 +1,39 @@
+.listingsContainer {
+
+
+    .listing {
+        width: 50%;
+        height: 285px;
+        margin-top: 25px;
+        display: inline-flex;
+        flex-direction: row;
+
+        .listingImage {
+            width: 285px;
+            height: 285px;
+            border-radius: 10px;
+            display: inline-flex;
+            overflow: hidden;
+            align-items: center;
+            justify-content: center;
+
+            img {
+                width: auto;
+                height: 100%;
+            }
+        }
+        .listingDescription {
+            width: calc(100% - 315px);
+            height: 100%;
+            padding-left: 50px;
+            display: inline-block;
+
+            .listingTitle,
+            .listingPrice{
+                margin-top: 15px;
+                font-size: 18px;
+                color: #d9dddc;
+            }
+        }
+    }
+}
