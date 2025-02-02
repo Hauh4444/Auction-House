@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react';
 import { useNavigate, createSearchParams } from 'react-router-dom';
 import { Button } from "@mui/material";
 import axios from 'axios';
-import './Navigation.scss';
+import "./CategoryNavigation.scss"
 
-const Navigation = () => {
-    let [categories, setCategories] = useState([]);
+const CategoryNavigation = () => {
+    const [categories, setCategories] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -32,14 +32,16 @@ const Navigation = () => {
     }
 
     return (
-        <nav className="navBar">
+        <div className="categoryNav">
             {categories.map((category, index) => (
-                <Button className="navBtn" onClick={() => navigateToCategory(category)} key={index}>
-                    {category}
-                </Button>
+                <div style={{width: "33%", display: "inline-block", textAlign: "center"}}>
+                    <Button className="navBtn" onClick={() => navigateToCategory(category)} key={index}>
+                        {category}
+                    </Button>
+                </div>
             ))}
-        </nav>
+        </div>
     )
-};
+}
 
-export default Navigation;
+export default CategoryNavigation;

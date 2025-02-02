@@ -1,0 +1,21 @@
+$mainColor1: #fffefe;
+$mainColor2: #e8e8e9;
+$accentColor1: #01717d;
+$accentColor2: #02a5b2;
+$accentColor3: #f8a622;
+$accentColor4: #fccd3e;
+$fontColor1: #000000;
+$fontColor2: #bfbfbf;
+$fontColor3: #5d5d5d;
+
+:export {
+    mainColor1: $mainColor1;
+    mainColor2: $mainColor2;
+    accentColor1: $accentColor1;
+    accentColor2: $accentColor2;
+    accentColor3: $accentColor3;
+    accentColor4: $accentColor4;
+    fontColor1: $fontColor1;
+    fontColor2: $fontColor2;
+    fontColor3: $fontColor3;
+}

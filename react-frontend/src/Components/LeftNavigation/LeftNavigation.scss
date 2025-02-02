@@ -1,0 +1,38 @@
+@use '../../variables.module.scss' as variables;
+
+.leftNav {
+    height: calc(100vh - 200px);
+    padding-top: 200px;
+    overflow: scroll;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+    .navBtn {
+        width: 150px;
+        margin: 15px 0 15px 50px;
+        border-radius: 20px;
+        display: block;
+        overflow: hidden;
+        text-align: left;
+        text-transform: capitalize;
+        color: variables.$fontColor3;
+
+        &::after {
+            background: linear-gradient(to right, variables.$accentColor1, variables.$accentColor2) no-repeat;
+            position: absolute;
+            z-index: -1;
+            opacity: 0;
+            inset: 0;
+            content: "";
+            transition: opacity 0.5s ease;
+        }
+        &:hover::after {
+            opacity: 1;
+        }
+
+        &:hover {
+            color: variables.$mainColor1;
+        }
+    }
+}

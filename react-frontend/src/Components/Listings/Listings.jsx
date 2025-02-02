@@ -1,39 +1,49 @@
-import SearchBar from "../../Components/SearchBar/SearchBar";
 import { useState, useEffect } from 'react';
-import { useLocation } from "react-router-dom";
+import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 import axios from 'axios';
-import './Listing.scss';
+import "./Listings.scss";
 
-const Listing = () => {
-    const [listing, setListing] = useState({});
+const Listings = () => {
+    const [listings, setListings] = useState([]);
+    const navigate = useNavigate();
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
 
+
     useEffect(() => {
-        axios.get('http://127.0.0.1:5000/api/listings/' + queryParams.get('key'), {
+        axios.get('http://127.0.0.1:5000/api/listings', {
             headers: {
                 'Content-Type': 'application/json',
             },
+            c: queryParams.get('c'),
         })
             .then(res => {
-                setListing(res.data.listing);
+                setListings(res.data.listings);
             })
             .catch(err => {
                 console.log(err);
             });
     }, []);
 
+    function navigateToListing(listing) {
+        navigate({
+            pathname: '/listings',
+            search: createSearchParams({
+                key: listing.id
+            }).toString(),
+        });
+    }
+
     return (
-        <>
-            <SearchBar />
-            <div className="listingsContainer">
-                <div className="listing">
+        <div className="listingsContainer">
+            {listings.map((listing, index) => (
+                <div className="listing" key={index}>
                     <div className="listingImage">
                         <img src={'data:image/jpg;base64,' + listing.image} alt="" />
                     </div>
                     <div className="listingDescription">
-                        <Button className="listingTitle">
+                        <Button className="listingTitle" onClick={() => navigateToListing(listing)}>
                             {listing.title}
                         </Button>
                         <h1 className="listingPrice">
@@ -41,9 +51,9 @@ const Listing = () => {
                         </h1>
                     </div>
                 </div>
-            </div>
-        </>
+            ))}
+        </div>
     )
 }
 
-export default Listing;
+export default Listings;

@@ -5,13 +5,18 @@ import './App.scss';
 const darkTheme = createTheme({
     palette: {
         mode: 'dark',
-    }
+    },
+})
+const lightTheme = createTheme({
+    palette: {
+        mode: 'light',
+    },
 })
 
 function App() {
     return (
         <>
-            <ThemeProvider theme={darkTheme}>
+            <ThemeProvider theme={lightTheme}>
                 <PublicRoutes />
             </ThemeProvider>
         </>

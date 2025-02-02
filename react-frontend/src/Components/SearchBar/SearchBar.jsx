@@ -1,20 +1,26 @@
-import { useState } from 'react'
+import { useState } from 'react';
 import { FaSearch } from "react-icons/fa";
 import { useNavigate, createSearchParams } from "react-router-dom";
 import { TextField, Button } from "@mui/material";
-import './SearchBar.scss'
+import './SearchBar.scss';
+import variables from "../../variables.module.scss";
 
 const SearchBar = () => {
     const [query, setQuery] = useState('');
     const navigate = useNavigate();
 
-    function navigateToSearch() {
-        navigate({
-            pathname: '/search',
-            search: createSearchParams({
-                q: query,
-            }).toString(),
-        });
+    function navigateSearch() {
+        if (query === '') {
+            navigate('/');
+        }
+        else {
+            navigate({
+                pathname: '/search',
+                search: createSearchParams({
+                    q: query,
+                }).toString(),
+            });
+        }
     }
 
     return (
@@ -24,7 +30,7 @@ const SearchBar = () => {
                 value={query}
                 placeholder="Search"
                 onChange={(e) => setQuery(e.target.value)}
-                onKeyDown={(e) => {if (e.key === 'Enter') {navigateToSearch()}}}
+                onKeyDown={(e) => {if (e.key === 'Enter') {navigateSearch()}}}
                 variant="outlined"
                 type="text"
                 sx={{
@@ -35,11 +41,11 @@ const SearchBar = () => {
                     },
                 }}
             />
-            <Button className="searchButton" onClick={navigateToSearch}>
+            <Button className="searchButton" onClick={navigateSearch}>
                 <svg width="0" height="0">
                     <linearGradient id="gradient" x1="0%" y1="50%" x2="100%" y2="50%">
-                        <stop stopColor="#d53a9d" offset="0%" />
-                        <stop stopColor="#743ad5" offset="100%" />
+                        <stop stopColor={variables.accentColor1} offset="0%" />
+                        <stop stopColor={variables.accentColor2} offset="100%" />
                     </linearGradient>
                 </svg>
                 <FaSearch className="searchIcon" style={{ fill: "url(#gradient)" }} />
