@@ -1,3 +1,29 @@
+# TODO:
+
+## > In flask-server/app/services.py:
+
+### Implement ListingService class with:
+
+get_all_listings()
+
+get_listing_by_id(listing_id)
+
+create_listing(data)
+
+update_listing(listing_id, data)
+
+delete_listing(listing_id)
+
+### Implement CategoryService class with:
+
+create_category(data)
+
+get_all_categories()
+
+update_category(category_id, data)
+
+delete_category(category_id)
+
 # Dinkleberg's Auction House 
 
 ## Setup
