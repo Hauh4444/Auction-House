@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // External Libraries
 import { useEffect, useState } from "react";
 import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
@@ -71,6 +72,24 @@ const Category = () => {
                 <div className="pagination">
                     <Button onClick={() => pagination(-1)}><MdArrowBackIosNew className="icon" />&ensp;Previous</Button>
                     <Button style={{ marginLeft: "25px" }} onClick={() => pagination(1)}>Next&ensp;<MdArrowForwardIos className="icon" /></Button>
+=======
+import SearchBar from "@//Components/SearchBar/SearchBar";
+import LeftNavigation from "@//Components/LeftNavigation/LeftNavigation";
+import RightNavigation from "@//Components/RightNavigation/RightNavigation";
+import "./Category.scss";
+
+const Search = () => {
+
+    return (
+        <div className="categoryPage">
+            <div style={{height: "100%", display: "flex", flexDirection: "row"}}>
+                <LeftNavigation />
+                <div style={{flexBasis: "70%"}}>
+                    <SearchBar />
+                    <div className="mainPage">
+
+                    </div>
+>>>>>>> 7ffa840 (WIP on main)
                 </div>
             </div>
             <RightNavigation />
@@ -78,4 +97,4 @@ const Category = () => {
     );
 };
 
-export default Category;
+export default Search;

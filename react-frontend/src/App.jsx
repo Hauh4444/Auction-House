@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // External Libraries
 import { useEffect, useState } from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
@@ -10,12 +11,25 @@ import "./App.scss";
 const darkTheme = createTheme({
     palette: {
         mode: "dark",  // Dark mode palette
+=======
+import PublicRoutes from "@/Routes/PublicRoutes";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import "./App.scss";
+
+const darkTheme = createTheme({
+    palette: {
+        mode: "dark",
+>>>>>>> 7ffa840 (WIP on main)
     },
 });
 
 const lightTheme = createTheme({
     palette: {
+<<<<<<< HEAD
         mode: "light",  // Light mode palette
+=======
+        mode: "light",
+>>>>>>> 7ffa840 (WIP on main)
     },
 });
 
@@ -43,10 +57,20 @@ function App() {
     // Currently, the theme is hardcoded as lightTheme.
     // This should be updated based on `isDarkMode`-> isDarkMode ? darkTheme : lightTheme
     return (
+<<<<<<< HEAD
         <ThemeProvider theme={lightTheme}>
             <PublicRoutes />
         </ThemeProvider>
     );
 }
+=======
+        <>
+            <ThemeProvider theme={darkTheme}>
+                <PublicRoutes />
+            </ThemeProvider>
+        </>
+  )
+};
+>>>>>>> 7ffa840 (WIP on main)
 
 export default App;

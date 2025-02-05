@@ -1,12 +1,20 @@
+<<<<<<< HEAD
 // External Libraries
+=======
+>>>>>>> 7ffa840 (WIP on main)
 import { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { useNavigate, createSearchParams } from "react-router-dom";
 import { TextField, Button } from "@mui/material";
+<<<<<<< HEAD
 // Stylesheets
 import "./SearchBar.scss";
 // Custom Variables
 import { variables } from "@/assets/variables.modules.js";
+=======
+import "./SearchBar.scss";
+import { variables } from "@/assets/variables.modules.js"
+>>>>>>> 7ffa840 (WIP on main)
 
 const SearchBar = () => {
     const [query, setQuery] = useState("");
@@ -14,12 +22,16 @@ const SearchBar = () => {
 
     function navigateSearch() {
         if (query === "") {
+<<<<<<< HEAD
             navigate({
                 pathname: "/",
                 search: createSearchParams({
                     nav: "view-all",
                 }).toString(),
             });
+=======
+            navigate("/");
+>>>>>>> 7ffa840 (WIP on main)
         }
         else {
             navigate({
@@ -31,6 +43,7 @@ const SearchBar = () => {
                     nav: "best-results",
                 }).toString(),
             });
+            navigate(0);
         }
     }
 

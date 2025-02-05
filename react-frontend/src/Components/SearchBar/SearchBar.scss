@@ -1,6 +1,10 @@
+<<<<<<< HEAD
 // Built In Modules
 @use "sass:map";
 // Custom Variables
+=======
+@use "sass:map";
+>>>>>>> 7ffa840 (WIP on main)
 @use "@/assets/variables.modules" as *;
 
 .searchBar {
@@ -8,6 +12,7 @@
     height: 40px;
     margin: 20px 2.5%;
     border-radius: 30px;
+<<<<<<< HEAD
     box-shadow: 0 2px 4px map.get($theme-colors, mainColor4);
     background-color: map.get($theme-colors, mainColor1);
     display: inline-block;
@@ -20,6 +25,18 @@
         margin-left: 10px;
         font-size: 16px;
         color: map.get($theme-colors, mainColor3);
+=======
+    background-color: map.get($theme-colors, mainColor2);
+    box-shadow: 0 2px 4px map.get($theme-colors, accentColor1);
+    text-align: center;
+
+    .searchInput {
+        width: calc(100% - 74px);
+        height: 53px;
+        margin-left: 10px;
+        font-size: 16px;
+        color: map.get($theme-colors, fontColor1);
+>>>>>>> 7ffa840 (WIP on main)
     }
 
     .btn {

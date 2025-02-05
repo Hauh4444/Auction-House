@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // External Libraries
 import { useEffect, useState } from "react";
 import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
@@ -39,15 +40,58 @@ const Search = () => {
             search: createSearchParams(filters).toString(),
         });
         window.scrollTo(0, 0);
+=======
+import SearchBar from "@/Components/SearchBar/SearchBar";
+import LeftNavigation from "@/Components/LeftNavigation/LeftNavigation";
+import RightNavigation from "@/Components/RightNavigation/RightNavigation";
+import Listings from "@/Components/Listings/Listings";
+import { MdOutlineSort } from "react-icons/md";
+import { Button } from "@mui/material";
+import "./Search.scss";
+
+const Search = () => {
+
+    function toggleHomeNav(e) {
+        document.querySelectorAll(".navBtn").forEach(element => {
+            element.classList.remove("selected")
+        });
+        e.target.classList.add("selected");
+>>>>>>> 7ffa840 (WIP on main)
     }
 
     return (
         <div className="searchPage">
+<<<<<<< HEAD
             <div className="mainPage">
                 <Header />
                 <SearchNavigation />
                 <SearchListings />
                 {paginationButtons}
+=======
+            <div style={{height: "100%", display: "flex", flexDirection: "row"}}>
+                <LeftNavigation />
+                <div style={{flexBasis: "70%"}}>
+                    <SearchBar />
+                    <div className="headNav">
+                        <Button className="navBtn selected" onClick={(e) => {toggleHomeNav(e)}}>
+                            Best Results
+                        </Button>
+                        <Button className="navBtn" onClick={(e) => {toggleHomeNav(e)}}>
+                            Best Deals
+                        </Button>
+                        <Button className="navBtn" onClick={(e) => {toggleHomeNav(e)}}>
+                            View All
+                        </Button>
+                        <Button className="navBtn sortBtn">
+                            Sort By&ensp; <MdOutlineSort style={{fontSize: "16px"}} />
+                        </Button>
+                    </div>
+                    <div className="mainPage">
+                        <Listings />
+                    </div>
+                </div>
+                <RightNavigation />
+>>>>>>> 7ffa840 (WIP on main)
             </div>
             <RightNavigation />
         </div>

@@ -4,6 +4,7 @@ import react from '@vitejs/plugin-react';
 
 // Vite Configuration
 export default defineConfig({
+<<<<<<< HEAD
     // Array of plugins to use with Vite
     plugins: [react()],  // Use the Vite React plugin for JSX/React support
 
@@ -15,3 +16,12 @@ export default defineConfig({
         },
     },
 });
+=======
+    plugins: [react()],
+    resolve: {
+        alias: {
+            '@': '/src',
+        },
+    },
+})
+>>>>>>> 7ffa840 (WIP on main)

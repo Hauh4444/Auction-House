@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // External Libraries
 import { useNavigate } from "react-router-dom";
 import { BsThreeDots } from "react-icons/bs";
@@ -10,6 +11,17 @@ import { Button } from "@mui/material";
 import "./RightNavigation.scss";
 // Custom Variables
 import { variables } from "@/assets/variables.modules.js";
+=======
+import { useNavigate } from "react-router-dom";
+import { BsThreeDots } from "react-icons/bs";
+import { RiAccountCircle2Fill , RiAccountCircle2Line  } from "react-icons/ri";
+import { IoFlag, IoFlagOutline, IoCart, IoCartOutline } from "react-icons/io5";
+import { HiUserGroup, HiOutlineUserGroup  } from "react-icons/hi2";
+import { PiTruckFill, PiTruckLight } from "react-icons/pi";
+import { Button } from "@mui/material";
+import "./RightNavigation.scss";
+import { variables } from "@/assets/variables.modules.js"
+>>>>>>> 7ffa840 (WIP on main)
 
 const RightNavigation = () => {
     const navigate = useNavigate();
@@ -20,7 +32,11 @@ const RightNavigation = () => {
                 <Button className="btn">
                     <BsThreeDots className="menuBtn" style={{
                         fontSize: "25px",
+<<<<<<< HEAD
                         color: variables.mainColor3,
+=======
+                        color: variables.fontColor2,
+>>>>>>> 7ffa840 (WIP on main)
                     }} />
                 </Button>
                 <Button className="btn" style={{marginBottom: "15px"}}>
