@@ -1,17 +1,19 @@
-import SearchBar from '../../Components/SearchBar/SearchBar';
-import LeftNavigation from "../../Components/LeftNavigation/LeftNavigation";
-import RightNavigation from "../../Components/RightNavigation/RightNavigation.jsx";
-import Listings from "../../Components/Listings/Listings";
-import './Category.scss';
+import SearchBar from "@//Components/SearchBar/SearchBar";
+import LeftNavigation from "@//Components/LeftNavigation/LeftNavigation";
+import RightNavigation from "@//Components/RightNavigation/RightNavigation";
+import "./Category.scss";
 
-const Category = () => {
+const Search = () => {
+
     return (
         <div className="categoryPage">
-            <div style={{display: "flex", flexDirection: "row"}}>
+            <div style={{height: "100%", display: "flex", flexDirection: "row"}}>
                 <LeftNavigation />
-                <div style={{flexBasis: "50%"}}>
+                <div style={{flexBasis: "70%"}}>
                     <SearchBar />
-                    <Listings />
+                    <div className="mainPage">
+
+                    </div>
                 </div>
                 <RightNavigation />
             </div>
@@ -19,4 +21,4 @@ const Category = () => {
     )
 }
 
-export default Category;
+export default Search;

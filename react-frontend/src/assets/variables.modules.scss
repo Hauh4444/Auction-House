@@ -1,0 +1,17 @@
+$theme-colors: (
+    mainColor1: #101011,
+    mainColor2: #1a1c1e,
+    mainColor3: #828282,
+    accentColor1: #2a6bb0,
+    accentColor2: #1b9dbc,
+    accentColor3: #212c40,
+    accentColor4: #354665,
+    fontColor1: #ffffff,
+    fontColor2: #696b6c,
+);
+
+:export {
+    @each $color, $value in theme-colors {
+        #{$color}: #{$value};
+    }
+}

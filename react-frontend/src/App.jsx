@@ -1,22 +1,22 @@
-import PublicRoutes from './Routes/PublicRoutes';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import './App.scss';
+import PublicRoutes from "@/Routes/PublicRoutes";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import "./App.scss";
 
 const darkTheme = createTheme({
     palette: {
-        mode: 'dark',
+        mode: "dark",
     },
 })
 const lightTheme = createTheme({
     palette: {
-        mode: 'light',
+        mode: "light",
     },
 })
 
 function App() {
     return (
         <>
-            <ThemeProvider theme={lightTheme}>
+            <ThemeProvider theme={darkTheme}>
                 <PublicRoutes />
             </ThemeProvider>
         </>
