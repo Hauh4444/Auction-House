@@ -1,17 +1,17 @@
-import { useState, useEffect } from 'react';
-import { useNavigate, createSearchParams } from 'react-router-dom';
+import { useState, useEffect } from "react";
+import { useNavigate, createSearchParams } from "react-router-dom";
 import { Button } from "@mui/material";
-import axios from 'axios';
-import "./CategoryNavigation.scss"
+import axios from "axios";
+import "./CategoriesPopup.scss"
 
-const CategoryNavigation = () => {
+const CategoriesPopup = () => {
     const [categories, setCategories] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get('http://127.0.0.1:5000/api/categories', {
+        axios.get("http://127.0.0.1:5000/api/categories", {
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
             }
         })
             .then(res => {
@@ -24,18 +24,18 @@ const CategoryNavigation = () => {
 
     function navigateToCategory(category) {
         navigate({
-            pathname: '/categories',
+            pathname: "/category",
             search: createSearchParams({
-                c: category.replace(/\s/g, '-').replace(/&/g, 'and')
+                c: category.replace(/\s/g, "-").replace(/&/g, "and")
             }).toString(),
         });
     }
 
     return (
-        <div className="categoryNav">
+        <div className="categoriesPopup">
             {categories.map((category, index) => (
-                <div style={{width: "33%", display: "inline-block", textAlign: "center"}}>
-                    <Button className="navBtn" onClick={() => navigateToCategory(category)} key={index}>
+                <div style={{width: "25%", display: "inline-block", textAlign: "center"}} key={index}>
+                    <Button className="categoryBtn" onClick={() => navigateToCategory(category)} key={index}>
                         {category}
                     </Button>
                 </div>
@@ -44,4 +44,4 @@ const CategoryNavigation = () => {
     )
 }
 
-export default CategoryNavigation;
+export default CategoriesPopup;

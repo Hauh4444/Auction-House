@@ -1,4 +1,4 @@
-import './CreateAccount.scss';
+import "./CreateAccount.scss";
 
 const CreateAccount = () => {
 

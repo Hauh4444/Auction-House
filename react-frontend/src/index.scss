@@ -1,13 +1,14 @@
-@use 'variables.module.scss' as variables;
-@import '@fontsource/roboto/300.css';
-@import '@fontsource/roboto/400.css';
-@import '@fontsource/roboto/500.css';
-@import '@fontsource/roboto/700.css';
+@use "sass:map";
+@use "@/assets/variables.modules" as *;
+@import "@fontsource/roboto/300.css";
+@import "@fontsource/roboto/400.css";
+@import "@fontsource/roboto/500.css";
+@import "@fontsource/roboto/700.css";
 
 html {
     font-family: Roboto, "sans-serif";
 }
 body {
     margin: 0;
-    background-color: variables.$mainColor1;
+    background-color: map.get($theme-colors, mainColor1);
 }

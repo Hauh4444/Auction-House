@@ -1,11 +1,9 @@
-import { Link } from 'react-router-dom';
-import Header from '../../Components/Header/Header';
-import './PageNotFound.scss';
+import { Link } from "react-router-dom";
+import "./PageNotFound.scss";
 
 const PageNotFound = () => {
     return (
         <>
-            <Header />
             <section className="mainSection">
                 <img src="/assets/404.jpg" className="notFoundImage" alt="Page Not Found" />
             </section>

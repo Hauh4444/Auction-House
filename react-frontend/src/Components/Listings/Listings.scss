@@ -1,13 +1,19 @@
+@use "sass:map";
+@use "@/assets/variables.modules" as *;
+
 .listingsContainer {
     .listing {
-        height: 285px;
-        margin-top: 25px;
+        width: 100%;
+        height: 200px;
+        margin-top: 50px;
+        border-radius: 10px;
+        background-color: map.get($theme-colors, mainColor2);
         display: inline-flex;
         flex-direction: row;
 
         .listingImage {
-            width: 285px;
-            height: 285px;
+            width: 200px;
+            height: 100%;
             border-radius: 10px;
             display: inline-flex;
             overflow: hidden;
@@ -20,16 +26,52 @@
             }
         }
         .listingDescription {
-            width: calc(100% - 315px);
+            width: calc(100% - 225px);
             height: 100%;
-            padding-left: 50px;
+            padding-left: 25px;
             display: inline-block;
+            text-align: left;
 
+            .listingTitle {
+                width: calc(100% - 200px);
+                height: 62px;
+                margin: 25px 200px 0 0;
+                padding: 0;
+                display: flex;
+                overflow: hidden;
+                align-items: flex-start;
+                justify-content: start;
+                text-align: left;
+
+                &:hover {
+                    background-color: map.get($theme-colors, mainColor2);
+                }
+            }
+            .listingReviews {
+                margin: 5px 0 10px 0;
+            }
+            .listingPrice {
+                width: fit-content;
+                margin: 0;
+            }
             .listingTitle,
             .listingPrice{
-                margin-top: 15px;
                 font-size: 18px;
-                color: #d9dddc;
+                color: map.get($theme-colors, fontColor1);
+            }
+        }
+        .bottomDetails {
+            width: 100%;
+            height: 60px;
+
+            .addCartBtn {
+                height: 35px;
+                margin: 0 25px 25px 0;
+                padding: 0 20px;
+                border-radius: 20px;
+                background-image: linear-gradient(to right, map.get($theme-colors, accentColor1), map.get($theme-colors, accentColor2));
+                float: right;
+                color: map.get($theme-colors, mainColor1);
             }
         }
     }
