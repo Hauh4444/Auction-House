@@ -8,35 +8,62 @@ $featuredColor2: #e61984;
     height: 100vh;
 
     .mainPage {
-        .recommended {
-            margin-top: 50px;
+        .content {
+            width: 70%;
+            margin: 25px auto 0 auto;
 
-            .nav {
-                .head {
-                    width: 150px;
-                    height: 24.5px;
-                    padding: 6px 8px;
-                    line-height: 24.5px;
-                    color: map.get($theme-colors, fontColor1)
-                }
-                .viewAll {
-                    border-radius: 20px;
-                    text-transform: capitalize;
-                    float: right;
-                    color: map.get($theme-colors, fontColor2);
-                    transition: all 0.5s ease;
-
-                    &:hover {
-                        background-color: map.get($theme-colors, mainColor2);
-                        color: map.get($theme-colors, fontColor1);
+            .recommended {
+                .nav {
+                    .head {
+                        width: 150px;
+                        height: 24.5px;
+                        padding: 6px 8px;
+                        line-height: 24.5px;
+                        color: map.get($theme-colors, mainColor3)
                     }
-                }
-                .head,
-                .viewAll {
-                    margin: 0 25px;
-                    display: inline-block;
-                    font-size: 14px;
-                    font-weight: bold;
+
+                    .viewAll {
+                        border: none;
+                        border-radius: 20px;
+                        display: block;
+                        overflow: hidden;
+                        float: right;
+                        text-transform: capitalize;
+                        color: map.get($theme-colors, mainColor2);
+                        transition: all 0.5s ease;
+
+                        &::after {
+                            background: linear-gradient(to right, map.get($theme-colors, accentColor1), map.get($theme-colors, accentColor2)) no-repeat;
+                            position: absolute;
+                            z-index: -1;
+                            opacity: 0;
+                            inset: 0;
+                            content: "";
+                            transition: opacity 0.5s ease;
+                        }
+
+                        &:hover::after {
+                            opacity: 1;
+                        }
+
+                        &:hover {
+                            border: none;
+                            background-color: transparent;
+                            color: map.get($theme-colors, mainColor1) !important;
+                        }
+
+                        &:hover {
+                            color: map.get($theme-colors, mainColor1);
+                        }
+                    }
+
+                    .head,
+                    .viewAll {
+                        margin: 0 25px;
+                        display: inline-block;
+                        font-size: 14px;
+                        font-weight: bold;
+                    }
                 }
             }
         }

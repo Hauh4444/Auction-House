@@ -1,0 +1,57 @@
+@use "sass:map";
+@use "@/assets/variables.modules" as *;
+
+.listingPage {
+    width: 100%;
+    height: 100vh;
+
+    .mainPage {
+        .listing {
+            margin-top: 100px;
+            display: flex;
+            flex-direction: row;
+
+            .listingInfo {
+                padding-left: 5%;
+                flex-basis: 28%;
+
+                .listingTitle {
+                    margin: 50px 0;
+                    font-weight: bold;
+                    font-size: 24px;
+                }
+                .listingPrice {
+                    margin-top: 25px;
+                    display: inline-block;
+                    font-weight: normal;
+                    font-size: 20px;
+                }
+                .addCartBtn {
+                    height: 35px;
+                    margin-left: 20px;
+                    padding: 0 20px;
+                    border-radius: 5px;
+                    background-image: linear-gradient(to right, map.get($theme-colors, accentColor1), map.get($theme-colors, accentColor2));
+                    display: inline-block;
+                    position: relative;
+                    top: -3px;
+                    font-weight: normal;
+                    font-size: 20px;
+                    color: map.get($theme-colors, mainColor1);
+                }
+            }
+            .listingImage {
+                display: flex;
+                flex-basis: 34%;
+                justify-content: center;
+
+                img {
+                    width: 50%;
+                }
+            }
+            .listingDescription {
+                flex-basis: 33%;
+            }
+        }
+    }
+}
