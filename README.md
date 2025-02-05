@@ -33,7 +33,7 @@ delete_category(category_id)
 ### React Frontend
 1. In a terminal, change to the `react-frontend` directory. 
 2. Run the `npm install` command to install node modules.
-3. Run the `npm install react react-router-dom react-icons @mui/material @mui/styled-engine-sc styled-components axios sass` command to install the necessary dependencies.
+3. Run the `npm install react react-router-dom react-icons vite @mui/material @mui/styled-engine-sc styled-components axios sass` command to install the necessary dependencies.
 
 ### Flask Server
 1. In a terminal, change to the `flask-server` directory. 
