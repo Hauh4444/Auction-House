@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_cors import CORS
 from flaskext.mysql import MySQL
+from .routes import *
 
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "http://localhost:5173"}})
