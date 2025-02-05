@@ -8,6 +8,11 @@ CORS(app, resources={r"/api/*": {"origins": "http://localhost:5173"}})
 mysql = MySQL()
 mysql.init_app(app)
 
+#Register Blueprints
+app.register_blueprint(listings_bp, url_prefix='/api/listings')
+app.register_blueprint(category_bp, url_prefix='/api/category')
+
+#Test
 @app.route('/test', methods=['GET'])
 def test():
     return 'Success'
