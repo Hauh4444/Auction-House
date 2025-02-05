@@ -16,7 +16,7 @@ const lightTheme = createTheme({
 function App() {
     return (
         <>
-            <ThemeProvider theme={darkTheme}>
+            <ThemeProvider theme={lightTheme}>
                 <PublicRoutes />
             </ThemeProvider>
         </>

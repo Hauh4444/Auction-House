@@ -50,11 +50,11 @@ const Listings = () => {
                             {listing.title}
                         </Button>
                         <div className="listingReviews">
-                            <IoStar style={{fontSize: "16px", color: variables.fontColor2}}/>
-                            <IoStar style={{fontSize: "16px", color: variables.fontColor2}}/>
-                            <IoStar style={{fontSize: "16px", color: variables.fontColor2}}/>
-                            <IoStar style={{fontSize: "16px", color: variables.fontColor2}}/>
-                            <IoStar style={{fontSize: "16px", color: variables.fontColor2}}/>
+                            <IoStar style={{fontSize: "16px", color: variables.accentColor1}}/>
+                            <IoStar style={{fontSize: "16px", color: variables.accentColor1}}/>
+                            <IoStar style={{fontSize: "16px", color: variables.accentColor1}}/>
+                            <IoStar style={{fontSize: "16px", color: variables.accentColor1}}/>
+                            <IoStar style={{fontSize: "16px", color: variables.accentColor1}}/>
                             <span style={{
                                 position: "relative",
                                 top: "-3px",

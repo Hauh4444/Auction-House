@@ -33,6 +33,7 @@ const SearchBar = () => {
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={(e) => {if (e.key === "Enter") {navigateSearch()}}}
                 variant="outlined"
+                size="small"
                 type="text"
                 sx={{
                     "& .MuiOutlinedInput-root": {
