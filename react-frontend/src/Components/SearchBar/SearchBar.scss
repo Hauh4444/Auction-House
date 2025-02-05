@@ -13,6 +13,7 @@
     margin: 20px 2.5%;
     border-radius: 30px;
 <<<<<<< HEAD
+<<<<<<< HEAD
     box-shadow: 0 2px 4px map.get($theme-colors, mainColor4);
     background-color: map.get($theme-colors, mainColor1);
     display: inline-block;
@@ -28,18 +29,30 @@
 =======
     background-color: map.get($theme-colors, mainColor2);
     box-shadow: 0 2px 4px map.get($theme-colors, accentColor1);
+=======
+    box-shadow: 0 1px 2px map.get($theme-colors, mainColor4);
+    background-color: map.get($theme-colors, mainColor1);
+    display: inline-block;
+    float: right;
+>>>>>>> 9d377c2 (update)
     text-align: center;
 
     .searchInput {
-        width: calc(100% - 74px);
-        height: 53px;
+        width: calc(100% - 50px);
+        height: 40px;
         margin-left: 10px;
         font-size: 16px;
+<<<<<<< HEAD
         color: map.get($theme-colors, fontColor1);
 >>>>>>> 7ffa840 (WIP on main)
     }
 
     .btn {
+=======
+        color: map.get($theme-colors, mainColor3);
+    }
+    .searchButton {
+>>>>>>> 9d377c2 (update)
         width: 40px;
         min-width: 40px;
         height: 40px;

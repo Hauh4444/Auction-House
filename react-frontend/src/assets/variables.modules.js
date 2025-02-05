@@ -1,11 +1,15 @@
 export const variables = {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 9d377c2 (update)
     mainColor1: "#fffeff",
     mainColor2: "#63615d",
     mainColor3: "#1e1911",
     mainColor4: "#c5c6d0",
     accentColor1: "#feb000",
     accentColor2: "#f9c349",
+<<<<<<< HEAD
     accentColor3: "#051094",
     accentColor4: "#1338be",
 =======
@@ -19,4 +23,6 @@ export const variables = {
     fontColor1: "#ffffff",
     fontColor2: "#808183",
 >>>>>>> 7ffa840 (WIP on main)
+=======
+>>>>>>> 9d377c2 (update)
 }

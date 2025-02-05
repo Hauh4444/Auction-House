@@ -3,11 +3,12 @@
 
 .listingsContainer {
     .listing {
-        width: 100%;
+        width: 70%;
         height: 200px;
-        margin-top: 50px;
+        margin: 50px 15% 0 15%;
         border-radius: 10px;
-        background-color: map.get($theme-colors, mainColor2);
+        box-shadow: 0 1px 2px map.get($theme-colors, mainColor4);
+        background-color: map.get($theme-colors, mainColor1);
         display: inline-flex;
         flex-direction: row;
 
@@ -44,7 +45,7 @@
                 text-align: left;
 
                 &:hover {
-                    background-color: map.get($theme-colors, mainColor2);
+                    background-color: map.get($theme-colors, mainColor1);
                 }
             }
             .listingReviews {
@@ -57,7 +58,7 @@
             .listingTitle,
             .listingPrice{
                 font-size: 18px;
-                color: map.get($theme-colors, fontColor1);
+                color: map.get($theme-colors, mainColor3);
             }
         }
         .bottomDetails {

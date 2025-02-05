@@ -1,12 +1,20 @@
+<<<<<<< HEAD
 // Built In Modules
 @use "sass:map";
 // Custom Variables
+=======
+@use "sass:map";
+>>>>>>> 9d377c2 (update)
 @use "@/assets/variables.modules" as *;
 
 .header {
     width: 100%;
     height: 80px;
+<<<<<<< HEAD
     box-shadow: 0 1px 2px map.get($theme-colors, mainColor4);
+=======
+    box-shadow: 0 0 4px map.get($theme-colors, mainColor4);
+>>>>>>> 9d377c2 (update)
 
     .headNav {
         width: calc(55% - 25px);
@@ -14,11 +22,16 @@
         padding-left: 25px;
         display: inline-block;
 
+<<<<<<< HEAD
         .btn {
+=======
+        .navBtn {
+>>>>>>> 9d377c2 (update)
             height: 40px;
             margin: 20px 15px;
             font-size: 14px;
             font-weight: normal;
+<<<<<<< HEAD
             text-transform: none;
             color: map.get($theme-colors, mainColor3);
             transition: all 0.5s ease;
@@ -63,5 +76,14 @@
                 font-size: 16px;
             }
         }
+=======
+            text-transform: capitalize;
+            color: map.get($theme-colors, mainColor3);
+            transition: all 0.5s ease;
+        }
+        .navBtn:hover {
+            color: map.get($theme-colors, accentColor1) !important;
+        }
+>>>>>>> 9d377c2 (update)
     }
 }

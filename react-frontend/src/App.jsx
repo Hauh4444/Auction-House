@@ -65,7 +65,7 @@ function App() {
 }
 =======
         <>
-            <ThemeProvider theme={darkTheme}>
+            <ThemeProvider theme={lightTheme}>
                 <PublicRoutes />
             </ThemeProvider>
         </>

@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 // External Libraries
 import { useLocation } from "react-router-dom";
 // Internal Modules
@@ -18,11 +19,17 @@ import LeftNavigation from "@//Components/LeftNavigation/LeftNavigation";
 import RightNavigation from "@//Components/RightNavigation/RightNavigation";
 import CategoriesPopup from "@//Components/CategoriesPopup/CategoriesPopup";
 import { BsGrid3X3GapFill } from "react-icons/bs";
+=======
+import Header from "@/Components/Header/Header";
+import HomeNavigation from "@/Components/HomeNavigation/HomeNavigation.jsx";
+import RightNavigation from "@/Components/RightNavigation/RightNavigation";
+>>>>>>> 9d377c2 (update)
 import { Button } from "@mui/material";
 import "./Home.scss"
 
 const Home = () => {
 
+<<<<<<< HEAD
     function toggleCategoriesDisplay() {
         let element = document.querySelector(".categoriesPopup");
         if (["0px", ""].includes(element.style.maxHeight)) {
@@ -91,6 +98,23 @@ const Home = () => {
                 </div>
                 <RightNavigation />
 >>>>>>> 7ffa840 (WIP on main)
+=======
+    return (
+        <div className="homePage">
+            <div className="mainPage">
+                <Header />
+                <HomeNavigation />
+                <div className="content">
+                    <div className="recommended">
+                        <div className="nav">
+                            <p className="head">Recommended for You</p>
+                            <Button className="viewAll">
+                                View All
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+>>>>>>> 9d377c2 (update)
             </div>
             <RightNavigation />
         </div>

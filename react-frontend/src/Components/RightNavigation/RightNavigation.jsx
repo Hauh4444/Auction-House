@@ -33,10 +33,14 @@ const RightNavigation = () => {
                     <BsThreeDots className="menuBtn" style={{
                         fontSize: "25px",
 <<<<<<< HEAD
+<<<<<<< HEAD
                         color: variables.mainColor3,
 =======
                         color: variables.fontColor2,
 >>>>>>> 7ffa840 (WIP on main)
+=======
+                        color: variables.mainColor3,
+>>>>>>> 9d377c2 (update)
                     }} />
                 </Button>
                 <Button className="btn" style={{marginBottom: "15px"}}>

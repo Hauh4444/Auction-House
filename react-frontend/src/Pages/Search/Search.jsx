@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 // External Libraries
 import { useEffect, useState } from "react";
 import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
@@ -43,14 +44,17 @@ const Search = () => {
 =======
 import SearchBar from "@/Components/SearchBar/SearchBar";
 import LeftNavigation from "@/Components/LeftNavigation/LeftNavigation";
+=======
+import Header from "@/Components/Header/Header";
+import SearchNavigation from "@/Components/SearchNavigation/SearchNavigation.jsx";
+>>>>>>> 9d377c2 (update)
 import RightNavigation from "@/Components/RightNavigation/RightNavigation";
 import Listings from "@/Components/Listings/Listings";
-import { MdOutlineSort } from "react-icons/md";
-import { Button } from "@mui/material";
 import "./Search.scss";
 
 const Search = () => {
 
+<<<<<<< HEAD
     function toggleHomeNav(e) {
         document.querySelectorAll(".navBtn").forEach(element => {
             element.classList.remove("selected")
@@ -92,6 +96,14 @@ const Search = () => {
                 </div>
                 <RightNavigation />
 >>>>>>> 7ffa840 (WIP on main)
+=======
+    return (
+        <div className="searchPage">
+            <div className="mainPage">
+                <Header />
+                <SearchNavigation />
+                <Listings />
+>>>>>>> 9d377c2 (update)
             </div>
             <RightNavigation />
         </div>

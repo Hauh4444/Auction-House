@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 // External Libraries
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
@@ -13,9 +14,13 @@ import ListingReviews from "@/Components/ListingReviews/ListingReviews"
 =======
 import SearchBar from "@//Components/SearchBar/SearchBar";
 import LeftNavigation from "@//Components/LeftNavigation/LeftNavigation";
+=======
+import Header from "@/Components/Header/Header";
+>>>>>>> 9d377c2 (update)
 import RightNavigation from "@//Components/RightNavigation/RightNavigation";
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { Button } from "@mui/material";
 import axios from "axios";
 >>>>>>> 7ffa840 (WIP on main)
 import "./Listing.scss";
@@ -42,10 +47,14 @@ const Listing = () => {
 
     return (
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 9d377c2 (update)
         <div className="listingPage">
             <div className="mainPage">
                 <Header />
                 <div className="listing">
+<<<<<<< HEAD
                     <ListingMain listing={listing} />
                     <div className="lesserInfo">
                         <ListingSpecifics listing={listing} />
@@ -60,29 +69,39 @@ const Listing = () => {
                     <div className="mainPage">
                         <div className="headNav">
 
+=======
+                    <div className="listingInfo">
+                        <div className="listingTitle">
+                            {listing.title}
+>>>>>>> 9d377c2 (update)
                         </div>
-                        <div className="listing">
-                            <div className="listingImage">
-                                <img src={"data:image/jpg;base64," + listing.image} alt="" />
-                            </div>
-                            <div className="listingDescription">
-                                <div className="listingTitle">
-                                    {listing.title}
-                                </div>
-                                <h1 className="listingPrice">
-                                    ${listing.price}
-                                </h1>
-                            </div>
+                        <div className="listingPrice">
+                            ${listing.price}
                         </div>
+<<<<<<< HEAD
 >>>>>>> 7ffa840 (WIP on main)
+=======
+                        <Button className="addCartBtn">
+                            Add to Cart
+                        </Button>
+                    </div>
+                    <div className="listingImage">
+                        <img src={"data:image/jpg;base64," + listing.image} alt="" />
+                    </div>
+                    <div className="listingDescription">
+
+>>>>>>> 9d377c2 (update)
                     </div>
                 </div>
-                <RightNavigation />
             </div>
+<<<<<<< HEAD
 <<<<<<< HEAD
             <RightNavigation />
 =======
 >>>>>>> 7ffa840 (WIP on main)
+=======
+            <RightNavigation />
+>>>>>>> 9d377c2 (update)
         </div>
     )
 }

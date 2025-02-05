@@ -15,6 +15,7 @@ $featuredColor2: #e61984;
 
     .mainPage {
 <<<<<<< HEAD
+<<<<<<< HEAD
         .content {
             width: 70%;
             margin: 25px auto 0 auto;
@@ -113,6 +114,63 @@ $featuredColor2: #e61984;
                         background-color: map.get($theme-colors, mainColor2);
                         color: map.get($theme-colors, fontColor1);
 >>>>>>> 7ffa840 (WIP on main)
+=======
+        .content {
+            width: 70%;
+            margin: 25px auto 0 auto;
+
+            .recommended {
+                .nav {
+                    .head {
+                        width: 150px;
+                        height: 24.5px;
+                        padding: 6px 8px;
+                        line-height: 24.5px;
+                        color: map.get($theme-colors, mainColor3)
+                    }
+
+                    .viewAll {
+                        border: none;
+                        border-radius: 20px;
+                        display: block;
+                        overflow: hidden;
+                        float: right;
+                        text-transform: capitalize;
+                        color: map.get($theme-colors, mainColor2);
+                        transition: all 0.5s ease;
+
+                        &::after {
+                            background: linear-gradient(to right, map.get($theme-colors, accentColor1), map.get($theme-colors, accentColor2)) no-repeat;
+                            position: absolute;
+                            z-index: -1;
+                            opacity: 0;
+                            inset: 0;
+                            content: "";
+                            transition: opacity 0.5s ease;
+                        }
+
+                        &:hover::after {
+                            opacity: 1;
+                        }
+
+                        &:hover {
+                            border: none;
+                            background-color: transparent;
+                            color: map.get($theme-colors, mainColor1) !important;
+                        }
+
+                        &:hover {
+                            color: map.get($theme-colors, mainColor1);
+                        }
+                    }
+
+                    .head,
+                    .viewAll {
+                        margin: 0 25px;
+                        display: inline-block;
+                        font-size: 14px;
+                        font-weight: bold;
+>>>>>>> 9d377c2 (update)
                     }
                 }
             }
