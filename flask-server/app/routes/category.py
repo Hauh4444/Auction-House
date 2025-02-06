@@ -4,19 +4,24 @@ from ..services import CategoryService
 # Blueprint
 category_bp = Blueprint('category_bp', __name__)
 
+#GET /api/categories
+@category_bp.route('/', methods=['GET'])
+def get_all_categories():
+    return CategoryService.get_all_categories()
+
+# GET /api/categories/{id}
+@category_bp.route('/<int:category_id>', methods=['GET'])
+def get_category(category_id):
+    return CategoryService.get_category_by_id(category_id)
+
 #POST /api/categories
 @category_bp.route('/', methods=['POST'])
 def createCategory():
     data = request.json
     return CategoryService.create_category(data)
 
-#GET /api/categories
-@category_bp.route('/', methods=['GET'])
-def getAllCategories():
-    return CategoryService.get_all_categories()
-
 #PUT /api/categories/{id}
-@category_bp.route('/<int:category_id', methods=['PUT'])
+@category_bp.route('/<int:category_id>', methods=['PUT'])
 def updateCategory(category_id):
     data = request.json
     return CategoryService.update_category(category_id, data)
