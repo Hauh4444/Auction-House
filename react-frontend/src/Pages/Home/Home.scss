@@ -1,74 +1,69 @@
-@use '../../variables.module.scss' as variables;
+@use "sass:map";
+@use "@/assets/variables.modules" as *;
 $featuredColor1: #f94914;
 $featuredColor2: #e61984;
 
 .homePage {
+    width: 100%;
+    height: 100vh;
+
     .mainPage {
-        width: 100%;
-        height: calc(100vh - 86px);
+        .content {
+            width: 70%;
+            margin: 25px auto 0 auto;
 
-        .homeNav {
-            .navBtn {
-                margin: 0 15px;
-                border: 4px solid white;
-                font-size: 14px;
-                font-weight: bold;
-                text-transform: capitalize;
-                color: variables.$fontColor2;
-                transition: all 0.5s ease;
-            }
-            .selected,
-            .navBtn:hover {
-                border-bottom: 4px solid variables.$accentColor3;
-                background-color: variables.$mainColor1;
-                color: variables.$fontColor1 !important;
-            }
-            .categoriesBtn {
-                border: none;
-                border-radius: 15px;
-                float: right;
-                color: variables.$accentColor1;
-
-                &:hover {
-                    border: none;
-                    background-color: variables.$mainColor2 !important;
-                    color: variables.$accentColor1 !important;
-                }
-            }
-        }
-        .featured {
-            width: 100%;
-            height: 220px;
-            margin: 50px 0 80px 0;
-            border-radius: 10px;
-            background-image: linear-gradient(to right, $featuredColor1, $featuredColor2);
-        }
-        .recommended {
-            .nav {
-                .head {
-                    width: 150px;
-                    height: 24.5px;
-                    padding: 6px 8px;
-                    line-height: 24.5px;
-                }
-                .viewAll {
-                    border-radius: 20px;
-                    text-transform: capitalize;
-                    float: right;
-                    color: variables.$fontColor2;
-                    transition: all 0.5s ease;
-
-                    &:hover {
-                        background-color: variables.$mainColor2;
-                        color: variables.$fontColor1;
+            .recommended {
+                .nav {
+                    .head {
+                        width: 150px;
+                        height: 24.5px;
+                        padding: 6px 8px;
+                        line-height: 24.5px;
+                        color: map.get($theme-colors, mainColor3)
                     }
-                }
-                .head,
-                .viewAll {
-                    margin: 0 25px;
-                    display: inline-block;
-                    font-size: 14px;
-                    font-weight: bold;
+
+                    .viewAll {
+                        border: none;
+                        border-radius: 20px;
+                        display: block;
+                        overflow: hidden;
+                        float: right;
+                        text-transform: capitalize;
+                        color: map.get($theme-colors, mainColor2);
+                        transition: all 0.5s ease;
+
+                        &::after {
+                            background: linear-gradient(to right, map.get($theme-colors, accentColor1), map.get($theme-colors, accentColor2)) no-repeat;
+                            position: absolute;
+                            z-index: -1;
+                            opacity: 0;
+                            inset: 0;
+                            content: "";
+                            transition: opacity 0.5s ease;
+                        }
+
+                        &:hover::after {
+                            opacity: 1;
+                        }
+
+                        &:hover {
+                            border: none;
+                            background-color: transparent;
+                            color: map.get($theme-colors, mainColor1) !important;
+                        }
+
+                        &:hover {
+                            color: map.get($theme-colors, mainColor1);
+                        }
+                    }
+
+                    .head,
+                    .viewAll {
+                        margin: 0 25px;
+                        display: inline-block;
+                        font-size: 14px;
+                        font-weight: bold;
+                    }
                 }
             }
         }

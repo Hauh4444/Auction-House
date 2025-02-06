@@ -1,1 +1,28 @@
-@use '../../variables.module.scss' as variables;
+@use "sass:map";
+@use "@/assets/variables.modules" as *;
+
+.header {
+    width: 100%;
+    height: 80px;
+    box-shadow: 0 0 4px map.get($theme-colors, mainColor4);
+
+    .headNav {
+        width: calc(55% - 25px);
+        height: 80px;
+        padding-left: 25px;
+        display: inline-block;
+
+        .navBtn {
+            height: 40px;
+            margin: 20px 15px;
+            font-size: 14px;
+            font-weight: normal;
+            text-transform: capitalize;
+            color: map.get($theme-colors, mainColor3);
+            transition: all 0.5s ease;
+        }
+        .navBtn:hover {
+            color: map.get($theme-colors, accentColor1) !important;
+        }
+    }
+}

@@ -1,10 +1,33 @@
-@use '../../variables.module.scss' as variables;
+@use "sass:map";
+@use "@/assets/variables.modules" as *;
 
 .rightNav {
     .navBar {
         width: 50px;
         height: 100%;
-        float: right;
-        background-color: variables.$fontColor2;
+        background-color: map.get($theme-colors, mainColor4);
+        position: fixed;
+        top: 0;
+        right: 0;
+
+        .btn {
+            width: 100%;
+            min-width: 100%;
+            height: 50px;
+            padding: 0;
+            display: flex;
+            float: right;
+            align-items: center;
+
+            .fill {
+                font-size: 25px;
+                color: map.get($theme-colors, accentColor1);
+            }
+            .outline {
+                position: absolute;
+                font-size: 25px;
+                color: map.get($theme-colors, mainColor3);
+            }
+        }
     }
 }

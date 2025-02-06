@@ -1,22 +1,28 @@
-@use '../../variables.module.scss' as variables;
+@use "sass:map";
+@use "@/assets/variables.modules" as *;
 
 .searchBar {
-    margin: 15px 0;
+    width: 40%;
+    height: 40px;
+    margin: 20px 2.5%;
     border-radius: 30px;
-    background-color: variables.$mainColor1;
-    box-shadow: 0 4px 8px variables.$accentColor1;
+    box-shadow: 0 1px 2px map.get($theme-colors, mainColor4);
+    background-color: map.get($theme-colors, mainColor1);
+    display: inline-block;
+    float: right;
     text-align: center;
 
     .searchInput {
-        width: calc(100% - 74px);
-        height: 53px;
-        margin: 0 0 0 10px;
+        width: calc(100% - 50px);
+        height: 40px;
+        margin-left: 10px;
         font-size: 16px;
-        color: variables.$fontColor1;
+        color: map.get($theme-colors, mainColor3);
     }
     .searchButton {
-        width: 56px;
-        height: 56px;
+        width: 40px;
+        min-width: 40px;
+        height: 40px;
         padding: 0;
         border-radius: 0 30px 30px 0;
     }
