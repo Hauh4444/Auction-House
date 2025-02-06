@@ -42,10 +42,23 @@ const Listing = () => {
                         </Button>
                     </div>
                     <div className="listingImage">
-                        <img src={"data:image/jpg;base64," + listing.image} alt="" />
+                        {listing.image ? (
+                            <img src={"data:image/jpg;base64," + listing.image} alt={listing.title} />
+                        ) : (
+                            <div>No image available</div>
+                        )}
                     </div>
                     <div className="listingDescription">
-
+                        <div className="descriptionTitle">Description:</div>
+                        {Array.isArray(listing.description) && listing.description.length > 0 ? (
+                            <ul className="descriptionList">
+                                {listing.description.map((desc, i) => (
+                                    <li key={i}>{desc}</li>
+                                ))}
+                            </ul>
+                        ) : (
+                            <div>No description available</div>
+                        )}
                     </div>
                 </div>
             </div>

@@ -1,7 +1,7 @@
-import CategoriesPopup from "@/Components/CategoriesPopup/CategoriesPopup.jsx";
+import CategoriesPopup from "@/Components/CategoriesPopup/CategoriesPopup";
 import { BsGrid3X3GapFill } from "react-icons/bs";
 import { Button } from "@mui/material";
-import { toggleNav } from "@/Components/Navigation/Navigation.jsx"
+import { toggleNav } from "@/Components/Navigation/Navigation"
 import "@/Components/Navigation/Navigation.scss"
 
 const HomeNavigation = () => {

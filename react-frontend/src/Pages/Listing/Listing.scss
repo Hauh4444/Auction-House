@@ -7,16 +7,18 @@
 
     .mainPage {
         .listing {
+            height: 50vh;
             margin-top: 100px;
             display: flex;
             flex-direction: row;
 
             .listingInfo {
-                padding-left: 5%;
-                flex-basis: 28%;
+                margin: auto 0;
+                padding: 0 2% 0 5%;
+                flex-basis: 26%;
 
                 .listingTitle {
-                    margin: 50px 0;
+                    margin: 0 0 50px 0;
                     font-weight: bold;
                     font-size: 24px;
                 }
@@ -46,11 +48,27 @@
                 justify-content: center;
 
                 img {
-                    width: 50%;
+                    width: auto;
+                    height: 100%;
                 }
             }
             .listingDescription {
-                flex-basis: 33%;
+                height: 100%;
+                margin: auto 0;
+                padding: 0 5% 0 2%;
+                flex-basis: 26%;
+                overflow-y: scroll;
+
+                &::-webkit-scrollbar {
+                    display: none;
+                }
+                .descriptionTitle {
+                    font-size: 22px;
+                    font-weight: bold;
+                }
+                .descriptionList {
+                    padding-left: 18px;
+                }
             }
         }
     }

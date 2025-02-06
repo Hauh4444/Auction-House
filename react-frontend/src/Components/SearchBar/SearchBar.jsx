@@ -18,6 +18,8 @@ const SearchBar = () => {
                 pathname: "/search",
                 search: createSearchParams({
                     q: query,
+                    start: 1,
+                    end: 10,
                 }).toString(),
             });
             navigate(0);

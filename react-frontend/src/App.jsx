@@ -15,11 +15,9 @@ const lightTheme = createTheme({
 
 function App() {
     return (
-        <>
-            <ThemeProvider theme={lightTheme}>
-                <PublicRoutes />
-            </ThemeProvider>
-        </>
+        <ThemeProvider theme={lightTheme}>
+            <PublicRoutes />
+        </ThemeProvider>
   )
 };
 

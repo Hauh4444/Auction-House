@@ -1,5 +1,5 @@
 import Header from "@/Components/Header/Header";
-import SearchNavigation from "@/Components/SearchNavigation/SearchNavigation.jsx";
+import SearchNavigation from "@/Components/SearchNavigation/SearchNavigation";
 import RightNavigation from "@/Components/RightNavigation/RightNavigation";
 import Listings from "@/Components/Listings/Listings";
 import "./Search.scss";

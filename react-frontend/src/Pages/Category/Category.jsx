@@ -1,5 +1,5 @@
 import Header from "@/Components/Header/Header";
-import SearchNavigation from "@/Components/SearchNavigation/SearchNavigation.jsx";
+import CategoryNavigation from "@/Components/CategoryNavigation/CategoryNavigation";
 import RightNavigation from "@/Components/RightNavigation/RightNavigation";
 import "./Category.scss";
 
@@ -9,7 +9,7 @@ const Category = () => {
         <div className="categoryPage">
             <div className="mainPage">
                 <Header />
-                <SearchNavigation />
+                <CategoryNavigation />
             </div>
             <RightNavigation />
         </div>

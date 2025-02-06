@@ -1,5 +1,5 @@
 import Header from "@/Components/Header/Header";
-import HomeNavigation from "@/Components/HomeNavigation/HomeNavigation.jsx";
+import HomeNavigation from "@/Components/HomeNavigation/HomeNavigation";
 import RightNavigation from "@/Components/RightNavigation/RightNavigation";
 import { Button } from "@mui/material";
 import "./Home.scss"

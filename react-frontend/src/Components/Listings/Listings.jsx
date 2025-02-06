@@ -1,25 +1,39 @@
 import { useState, useEffect } from "react";
 import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
-import { IoStar } from "react-icons/io5";
+import { LiaStarSolid , LiaStarHalfSolid } from "react-icons/lia";
 import { Button } from "@mui/material";
 import axios from "axios";
 import "./Listings.scss";
-import { variables } from "@/assets/variables.modules.js"
 
 const Listings = () => {
     const [listings, setListings] = useState([]);
     const navigate = useNavigate();
     const location = useLocation();
-    const queryParams = new URLSearchParams(location.search);
 
     useEffect(() => {
+        const queryParams = new URLSearchParams(location.search);
+        const filters = {};
+        for (let [key, value] of queryParams.entries()) {
+            filters[key] = value;
+        }
+        if (filters["p"]) {
+            filters["start"] = ((filters["p"] - 1) * 50 + 1).toString();
+            filters["end"] = (filters["p"] * 50).toString();
+        }
+
         axios.get("http://127.0.0.1:5000/api/listings", {
             headers: {
                 "Content-Type": "application/json",
             },
-            q: queryParams.get("q"),
-            c: queryParams.get("c"),
-            sort: queryParams.get("sort"),
+            params: {
+                query: filters["q"],
+                category: filters["c"],
+                sort: filters["s"],
+                start: filters["start"],
+                end: filters["end"],
+                type: filters["t"],
+                other: filters["o"],
+            }
         })
             .then(res => {
                 setListings(res.data.listings);
@@ -27,7 +41,7 @@ const Listings = () => {
             .catch(err => {
                 console.log(err);
             });
-    }, []);
+    }, [location.search]);
 
     function navigateToListing(listing) {
         navigate({
@@ -45,22 +59,21 @@ const Listings = () => {
                     <div className="listingImage">
                         <img src={"data:image/jpg;base64," + listing.image} alt="" />
                     </div>
-                    <div className="listingDescription">
+                    <div className="listingInfo">
                         <Button className="listingTitle" onClick={() => navigateToListing(listing)}>
                             {listing.title}
                         </Button>
                         <div className="listingReviews">
-                            <IoStar style={{fontSize: "16px", color: variables.accentColor1}}/>
-                            <IoStar style={{fontSize: "16px", color: variables.accentColor1}}/>
-                            <IoStar style={{fontSize: "16px", color: variables.accentColor1}}/>
-                            <IoStar style={{fontSize: "16px", color: variables.accentColor1}}/>
-                            <IoStar style={{fontSize: "16px", color: variables.accentColor1}}/>
-                            <span style={{
-                                position: "relative",
-                                top: "-3px",
-                                fontSize: "12px",
-                                color: variables.accentColor2,
-                            }}>
+                            {Array.from({length: 5}, (_, i) =>
+                                <LiaStarSolid className="blankStar" key={i} />
+                            )}
+                            {Array.from({ length: listing.stars }, (_, i) =>
+                                <LiaStarSolid className="filledStar" key={i} />
+                            )}
+                            {listing.stars > Math.floor(listing.stars) &&
+                                <LiaStarHalfSolid className="halfStar" />
+                            }
+                            <span className="reviews" style={{left: (-16 * Math.ceil(listing.stars) + "px"),}}>
                                 &emsp;{listing.reviews}
                             </span>
                         </div>
