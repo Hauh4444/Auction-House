@@ -1,6 +1,6 @@
 import sqlite3
 
-DB_FILE = "auction_house.db"
+DB_FILE = "/database/auctionhouse.db"
 
 def get_db():
     conn = sqlite3.connect(DB_FILE)
