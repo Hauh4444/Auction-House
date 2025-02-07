@@ -1,24 +1,40 @@
 # TODO 
 
-## Home Page
+## React Fronted
+
+### Home Page
 1. Page Details
 
-## Category Pages
+### Category Pages
 1. Finalize Page Details
 
-## Search Page
+### Search Page
 1. Filter Functionality
 2. Finalize Listing Displays
 
-## Listing Page
+### Listing Page
 1. Finalize Page Details
 
-## Other Pages
+### Other Pages
 1. Browse Page
 2. About Page
 3. Contact Page
 4. Sign In Page
 5. Create Account Page
+
+## Flask Server
+
+### Routes
+1. Configure necessary filters
+
+### Services
+1. Listing Services
+
+### Data Mappers
+1. Listing Mappers
+
+### Entities
+1. Listing Entities
 
 # Dinkleberg's Auction House 
 
