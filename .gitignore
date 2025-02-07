@@ -2,3 +2,5 @@
 .idea/
 
 flask-server/app/__pycache__/
+
+flask-server/app/routes/__pycache__/

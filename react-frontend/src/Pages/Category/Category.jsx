@@ -58,6 +58,7 @@ const Category = () => {
                     </div>
                 </div>
                 <CategoryNavigation />
+                {/*<CategoryListings />*/}
             </div>
             <RightNavigation />
         </div>
