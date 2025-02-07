@@ -1,9 +1,12 @@
+// External Libraries
 import { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { useNavigate, createSearchParams } from "react-router-dom";
 import { TextField, Button } from "@mui/material";
+// Stylesheets
 import "./SearchBar.scss";
-import { variables } from "@/assets/variables.modules.js"
+// Custom Variables
+import { variables } from "@/assets/variables.modules.js";
 
 const SearchBar = () => {
     const [query, setQuery] = useState("");
@@ -11,15 +14,21 @@ const SearchBar = () => {
 
     function navigateSearch() {
         if (query === "") {
-            navigate("/");
+            navigate({
+                pathname: "/",
+                search: createSearchParams({
+                    nav: "all",
+                }).toString(),
+            });
         }
         else {
             navigate({
                 pathname: "/search",
                 search: createSearchParams({
-                    q: query,
+                    query: query,
                     start: 1,
                     end: 10,
+                    nav: "best",
                 }).toString(),
             });
             navigate(0);

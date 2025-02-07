@@ -1,12 +1,15 @@
+// External Libraries
 import { useNavigate } from "react-router-dom";
 import { BsThreeDots } from "react-icons/bs";
-import { RiAccountCircle2Fill , RiAccountCircle2Line  } from "react-icons/ri";
+import { RiAccountCircle2Fill, RiAccountCircle2Line } from "react-icons/ri";
 import { IoFlag, IoFlagOutline, IoCart, IoCartOutline } from "react-icons/io5";
-import { HiUserGroup, HiOutlineUserGroup  } from "react-icons/hi2";
+import { HiUserGroup, HiOutlineUserGroup } from "react-icons/hi2";
 import { PiTruckFill, PiTruckLight } from "react-icons/pi";
 import { Button } from "@mui/material";
+// Stylesheets
 import "./RightNavigation.scss";
-import { variables } from "@/assets/variables.modules.js"
+// Custom Variables
+import { variables } from "@/assets/variables.modules.js";
 
 const RightNavigation = () => {
     const navigate = useNavigate();

@@ -1,4 +1,6 @@
+// External Libraries
 import { Routes, Route } from "react-router-dom";
+// Internal Modules
 import Home from "@/Pages/Home/Home";
 import Search from "@/Pages/Search/Search";
 import Category from "@/Pages/Category/Category";

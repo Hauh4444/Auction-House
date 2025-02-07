@@ -1,4 +1,6 @@
+// Built In Modules
 @use "sass:map";
+// Custom Variables
 @use "@/assets/variables.modules" as *;
 
 .listingPage {
@@ -30,13 +32,12 @@
                 }
                 .addCartBtn {
                     height: 35px;
-                    margin-left: 20px;
+                    margin: 20px 0 0 20px;
                     padding: 0 20px;
                     border-radius: 5px;
                     background-image: linear-gradient(to right, map.get($theme-colors, accentColor1), map.get($theme-colors, accentColor2));
                     display: inline-block;
-                    position: relative;
-                    top: -3px;
+                    vertical-align: top;
                     font-weight: normal;
                     font-size: 20px;
                     color: map.get($theme-colors, mainColor1);

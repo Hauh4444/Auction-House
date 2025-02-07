@@ -1,12 +1,17 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+// External Libraries
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
-// https://vite.dev/config/
+// Vite Configuration
 export default defineConfig({
-    plugins: [react()],
+    // Array of plugins to use with Vite
+    plugins: [react()],  // Use the Vite React plugin for JSX/React support
+
+    // Resolving paths to make imports cleaner
     resolve: {
         alias: {
-            '@': '/src',
+            // Alias for the src directory
+            '@': '/src',  // Any import starting with '@' will be resolved to the 'src' directory
         },
     },
-})
+});

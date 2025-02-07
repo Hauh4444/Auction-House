@@ -1,8 +1,10 @@
+// External Libraries
 import { useState, useEffect } from "react";
 import { useNavigate, createSearchParams } from "react-router-dom";
 import { Button } from "@mui/material";
 import axios from "axios";
-import "./CategoriesPopup.scss"
+// Stylesheets
+import "./CategoriesPopup.scss";
 
 const CategoriesPopup = () => {
     const [categories, setCategories] = useState([]);
@@ -23,10 +25,12 @@ const CategoriesPopup = () => {
     }, []);
 
     function navigateToCategory(category) {
+        document.querySelector(".categoriesPopup").style.maxHeight = "0";
         navigate({
             pathname: "/category",
             search: createSearchParams({
-                c: category.replace(/\s/g, "-").replace(/&/g, "and")
+                category: category.replace(/\s/g, "-").replace(/&/g, "and").toLowerCase(),
+                nav: "best",
             }).toString(),
         });
     }
@@ -35,8 +39,8 @@ const CategoriesPopup = () => {
         <div className="categoriesPopup">
             {categories.map((category, index) => (
                 <div style={{width: "25%", display: "inline-block", textAlign: "center"}} key={index}>
-                    <Button className="categoryBtn" onClick={() => navigateToCategory(category)} key={index}>
-                        {category}
+                    <Button className="categoryBtn" onClick={() => navigateToCategory(category.title)} key={index}>
+                        {category.title}
                     </Button>
                 </div>
             ))}

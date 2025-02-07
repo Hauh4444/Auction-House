@@ -1,24 +1,24 @@
+// External Libraries
 import { useState, useEffect } from "react";
 import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
-import { LiaStarSolid , LiaStarHalfSolid } from "react-icons/lia";
+import { LiaStarSolid, LiaStarHalfSolid } from "react-icons/lia";
 import { Button } from "@mui/material";
 import axios from "axios";
-import "./Listings.scss";
+// Stylesheets
+import "./SearchListings.scss";
 
-const Listings = () => {
+const SearchListings = () => {
     const [listings, setListings] = useState([]);
     const navigate = useNavigate();
     const location = useLocation();
 
     useEffect(() => {
         const queryParams = new URLSearchParams(location.search);
-        const filters = {};
-        for (let [key, value] of queryParams.entries()) {
-            filters[key] = value;
-        }
-        if (filters["p"]) {
-            filters["start"] = ((filters["p"] - 1) * 50 + 1).toString();
-            filters["end"] = (filters["p"] * 50).toString();
+        const filters = Object.fromEntries(queryParams.entries());
+
+        if (filters.page) {
+            filters.start = ((filters.page - 1) * 20 + 1).toString();
+            filters.end = (filters.page * 20).toString();
         }
 
         axios.get("http://127.0.0.1:5000/api/listings", {
@@ -26,13 +26,13 @@ const Listings = () => {
                 "Content-Type": "application/json",
             },
             params: {
-                query: filters["q"],
-                category: filters["c"],
-                sort: filters["s"],
-                start: filters["start"],
-                end: filters["end"],
-                type: filters["t"],
-                other: filters["o"],
+                query: filters.query,
+                category: filters.category,
+                sort: filters.sort,
+                start: filters.start,
+                end: filters.end,
+                type: filters.type,
+                other: filters.other,
             }
         })
             .then(res => {
@@ -53,7 +53,7 @@ const Listings = () => {
     }
 
     return (
-        <div className="listingsContainer">
+        <div className="searchListings">
             {listings.map((listing, index) => (
                 <div className="listing" key={index}>
                     <div className="listingImage">
@@ -67,19 +67,19 @@ const Listings = () => {
                             {Array.from({length: 5}, (_, i) =>
                                 <LiaStarSolid className="blankStar" key={i} />
                             )}
-                            {Array.from({ length: listing.stars }, (_, i) =>
+                            {Array.from({ length: listing.average_review }, (_, i) =>
                                 <LiaStarSolid className="filledStar" key={i} />
                             )}
-                            {listing.stars > Math.floor(listing.stars) &&
+                            {listing.average_review > Math.floor(listing.average_review) &&
                                 <LiaStarHalfSolid className="halfStar" />
                             }
-                            <span className="reviews" style={{left: (-16 * Math.ceil(listing.stars) + "px"),}}>
-                                &emsp;{listing.reviews}
+                            <span className="reviews" style={{left: (-16 * Math.ceil(listing.average_review) + "px"),}}>
+                                &emsp;{listing.total_reviews}
                             </span>
                         </div>
-                        <h1 className="listingPrice">
+                        <h2 className="listingPrice">
                             ${listing.price}
-                        </h1>
+                        </h2>
                         <div className="bottomDetails">
                             <Button className="addCartBtn">
                                 Add to Cart
@@ -92,4 +92,4 @@ const Listings = () => {
     )
 }
 
-export default Listings;
+export default SearchListings;

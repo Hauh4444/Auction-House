@@ -2,16 +2,13 @@
 
 ## Home Page
 1. Page Details
-2. Page Nav Selector Functionality
 
 ## Category Pages
-1. Page Details
-2. Page Nav
+1. Finalize Page Details
 
 ## Search Page
-1. Sort Functionality
-2. User Filter Functionality
-3. Finalize Listing Displays
+1. Filter Functionality
+2. Finalize Listing Displays
 
 ## Listing Page
 1. Finalize Page Details
@@ -19,7 +16,9 @@
 ## Other Pages
 1. Browse Page
 2. About Page
-3. Contact Page (Maybe)
+3. Contact Page
+4. Sign In Page
+5. Create Account Page
 
 # Dinkleberg's Auction House 
 

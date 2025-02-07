@@ -1,4 +1,6 @@
+// Built In Modules
 @use "sass:map";
+// Custom Variables
 @use "@/assets/variables.modules" as *;
 $featuredColor1: #f94914;
 $featuredColor2: #e61984;
@@ -32,7 +34,7 @@ $featuredColor2: #e61984;
                         display: block;
                         overflow: hidden;
                         float: right;
-                        text-transform: capitalize;
+                        text-transform: none;
                         color: map.get($theme-colors, mainColor2);
                         transition: all 0.5s ease;
 

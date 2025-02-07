@@ -1,8 +1,12 @@
+// External Libraries
+import { Button } from "@mui/material";
+// Internal Modules
 import Header from "@/Components/Header/Header";
 import HomeNavigation from "@/Components/HomeNavigation/HomeNavigation";
 import RightNavigation from "@/Components/RightNavigation/RightNavigation";
-import { Button } from "@mui/material";
-import "./Home.scss"
+// Stylesheets
+import "./Home.scss";
+
 
 const Home = () => {
 
@@ -15,9 +19,7 @@ const Home = () => {
                     <div className="recommended">
                         <div className="nav">
                             <p className="head">Recommended for You</p>
-                            <Button className="viewAll">
-                                View All
-                            </Button>
+                            <Button className="viewAll">View All</Button>
                         </div>
                     </div>
                 </div>

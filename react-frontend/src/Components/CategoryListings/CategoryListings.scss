@@ -1,24 +1,30 @@
+// Built In Modules
 @use "sass:map";
+// Custom Variables
 @use "@/assets/variables.modules" as *;
 
-.listingsContainer {
+.categoryListings {
+    width: 70%;
+    margin: 0 15%;
+
+    .listing.first {
+        margin-left: 0 !important;
+    }
     .listing {
-        width: 70%;
-        height: 200px;
-        margin: 50px 15% 0 15%;
+        width: 20%;
+        height: 300px;
+        margin: 0 0 5% calc(20% / 3);
         border-radius: 10px;
-        box-shadow: 0 1px 2px map.get($theme-colors, mainColor4);
+        box-shadow: 0 2px 4px map.get($theme-colors, mainColor4);
         background-color: map.get($theme-colors, mainColor1);
         display: inline-flex;
-        flex-direction: row;
+        flex-direction: column;
 
         .listingImage {
-            width: 200px;
-            height: 100%;
+            height: 200px;
             border-radius: 10px;
-            display: inline-flex;
-            overflow: hidden;
-            align-items: center;
+            display: flex;
+            flex-basis: 200px;
             justify-content: center;
 
             img {
@@ -27,29 +33,26 @@
             }
         }
         .listingInfo {
-            width: calc(100% - 225px);
-            height: 100%;
-            padding-left: 25px;
-            display: inline-block;
-            text-align: left;
+            width: 100%;
+            height: 100px;
+            padding-left: 15px;
+            flex-basis: 100px;
 
             .listingTitle {
-                width: calc(100% - 200px);
-                height: 62px;
-                margin: 25px 200px 0 0;
+                width: 185px;
+                height: fit-content;
                 padding: 0;
                 display: flex;
-                overflow: hidden;
-                align-items: flex-start;
                 justify-content: start;
-                text-align: left;
+                text-transform: none;
 
                 &:hover {
                     background-color: map.get($theme-colors, mainColor1);
                 }
             }
             .listingReviews {
-                margin: 5px 0 10px 0;
+                width: fit-content;
+                margin: 10px 0 5px 0;
 
                 .blankStar {
                     color: map.get($theme-colors, mainColor4);
@@ -75,26 +78,12 @@
             }
             .listingPrice {
                 width: fit-content;
-                margin: 0;
+                margin: 5px 0;
             }
             .listingTitle,
             .listingPrice{
-                font-size: 18px;
+                font-size: 16px;
                 color: map.get($theme-colors, mainColor3);
-            }
-        }
-        .bottomDetails {
-            width: 100%;
-            height: 60px;
-
-            .addCartBtn {
-                height: 35px;
-                margin: 0 25px 25px 0;
-                padding: 0 20px;
-                border-radius: 20px;
-                background-image: linear-gradient(to right, map.get($theme-colors, accentColor1), map.get($theme-colors, accentColor2));
-                float: right;
-                color: map.get($theme-colors, mainColor1);
             }
         }
     }
