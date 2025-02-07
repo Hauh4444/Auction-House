@@ -1,33 +1,28 @@
-# TODO:
+# TODO 
 
-## > In flask-server/app/services.py:
+## Home Page
+1. Page Details
 
-### Implement ListingService class with:
+## Category Pages
+1. Finalize Page Details
 
-get_all_listings()
+## Search Page
+1. Filter Functionality
+2. Finalize Listing Displays
 
-get_listing_by_id(listing_id)
+## Listing Page
+1. Finalize Page Details
 
-create_listing(data)
-
-update_listing(listing_id, data)
-
-delete_listing(listing_id)
-
-### Implement CategoryService class with:
-
-create_category(data)
-
-get_all_categories()
-
-update_category(category_id, data)
-
-delete_category(category_id)
+## Other Pages
+1. Browse Page
+2. About Page
+3. Contact Page
+4. Sign In Page
+5. Create Account Page
 
 # Dinkleberg's Auction House 
 
 ## Setup
-
 1. Ensure you have [Node.js](https://nodejs.org/en/download) installed on your machine.
 
 ### React Frontend
@@ -44,13 +39,11 @@ delete_category(category_id)
 ## Usage
 
 ### React Frontend
-
 1. In a terminal, change to the `react-frontend` directory.
 2. Run the `npm install` command to install node modules.
 3. Run the `npm run dev` command to launch the React app.
 
 ### Flask Backend
-
 1. In a terminal, change to the `flask-server` directory.
 2. If you have Flask installed directly onto your machine:
    1. Run the `flask run --debug` command to run the Flask server.

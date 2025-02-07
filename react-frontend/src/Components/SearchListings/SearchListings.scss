@@ -1,16 +1,19 @@
+// Built In Modules
 @use "sass:map";
+// Custom Variables
 @use "@/assets/variables.modules" as *;
 
-.listingsContainer {
+.searchListings {
     .listing {
         width: 70%;
         height: 200px;
-        margin: 50px 15% 0 15%;
+        margin: 25px 15% 0 15%;
         border-radius: 10px;
-        box-shadow: 0 1px 2px map.get($theme-colors, mainColor4);
+        box-shadow: 0 2px 4px map.get($theme-colors, mainColor4);
         background-color: map.get($theme-colors, mainColor1);
         display: inline-flex;
         flex-direction: row;
+        position: relative;
 
         .listingImage {
             width: 200px;
@@ -26,9 +29,10 @@
                 height: 100%;
             }
         }
-        .listingDescription {
+        .listingInfo {
             width: calc(100% - 225px);
-            height: 100%;
+            height: fit-content;
+            margin: auto 0;
             padding-left: 25px;
             display: inline-block;
             text-align: left;
@@ -36,20 +40,42 @@
             .listingTitle {
                 width: calc(100% - 200px);
                 height: 62px;
-                margin: 25px 200px 0 0;
                 padding: 0;
                 display: flex;
                 overflow: hidden;
                 align-items: flex-start;
-                justify-content: start;
                 text-align: left;
+                text-transform: none;
 
                 &:hover {
                     background-color: map.get($theme-colors, mainColor1);
                 }
             }
             .listingReviews {
+                width: fit-content;
                 margin: 5px 0 10px 0;
+
+                .blankStar {
+                    color: map.get($theme-colors, mainColor4);
+                }
+                .filledStar,
+                .halfStar {
+                    color: map.get($theme-colors, accentColor1);
+                    position: relative;
+                    left: -80px;
+                }
+                .blankStar,
+                .filledStar,
+                .halfStar {
+                    font-size: 16px;
+                }
+                .reviews {
+                    position: relative;
+                    top: -3px;
+                    font-size: 12px;
+                    font-weight: bold;
+                    color: map.get($theme-colors, accentColor4);
+                }
             }
             .listingPrice {
                 width: fit-content;
@@ -62,8 +88,10 @@
             }
         }
         .bottomDetails {
-            width: 100%;
+            width: calc(100% - 225px);
             height: 60px;
+            position: absolute;
+            bottom: 0;
 
             .addCartBtn {
                 height: 35px;

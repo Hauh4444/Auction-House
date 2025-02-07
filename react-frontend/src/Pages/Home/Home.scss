@@ -1,4 +1,6 @@
+// Built In Modules
 @use "sass:map";
+// Custom Variables
 @use "@/assets/variables.modules" as *;
 $featuredColor1: #f94914;
 $featuredColor2: #e61984;
@@ -14,6 +16,8 @@ $featuredColor2: #e61984;
 
             .recommended {
                 .nav {
+                    height: 40px;
+
                     .head {
                         width: 150px;
                         height: 24.5px;
@@ -23,12 +27,14 @@ $featuredColor2: #e61984;
                     }
 
                     .viewAll {
+                        height: 40px;
+                        padding: 0 15px;
                         border: none;
                         border-radius: 20px;
                         display: block;
                         overflow: hidden;
                         float: right;
-                        text-transform: capitalize;
+                        text-transform: none;
                         color: map.get($theme-colors, mainColor2);
                         transition: all 0.5s ease;
 

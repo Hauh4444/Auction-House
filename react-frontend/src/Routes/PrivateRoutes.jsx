@@ -2,6 +2,7 @@
 const PrivateRoutes = () => {
     return (
         <>
+
         </>
     )
 }

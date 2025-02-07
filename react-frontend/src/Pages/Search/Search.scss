@@ -1,4 +1,30 @@
+// Built In Modules
+@use "sass:map";
+// Custom Variables
+@use "@/assets/variables.modules" as *;
+
 .searchPage {
     width: 100%;
     height: 100vh;
+
+    .mainPage {
+        .pagination {
+            width: fit-content;
+            height: 100px;
+            margin: 0 auto;
+            align-content: center;
+
+            Button {
+                width: 125px;
+                height: 50px;
+                box-shadow: 0 2px 4px map.get($theme-colors, mainColor4);
+                text-transform: none;
+                color: map.get($theme-colors, mainColor3);
+
+                .icon {
+                    font-size: 16px;
+                }
+            }
+        }
+    }
 }

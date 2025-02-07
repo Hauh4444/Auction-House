@@ -1,4 +1,6 @@
+// Built In Modules
 @use "sass:map";
+// Custom Variables
 @use "@/assets/variables.modules" as *;
 
 .searchBar {
@@ -6,8 +8,7 @@
     height: 40px;
     margin: 20px 2.5%;
     border-radius: 30px;
-    box-shadow: 0 1px 2px map.get($theme-colors, mainColor4);
-    background-color: map.get($theme-colors, mainColor1);
+    box-shadow: 0 2px 4px map.get($theme-colors, mainColor4);    background-color: map.get($theme-colors, mainColor1);
     display: inline-block;
     float: right;
     text-align: center;

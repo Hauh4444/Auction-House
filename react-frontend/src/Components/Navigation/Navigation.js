@@ -6,4 +6,4 @@ function toggleNav(e) {
     e.target.classList.add("selected");
 }
 
-export { toggleNav };
+export default toggleNav;

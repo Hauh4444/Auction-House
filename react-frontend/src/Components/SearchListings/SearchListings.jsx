@@ -1,25 +1,39 @@
+// External Libraries
 import { useState, useEffect } from "react";
 import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
-import { IoStar } from "react-icons/io5";
+import { LiaStarSolid, LiaStarHalfSolid } from "react-icons/lia";
 import { Button } from "@mui/material";
 import axios from "axios";
-import "./Listings.scss";
-import { variables } from "@/assets/variables.modules.js"
+// Stylesheets
+import "./SearchListings.scss";
 
-const Listings = () => {
+const SearchListings = () => {
     const [listings, setListings] = useState([]);
     const navigate = useNavigate();
     const location = useLocation();
-    const queryParams = new URLSearchParams(location.search);
 
     useEffect(() => {
+        const queryParams = new URLSearchParams(location.search);
+        const filters = Object.fromEntries(queryParams.entries());
+
+        if (filters.page) {
+            filters.start = ((filters.page - 1) * 20 + 1).toString();
+            filters.end = (filters.page * 20).toString();
+        }
+
         axios.get("http://127.0.0.1:5000/api/listings", {
             headers: {
                 "Content-Type": "application/json",
             },
-            q: queryParams.get("q"),
-            c: queryParams.get("c"),
-            sort: queryParams.get("sort"),
+            params: {
+                query: filters.query,
+                category: filters.category,
+                sort: filters.sort,
+                start: filters.start,
+                end: filters.end,
+                type: filters.type,
+                other: filters.other,
+            }
         })
             .then(res => {
                 setListings(res.data.listings);
@@ -27,7 +41,7 @@ const Listings = () => {
             .catch(err => {
                 console.log(err);
             });
-    }, []);
+    }, [location.search]);
 
     function navigateToListing(listing) {
         navigate({
@@ -39,34 +53,33 @@ const Listings = () => {
     }
 
     return (
-        <div className="listingsContainer">
+        <div className="searchListings">
             {listings.map((listing, index) => (
                 <div className="listing" key={index}>
                     <div className="listingImage">
                         <img src={"data:image/jpg;base64," + listing.image} alt="" />
                     </div>
-                    <div className="listingDescription">
+                    <div className="listingInfo">
                         <Button className="listingTitle" onClick={() => navigateToListing(listing)}>
                             {listing.title}
                         </Button>
                         <div className="listingReviews">
-                            <IoStar style={{fontSize: "16px", color: variables.accentColor1}}/>
-                            <IoStar style={{fontSize: "16px", color: variables.accentColor1}}/>
-                            <IoStar style={{fontSize: "16px", color: variables.accentColor1}}/>
-                            <IoStar style={{fontSize: "16px", color: variables.accentColor1}}/>
-                            <IoStar style={{fontSize: "16px", color: variables.accentColor1}}/>
-                            <span style={{
-                                position: "relative",
-                                top: "-3px",
-                                fontSize: "12px",
-                                color: variables.accentColor2,
-                            }}>
-                                &emsp;{listing.reviews}
+                            {Array.from({length: 5}, (_, i) =>
+                                <LiaStarSolid className="blankStar" key={i} />
+                            )}
+                            {Array.from({ length: listing.average_review }, (_, i) =>
+                                <LiaStarSolid className="filledStar" key={i} />
+                            )}
+                            {listing.average_review > Math.floor(listing.average_review) &&
+                                <LiaStarHalfSolid className="halfStar" />
+                            }
+                            <span className="reviews" style={{left: (-16 * Math.ceil(listing.average_review) + "px"),}}>
+                                &emsp;{listing.total_reviews}
                             </span>
                         </div>
-                        <h1 className="listingPrice">
+                        <h2 className="listingPrice">
                             ${listing.price}
-                        </h1>
+                        </h2>
                         <div className="bottomDetails">
                             <Button className="addCartBtn">
                                 Add to Cart
@@ -79,4 +92,4 @@ const Listings = () => {
     )
 }
 
-export default Listings;
+export default SearchListings;
