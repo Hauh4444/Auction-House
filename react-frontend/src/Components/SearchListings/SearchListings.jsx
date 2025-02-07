@@ -36,18 +36,18 @@ const SearchListings = () => {
             }
         })
             .then(res => {
-                setListings(res.data.listings);
+                setListings(res.data);
             })
             .catch(err => {
                 console.log(err);
             });
     }, [location.search]);
 
-    function navigateToListing(listing) {
+    function navigateToListing(id) {
         navigate({
             pathname: "/listings",
             search: createSearchParams({
-                key: listing.id
+                key: id
             }).toString(),
         });
     }
@@ -60,7 +60,7 @@ const SearchListings = () => {
                         <img src={"data:image/jpg;base64," + listing.image} alt="" />
                     </div>
                     <div className="listingInfo">
-                        <Button className="listingTitle" onClick={() => navigateToListing(listing)}>
+                        <Button className="listingTitle" onClick={() => navigateToListing(listing.listing_id)}>
                             {listing.title}
                         </Button>
                         <div className="listingReviews">

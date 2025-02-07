@@ -27,7 +27,7 @@ def createListing():
     return ListingService.create_listing(data)
 
 # PUT /api/listings/{id}
-@listings_bp.route('/<int:listing_id', methods=['PUT'])
+@listings_bp.route('/<int:listing_id>', methods=['PUT'])
 def updateListing(listing_id):
     data = request.json
     return ListingService.update_listing(listing_id, data)

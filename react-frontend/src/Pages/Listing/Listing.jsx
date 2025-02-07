@@ -25,7 +25,7 @@ const Listing = () => {
         })
             .then(res => {
                 // If successful, set the listing data in the state
-                setListing(res.data.listing);
+                setListing(res.data);
             })
             .catch(err => {
                 // Log error in case of failure

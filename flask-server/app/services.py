@@ -1,10 +1,10 @@
 from flask import jsonify
 from .database import get_db
-from .data_mappers import CategoryMapper
+from .data_mappers import CategoryMapper, ListingMapper
 
 class ListingService:
     @staticmethod
-    def get_all_listing(query=None, sort_by='created_at', order='desc', filters={}):
+    def get_all_listings(query=None, sort_by='created_at', order='desc', filters={}):
         db = get_db()
         cursor = db.cursor(dictionary=True)
 
@@ -29,16 +29,16 @@ class ListingService:
 
     @staticmethod
     def get_listing_by_id(listing_id):
-        return Listing.query.get(listing_id)
+        return ListingMapper.query.get(listing_id)
 
     @staticmethod
     def create_listing(data):
-        new_listing = Listing(**data)
+        new_listing = ListingMapper(**data)
         return new_listing
 
     @staticmethod
     def update_listing(listing_id, data):
-        listing = Listing.query.get(listing_id)
+        listing = ListingMapper.query.get(listing_id)
         if not listing:
             return None
 
@@ -48,7 +48,7 @@ class ListingService:
 
     @staticmethod
     def delete_listing(listing_id):
-        listing = Listing.query.get(listing_id)
+        listing = ListingMapper.query.get(listing_id)
         if not listing:
             return None
     

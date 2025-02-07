@@ -1,6 +1,27 @@
 from .database import get_db
 from .entities import Category
 
+class ListingMapper:
+    @staticmethod
+    def get_all_listings():
+        return
+
+    @staticmethod
+    def get_listing_by_id():
+        return
+
+    @staticmethod
+    def create_listing():
+        return
+
+    @staticmethod
+    def update_listing():
+        return
+
+    @staticmethod
+    def delete_listing():
+        return
+
 class CategoryMapper:
     @staticmethod
     def get_all_categories():

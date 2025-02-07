@@ -1,2 +1,4 @@
 
 .idea/
+
+flask-server/app/__pycache__/

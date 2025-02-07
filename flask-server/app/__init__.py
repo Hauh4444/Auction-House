@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_cors import CORS
+from .routes.listings import listings_bp
 from .routes.category import category_bp
 from .database import init_db
 
@@ -8,8 +9,8 @@ CORS(app, resources={r"/api/*": {"origins": "http://localhost:5173"}})
 init_db()
 
 #Register Blueprints
-#app.register_blueprint(listings_bp, url_prefix='/api/listings')
-app.register_blueprint(category_bp, url_prefix='/api/category')
+app.register_blueprint(listings_bp, url_prefix='/api/listings')
+app.register_blueprint(category_bp, url_prefix='/api/categories')
 
 #Test
 @app.route('/test', methods=['GET'])

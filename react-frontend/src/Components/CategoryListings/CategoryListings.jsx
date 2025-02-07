@@ -34,15 +34,15 @@ const SearchListings = () => {
                 other: filters.other,
             }
         })
-            .then(res => setListings(res.data.listings))
+            .then(res => setListings(res.data))
             .catch(err => console.log(err));
     }, [location.search]);
 
-    function navigateToListing(listing) {
+    function navigateToListing(id) {
         navigate({
             pathname: "/listings",
             search: createSearchParams({
-                key: listing.id
+                key: id
             }).toString(),
         });
     }
@@ -72,7 +72,7 @@ const SearchListings = () => {
                                 &emsp;{listing.total_reviews}
                             </span>
                         </div>
-                        <Button className="listingTitle" onClick={() => navigateToListing(listing)}>
+                        <Button className="listingTitle" onClick={() => navigateToListing(listing.listing_id)}>
                             {listing.title_short}
                         </Button>
                         <h2 className="listingPrice">${listing.price}</h2>

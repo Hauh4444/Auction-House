@@ -17,19 +17,19 @@ const CategoriesPopup = () => {
             }
         })
             .then(res => {
-                setCategories(res.data.categories);
+                setCategories(res.data);
             })
             .catch(err => {
                 console.log(err);
             });
     }, []);
 
-    function navigateToCategory(category) {
+    function navigateToCategory(id) {
         document.querySelector(".categoriesPopup").style.maxHeight = "0";
         navigate({
             pathname: "/category",
             search: createSearchParams({
-                category: category.replace(/\s/g, "-").replace(/&/g, "and").toLowerCase(),
+                category: id,
                 nav: "best",
             }).toString(),
         });
@@ -39,8 +39,8 @@ const CategoriesPopup = () => {
         <div className="categoriesPopup">
             {categories.map((category, index) => (
                 <div style={{width: "25%", display: "inline-block", textAlign: "center"}} key={index}>
-                    <Button className="categoryBtn" onClick={() => navigateToCategory(category.title)} key={index}>
-                        {category.title}
+                    <Button className="categoryBtn" onClick={() => navigateToCategory(category.category_id)} key={index}>
+                        {category.name}
                     </Button>
                 </div>
             ))}
