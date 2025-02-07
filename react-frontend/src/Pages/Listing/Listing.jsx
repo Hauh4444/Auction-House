@@ -25,7 +25,7 @@ const Listing = () => {
         })
             .then(res => {
                 // If successful, set the listing data in the state
-                setListing(res.data.listing);
+                setListing(res.data);
             })
             .catch(err => {
                 // Log error in case of failure
@@ -45,8 +45,8 @@ const Listing = () => {
                     </div>
                     <div className="listingImage">
                         {/* Checking if image data exists; if yes, displaying image, otherwise a fallback message */}
-                        {listing.image ? (
-                            <img src={"data:image/jpg;base64," + listing.image} alt={listing.title} />
+                        {listing.image_encoded ? (
+                            <img src={"data:image/jpg;base64," + listing.image_encoded} alt={listing.title} />
                         ) : (
                             <div>No image available</div>
                         )}
