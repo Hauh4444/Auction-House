@@ -13,13 +13,11 @@ const SearchListings = () => {
     const location = useLocation();
 
     useEffect(() => {
-        const queryParams = new URLSearchParams(location.search);
-        const filters = Object.fromEntries(queryParams.entries());
+        const filters = Object.fromEntries(new URLSearchParams(location.search).entries());
 
-        if (filters.page) {
-            filters.start = ((filters.page - 1) * 20 + 1).toString();
-            filters.end = (filters.page * 20).toString();
-        }
+        if (filters.page) filters.start = ((filters.page - 1) * 20 + 1).toString(), filters.end = (filters.page * 20).toString();
+        filters.sort = filters.nav === "new" ? "created_at" : (filters.nav === "best-sellers" ? "purchases" : filters.sort);
+        filters.order = ["new", "best-sellers"].includes(filters.nav) ? "desc" : filters.order;
 
         axios.get("http://127.0.0.1:5000/api/listings", {
             headers: {
@@ -31,8 +29,6 @@ const SearchListings = () => {
                 sort: filters.sort,
                 start: filters.start,
                 end: filters.end,
-                type: filters.type,
-                other: filters.other,
             }
         })
             .then(res => {
@@ -78,7 +74,7 @@ const SearchListings = () => {
                             </span>
                         </div>
                         <h2 className="listingPrice">
-                            ${listing.price}
+                            ${listing.buy_now_price}
                         </h2>
                         <div className="bottomDetails">
                             <Button className="addCartBtn">

@@ -22,7 +22,7 @@ const Search = () => {
     // useEffect to control pagination buttons visibility based on filter changes
     useEffect(() => {
         // Check if the filter 'nav' is set to 'all', to show pagination controls
-        if (filters.nav === "all") {
+        if (filters.nav === "view-all") {
             // Set pagination buttons for 'previous' and 'next' navigation
             setPaginationButtons(
                 <div className="pagination">
@@ -46,8 +46,7 @@ const Search = () => {
             pathname: "/search",
             search: createSearchParams(filters).toString(), // Convert filters object to query string
         });
-        // Force a reload of the page to reflect the new filter changes
-        navigate(0);
+        window.scrollTo(0, 0);
     }
 
     return (

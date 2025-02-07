@@ -30,7 +30,7 @@ const CategoriesPopup = () => {
             pathname: "/category",
             search: createSearchParams({
                 category: id,
-                nav: "best",
+                page: 1,
             }).toString(),
         });
     }

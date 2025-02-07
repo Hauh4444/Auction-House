@@ -10,8 +10,7 @@ import "@/Components/Navigation/Navigation.scss";
 const HomeNavigation = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const queryParams = new URLSearchParams(location.search);
-    const filters = Object.fromEntries(queryParams.entries());
+    const filters = Object.fromEntries(new URLSearchParams(location.search).entries());
 
     useEffect(() => {
         document.querySelectorAll(".navBtn").forEach(btn => {

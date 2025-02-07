@@ -17,7 +17,7 @@ const SearchBar = () => {
             navigate({
                 pathname: "/",
                 search: createSearchParams({
-                    nav: "all",
+                    nav: "view-all",
                 }).toString(),
             });
         }
@@ -28,10 +28,9 @@ const SearchBar = () => {
                     query: query,
                     start: 1,
                     end: 10,
-                    nav: "best",
+                    nav: "best-results",
                 }).toString(),
             });
-            navigate(0);
         }
     }
 

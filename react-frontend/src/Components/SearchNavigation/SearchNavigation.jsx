@@ -11,12 +11,11 @@ import "@/Components/Navigation/Navigation.scss";
 const SearchNavigation = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const queryParams = new URLSearchParams(location.search);
-    const filters = Object.fromEntries(queryParams.entries());
+    const filters = Object.fromEntries(new URLSearchParams(location.search).entries());
 
     useEffect(() => {
         document.querySelectorAll(".navBtn").forEach(btn => {
-            const condition = filters.nav ? btn.classList.contains(filters.nav) : btn.classList.contains("best");
+            const condition = filters.nav ? btn.classList.contains(filters.nav) : btn.classList.contains("best-sellers");
             btn.classList.toggle("selected", condition);
         });
     }, [location.search]);
@@ -27,7 +26,7 @@ const SearchNavigation = () => {
             if (value === null) delete filters[key];
             else filters[key] = value;
         });
-        ["best", "deals", "all"].forEach(c => e.target.classList.contains(c) && (filters.nav = c));
+        ["best-results", "best-sellers", "new", "view-all"].forEach(c => e.target.classList.contains(c) && (filters.nav = c));
         navigate({
             pathname: "/search",
             search: createSearchParams(filters).toString(),
@@ -36,18 +35,23 @@ const SearchNavigation = () => {
 
     return (
         <div className="searchNav">
-            <Button className="navBtn best" onClick={(e) => {
-                handleNavClick(e, {page: null, start: 1, end: 10, other: null});
+            <Button className="navBtn best-results" onClick={(e) => {
+                handleNavClick(e, {page: null, start: 1, end: 10, nav: null});
             }}>
                 Best Results
             </Button>
-            <Button className="navBtn deals" onClick={(e) => {
-                handleNavClick(e, {page: null, start: null, end: null, other: "best deals"});
+            <Button className="navBtn best-sellers" onClick={(e) => {
+                handleNavClick(e, {page: null, start: null, end: null, nav: "best-sellers"});
             }}>
-                Best Deals
+                Best Sellers
             </Button>
-            <Button className="navBtn all" onClick={(e) => {
-                handleNavClick(e, {page: 1, start: null, end: null, other: null});
+            <Button className="navBtn new" onClick={(e) => {
+                handleNavClick(e, {page: null, start: null, end: null, nav: "new"});
+            }}>
+                New
+            </Button>
+            <Button className="navBtn view-all" onClick={(e) => {
+                handleNavClick(e, {page: 1, start: null, end: null, nav: null});
             }}>
                 View All
             </Button>

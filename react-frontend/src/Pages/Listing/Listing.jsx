@@ -40,7 +40,7 @@ const Listing = () => {
                 <div className="listing">
                     <div className="listingInfo">
                         <div className="listingTitle">{listing.title}</div>
-                        <div className="listingPrice">{listing.price}</div>
+                        <div className="listingPrice">{listing.buy_now_price}</div>
                         <Button className="addCartBtn">Add to Cart</Button>
                     </div>
                     <div className="listingImage">
