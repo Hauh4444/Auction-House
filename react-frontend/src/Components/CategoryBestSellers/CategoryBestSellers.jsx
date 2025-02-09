@@ -1,13 +1,12 @@
 // External Libraries
-import { useState, useEffect } from "react";
-import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
-import { LiaStarSolid, LiaStarHalfSolid } from "react-icons/lia";
+import { useEffect, useState } from "react";
+import {createSearchParams, useLocation, useNavigate} from "react-router-dom";
+import { LiaStarHalfSolid, LiaStarSolid } from "react-icons/lia";
 import { Button } from "@mui/material";
 import axios from "axios";
 // Stylesheets
-import "./CategoryListings.scss";
+import "./CategoryBestSellers.scss"
 
-// Helper function to render stars based on average review
 const renderStars = (averageReview) => {
     const filledStars = Math.floor(averageReview);
     const halfStar = averageReview > filledStars;
@@ -24,44 +23,49 @@ const renderStars = (averageReview) => {
     );
 };
 
-const SearchListings = () => {
-    const [listings, setListings] = useState([]);
+const CategoryBestSellers = () => {
+    const [bestSellers, setBestSellers] = useState([]);
+
     const navigate = useNavigate();
     const location = useLocation();
     const filters = Object.fromEntries(new URLSearchParams(location.search).entries());
-
-    if (filters.page) filters.start = ((filters.page - 1) * 20).toString(), filters.range = "20";
 
     useEffect(() => {
         axios.get("http://127.0.0.1:5000/api/listings", {
             headers: {
                 "Content-Type": "application/json",
             },
-            params: createSearchParams(filters),
+            params: {
+                category_id: filters.category_id,
+                sort: "purchases",
+                order: "desc",
+                start: 0,
+                range: 8,
+            }
         })
-            .then(res => setListings(res.data))
+            .then(res => setBestSellers(res.data))
             .catch(err => console.log(err));
     }, [location.search]);
 
     const navigateToListing = (id) => {
         navigate(`/listings?key=${id}`);
-    }
+    };
 
     return (
         <>
-            <h1 className="categoryListingsHead">View All</h1>
-            <div className="categoryListings">
-                {listings.map((listing, index) => (
-                    <div className={`listing ${index % 4 === 0 ? "first" : ""}`} key={index}>
+            <h1 className="categoryBestSellersHead">Best Sellers</h1>
+            <div className="categoryBestSellers">
+                {bestSellers.map((listing, index) => (
+                    <div className={`listing ${index === 0 ? "first" : ""}`} key={listing.listing_id}>
                         <div className="listingImage">
-                            <img src={"data:image/jpg;base64," + listing.image_encoded} alt="" />
+                            <img src={`data:image/jpg;base64,${listing.image_encoded}`} alt="" />
                         </div>
                         <div className="listingInfo">
                             <div className="listingReviews">
                                 {renderStars(listing.average_review)}
                                 <span className="reviews" style={{ left: -16 * Math.ceil(listing.average_review) + "px" }}>
-                                    &emsp;{listing.total_reviews}
-                                </span>
+                                        &emsp;{listing.total_reviews}
+                                    </span>
                             </div>
                             <Button className="listingTitle" onClick={() => navigateToListing(listing.listing_id)}>
                                 {listing.title_short}
@@ -72,7 +76,7 @@ const SearchListings = () => {
                 ))}
             </div>
         </>
-    );
-};
+    )
+}
 
-export default SearchListings;
+export default CategoryBestSellers;

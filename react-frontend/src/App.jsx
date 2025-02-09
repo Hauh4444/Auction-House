@@ -41,7 +41,7 @@ function App() {
     }, []);  // Empty dependency array means this effect runs only once after the initial render
 
     // Currently, the theme is hardcoded as lightTheme.
-    // This should be updated based on `isDarkMode`: isDarkMode ? darkTheme : lightTheme
+    // This should be updated based on `isDarkMode`-> isDarkMode ? darkTheme : lightTheme
     return (
         <ThemeProvider theme={lightTheme}>
             <PublicRoutes />

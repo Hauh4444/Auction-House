@@ -74,7 +74,7 @@ const SearchListings = () => {
                             </span>
                         </div>
                         <h2 className="listingPrice">
-                            ${listing.current_price}
+                            ${listing.buy_now_price}
                         </h2>
                         <div className="bottomDetails">
                             <Button className="addCartBtn">

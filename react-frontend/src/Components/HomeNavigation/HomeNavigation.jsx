@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 // Internal Modules
-import toggleNav from "@/Components/Navigation/Navigation.js";
+import toggleNav from "@/Components/Navigation/Navigation";
 // Stylesheets
 import "@/Components/Navigation/Navigation.scss";
 

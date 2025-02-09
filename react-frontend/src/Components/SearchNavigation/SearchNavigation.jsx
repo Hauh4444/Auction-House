@@ -4,8 +4,8 @@ import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
 import { MdFilterAlt } from "react-icons/md";
 import { Button } from "@mui/material";
 // Internal Modules
-import toggleNav from "@/Components/Navigation/Navigation.js";
-import FiltersPopup from "@/Components/FiltersPopup/FiltersPopup.jsx";
+import toggleNav from "@/Components/Navigation/Navigation";
+import FiltersPopup from "@/Components/FiltersPopup/FiltersPopup";
 // Stylesheets
 import "@/Components/Navigation/Navigation.scss";
 
@@ -62,7 +62,7 @@ const SearchNavigation = () => {
                 }}>
                     View All
                 </Button>
-                <Button className="navBtn sortBtn" onClick={toggleFiltersDisplay}>
+                <Button className="navBtn filtersBtn" onClick={toggleFiltersDisplay}>
                     Filters&ensp;<MdFilterAlt className="icon" />
                 </Button>
             </div>

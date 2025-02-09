@@ -1,3 +1,4 @@
+// Stylesheets
 import "./CreateAccount.scss";
 
 const CreateAccount = () => {

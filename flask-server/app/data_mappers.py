@@ -9,9 +9,9 @@ class ListingMapper:
         statement = "SELECT * FROM listings"
         conditions = [f"{key}='{args[key]}'" for key in ["category_id", "listing_type"] if key in args]
         if "min_price" in args:
-            conditions.append(f"current_price > {args['min_price']}")
+            conditions.append(f"buy_now_price > {args['min_price']}")
         if "max_price" in args:
-            conditions.append(f"current_price < {args['max_price']}")
+            conditions.append(f"buy_now_price < {args['max_price']}")
         if conditions:
             statement += " WHERE " + " AND ".join(conditions)
         if "sort" in args and "order" in args:
@@ -36,9 +36,9 @@ class ListingMapper:
         cursor = db.cursor()
         sql = ("""INSERT INTO listings 
                   (user_id, title, title_short, description, category, type, starting_price, reserve_price, 
-                  current_price, auction_start, auction_end, status, image_encoded, purchases, average_review, 
-                  total_reviews, created_at, updated_at) 
-                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'), datetime('now'))""")
+                  current_price, buy_now_price, auction_start, auction_end, status, image_encoded, bids, 
+                  purchases, average_review, total_reviews, created_at, updated_at) 
+                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? datetime('now'), datetime('now'))""")
         cursor.execute(sql, (data["name"], data["description"], data["image_encoded"]))
         db.commit()
         return cursor.lastrowid  # Return new listing ID
@@ -49,8 +49,8 @@ class ListingMapper:
         cursor = db.cursor()
         sql = """UPDATE listings 
                  SET user_id = ?, title = ?, title_short = ?, description = ?, category = ?, type = ?, starting_price = ?,
-                 reserve_price = ?, current_price = ?, auction_start = ?, auction_end = ?, status = ?, image_encoded = ?, 
-                 purchases = ?, average_review = ?, total_reviews = ?, updated_at = datetime('now') 
+                 reserve_price = ?, current_price = ?, buy_now_price = ?, auction_start = ?, auction_end = ?, status = ?, 
+                 image_encoded = ?, bids = ?, purchases = ?, average_review = ?, total_reviews = ?, updated_at = datetime('now') 
                  WHERE listing_id = ?"""
         cursor.execute(sql, (data, listing_id))
         db.commit()

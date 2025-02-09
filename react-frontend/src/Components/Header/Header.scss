@@ -14,7 +14,7 @@
         padding-left: 25px;
         display: inline-block;
 
-        .navBtn {
+        .headNavBtn {
             height: 40px;
             margin: 20px 15px;
             font-size: 14px;
@@ -23,7 +23,7 @@
             color: map.get($theme-colors, mainColor3);
             transition: all 0.5s ease;
         }
-        .navBtn:hover {
+        .headNavBtn:hover {
             color: map.get($theme-colors, accentColor1) !important;
         }
         .categoriesBtn {

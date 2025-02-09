@@ -21,15 +21,13 @@
         color: map.get($theme-colors, mainColor2);
         transition: all 0.5s ease;
     }
-
     .selected,
     .navBtn:hover {
         border-bottom: 4px solid map.get($theme-colors, accentColor1);
         background-color: map.get($theme-colors, mainColor1);
         color: map.get($theme-colors, mainColor3) !important;
     }
-
-    .sortBtn {
+    .filtersBtn {
         padding: 0 15px;
         border: none;
         border-radius: 25px;

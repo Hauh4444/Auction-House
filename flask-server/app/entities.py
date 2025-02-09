@@ -15,10 +15,12 @@ class Listing:
         starting_price: float,
         reserve_price: float,
         current_price: float,
+        buy_now_price: float,
         auction_start: datetime,
         auction_end: datetime,
         status: str,
         image_encoded: str,
+        bids: int,
         purchases: int,
         average_review: float,
         total_reviews: int,
@@ -35,10 +37,12 @@ class Listing:
         self.starting_price = starting_price
         self.reserve_price = reserve_price
         self.current_price = current_price
+        self.buy_now_price = buy_now_price
         self.auction_start = auction_start
         self.auction_end = auction_end
         self.status = status
         self.image_encoded = image_encoded
+        self.bids = bids
         self.purchases = purchases
         self.average_review = average_review
         self.total_reviews = total_reviews
@@ -57,10 +61,12 @@ class Listing:
             "starting_price": self.starting_price,
             "reserve_price": self.reserve_price,
             "current_price": self.current_price,
+            "buy_now_price": self.buy_now_price,
             "auction_start": self.auction_start,
             "auction_end": self.auction_end,
             "status": self.status,
             "image_encoded": self.image_encoded,
+            "bids": self.bids,
             "purchases": self.purchases,
             "average_review": self.average_review,
             "total_reviews": self.total_reviews,

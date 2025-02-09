@@ -20,16 +20,18 @@
                 flex-basis: 26%;
 
                 .listingTitle {
-                    margin: 0 0 50px 0;
+                    margin: 0;
                     font-weight: bold;
                     font-size: 24px;
                 }
+                .listingBid,
                 .listingPrice {
                     margin-top: 25px;
                     display: inline-block;
                     font-weight: normal;
                     font-size: 20px;
                 }
+                .placeBidBtn,
                 .addCartBtn {
                     height: 35px;
                     margin: 20px 0 0 20px;
@@ -41,6 +43,10 @@
                     font-weight: normal;
                     font-size: 20px;
                     color: map.get($theme-colors, mainColor1);
+                }
+                .bidDescription {
+                    width: fit-content;
+                    margin: 20px 0 0 25px;
                 }
             }
             .listingImage {

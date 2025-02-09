@@ -40,8 +40,20 @@ const Listing = () => {
                 <div className="listing">
                     <div className="listingInfo">
                         <div className="listingTitle">{listing.title}</div>
-                        <div className="listingPrice">{listing.current_price}</div>
-                        <Button className="addCartBtn">Add to Cart</Button>
+                        {listing.listing_type === "auction" ? (
+                            <>
+                                <div className="listingBid">${listing.current_price}</div>
+                                <Button className="placeBidBtn">Place Bid</Button>
+                                <p className="bidDescription">{listing.bids} bids. Ends: {listing.auction_end}</p>
+                                <div className="listingPrice">${listing.buy_now_price}</div>
+                                <Button className="addCartBtn">Add to Cart</Button>
+                            </>
+                        ) : (
+                            <>
+                                <div className="listingPrice">${listing.buy_now_price}</div>
+                                <Button className="addCartBtn">Add to Cart</Button>
+                            </>
+                        )}
                     </div>
                     <div className="listingImage">
                         {/* Checking if image data exists; if yes, displaying image, otherwise a fallback message */}
