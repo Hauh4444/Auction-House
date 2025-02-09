@@ -7,6 +7,23 @@ import axios from "axios";
 // Stylesheets
 import "./SearchListings.scss";
 
+// Helper function to render stars based on average review
+const renderStars = (averageReview) => {
+    const filledStars = Math.floor(averageReview);
+    const halfStar = averageReview > filledStars;
+    return (
+        <>
+            {Array.from({ length: 5 }, (_, i) => (
+                <LiaStarSolid className="blankStar" key={i} />
+            ))}
+            {Array.from({ length: filledStars }, (_, i) => (
+                <LiaStarSolid className="filledStar" key={i} />
+            ))}
+            {halfStar && <LiaStarHalfSolid className="halfStar" />}
+        </>
+    );
+};
+
 const SearchListings = () => {
     const [listings, setListings] = useState([]);
     const navigate = useNavigate();
@@ -15,21 +32,17 @@ const SearchListings = () => {
     useEffect(() => {
         const filters = Object.fromEntries(new URLSearchParams(location.search).entries());
 
-        if (filters.page) filters.start = ((filters.page - 1) * 20 + 1).toString(), filters.end = (filters.page * 20).toString();
-        filters.sort = filters.nav === "new" ? "created_at" : (filters.nav === "best-sellers" ? "purchases" : filters.sort);
-        filters.order = ["new", "best-sellers"].includes(filters.nav) ? "desc" : filters.order;
+        if (filters.page) filters.start = ((filters.page - 1) * 20).toString(), filters.range = "20";
+        if (filters.sort) {
+            filters.sort = filters.nav === "new" ? "created_at" : (filters.nav === "best-sellers" ? "purchases" : filters.sort);
+            filters.order = "desc";
+        }
 
         axios.get("http://127.0.0.1:5000/api/listings", {
             headers: {
                 "Content-Type": "application/json",
             },
-            params: {
-                query: filters.query,
-                category: filters.category,
-                sort: filters.sort,
-                start: filters.start,
-                end: filters.end,
-            }
+            params: createSearchParams(filters),
         })
             .then(res => {
                 setListings(res.data);
@@ -39,13 +52,8 @@ const SearchListings = () => {
             });
     }, [location.search]);
 
-    function navigateToListing(id) {
-        navigate({
-            pathname: "/listings",
-            search: createSearchParams({
-                key: id
-            }).toString(),
-        });
+    const navigateToListing = (id) => {
+        navigate(`/listings?key=${id}`);
     }
 
     return (
@@ -60,21 +68,13 @@ const SearchListings = () => {
                             {listing.title}
                         </Button>
                         <div className="listingReviews">
-                            {Array.from({length: 5}, (_, i) =>
-                                <LiaStarSolid className="blankStar" key={i} />
-                            )}
-                            {Array.from({ length: listing.average_review }, (_, i) =>
-                                <LiaStarSolid className="filledStar" key={i} />
-                            )}
-                            {listing.average_review > Math.floor(listing.average_review) &&
-                                <LiaStarHalfSolid className="halfStar" />
-                            }
-                            <span className="reviews" style={{left: (-16 * Math.ceil(listing.average_review) + "px"),}}>
+                            {renderStars(listing.average_review)}
+                            <span className="reviews" style={{ left: -16 * Math.ceil(listing.average_review) + "px" }}>
                                 &emsp;{listing.total_reviews}
                             </span>
                         </div>
                         <h2 className="listingPrice">
-                            ${listing.buy_now_price}
+                            ${listing.current_price}
                         </h2>
                         <div className="bottomDetails">
                             <Button className="addCartBtn">

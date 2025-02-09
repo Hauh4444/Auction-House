@@ -5,6 +5,7 @@
 
 .mainPage {
     width: calc(100% - 50px);
+    overflow-x: hidden;
 
     .pagination {
         width: fit-content;

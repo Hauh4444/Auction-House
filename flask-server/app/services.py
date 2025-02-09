@@ -1,56 +1,39 @@
 from flask import jsonify
-from .database import get_db
 from .data_mappers import CategoryMapper, ListingMapper
 
 class ListingService:
     @staticmethod
-    def get_all_listings(query=None, sort_by='created_at', order='desc', filters={}):
-        db = get_db()
-        cursor = db.cursor(dictionary=True)
-
-        sql = "SELECT * FROM listings WHERE 1=1"
-        params = []
-
-        if query:
-            sql += " AND (title LIKE %s OR description LIKE %s)"
-            params.extend([f"%{query}%", f"%{query}%"])
-
-        for column, value in filters.items():
-            sql += f" AND {column} = %s"
-            params.append(value)
-
-        order = "DESC" if order == "desc" else "ASC"
-        sql += f" ORDER BY {sort_by} {order}"
-
-        cursor.execute(sql, params)
-        listings = cursor.fetchall()
-
+    def get_all_listings(request):
+        listings = ListingMapper.get_all_listings(args=request.args)
         return jsonify(listings), 200
 
     @staticmethod
     def get_listing_by_id(listing_id):
-        return ListingMapper.query.get(listing_id)
+        listing = ListingMapper.get_listing_by_id(listing_id)
+        if listing:
+            return jsonify(listing), 200
+        return jsonify({"error": "Listing not found"}), 404
 
     @staticmethod
     def create_listing(data):
-        new_listing = ListingMapper(**data)
-        return new_listing
+        if not data.get("name"):
+            return jsonify({"error": "Listing name is required"}), 400
+        listing_id = ListingMapper.create_listing(data)
+        return jsonify({"message": "Listing created", "listing_id": listing_id}), 201
 
     @staticmethod
     def update_listing(listing_id, data):
-        listing = ListingMapper.query.get(listing_id)
-        if not listing:
-            return None
-
-        for key, value in data.items():
-            setattr(listing, key, value)
-            return listing
+        updated_rows = ListingMapper.update_listing(listing_id, data)
+        if updated_rows:
+            return jsonify({"message": "Listing updated"}), 200
+        return jsonify({"error": "Listing not found"}), 404
 
     @staticmethod
     def delete_listing(listing_id):
-        listing = ListingMapper.query.get(listing_id)
-        if not listing:
-            return None
+        deleted_rows = ListingMapper.delete_listing(listing_id)
+        if deleted_rows:
+            return jsonify({"message": "Listing deleted"}), 200
+        return jsonify({"error": "Listing not found"}), 404
     
 class CategoryService:
     @staticmethod

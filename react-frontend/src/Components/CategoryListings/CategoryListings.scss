@@ -22,7 +22,7 @@
     .listing {
         width: 20%;
         height: 300px;
-        margin: 5% 0 0 calc(20% / 3);
+        margin: 10vh 0 0 calc(20% / 3);
         border-radius: 10px;
         box-shadow: 0 2px 4px map.get($theme-colors, mainColor4);
         background-color: map.get($theme-colors, mainColor1);

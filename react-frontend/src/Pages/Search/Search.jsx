@@ -15,8 +15,7 @@ import "./Search.scss"; // Importing styles for this page
 const Search = () => {
     const navigate = useNavigate(); // Hook for navigation
     const location = useLocation(); // Hook to access the current location (URL)
-    const queryParams = new URLSearchParams(location.search); // Parse query parameters from the URL
-    const filters = Object.fromEntries(queryParams.entries()); // Convert query parameters to an object for easier use
+    const filters = Object.fromEntries(new URLSearchParams(location.search).entries());
     const [paginationButtons, setPaginationButtons] = useState(null); // State to manage pagination buttons visibility
 
     // useEffect to control pagination buttons visibility based on filter changes

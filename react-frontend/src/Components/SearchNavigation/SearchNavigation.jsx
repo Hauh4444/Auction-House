@@ -5,6 +5,7 @@ import { MdFilterAlt } from "react-icons/md";
 import { Button } from "@mui/material";
 // Internal Modules
 import toggleNav from "@/Components/Navigation/Navigation.js";
+import FiltersPopup from "@/Components/FiltersPopup/FiltersPopup.jsx";
 // Stylesheets
 import "@/Components/Navigation/Navigation.scss";
 
@@ -33,32 +34,40 @@ const SearchNavigation = () => {
         });
     }
 
+    function toggleFiltersDisplay() {
+        const element = document.querySelector(".filtersPopup");
+        element.style.maxHeight = element.style.maxHeight === "0px" || element.style.maxHeight === "" ? "100%" : "0";
+    }
+
     return (
-        <div className="searchNav">
-            <Button className="navBtn best-results" onClick={(e) => {
-                handleNavClick(e, {page: null, start: 1, end: 10, nav: null});
-            }}>
-                Best Results
-            </Button>
-            <Button className="navBtn best-sellers" onClick={(e) => {
-                handleNavClick(e, {page: null, start: null, end: null, nav: "best-sellers"});
-            }}>
-                Best Sellers
-            </Button>
-            <Button className="navBtn new" onClick={(e) => {
-                handleNavClick(e, {page: null, start: null, end: null, nav: "new"});
-            }}>
-                New
-            </Button>
-            <Button className="navBtn view-all" onClick={(e) => {
-                handleNavClick(e, {page: 1, start: null, end: null, nav: null});
-            }}>
-                View All
-            </Button>
-            <Button className="navBtn sortBtn">
-                Filters&ensp;<MdFilterAlt className="icon" />
-            </Button>
-        </div>
+        <>
+            <div className="searchNav">
+                <Button className="navBtn best-results" onClick={(e) => {
+                    handleNavClick(e, {page: null, start: 0, range: 10, nav: null});
+                }}>
+                    Best Results
+                </Button>
+                <Button className="navBtn best-sellers" onClick={(e) => {
+                    handleNavClick(e, {page: null, start: null, range: null, nav: "best-sellers"});
+                }}>
+                    Best Sellers
+                </Button>
+                <Button className="navBtn new" onClick={(e) => {
+                    handleNavClick(e, {page: null, start: null, range: null, nav: "new"});
+                }}>
+                    New
+                </Button>
+                <Button className="navBtn view-all" onClick={(e) => {
+                    handleNavClick(e, {page: 1, start: null, range: null, nav: null});
+                }}>
+                    View All
+                </Button>
+                <Button className="navBtn sortBtn" onClick={toggleFiltersDisplay}>
+                    Filters&ensp;<MdFilterAlt className="icon" />
+                </Button>
+            </div>
+            <FiltersPopup />
+        </>
     )
 }
 

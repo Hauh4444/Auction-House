@@ -1,8 +1,9 @@
 // External Libraries
 import { useEffect, useState } from "react";
 import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
+import { MdArrowBackIosNew, MdArrowForwardIos } from "react-icons/md";
 import { LiaStarHalfSolid, LiaStarSolid } from "react-icons/lia";
-import {Button} from "@mui/material";
+import { Button } from "@mui/material";
 import axios from "axios";
 // Internal Modules
 import Header from "@/Components/Header/Header";
@@ -10,74 +11,92 @@ import RightNavigation from "@/Components/RightNavigation/RightNavigation";
 import CategoryListings from "@/Components/CategoryListings/CategoryListings";
 // Stylesheets
 import "./Category.scss";
-import {MdArrowBackIosNew, MdArrowForwardIos} from "react-icons/md";
 
+// Helper function to render stars based on average review
+const renderStars = (averageReview) => {
+    const filledStars = Math.floor(averageReview); // Determine how many full stars should be rendered
+    const halfStar = averageReview > filledStars; // Determine if there is a half star
+    return (
+        <>
+            {Array.from({ length: 5 }, (_, i) => (
+                <LiaStarSolid className="blankStar" key={i} />
+            ))}
+            {Array.from({ length: filledStars }, (_, i) => (
+                <LiaStarSolid className="filledStar" key={i} />
+            ))}
+            {halfStar && <LiaStarHalfSolid className="halfStar" />}
+        </>
+    );
+};
 
 const Category = () => {
-    const [category, setCategory] = useState({}); // State to store category data
-    const location = useLocation(); // Accessing the current location object from react-router-dom to read URL parameters
+    // State variables to hold category data, best sellers, new listings, loading state, and error state
+    const [category, setCategory] = useState({});
     const [bestSellers, setBestSellers] = useState([]);
     const [newListings, setNewListings] = useState([]);
-    const navigate = useNavigate();
 
-    // useEffect hook to fetch category data from the API when the component mounts or the URL changes
+    const navigate = useNavigate(); // To navigate to other pages programmatically
+    const location = useLocation(); // To get the current URL and query parameters
+    const filters = Object.fromEntries(new URLSearchParams(location.search).entries()); // Get query parameters from the URL
+
+    // Fetch data on component mount or when URL changes
     useEffect(() => {
-        // Parsing the URL query parameters
-        const filters = Object.fromEntries(new URLSearchParams(location.search).entries());
 
-        // Making a GET request to the backend to fetch category data based on the 'c' parameter from the URL
-        axios.get("http://127.0.0.1:5000/api/categories/" + filters.category, {
-            headers: {
-                "Content-Type": "application/json", // Setting the request content type to JSON
-            },
-        })
-            .then(res => {
-                // If the request is successful, set the category data in the state
-                setCategory(res.data);
-            })
-            .catch(err => {
-                // Log any errors if the request fails
-                console.log(err);
-            });
+        // Async function to fetch category, best sellers, and new listings data
+        const fetchData = async () => {
+            try {
+                // Fetch category data based on the 'category' filter from URL
+                const categoryResponse = await axios.get(`http://127.0.0.1:5000/api/categories/${filters.category_id}`);
+                setCategory(categoryResponse.data); // Update the category state with the response data
 
-        axios.get("http://127.0.0.1:5000/api/listings", {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            params: {
-                category: filters.category,
-                sort: "purchases",
-                order: "desc",
-                start: 1,
-                end: 8,
+                // Fetch best-selling listings data
+                const bestSellersResponse = await axios.get("http://127.0.0.1:5000/api/listings", {
+                    params: {
+                        category_id: filters.category_id,
+                        start: 0,
+                        range: 8,
+                    },
+                });
+                setBestSellers(bestSellersResponse.data); // Update best sellers state with the response data
+
+                // Fetch new listings data
+                const newListingsResponse = await axios.get("http://127.0.0.1:5000/api/listings", {
+                    params: {
+                        category_id: filters.category_id,
+                        start: 0,
+                        range: 8,
+                    },
+                });
+                setNewListings(newListingsResponse.data); // Update new listings state with the response data
+            } catch (err) {
+                console.log(err); // Log the error to the console
             }
-        })
-            .then(res => setBestSellers(res.data))
-            .catch(err => console.log(err));
+        };
+        fetchData(); // Call the async function to fetch data
+    }, [location.search]); // The effect depends on the 'location.search' value, so it will run whenever the URL changes
 
-        axios.get("http://127.0.0.1:5000/api/listings", {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            params: {
-                category: filters.category,
-                sort: "created_at",
-                order: "desc",
-                start: 1,
-                end: 8,
-            }
-        })
-            .then(res => setNewListings(res.data))
-            .catch(err => console.log(err));
-    }, [location.search]); // The effect will re-run whenever the 'location.search' (URL search query) changes
+    // Function to navigate to a specific listing page
+    const navigateToListing = (id) => {
+        navigate(`/listings?key=${id}`);
+    };
 
-    function navigateToListing(id) {
+    // Function to handle pagination
+    function pagination(n) {
+        // Increment or decrement the page number (p) in filters
+        filters.page = parseInt(filters.page) + n;
+        // Update the URL with the new filters (this causes a re-render)
         navigate({
-            pathname: "/listings",
-            search: createSearchParams({
-                key: id
-            }).toString(),
+            pathname: "/category",
+            search: createSearchParams(filters).toString(), // Convert filters object to query string
         });
+        let obj = document.querySelector(".categoryListingsHead");
+        let objTop = 0;
+        if (obj.offsetParent) {
+            do {
+                objTop += obj.offsetTop;
+            } while ((obj = obj.offsetParent));
+        }
+        window.scrollTo(0, objTop - 50);
     }
 
     return (
@@ -90,46 +109,31 @@ const Category = () => {
                         <p>{category.description}</p>
                     </div>
                     <div className="categoryImg">
-                        {/* If the category has an image, display it; otherwise, show a fallback message */}
                         {category.image_encoded ? (
-                            <img
-                                src={"data:image/jpg;base64," + category.image_encoded}
-                                alt={category.title}
-                            />
+                            <img src={`data:image/jpg;base64,${category.image_encoded}`} alt={category.title} />
                         ) : (
-                            <div>No image available</div> // Fallback text if there is no image
+                            <div>No image available</div>
                         )}
                     </div>
                 </div>
                 <h1 className="categoryBestSellersHead">Best Sellers</h1>
                 <div className="categoryBestSellers">
                     {bestSellers.map((listing, index) => (
-                        <div className={`listing ${index === 0 ? "first" : ""}`} key={index}>
+                        <div className={`listing ${index === 0 ? "first" : ""}`} key={listing.listing_id}>
                             <div className="listingImage">
-                                <img src={"data:image/jpg;base64," + listing.image_encoded} alt="" />
+                                <img src={`data:image/jpg;base64,${listing.image_encoded}`} alt="" />
                             </div>
                             <div className="listingInfo">
                                 <div className="listingReviews">
-                                    {Array.from({ length: 5 }, (_, i) => (
-                                        <LiaStarSolid className="blankStar" key={i} />
-                                    ))}
-                                    {Array.from({ length: listing.average_review }, (_, i) => (
-                                        <LiaStarSolid className="filledStar" key={i} />
-                                    ))}
-                                    {listing.average_review > Math.floor(listing.average_review) && (
-                                        <LiaStarHalfSolid className="halfStar" />
-                                    )}
-                                    <span
-                                        className={"reviews"}
-                                        style={{ left: -16 * Math.ceil(listing.average_review) + "px" }}
-                                    >
-                                &emsp;{listing.total_reviews}
-                            </span>
+                                    {renderStars(listing.average_review)}
+                                    <span className="reviews" style={{ left: -16 * Math.ceil(listing.average_review) + "px" }}>
+                                        &emsp;{listing.total_reviews}
+                                    </span>
                                 </div>
                                 <Button className="listingTitle" onClick={() => navigateToListing(listing.listing_id)}>
                                     {listing.title_short}
                                 </Button>
-                                <h2 className="listingPrice">${listing.buy_now_price}</h2>
+                                <h2 className="listingPrice">${listing.current_price}</h2>
                             </div>
                         </div>
                     ))}
@@ -137,41 +141,34 @@ const Category = () => {
                 <h1 className="categoryNewListingsHead">New</h1>
                 <div className="categoryNewListings">
                     {newListings.map((listing, index) => (
-                        <div className={`listing ${index === 0 ? "first" : ""}`} key={index}>
+                        <div className={`listing ${index === 0 ? "first" : ""}`} key={listing.listing_id}>
                             <div className="listingImage">
-                                <img src={"data:image/jpg;base64," + listing.image_encoded} alt="" />
+                                <img src={`data:image/jpg;base64,${listing.image_encoded}`} alt="" />
                             </div>
                             <div className="listingInfo">
                                 <div className="listingReviews">
-                                    {Array.from({ length: 5 }, (_, i) => (
-                                        <LiaStarSolid className="blankStar" key={i} />
-                                    ))}
-                                    {Array.from({ length: listing.average_review }, (_, i) => (
-                                        <LiaStarSolid className="filledStar" key={i} />
-                                    ))}
-                                    {listing.average_review > Math.floor(listing.average_review) && (
-                                        <LiaStarHalfSolid className="halfStar" />
-                                    )}
-                                    <span
-                                        className={"reviews"}
-                                        style={{ left: -16 * Math.ceil(listing.average_review) + "px" }}
-                                    >
-                                &emsp;{listing.total_reviews}
-                            </span>
+                                    {renderStars(listing.average_review)}
+                                    <span className="reviews" style={{ left: -16 * Math.ceil(listing.average_review) + "px" }}>
+                                        &emsp;{listing.total_reviews}
+                                    </span>
                                 </div>
                                 <Button className="listingTitle" onClick={() => navigateToListing(listing.listing_id)}>
                                     {listing.title_short}
                                 </Button>
-                                <h2 className="listingPrice">${listing.buy_now_price}</h2>
+                                <h2 className="listingPrice">${listing.current_price}</h2>
                             </div>
                         </div>
                     ))}
                 </div>
                 <CategoryListings />
+                <div className="pagination">
+                    <Button onClick={() => pagination(-1)}><MdArrowBackIosNew className="icon" />&ensp;Previous</Button>
+                    <Button style={{ marginLeft: "25px" }} onClick={() => pagination(1)}>Next&ensp;<MdArrowForwardIos className="icon" /></Button>
+                </div>
             </div>
             <RightNavigation />
         </div>
-    )
-}
+    );
+};
 
 export default Category;

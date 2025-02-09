@@ -1,6 +1,6 @@
 // External Libraries
 import { useState, useEffect } from "react";
-import { useNavigate, createSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 import axios from "axios";
 // Stylesheets
@@ -24,15 +24,9 @@ const CategoriesPopup = () => {
             });
     }, []);
 
-    function navigateToCategory(id) {
+    const navigateToCategory = (id) => {
         document.querySelector(".categoriesPopup").style.maxHeight = "0";
-        navigate({
-            pathname: "/category",
-            search: createSearchParams({
-                category: id,
-                page: 1,
-            }).toString(),
-        });
+        navigate(`/category?category_id=${id}&page=1`);
     }
 
     return (

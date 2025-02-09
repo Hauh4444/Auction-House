@@ -1,5 +1,5 @@
 // External Libraries
-import {createSearchParams, useNavigate} from "react-router-dom";
+import { createSearchParams, useNavigate } from "react-router-dom";
 import { BsGrid3X3GapFill } from "react-icons/bs";
 import { Button } from "@mui/material";
 // Internal Modules

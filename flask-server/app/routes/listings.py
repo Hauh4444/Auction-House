@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request
 from ..services import ListingService
 
 # Blueprint
@@ -7,13 +7,7 @@ listings_bp = Blueprint('listings_bp', __name__)
 # GET /api/listings
 @listings_bp.route('/', methods=['GET'])
 def getAllListings():
-    query = request.args.get('query', None)
-    sort_by = request.args.get('sort', 'created_at')
-    order = request.args.get('order', 'desc').lower()
-
-    filters = {key: request.args.get(key) for key in request.args if key not in ['query', 'sort', 'order']}
-
-    return ListingService.get_all_listings(query=query, sort_by=sort_by, order=order, filters=filters)
+    return ListingService.get_all_listings(request)
 
 # GET /api/listings/{id}
 @listings_bp.route('/<int:listing_id>', methods = ['GET'])
