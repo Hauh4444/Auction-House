@@ -6,35 +6,13 @@
 1. Page Details
 
 ### Category Pages
-1. Finalize Page Details
-
-### Search Page
-1. Filter Functionality
-2. Finalize Listing Displays
+1. Filters
 
 ### Listing Page
 1. Finalize Page Details
 
-### Other Pages
-1. Browse Page
-2. About Page
-3. Contact Page
-4. Sign In Page
-5. Create Account Page
-
 ## Flask Server
-
-### Routes
-1. Configure necessary filters
-
-### Services
-1. Listing Services
-
-### Data Mappers
-1. Listing Mappers
-
-### Entities
-1. Listing Entities
+1. Fill Database
 
 # Dinkleberg's Auction House 
 
