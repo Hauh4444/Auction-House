@@ -47,9 +47,15 @@ class ListingMapper:
         statement = (
             """
                 INSERT INTO listings 
+<<<<<<< Updated upstream
                 (listing_id, user_id, title, title_short, description, item_specifics, category_id, listing_type, starting_price, 
                 reserve_price, current_price, buy_now_price, auction_start, auction_end, status, image_encoded, bids, purchases, 
                 average_review, total_reviews, created_at, updated_at) 
+=======
+                (listing_id, user_id, title, title_short, description, item_specifics, category_id, listing_type, starting_price, reserve_price,
+                current_price, buy_now_price, auction_start, auction_end, status, image_encoded, bids, purchases, average_review, 
+                total_reviews, created_at, updated_at) 
+>>>>>>> Stashed changes
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """
         )
