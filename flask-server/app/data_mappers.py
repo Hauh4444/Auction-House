@@ -10,6 +10,10 @@ class ListingMapper:
         statement = "SELECT * FROM listings"
         # TODO write CONTAINS into statement to handle "query",
         #  SELECT where name contains "query" plus SELECT where description contains "query"
+        if "query" in args: 
+            query = args["query"]
+            conditions.append(f"title LIKE '%{query}%' OR description LIKE '%{query}%'")
+
         # Set conditions for any value we might want to directly check against
         conditions = [f"{key}='{args[key]}'" for key in ["category_id", "listing_type"] if key in args]
         # Price conditions
