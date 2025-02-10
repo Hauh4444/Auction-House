@@ -8,14 +8,12 @@ class ListingMapper:
         db = get_db()
         cursor = db.cursor()
         statement = "SELECT * FROM listings"
-        # TODO write CONTAINS into statement to handle "query",
-        #  SELECT where name contains "query" plus SELECT where description contains "query"
-        if "query" in args: 
-            query = args["query"]
-            conditions.append(f"title LIKE '%{query}%' OR description LIKE '%{query}%'")
-
         # Set conditions for any value we might want to directly check against
         conditions = [f"{key}='{args[key]}'" for key in ["category_id", "listing_type"] if key in args]
+        # Search query filter
+        if "query" in args:
+            query = args["query"]
+            conditions.append(f"title LIKE '%{query}%' OR description LIKE '%{query}%'")
         # Price conditions
         if "min_price" in args:
             conditions.append(f"buy_now_price > {args['min_price']}")
@@ -49,10 +47,10 @@ class ListingMapper:
         statement = (
             """
                 INSERT INTO listings 
-                (listing_id, user_id, title, title_short, description, category_id, listing_type, starting_price, reserve_price,
-                current_price, buy_now_price, auction_start, auction_end, status, image_encoded, bids, purchases, average_review, 
-                total_reviews, created_at, updated_at) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                (listing_id, user_id, title, title_short, description, item_specifics, category_id, listing_type, starting_price, 
+                reserve_price, current_price, buy_now_price, auction_start, auction_end, status, image_encoded, bids, purchases, 
+                average_review, total_reviews, created_at, updated_at) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """
         )
         cursor.execute(statement, tuple(Listing(**data).to_dict().values()))

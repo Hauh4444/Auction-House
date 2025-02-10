@@ -1,0 +1,45 @@
+// Built In Modules
+@use "sass:map";
+// Custom Variables
+@use "@/assets/variables.modules" as *;
+
+.specifics {
+    width: 100%;
+    margin-top: 2px;
+    padding: 98px 0;
+    box-shadow: 0 2px 4px map.get($theme-colors, mainColor4);
+    background-color: map.get($theme-colors, mainColor1);
+    flex-basis: 50%;
+
+    table {
+        width: 100%;
+        padding: 0 10%;
+
+        caption {
+            margin-bottom: 10px;
+            padding-left: calc(10% + 3px);
+            text-align: left;
+            font-size: 20px;
+            font-weight: bold;
+            color: map.get($theme-colors, mainColor3);
+        }
+
+        tr {
+            th {
+                color: map.get($theme-colors, mainColor2);
+            }
+
+            td {
+                color: map.get($theme-colors, mainColor3);
+            }
+
+            th,
+            td {
+                width: 50%;
+                height: 30px;
+                text-align: left;
+                font-weight: normal;
+            }
+        }
+    }
+}
