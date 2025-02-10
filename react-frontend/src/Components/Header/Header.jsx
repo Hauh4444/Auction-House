@@ -20,7 +20,7 @@ const Header = () => {
         <>
             <div className="header">
                 <div className="headNav">
-                    <Button className="headNavBtn" onClick={() => {
+                    <Button className="btn" onClick={() => {
                         navigate({
                             pathname: "/",
                             search: createSearchParams({
@@ -30,16 +30,16 @@ const Header = () => {
                     }}>
                         Home
                     </Button>
-                    <Button className="headNavBtn" onClick={() => {navigate("/search")}}>
+                    <Button className="btn" onClick={() => {navigate("/search")}}>
                         Shop All
                     </Button>
-                    <Button className="headNavBtn" onClick={() => {navigate("/about")}}>
+                    <Button className="btn" onClick={() => {navigate("/about")}}>
                         About
                     </Button>
-                    <Button className="headNavBtn" onClick={() => {navigate("/contact")}}>
+                    <Button className="btn" onClick={() => {navigate("/contact")}}>
                         Contact
                     </Button>
-                    <Button className="headNavBtn categoriesBtn" onClick={toggleCategoriesDisplay}>
+                    <Button className="btn categoriesBtn" onClick={toggleCategoriesDisplay}>
                         Categories&ensp;<BsGrid3X3GapFill className="icon" />
                     </Button>
                 </div>

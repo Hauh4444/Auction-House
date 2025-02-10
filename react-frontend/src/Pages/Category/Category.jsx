@@ -21,6 +21,8 @@ const Category = () => {
     const filters = Object.fromEntries(new URLSearchParams(location.search).entries());
 
     useEffect(() => {
+        const filters = Object.fromEntries(new URLSearchParams(location.search).entries());
+
         axios.get(`http://127.0.0.1:5000/api/categories/${filters.category_id}`, {
             headers: {
                 "Content-Type": "application/json",
@@ -50,12 +52,12 @@ const Category = () => {
         <div className="categoryPage">
             <div className="mainPage">
                 <Header />
-                <div className="categoryHead">
-                    <div className="categoryInfo">
+                <div className="head">
+                    <div className="info">
                         <h1>{category.name}</h1>
                         <p>{category.description}</p>
                     </div>
-                    <div className="categoryImg">
+                    <div className="image">
                         {category.image_encoded ? (
                             <img src={`data:image/jpg;base64,${category.image_encoded}`} alt={category.title} />
                         ) : (

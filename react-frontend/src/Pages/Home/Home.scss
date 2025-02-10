@@ -25,6 +25,7 @@ $featuredColor2: #e61984;
                         line-height: 24.5px;
                         color: map.get($theme-colors, mainColor3)
                     }
+
                     .viewAll {
                         height: 40px;
                         padding: 0 15px;
@@ -46,18 +47,22 @@ $featuredColor2: #e61984;
                             content: "";
                             transition: opacity 0.5s ease;
                         }
+
                         &:hover::after {
                             opacity: 1;
                         }
+
                         &:hover {
                             border: none;
                             background-color: transparent;
                             color: map.get($theme-colors, mainColor1) !important;
                         }
+
                         &:hover {
                             color: map.get($theme-colors, mainColor1);
                         }
                     }
+
                     .head,
                     .viewAll {
                         margin: 0 25px;

@@ -21,12 +21,14 @@
         color: map.get($theme-colors, mainColor2);
         transition: all 0.5s ease;
     }
+
     .selected,
     .navBtn:hover {
         border-bottom: 4px solid map.get($theme-colors, accentColor1);
         background-color: map.get($theme-colors, mainColor1);
         color: map.get($theme-colors, mainColor3) !important;
     }
+
     .filtersBtn {
         padding: 0 15px;
         border: none;
@@ -45,14 +47,17 @@
             content: "";
             transition: opacity 0.5s ease;
         }
+
         &:hover::after {
             opacity: 1;
         }
+
         &:hover {
             border: none;
             background-color: transparent;
             color: map.get($theme-colors, mainColor1) !important;
         }
+
         .icon {
             position: relative;
             top: 3px;

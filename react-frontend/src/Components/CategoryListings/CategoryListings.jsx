@@ -53,20 +53,20 @@ const SearchListings = () => {
             <div className="categoryListings">
                 {listings.map((listing, index) => (
                     <div className={`listing ${index % 4 === 0 ? "first" : ""}`} key={index}>
-                        <div className="listingImage">
+                        <div className="image">
                             <img src={"data:image/jpg;base64," + listing.image_encoded} alt="" />
                         </div>
-                        <div className="listingInfo">
-                            <div className="listingReviews">
+                        <div className="info">
+                            <div className="reviews">
                                 {renderStars(listing.average_review)}
-                                <span className="reviews" style={{ left: -16 * Math.ceil(listing.average_review) + "px" }}>
+                                <span className="totalReviews" style={{ left: -16 * Math.ceil(listing.average_review) + "px" }}>
                                     &emsp;{listing.total_reviews}
                                 </span>
                             </div>
-                            <Button className="listingTitle" onClick={() => navigateToListing(listing.listing_id)}>
+                            <Button className="title" onClick={() => navigateToListing(listing.listing_id)}>
                                 {listing.title_short}
                             </Button>
-                            <h2 className="listingPrice">${listing.buy_now_price}</h2>
+                            <h2 className="price">${listing.buy_now_price}</h2>
                         </div>
                     </div>
                 ))}

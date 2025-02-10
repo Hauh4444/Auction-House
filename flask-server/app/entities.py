@@ -5,33 +5,35 @@ from datetime import datetime
 class Listing:
     def __init__(
         self,
-        listing_id: int,
         user_id: int,
         title: int,
         title_short: str,
         description: str,
+        item_specifics: str,
         category_id: str,
         listing_type: str,
-        starting_price: float,
-        reserve_price: float,
-        current_price: float,
         buy_now_price: float,
-        auction_start: datetime,
-        auction_end: datetime,
         status: str,
         image_encoded: str,
-        bids: int,
-        purchases: int,
-        average_review: float,
-        total_reviews: int,
-        created_at: datetime,
-        updated_at: datetime,
+        starting_price: float | None = None,
+        reserve_price: float | None = None,
+        current_price: float | None = None,
+        auction_start: datetime | None = None,
+        auction_end: datetime | None = None,
+        bids: int | None = None,
+        purchases: int | None = None,
+        average_review: float | None = None,
+        total_reviews: int | None = None,
+        created_at: datetime | None = None,
+        updated_at: datetime | None = None,
+        listing_id: int | None = None
     ):
         self.listing_id = listing_id
         self.user_id = user_id
         self.title = title
         self.title_short = title_short
         self.description = description
+        self.item_specifics = item_specifics
         self.category_id = category_id
         self.listing_type = listing_type
         self.starting_price = starting_price
@@ -46,8 +48,8 @@ class Listing:
         self.purchases = purchases
         self.average_review = average_review
         self.total_reviews = total_reviews
-        self.created_at = created_at
-        self.updated_at = updated_at
+        self.created_at = created_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.updated_at = updated_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     def to_dict(self):
         return {
@@ -56,6 +58,7 @@ class Listing:
             "title": self.title,
             "title_short": self.title_short,
             "description": self.description,
+            "item_specifics": self.item_specifics,
             "category_id": self.category_id,
             "listing_type": self.listing_type,
             "starting_price": self.starting_price,
@@ -78,19 +81,19 @@ class Listing:
 class Category:
     def __init__(
         self,
-        category_id: int,
         name: str,
         description: str,
-        image_encoded: str,
+        image_encoded: str | None = None,
         created_at: datetime | None = None,
         updated_at: datetime | None = None,
+        category_id: int | None = None
     ):
         self.category_id = category_id
         self.name = name 
         self.description = description
         self.image_encoded = image_encoded
-        self.created_at = created_at or datetime.utcnow()
-        self.updated_at = updated_at or datetime.utcnow()
+        self.created_at = created_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.updated_at = updated_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     def to_dict(self):
         return {
@@ -98,6 +101,6 @@ class Category:
             "name": self.name,
             "description": self.description,
             "image_encoded": self.image_encoded,
-            "created_at": self.created_at.strftime("%Y-%m-%d %H:%M:%S"),
-            "updated_at": self.updated_at.strftime("%Y-%m-%d %H:%M:%S")
+            "created_at": self.created_at,
+            "updated_at": self.updated_at
         }

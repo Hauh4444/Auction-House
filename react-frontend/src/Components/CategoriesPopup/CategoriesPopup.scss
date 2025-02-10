@@ -8,7 +8,8 @@
     max-height: 0;
     margin-top: 15px;
     border-radius: 25px;
-    box-shadow: 0 2px 4px map.get($theme-colors, mainColor4);    background-color: map.get($theme-colors, mainColor1);
+    box-shadow: 0 2px 4px map.get($theme-colors, mainColor4);
+    background-color: map.get($theme-colors, mainColor1);
     position: absolute;
     overflow: hidden;
     left: calc(50% - 25px);

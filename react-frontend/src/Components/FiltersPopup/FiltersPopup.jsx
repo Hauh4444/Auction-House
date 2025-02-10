@@ -23,12 +23,8 @@ const FiltersPopup = () => {
                 "Content-Type": "application/json",
             }
         })
-            .then(res => {
-                setCategories(res.data);
-            })
-            .catch(err => {
-                console.log(err);
-            });
+            .then(res => setCategories(res.data))
+            .catch(err => console.log(err));
     }, []);
 
     function updateFilter(filter, value) {
@@ -91,7 +87,7 @@ const FiltersPopup = () => {
             <FormControl size="small">
                 <InputLabel id="sortByLabel">Sort By</InputLabel>
                 <Select
-                    labelId="sortByLabel"
+                    labelid="sortByLabel"
                     className="sortBy"
                     value={sortBy}
                     label="Sort By"
@@ -113,7 +109,7 @@ const FiltersPopup = () => {
             <FormControl size="small">
                 <InputLabel id="categoryLabel">Category</InputLabel>
                 <Select
-                    labelId="categoryLabel"
+                    labelid="categoryLabel"
                     className="category"
                     value={category}
                     label="Category"
@@ -129,7 +125,7 @@ const FiltersPopup = () => {
             <FormControl size="small">
                 <InputLabel id="listingTypeLabel">Listing Type</InputLabel>
                 <Select
-                    labelId="listingTypeLabel"
+                    labelid="listingTypeLabel"
                     className="listingType"
                     value={listingType}
                     label="Listing Type"
@@ -144,7 +140,7 @@ const FiltersPopup = () => {
             <FormControl size="small">
                 <InputLabel id="minPriceLabel">Min Price</InputLabel>
                 <Input
-                    labelId="minPriceLabel"
+                    labelid="minPriceLabel"
                     className="minPrice"
                     value={minPrice}
                     label="Min Price"
@@ -156,7 +152,7 @@ const FiltersPopup = () => {
             <FormControl size="small">
                 <InputLabel id="maxPriceLabel">Max Price</InputLabel>
                 <Input
-                    labelId="maxPriceLabel"
+                    labelid="maxPriceLabel"
                     className="maxPrice"
                     value={maxPrice}
                     label="Max Price"

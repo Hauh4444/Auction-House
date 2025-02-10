@@ -38,6 +38,7 @@
     .listing.first {
         margin-left: 0 !important;
     }
+
     .listing {
         width: 14%;
         height: 300px;
@@ -48,7 +49,7 @@
         display: inline-flex;
         flex-direction: column;
 
-        .listingImage {
+        .image {
             height: 200px;
             border-radius: 10px;
             display: flex;
@@ -60,13 +61,14 @@
                 height: 100%;
             }
         }
-        .listingInfo {
+
+        .info {
             width: 100%;
             height: 100px;
             padding-left: 15px;
             flex-basis: 100px;
 
-            .listingTitle {
+            .title {
                 width: 185px;
                 height: fit-content;
                 padding: 0;
@@ -78,25 +80,29 @@
                     background-color: map.get($theme-colors, mainColor1);
                 }
             }
-            .listingReviews {
+
+            .reviews {
                 width: fit-content;
                 margin: 10px 0 5px 0;
 
                 .blankStar {
                     color: map.get($theme-colors, mainColor4);
                 }
+
                 .filledStar,
                 .halfStar {
                     color: map.get($theme-colors, accentColor1);
                     position: relative;
                     left: -80px;
                 }
+
                 .blankStar,
                 .filledStar,
                 .halfStar {
                     font-size: 16px;
                 }
-                .reviews {
+
+                .totalReviews {
                     position: relative;
                     top: -3px;
                     font-size: 12px;
@@ -104,12 +110,14 @@
                     color: map.get($theme-colors, accentColor4);
                 }
             }
-            .listingPrice {
+
+            .price {
                 width: fit-content;
                 margin: 5px 0;
             }
-            .listingTitle,
-            .listingPrice{
+
+            .title,
+            .price {
                 font-size: 16px;
                 color: map.get($theme-colors, mainColor3);
             }

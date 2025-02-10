@@ -16,12 +16,8 @@ const CategoriesPopup = () => {
                 "Content-Type": "application/json",
             }
         })
-            .then(res => {
-                setCategories(res.data);
-            })
-            .catch(err => {
-                console.log(err);
-            });
+            .then(res => setCategories(res.data))
+            .catch(err => console.log(err));
     }, []);
 
     const navigateToCategory = (id) => {

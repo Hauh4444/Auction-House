@@ -37,7 +37,7 @@ const SearchBar = () => {
     return (
         <div className="searchBar">
             <TextField
-                className="searchInput"
+                className="input"
                 value={query}
                 placeholder="Search"
                 onChange={(e) => setQuery(e.target.value)}
@@ -53,7 +53,7 @@ const SearchBar = () => {
                     },
                 }}
             />
-            <Button className="searchButton" onClick={navigateSearch}>
+            <Button className="btn" onClick={navigateSearch}>
                 <svg width="0" height="0">
                     <defs>
                         <linearGradient id="gradient" x1="0%" y1="50%" x2="100%" y2="50%">
@@ -62,7 +62,7 @@ const SearchBar = () => {
                         </linearGradient>
                     </defs>
                 </svg>
-                <FaSearch className="searchIcon" style={{ fill: "url(#gradient)" }} />
+                <FaSearch className="icon" style={{ fill: "url(#gradient)" }} />
             </Button>
         </div>
     )

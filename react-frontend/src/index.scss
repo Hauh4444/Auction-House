@@ -12,6 +12,7 @@ html {
     font-family: Roboto, "sans-serif";
     scroll-behavior: smooth;
 }
+
 body {
     margin: 0;
     background-color: map.get($theme-colors, mainColor1);

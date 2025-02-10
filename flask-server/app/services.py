@@ -16,8 +16,8 @@ class ListingService:
 
     @staticmethod
     def create_listing(data):
-        if not data.get("name"):
-            return jsonify({"error": "Listing name is required"}), 400
+        if not data.get("title"):
+            return jsonify({"error": "Listing title is required"}), 400
         listing_id = ListingMapper.create_listing(data)
         return jsonify({"message": "Listing created", "listing_id": listing_id}), 201
 

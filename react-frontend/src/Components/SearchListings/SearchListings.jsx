@@ -44,12 +44,8 @@ const SearchListings = () => {
             },
             params: createSearchParams(filters),
         })
-            .then(res => {
-                setListings(res.data);
-            })
-            .catch(err => {
-                console.log(err);
-            });
+            .then(res => setListings(res.data))
+            .catch(err => console.log(err));
     }, [location.search]);
 
     const navigateToListing = (id) => {
@@ -60,20 +56,20 @@ const SearchListings = () => {
         <div className="searchListings">
             {listings.map((listing, index) => (
                 <div className="listing" key={index}>
-                    <div className="listingImage">
+                    <div className="image">
                         <img src={"data:image/jpg;base64," + listing.image_encoded} alt="" />
                     </div>
-                    <div className="listingInfo">
-                        <Button className="listingTitle" onClick={() => navigateToListing(listing.listing_id)}>
+                    <div className="info">
+                        <Button className="title" onClick={() => navigateToListing(listing.listing_id)}>
                             {listing.title}
                         </Button>
-                        <div className="listingReviews">
+                        <div className="reviews">
                             {renderStars(listing.average_review)}
-                            <span className="reviews" style={{ left: -16 * Math.ceil(listing.average_review) + "px" }}>
+                            <span className="totalReviews" style={{ left: -16 * Math.ceil(listing.average_review) + "px" }}>
                                 &emsp;{listing.total_reviews}
                             </span>
                         </div>
-                        <h2 className="listingPrice">
+                        <h2 className="price">
                             ${listing.buy_now_price}
                         </h2>
                         <div className="bottomDetails">

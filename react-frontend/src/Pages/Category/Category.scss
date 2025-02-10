@@ -8,7 +8,7 @@
     height: 100vh;
 
     .mainPage {
-        .categoryHead {
+        .head {
             width: 70%;
             height: 250px;
             margin: 50px auto 0 auto;
@@ -17,7 +17,7 @@
             background-color: map.get($theme-colors, mainColor1);
             overflow: hidden;
 
-            .categoryInfo {
+            .info {
                 width: calc(50% - 100px);
                 height: fit-content;
                 margin: auto 0 auto 100px;
@@ -33,20 +33,22 @@
                     margin: 0;
                     font-size: 24px;
                 }
+
                 p {
                     font-size: 14px;
                 }
             }
-            .categoryImg {
+
+            .image {
                 width: 50%;
                 height: 100%;
                 display: inline-block;
                 float: right;
+                text-align: center;
 
                 img {
                     width: auto;
                     height: 100%;
-                    float: right;
                 }
             }
         }
