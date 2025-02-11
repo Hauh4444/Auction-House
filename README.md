@@ -11,9 +11,6 @@
 ### Listing Page
 1. Finalize Page Details
 
-## Flask Server
-1. Fill Database
-
 # Dinkleberg's Auction House
 
 ## Setup

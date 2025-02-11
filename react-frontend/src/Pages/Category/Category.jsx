@@ -33,7 +33,9 @@ const Category = () => {
     }, [location.search]);
 
     function pagination(n) {
-        filters.page = parseInt(filters.page) + n;
+        if (filters.page > 1) {
+            filters.page = parseInt(filters.page) + n;
+        }
         navigate({
             pathname: "/category",
             search: createSearchParams(filters).toString(),

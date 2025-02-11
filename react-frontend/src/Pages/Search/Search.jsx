@@ -9,20 +9,17 @@ import SearchNavigation from "@/Components/SearchNavigation/SearchNavigation";
 import RightNavigation from "@/Components/RightNavigation/RightNavigation";
 import SearchListings from "@/Components/SearchListings/SearchListings";
 // Stylesheets
-import "./Search.scss"; // Importing styles for this page
+import "./Search.scss";
 
 
 const Search = () => {
-    const navigate = useNavigate(); // Hook for navigation
-    const location = useLocation(); // Hook to access the current location (URL)
+    const navigate = useNavigate();
+    const location = useLocation();
     const filters = Object.fromEntries(new URLSearchParams(location.search).entries());
-    const [paginationButtons, setPaginationButtons] = useState(null); // State to manage pagination buttons visibility
+    const [paginationButtons, setPaginationButtons] = useState(null);
 
-    // useEffect to control pagination buttons visibility based on filter changes
     useEffect(() => {
-        // Check if the filter 'nav' is set to 'all', to show pagination controls
         if (filters.nav === "view-all") {
-            // Set pagination buttons for 'previous' and 'next' navigation
             setPaginationButtons(
                 <div className="pagination">
                     <Button onClick={() => pagination(-1)}><MdArrowBackIosNew className="icon" />&ensp;Previous</Button>
@@ -31,19 +28,17 @@ const Search = () => {
             );
         }
         else {
-            // If not in 'all' hide pagination buttons
             setPaginationButtons(null);
         }
-    }, [location.search]) // Dependency on location.search to re-run whenever the search parameters change
+    }, [location.search])
 
-    // Function to handle pagination
     function pagination(n) {
-        // Increment or decrement the page number (p) in filters
-        filters.page = parseInt(filters.page) + n;
-        // Update the URL with the new filters (this causes a re-render)
+        if (filters.page > 1) {
+            filters.page = parseInt(filters.page) + n;
+        }
         navigate({
             pathname: "/search",
-            search: createSearchParams(filters).toString(), // Convert filters object to query string
+            search: createSearchParams(filters).toString(),
         });
         window.scrollTo(0, 0);
     }
@@ -54,7 +49,6 @@ const Search = () => {
                 <Header />
                 <SearchNavigation />
                 <SearchListings />
-                {/* Render pagination buttons only when 'paginationButtons' is not null */}
                 {paginationButtons}
             </div>
             <RightNavigation />

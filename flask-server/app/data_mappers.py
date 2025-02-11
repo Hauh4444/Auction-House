@@ -10,15 +10,15 @@ class ListingMapper:
         statement = "SELECT * FROM listings"
         # Set conditions for any value we might want to directly check against
         conditions = [f"{key}='{args[key]}'" for key in ["category_id", "listing_type"] if key in args]
-        # Search query filter
-        if "query" in args:
-            query = args["query"]
-            conditions.append(f"title LIKE '%{query}%' OR description LIKE '%{query}%'")
         # Price conditions
         if "min_price" in args:
             conditions.append(f"buy_now_price > {args['min_price']}")
         if "max_price" in args:
             conditions.append(f"buy_now_price < {args['max_price']}")
+        # Search query filter
+        if "query" in args:
+            query = args["query"]
+            conditions.append(f"(title LIKE '%{query}%' OR description LIKE '%{query}%')")
         # Add check conditions to statement
         if conditions:
             statement += " WHERE " + " AND ".join(conditions)
@@ -47,15 +47,9 @@ class ListingMapper:
         statement = (
             """
                 INSERT INTO listings 
-<<<<<<< Updated upstream
                 (listing_id, user_id, title, title_short, description, item_specifics, category_id, listing_type, starting_price, 
                 reserve_price, current_price, buy_now_price, auction_start, auction_end, status, image_encoded, bids, purchases, 
-                average_review, total_reviews, created_at, updated_at) 
-=======
-                (listing_id, user_id, title, title_short, description, item_specifics, category_id, listing_type, starting_price, reserve_price,
-                current_price, buy_now_price, auction_start, auction_end, status, image_encoded, bids, purchases, average_review, 
-                total_reviews, created_at, updated_at) 
->>>>>>> Stashed changes
+                average_review, total_reviews, created_at, updated_at)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """
         )

@@ -7,7 +7,6 @@ import axios from "axios";
 // Stylesheets
 import "./SearchListings.scss";
 
-// Helper function to render stars based on average review
 const renderStars = (averageReview) => {
     const filledStars = Math.floor(averageReview);
     const halfStar = averageReview > filledStars;
@@ -32,9 +31,13 @@ const SearchListings = () => {
     useEffect(() => {
         const filters = Object.fromEntries(new URLSearchParams(location.search).entries());
 
-        if (filters.page) filters.start = ((filters.page - 1) * 20).toString(), filters.range = "20";
-        if (filters.sort) {
-            filters.sort = filters.nav === "new" ? "created_at" : (filters.nav === "best-sellers" ? "purchases" : filters.sort);
+        if (filters.page) filters.start = ((filters.page - 1) * 10).toString(), filters.range = "10";
+        if (filters.nav === "new") {
+            filters.sort = "created_at";
+            filters.order = "desc";
+        }
+        if (filters.nav === "best-sellers") {
+            filters.sort = "purchases";
             filters.order = "desc";
         }
 

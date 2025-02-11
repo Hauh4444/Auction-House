@@ -62,9 +62,13 @@ const SearchNavigation = () => {
                 }}>
                     View All
                 </Button>
-                <Button className="navBtn filtersBtn" onClick={toggleFiltersDisplay}>
-                    Filters&ensp;<MdFilterAlt className="icon" />
-                </Button>
+                {filters.nav === "view-all" ? (
+                    <Button className="navBtn filtersBtn" onClick={toggleFiltersDisplay}>
+                        Filters&ensp;<MdFilterAlt className="icon" />
+                    </Button>
+                ) : (
+                    <></>
+                )}
             </div>
             <FiltersPopup />
         </>

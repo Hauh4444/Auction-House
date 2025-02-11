@@ -7,7 +7,6 @@ import axios from "axios";
 // Stylesheets
 import "./CategoryListings.scss";
 
-// Helper function to render stars based on average review
 const renderStars = (averageReview) => {
     const filledStars = Math.floor(averageReview);
     const halfStar = averageReview > filledStars;
@@ -30,7 +29,7 @@ const SearchListings = () => {
     const location = useLocation();
     const filters = Object.fromEntries(new URLSearchParams(location.search).entries());
 
-    if (filters.page) filters.start = ((filters.page - 1) * 20).toString(), filters.range = "20";
+    if (filters.page) filters.start = ((filters.page - 1) * 12).toString(), filters.range = "12";
 
     useEffect(() => {
         axios.get("http://127.0.0.1:5000/api/listings", {

@@ -37,8 +37,8 @@ const FiltersPopup = () => {
                 const sortMap = {
                     "created_at_asc": ["created_at", "asc"],
                     "created_at_desc": ["created_at", "desc"],
-                    "starting_price_asc": ["starting_price", "asc"],
-                    "starting_price_desc": ["starting_price", "desc"],
+                    "current_price_asc": ["current_price", "asc"],
+                    "current_price_desc": ["current_price", "desc"],
                     "buy_now_price_asc": ["buy_now_price", "asc"],
                     "buy_now_price_desc": ["buy_now_price", "desc"],
                     "purchases": ["purchases", "desc"],
@@ -97,8 +97,8 @@ const FiltersPopup = () => {
                     <MenuItem value="relevance">Relevance</MenuItem>
                     <MenuItem value="created_at_asc">Oldest</MenuItem>
                     <MenuItem value="created_at_desc">Newest</MenuItem>
-                    <MenuItem value="starting_price_asc">Starting Price Ascending</MenuItem>
-                    <MenuItem value="starting_price_desc">Starting Price Descending</MenuItem>
+                    <MenuItem value="current_price_asc">Current Price Ascending</MenuItem>
+                    <MenuItem value="current_price_desc">Current Price Descending</MenuItem>
                     <MenuItem value="buy_now_price_asc">Buy Now Ascending</MenuItem>
                     <MenuItem value="buy_now_price_desc">Buy Now Descending</MenuItem>
                     <MenuItem value="purchases">Purchases</MenuItem>

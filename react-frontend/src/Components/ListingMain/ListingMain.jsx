@@ -45,7 +45,7 @@ const ListingMain = ({listing}) => {
                         ))}
                     </ul>
                 ) : (
-                    <div>No description available</div> // Fallback message if no description is available
+                    <div>No description available</div>
                 )}
             </div>
         </div>

@@ -5,10 +5,6 @@
 
 .specifics {
     width: 100%;
-    margin-top: 2px;
-    padding: 98px 0;
-    box-shadow: 0 2px 4px map.get($theme-colors, mainColor4);
-    background-color: map.get($theme-colors, mainColor1);
     flex-basis: 50%;
 
     table {
