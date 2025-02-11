@@ -1,15 +1,16 @@
 // External Libraries
-import { createSearchParams, useNavigate } from "react-router-dom";
+import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
 import { BsGrid3X3GapFill } from "react-icons/bs";
 import { Button } from "@mui/material";
 // Internal Modules
 import SearchBar from "@/Components/SearchBar/SearchBar";
-import CategoriesPopup from "@/Components/CategoriesPopup/CategoriesPopup";
+import CategoriesNavigation from "@/Components/CategoriesNavigation/CategoriesNavigation.jsx";
 // Stylesheets
 import "./Header.scss";
 
 const Header = () => {
     const navigate = useNavigate();
+    const location = useLocation();
 
     function toggleCategoriesDisplay() {
         const element = document.querySelector(".categoriesPopup");
@@ -39,13 +40,21 @@ const Header = () => {
                     <Button className="btn" onClick={() => {navigate("/contact")}}>
                         Contact
                     </Button>
-                    <Button className="btn categoriesBtn" onClick={toggleCategoriesDisplay}>
-                        Categories&ensp;<BsGrid3X3GapFill className="icon" />
-                    </Button>
+                    {location.pathname !== "/" ? (
+                        <Button className="btn categoriesBtn" onClick={toggleCategoriesDisplay}>
+                            Categories&ensp;<BsGrid3X3GapFill className="icon" />
+                        </Button>
+                    ) : (
+                        <></>
+                    )}
                 </div>
                 <SearchBar />
             </div>
-            <CategoriesPopup />
+            {location.pathname !== "/" ? (
+                <CategoriesNavigation />
+            ) : (
+                <></>
+            )}
         </>
     )
 }

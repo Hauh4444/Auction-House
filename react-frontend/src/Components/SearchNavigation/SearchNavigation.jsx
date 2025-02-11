@@ -44,21 +44,25 @@ const SearchNavigation = () => {
             <div className="searchNav">
                 <Button className="navBtn best-results" onClick={(e) => {
                     handleNavClick(e, {page: null, start: 0, range: 10, nav: null});
+                    document.querySelector(".filtersPopup").style.maxHeight = "0px";
                 }}>
                     Best Results
                 </Button>
                 <Button className="navBtn best-sellers" onClick={(e) => {
                     handleNavClick(e, {page: null, start: null, range: null, nav: "best-sellers"});
+                    document.querySelector(".filtersPopup").style.maxHeight = "0px";
                 }}>
                     Best Sellers
                 </Button>
                 <Button className="navBtn new" onClick={(e) => {
                     handleNavClick(e, {page: null, start: null, range: null, nav: "new"});
+                    document.querySelector(".filtersPopup").style.maxHeight = "0px";
                 }}>
                     New
                 </Button>
                 <Button className="navBtn view-all" onClick={(e) => {
                     handleNavClick(e, {page: 1, start: null, range: null, nav: null});
+                    document.querySelector(".filtersPopup").style.maxHeight = "0px";
                 }}>
                     View All
                 </Button>

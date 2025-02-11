@@ -8,11 +8,11 @@ app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "http://localhost:5173"}})
 init_db()
 
-#Register Blueprints
+# Register Blueprints
 app.register_blueprint(listings_bp, url_prefix='/api/listings')
 app.register_blueprint(category_bp, url_prefix='/api/categories')
 
-#Test
+# Test
 @app.route('/test', methods=['GET'])
 def test():
     return 'Success'

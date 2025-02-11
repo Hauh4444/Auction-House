@@ -1,4 +1,6 @@
+// External Libraries
 import PropTypes from "prop-types";
+// Stylesheets
 import "./ListingSpecifics.scss";
 
 const ListingSpecifics = ({listing}) => {

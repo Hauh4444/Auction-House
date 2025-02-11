@@ -1,28 +1,27 @@
 // External Libraries
-import { Button } from "@mui/material";
+import { useLocation } from "react-router-dom";
 // Internal Modules
+import CategoriesNavigation from "@/Components/CategoriesNavigation/CategoriesNavigation.jsx";
 import Header from "@/Components/Header/Header";
 import HomeNavigation from "@/Components/HomeNavigation/HomeNavigation";
 import RightNavigation from "@/Components/RightNavigation/RightNavigation";
 // Stylesheets
 import "./Home.scss";
 
-
 const Home = () => {
+    const location = useLocation();
+    const filters = Object.fromEntries(new URLSearchParams(location.search).entries());
 
     return (
         <div className="homePage">
             <div className="mainPage">
                 <Header />
                 <HomeNavigation />
-                <div className="content">
-                    <div className="recommended">
-                        <div className="nav">
-                            <p className="head">Recommended for You</p>
-                            <Button className="viewAll">View All</Button>
-                        </div>
-                    </div>
-                </div>
+                {filters.nav === "home" ? (
+                    <CategoriesNavigation />
+                ) : (
+                    <></>
+                )}
             </div>
             <RightNavigation />
         </div>

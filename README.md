@@ -1,16 +1,3 @@
-# TODO
-
-## React Frontend
-
-### Home Page
-1. Page Details
-
-### Category Pages
-1. Filters
-
-### Listing Page
-1. Finalize Page Details
-
 # Dinkleberg's Auction House
 
 ## Setup

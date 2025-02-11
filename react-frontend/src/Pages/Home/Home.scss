@@ -14,64 +14,79 @@ $featuredColor2: #e61984;
             width: 70%;
             margin: 25px auto 0 auto;
 
-            .recommended {
-                .nav {
-                    height: 40px;
+            h1 {
+                margin: 0;
+                padding-left: 7.5%;
+                font-size: 24px;
+                font-weight: normal;
+            }
 
-                    .head {
-                        width: 150px;
-                        height: 24.5px;
-                        padding: 6px 8px;
-                        line-height: 24.5px;
-                        color: map.get($theme-colors, mainColor3)
-                    }
+                .listing.first {
+                    margin-left: 0 !important;
+                }
 
-                    .viewAll {
-                        height: 40px;
-                        padding: 0 15px;
-                        border: none;
-                        border-radius: 20px;
-                        display: block;
-                        overflow: hidden;
-                        float: right;
-                        text-transform: none;
-                        color: map.get($theme-colors, mainColor2);
-                        transition: all 0.5s ease;
+                .listing {
+                    width: 20%;
+                    height: 300px;
+                    margin: 10vh 0 0 calc(20% / 3);
+                    border-radius: 10px;
+                    box-shadow: 0 2px 4px map.get($theme-colors, mainColor4);
+                    background-color: map.get($theme-colors, mainColor1);
+                    display: inline-flex;
+                    flex-direction: column;
 
-                        &::after {
-                            background: linear-gradient(to right, map.get($theme-colors, accentColor1), map.get($theme-colors, accentColor2)) no-repeat;
-                            position: absolute;
-                            z-index: -1;
-                            opacity: 0;
-                            inset: 0;
-                            content: "";
-                            transition: opacity 0.5s ease;
-                        }
+                    .image {
+                        height: 200px;
+                        border-radius: 10px;
+                        display: flex;
+                        flex-basis: 200px;
+                        justify-content: center;
 
-                        &:hover::after {
-                            opacity: 1;
-                        }
-
-                        &:hover {
-                            border: none;
-                            background-color: transparent;
-                            color: map.get($theme-colors, mainColor1) !important;
-                        }
-
-                        &:hover {
-                            color: map.get($theme-colors, mainColor1);
+                        img {
+                            width: auto;
+                            height: auto;
+                            max-width: 100%;
+                            max-height: 100%;
+                            object-fit: contain;
                         }
                     }
 
-                    .head,
-                    .viewAll {
-                        margin: 0 25px;
-                        display: inline-block;
-                        font-size: 14px;
-                        font-weight: bold;
+                    .info {
+                        width: 100%;
+                        height: 100px;
+                        padding-left: 15px;
+                        flex-basis: 100px;
+
+                        .title {
+                            width: 185px;
+                            height: fit-content;
+                            padding: 0;
+                            display: flex;
+                            justify-content: start;
+                            text-transform: none;
+
+                            &:hover {
+                                background-color: map.get($theme-colors, mainColor1);
+                            }
+                        }
+
+                        .reviews {
+                            width: fit-content;
+                            margin: 10px 0 5px 0;
+                        }
+
+                        .price {
+                            width: fit-content;
+                            margin: 5px 0;
+                        }
+
+                        .title,
+                        .price {
+                            font-size: 16px;
+                            color: map.get($theme-colors, mainColor3);
+                        }
                     }
                 }
             }
         }
     }
-}

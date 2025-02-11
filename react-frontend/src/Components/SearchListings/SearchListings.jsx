@@ -11,7 +11,7 @@ const renderStars = (averageReview) => {
     const filledStars = Math.floor(averageReview);
     const halfStar = averageReview > filledStars;
     return (
-        <>
+        <span className="stars">
             {Array.from({ length: 5 }, (_, i) => (
                 <LiaStarSolid className="blankStar" key={i} />
             ))}
@@ -19,7 +19,7 @@ const renderStars = (averageReview) => {
                 <LiaStarSolid className="filledStar" key={i} />
             ))}
             {halfStar && <LiaStarHalfSolid className="halfStar" />}
-        </>
+        </span>
     );
 };
 

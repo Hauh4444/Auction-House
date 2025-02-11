@@ -33,9 +33,7 @@ const Search = () => {
     }, [location.search])
 
     function pagination(n) {
-        if (filters.page > 1) {
-            filters.page = parseInt(filters.page) + n;
-        }
+        filters.page = parseInt(filters.page) + n;
         navigate({
             pathname: "/search",
             search: createSearchParams(filters).toString(),

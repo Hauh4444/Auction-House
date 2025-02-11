@@ -14,25 +14,6 @@
     display: none;
 }
 
-.opacityCoverLeft,
-.opacityCoverRight {
-    width: 15%;
-    height: 310px;
-    margin-top: 10vh;
-    position: absolute;
-    z-index: 5;
-}
-
-.opacityCoverLeft {
-    left: 0;
-    background-image: linear-gradient(to right, rgba(map.get($theme-colors, mainColor1), 1), rgba(map.get($theme-colors, mainColor1), 0));
-}
-
-.opacityCoverRight {
-    right: 50px;
-    background-image: linear-gradient(to right, rgba(map.get($theme-colors, mainColor1), 0), rgba(map.get($theme-colors, mainColor1), 1));
-}
-
 .categoryBestSellers {
     width: 100%;
     margin: 0;
@@ -92,31 +73,6 @@
             .reviews {
                 width: fit-content;
                 margin: 10px 0 5px 0;
-
-                .blankStar {
-                    color: map.get($theme-colors, mainColor4);
-                }
-
-                .filledStar,
-                .halfStar {
-                    color: map.get($theme-colors, accentColor1);
-                    position: relative;
-                    left: -80px;
-                }
-
-                .blankStar,
-                .filledStar,
-                .halfStar {
-                    font-size: 16px;
-                }
-
-                .totalReviews {
-                    position: relative;
-                    top: -3px;
-                    font-size: 12px;
-                    font-weight: bold;
-                    color: map.get($theme-colors, accentColor4);
-                }
             }
 
             .price {

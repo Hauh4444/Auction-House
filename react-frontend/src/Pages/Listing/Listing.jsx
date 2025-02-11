@@ -35,7 +35,7 @@ const Listing = () => {
                     <ListingMain listing={listing} />
                     <div className="lesserInfo">
                         <ListingSpecifics listing={listing} />
-                        <ListingReviews listing={listing} />
+                        <ListingReviews listing_id={listing.listing_id} />
                     </div>
                 </div>
             </div>

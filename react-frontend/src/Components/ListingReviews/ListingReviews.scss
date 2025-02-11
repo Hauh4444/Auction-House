@@ -5,5 +5,46 @@
 
 .reviewSection {
     width: 100%;
-    flex-basis: 50%;
+    padding-right: 5%;
+    display: flex;
+    flex-basis: 45%;
+    flex-direction: column;
+    justify-content: center;
+
+    .review {
+        margin: 10px 0;
+        padding: 0 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px map.get($theme-colors, mainColor4);
+        background-color: map.get($theme-colors, mainColor5);
+        display: flex;
+
+        .left {
+            width: 200px;
+            margin: 20px 0;
+            display: inline-block;
+
+            p {
+                width: 100%;
+                margin-bottom: 0;
+            }
+
+            .date {
+                 font-style: italic;
+                color: map.get($theme-colors, mainColor2);
+            }
+        }
+
+        .right {
+            width: calc(100% - 200px);
+            display: inline-block;
+
+            h3 {
+                margin: 20px 0
+            }
+            p {
+
+            }
+        }
+    }
 }

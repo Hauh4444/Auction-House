@@ -5,7 +5,10 @@
 
 .specifics {
     width: 100%;
+    display: flex;
     flex-basis: 50%;
+    flex-direction: column;
+    justify-content: center;
 
     table {
         width: 100%;
