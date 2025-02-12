@@ -1,32 +1,16 @@
-<<<<<<< HEAD
 // Built In Modules
 @use "sass:map";
 // Custom Variables
-=======
-@use "sass:map";
->>>>>>> 7ffa840 (WIP on main)
 @use "@/assets/variables.modules" as *;
 
 .rightNav {
     .navBar {
         width: 50px;
         height: 100%;
-<<<<<<< HEAD
-<<<<<<< HEAD
         background-color: map.get($theme-colors, mainColor5);
         position: fixed;
         top: 0;
         right: 0;
-=======
-        float: right;
-        background-color: map.get($theme-colors, mainColor2);
->>>>>>> 7ffa840 (WIP on main)
-=======
-        background-color: map.get($theme-colors, mainColor4);
-        position: fixed;
-        top: 0;
-        right: 0;
->>>>>>> 9d377c2 (update)
 
         .btn {
             width: 100%;
@@ -41,22 +25,11 @@
                 font-size: 25px;
                 color: map.get($theme-colors, accentColor1);
             }
-<<<<<<< HEAD
 
             .outline {
                 position: absolute;
                 font-size: 25px;
                 color: map.get($theme-colors, mainColor3);
-=======
-            .outline {
-                position: absolute;
-                font-size: 25px;
-<<<<<<< HEAD
-                color: map.get($theme-colors, fontColor1);
->>>>>>> 7ffa840 (WIP on main)
-=======
-                color: map.get($theme-colors, mainColor3);
->>>>>>> 9d377c2 (update)
             }
         }
     }

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // Built In Modules
 @use "sass:map";
 // Custom Variables
@@ -13,30 +12,12 @@
 
     .navBtn {
         min-width: fit-content;
-=======
-@use "sass:map";
-@use "@/assets/variables.modules" as *;
-
-.homeNav,
-.searchNav,
-.categoryNav {
-    width: fit-content;
-    height: 60px;
-    margin: 0 auto;
-    display: block;
-
-    .navBtn {
->>>>>>> 9d377c2 (update)
         height: 40px;
         margin: 10px 15px;
         border: 4px solid map.get($theme-colors, mainColor1);
         font-size: 14px;
         font-weight: normal;
-<<<<<<< HEAD
         text-transform: none;
-=======
-        text-transform: capitalize;
->>>>>>> 9d377c2 (update)
         color: map.get($theme-colors, mainColor2);
         transition: all 0.5s ease;
     }
@@ -48,13 +29,8 @@
         color: map.get($theme-colors, mainColor3) !important;
     }
 
-<<<<<<< HEAD
     .filtersBtn {
         padding: 0 15px;
-=======
-    .categoriesBtn,
-    .sortBtn {
->>>>>>> 9d377c2 (update)
         border: none;
         border-radius: 25px;
         display: block;
@@ -71,26 +47,17 @@
             content: "";
             transition: opacity 0.5s ease;
         }
-<<<<<<< HEAD
 
         &:hover::after {
             opacity: 1;
         }
 
-=======
-        &:hover::after {
-            opacity: 1;
-        }
->>>>>>> 9d377c2 (update)
         &:hover {
             border: none;
             background-color: transparent;
             color: map.get($theme-colors, mainColor1) !important;
         }
-<<<<<<< HEAD
 
-=======
->>>>>>> 9d377c2 (update)
         .icon {
             position: relative;
             top: 3px;

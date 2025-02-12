@@ -1,10 +1,6 @@
-<<<<<<< HEAD
 // External Libraries
 import { Link } from "react-router-dom";
 // Stylesheets
-=======
-import { Link } from "react-router-dom";
->>>>>>> 7ffa840 (WIP on main)
 import "./PageNotFound.scss";
 
 const PageNotFound = () => {

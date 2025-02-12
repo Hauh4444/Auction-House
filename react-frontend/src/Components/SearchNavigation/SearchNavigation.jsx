@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // External Libraries
 import { useEffect } from "react";
 import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
@@ -39,19 +38,10 @@ const SearchNavigation = () => {
         const element = document.querySelector(".filtersPopup");
         element.style.maxHeight = element.style.maxHeight === "0px" || element.style.maxHeight === "" ? "100%" : "0";
     }
-=======
-import { MdOutlineSort } from "react-icons/md";
-import { Button } from "@mui/material";
-import { toggleNav } from "@/Components/Navigation/Navigation.jsx"
-import "@/Components/Navigation/Navigation.scss"
-
-const SearchNavigation = () => {
->>>>>>> 9d377c2 (update)
 
     return (
         <>
             <div className="searchNav">
-<<<<<<< HEAD
                 <Button className="navBtn best-results" onClick={(e) => {
                     handleNavClick(e, {page: null, start: 0, range: 10, nav: null});
                     document.querySelector(".filtersPopup").style.maxHeight = "0px";
@@ -81,21 +71,6 @@ const SearchNavigation = () => {
                 </Button>
             </div>
             <FiltersPopup />
-=======
-                <Button className="navBtn selected" onClick={(e) => {toggleNav(e)}}>
-                    Best Results
-                </Button>
-                <Button className="navBtn" onClick={(e) => {toggleNav(e)}}>
-                    Best Deals
-                </Button>
-                <Button className="navBtn" onClick={(e) => {toggleNav(e)}}>
-                    View All
-                </Button>
-                <Button className="navBtn sortBtn">
-                    Sort By&ensp; <MdOutlineSort className="icon" />
-                </Button>
-            </div>
->>>>>>> 9d377c2 (update)
         </>
     )
 }
