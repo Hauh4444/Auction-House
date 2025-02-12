@@ -15,7 +15,7 @@
 }
 
 .categoryBestSellers {
-    width: 100%;
+    width: 70%;
     margin: 0;
     padding: 5px 15%;
     text-wrap: nowrap;
@@ -26,9 +26,9 @@
     }
 
     .listing {
-        width: 14%;
+        width: 20%;
         height: 300px;
-        margin: 10vh 0 0 calc(14% / 3);
+        margin: 10vh 0 0 calc(20% / 3);
         border-radius: 10px;
         box-shadow: 0 2px 4px map.get($theme-colors, mainColor4);
         background-color: map.get($theme-colors, mainColor1);
