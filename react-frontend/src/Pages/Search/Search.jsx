@@ -5,9 +5,9 @@ import {MdArrowBackIosNew, MdArrowForwardIos} from "react-icons/md";
 import {Button} from "@mui/material";
 // Internal Modules
 import Header from "@/Components/Header/Header";
-import SearchNav from "@/Components/Navigation/Search/SearchNav.jsx";
-import RightNav from "@/Components/Navigation/Right/RightNav.jsx";
-import SearchListings from "@/Components/Search/Listings/SearchListings.jsx";
+import SearchNav from "@/Components/Navigation/SearchNav/SearchNav.jsx";
+import RightNav from "@/Components/Navigation/RightNav/RightNav.jsx";
+import SearchListings from "@/Components/Search/SearchListings/SearchListings.jsx";
 // Stylesheets
 import "./Search.scss";
 

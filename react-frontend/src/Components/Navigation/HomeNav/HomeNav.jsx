@@ -14,14 +14,23 @@ const HomeNav = () => {
 
     useEffect(() => {
         document.querySelectorAll(".navBtn").forEach(btn => {
-            const condition = filters.nav ? btn.classList.contains(filters.nav) : btn.classList.contains("home");
+            let condition;
+            if (filters.nav) {
+                condition = btn.classList.contains(filters.nav);
+            } else {
+                condition = btn.classList.contains("home");
+            }
             btn.classList.toggle("selected", condition);
         });
     }, [location.search]);
 
     const handleNavClick = (e, navBtnClass) => {
         toggleNav(e);
-        (navBtnClass !== "home") ? (filters.nav = navBtnClass) : delete filters.nav;
+        if (navBtnClass !== "home") {
+            filters.nav = navBtnClass;
+        } else {
+            delete filters.nav;
+        }
         navigate({
             pathname: "/",
             search: createSearchParams(filters).toString(),

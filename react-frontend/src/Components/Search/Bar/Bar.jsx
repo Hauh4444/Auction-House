@@ -25,8 +25,8 @@ const Bar = () => {
                 pathname: "/search",
                 search: createSearchParams({
                     query: query,
-                    start: 0,
-                    range: 10,
+                    start: "0",
+                    range: "10",
                     nav: "best-results",
                 }).toString(),
             });

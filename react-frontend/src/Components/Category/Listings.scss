@@ -3,22 +3,25 @@
 // Custom Variables
 @use "@/assets/variables.modules.scss" as *;
 
+.categoryBestSellersHead,
+.categoryNewListingsHead,
 .categoryListingsHead {
-    width: fit-content;
     margin: 5% 0 0 0;
     padding-left: 20%;
-    display: inline-block;
     font-size: 24px;
     font-weight: normal;
 }
 
+.categoryBestSellers::-webkit-scrollbar,
+.categoryNewListings::-webkit-scrollbar,
 .categoryListings::-webkit-scrollbar {
     display: none;
 }
 
+.categoryBestSellers,
+.categoryNewListings,
 .categoryListings {
     width: 70%;
-    margin: 0 15%;
 
     .listing.first {
         margin-left: 0 !important;

@@ -55,7 +55,12 @@ const Popup = () => {
                 }
             }
         } else {
-            const valueToSet = value !== "All" && value !== "" ? value : undefined;
+            let valueToSet;
+            if (value !== "All" && value !== "") {
+                valueToSet = value;
+            } else {
+                valueToSet = undefined;
+            }
             setFilterState(filter, valueToSet);
             if (valueToSet) {
                 filters[filter] = valueToSet;

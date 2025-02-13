@@ -1,10 +1,10 @@
 // External Libraries
 import {useLocation} from "react-router-dom";
 // Internal Modules
-import CategoryNav from "@/Components/Navigation/Category/CategoryNav.jsx";
+import CategoryNav from "@/Components/Navigation/CategoryNav/CategoryNav.jsx";
 import Header from "@/Components/Header/Header";
-import HomeNav from "@/Components/Navigation/Home/HomeNav.jsx";
-import RightNav from "@/Components/Navigation/Right/RightNav.jsx";
+import HomeNav from "@/Components/Navigation/HomeNav/HomeNav.jsx";
+import RightNav from "@/Components/Navigation/RightNav/RightNav.jsx";
 // Stylesheets
 import "./Home.scss";
 

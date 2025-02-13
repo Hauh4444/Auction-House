@@ -9,11 +9,11 @@ const renderStars = (averageReview) => {
     const halfStar = averageReview > filledStars;
     return (
         <span className="stars">
-            {Array.from({length: 5}, (_, i) => (
-                <LiaStarSolid className="blankStar" key={i}/>
+            {Array.from({length: 5}, (_, index) => (
+                <LiaStarSolid className="blankStar" key={index}/>
             ))}
-            {Array.from({length: filledStars}, (_, i) => (
-                <LiaStarSolid className="filledStar" key={i}/>
+            {Array.from({length: filledStars}, (_, index) => (
+                <LiaStarSolid className="filledStar" key={index}/>
             ))}
             {halfStar && <LiaStarHalfSolid className="halfStar"/>}
         </span>
@@ -79,7 +79,16 @@ const Reviews = ({listing_id}) => {
 }
 
 Reviews.propTypes = {
-    listing_id: PropTypes.number
+    listing_id: PropTypes.number,
+    reviews: PropTypes.shape({
+        title: PropTypes.string,
+        description: PropTypes.string,
+        stars: PropTypes.number,
+        created_at: PropTypes.string,
+    }),
+    user: PropTypes.shape({
+        username: PropTypes.string,
+    })
 };
 
 export default Reviews;

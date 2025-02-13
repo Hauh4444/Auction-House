@@ -4,7 +4,7 @@ import {BsGrid3X3GapFill} from "react-icons/bs";
 import {Button} from "@mui/material";
 // Internal Modules
 import Bar from "@/Components/Search/Bar/Bar";
-import CategoryNav from "@/Components/Navigation/Category/CategoryNav.jsx";
+import CategoryNav from "@/Components/Navigation/CategoryNav/CategoryNav.jsx";
 // Stylesheets
 import "./Header.scss";
 
@@ -14,7 +14,11 @@ const Header = () => {
 
     function toggleCategoriesDisplay() {
         const element = document.querySelector(".categoriesPopup");
-        element.style.maxHeight = element.style.maxHeight === "0px" || element.style.maxHeight === "" ? "100%" : "0";
+        if (element.style.maxHeight === "0px" || element.style.maxHeight === "") {
+            element.style.maxHeight = "100%";
+        } else {
+            element.style.maxHeight = "0";
+        }
     }
 
     return (

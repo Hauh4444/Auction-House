@@ -1,6 +1,6 @@
 // External Libraries
-import PropTypes from "prop-types";
 import {Button} from "@mui/material";
+import PropTypes from "prop-types";
 // Stylesheets
 import "./Main.scss"
 
@@ -40,8 +40,8 @@ const Main = ({listing}) => {
                 Array.isArray(JSON.parse(listing.description)) &&
                 JSON.parse(listing.description).length > 0 ? (
                     <ul className="list">
-                        {JSON.parse(listing.description).map((desc, i) => (
-                            <li key={i}>{desc}</li>
+                        {JSON.parse(listing.description).map((desc, index) => (
+                            <li key={index}>{desc}</li>
                         ))}
                     </ul>
                 ) : (
@@ -55,13 +55,13 @@ const Main = ({listing}) => {
 Main.propTypes = {
     listing: PropTypes.shape({
         title: PropTypes.string,
+        description: PropTypes.string,
         listing_type: PropTypes.string,
         current_price: PropTypes.number,
-        bids: PropTypes.number,
-        auction_end: PropTypes.string,
         buy_now_price: PropTypes.number,
+        auction_end: PropTypes.string,
         image_encoded: PropTypes.string,
-        description: PropTypes.string,
+        bids: PropTypes.number,
     }),
 };
 

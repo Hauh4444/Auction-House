@@ -1,7 +1,7 @@
 // Built In Modules
 @use "sass:map";
 // Custom Variables
-@use "@/assets/variables.modules" as *;
+@use "@/assets/variables.modules.scss" as *;
 
 .categoriesPopup {
     width: 58%;
@@ -38,9 +38,9 @@
 }
 
 .categoriesList {
-    width: 80%;
+    width: 70%;
     margin-top: 20px;
-    padding: 0 10%;
+    padding: 0 15%;
 
     .category {
         width: 20%;
@@ -50,6 +50,22 @@
         box-shadow: 0 2px 4px map.get($theme-colors, mainColor4);
         background-color: map.get($theme-colors, mainColor1);
         display: inline-block;
+
+        .image {
+            height: 200px;
+            border-radius: 10px;
+            display: flex;
+            flex-basis: 200px;
+            justify-content: center;
+
+            img {
+                width: auto;
+                height: auto;
+                max-width: 100%;
+                max-height: 100%;
+                object-fit: contain;
+            }
+        }
 
         .categoryBtn {
             width: 100%;
@@ -69,22 +85,6 @@
                 &:hover {
                     background-color: map.get($theme-colors, mainColor1);
                 }
-            }
-        }
-
-        .image {
-            height: 200px;
-            border-radius: 10px;
-            display: flex;
-            flex-basis: 200px;
-            justify-content: center;
-
-            img {
-                width: auto;
-                height: auto;
-                max-width: 100%;
-                max-height: 100%;
-                object-fit: contain;
             }
         }
     }

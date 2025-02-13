@@ -4,34 +4,40 @@ import {createSearchParams, useLocation, useNavigate} from "react-router-dom";
 import {LiaStarHalfSolid, LiaStarSolid} from "react-icons/lia";
 import {Button} from "@mui/material";
 import axios from "axios";
+import PropTypes from "prop-types";
 // Stylesheets
 import "./CategoryListings.scss";
+import "../Listings.scss"
 
 const renderStars = (averageReview) => {
     const filledStars = Math.floor(averageReview);
     const halfStar = averageReview > filledStars;
     return (
         <span className="stars">
-            {Array.from({length: 5}, (_, i) => (
-                <LiaStarSolid className="blankStar" key={i}/>
+            {Array.from({length: 5}, (_, index) => (
+                <LiaStarSolid className="blankStar" key={index}/>
             ))}
-            {Array.from({length: filledStars}, (_, i) => (
-                <LiaStarSolid className="filledStar" key={i}/>
+            {Array.from({length: filledStars}, (_, index) => (
+                <LiaStarSolid className="filledStar" key={index}/>
             ))}
             {halfStar && <LiaStarHalfSolid className="halfStar"/>}
         </span>
     );
 };
 
-const SearchListings = () => {
+const CategoryListings = () => {
     const [listings, setListings] = useState([]);
     const navigate = useNavigate();
     const location = useLocation();
-    const filters = Object.fromEntries(new URLSearchParams(location.search).entries());
-
-    if (filters.page) filters.start = ((filters.page - 1) * 12).toString(), filters.range = "12";
 
     useEffect(() => {
+        const filters = Object.fromEntries(new URLSearchParams(location.search).entries());
+
+        if (filters.page) {
+            filters.start = ((filters.page - 1) * 12).toString();
+            filters.range = "12";
+        }
+
         axios.get("http://127.0.0.1:5000/api/listings", {
             headers: {
                 "Content-Type": "application/json",
@@ -75,4 +81,15 @@ const SearchListings = () => {
     );
 };
 
-export default SearchListings;
+CategoryListings.propTypes = {
+    bestSellers: PropTypes.shape({
+        listing_id: PropTypes.number,
+        title_short: PropTypes.string,
+        buy_now_price: PropTypes.number,
+        image_encoded: PropTypes.string,
+        average_review: PropTypes.number,
+        total_reviews: PropTypes.number,
+    }),
+};
+
+export default CategoryListings;

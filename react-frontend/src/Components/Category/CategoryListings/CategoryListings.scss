@@ -3,10 +3,6 @@
 // Custom Variables
 @use "@/assets/variables.modules.scss" as *;
 
-$featuredColor1: #f94914;
-$featuredColor2: #e61984;
-
-.homePage {
-    width: 100%;
-    height: 100vh;
+.categoryListings {
+    margin: 0 15%;
 }

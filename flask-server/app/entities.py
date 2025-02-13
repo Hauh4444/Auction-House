@@ -4,30 +4,32 @@ from datetime import datetime
 
 @dataclass
 class Listing:
+    """Represents a listing in the auction system."""
+
     def __init__(
             self,
-            user_id: int,
-            title: int,
-            title_short: str,
-            description: str,
-            item_specifics: str,
-            category_id: str,
-            listing_type: str,
-            buy_now_price: float,
-            status: str,
-            image_encoded: str,
-            starting_price: float | None = None,
-            reserve_price: float | None = None,
-            current_price: float | None = None,
-            auction_start: datetime | None = None,
-            auction_end: datetime | None = None,
-            bids: int | None = None,
-            purchases: int | None = None,
-            average_review: float | None = None,
-            total_reviews: int | None = None,
-            created_at: datetime | None = None,
-            updated_at: datetime | None = None,
-            listing_id: int | None = None
+            user_id: int,  # ID of the user creating the listing
+            title: str,  # Full title of the listing
+            title_short: str,  # Shortened title for display
+            description: str,  # Detailed description of the listing
+            item_specifics: str,  # Specific attributes of the item
+            category_id: str,  # ID of the category to which the listing belongs
+            listing_type: str,  # Type of listing (e.g., auction, fixed price)
+            buy_now_price: float,  # Price for a "Buy Now" option
+            status: str,  # Current status of the listing (e.g., active, sold)
+            image_encoded: str,  # Base64-encoded image for the listing
+            starting_price: float | None = None,  # Starting price for the listing
+            reserve_price: float | None = None,  # Reserve price (if any)
+            current_price: float | None = None,  # Current price of the listing
+            auction_start: datetime | None = None,  # Start date for auction
+            auction_end: datetime | None = None,  # End date for auction
+            bids: int | None = None,  # Number of bids received
+            purchases: int | None = None,  # Number of times the listing has been purchased
+            average_review: float | None = None,  # Average rating of the listing
+            total_reviews: int | None = None,  # Total number of reviews
+            created_at: datetime | None = None,  # Timestamp of creation
+            updated_at: datetime | None = None,  # Timestamp of last update
+            listing_id: int | None = None  # ID of the listing
     ):
         self.listing_id = listing_id
         self.user_id = user_id
@@ -53,6 +55,7 @@ class Listing:
         self.updated_at = updated_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     def to_dict(self):
+        """Convert the listing to a dictionary format for serialization."""
         return {
             "listing_id": self.listing_id,
             "user_id": self.user_id,
@@ -81,14 +84,16 @@ class Listing:
 
 @dataclass
 class Category:
+    """Represents a category in the auction system."""
+
     def __init__(
             self,
-            name: str,
-            description: str,
-            image_encoded: str | None = None,
-            created_at: datetime | None = None,
-            updated_at: datetime | None = None,
-            category_id: int | None = None
+            name: str,  # Name of the category
+            description: str,  # Description of the category
+            image_encoded: str | None = None,  # Optional base64-encoded image for the category
+            created_at: datetime | None = None,  # Timestamp of category creation
+            updated_at: datetime | None = None,  # Timestamp of last category update
+            category_id: int | None = None  # ID of the category
     ):
         self.category_id = category_id
         self.name = name
@@ -98,6 +103,7 @@ class Category:
         self.updated_at = updated_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     def to_dict(self):
+        """Convert the category to a dictionary format for serialization."""
         return {
             "category_id": self.category_id,
             "name": self.name,

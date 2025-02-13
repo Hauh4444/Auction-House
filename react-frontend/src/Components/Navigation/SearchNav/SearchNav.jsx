@@ -16,7 +16,12 @@ const SearchNav = () => {
 
     useEffect(() => {
         document.querySelectorAll(".navBtn").forEach(btn => {
-            const condition = filters.nav ? btn.classList.contains(filters.nav) : btn.classList.contains("best-sellers");
+            let condition;
+            if (filters.nav) {
+                condition = btn.classList.contains(filters.nav);
+            } else {
+                condition = btn.classList.contains("best-sellers");
+            }
             btn.classList.toggle("selected", condition);
         });
     }, [location.search]);
@@ -24,8 +29,11 @@ const SearchNav = () => {
     function handleNavClick(e, newFilters) {
         toggleNav(e);
         Object.entries(newFilters).forEach(([key, value]) => {
-            if (value === null) delete filters[key];
-            else filters[key] = value;
+            if (value === null) {
+                delete filters[key];
+            } else {
+                filters[key] = value;
+            }
         });
         ["best-results", "best-sellers", "new", "view-all"].forEach(c => e.target.classList.contains(c) && (filters.nav = c));
         navigate({
@@ -36,7 +44,11 @@ const SearchNav = () => {
 
     function toggleFiltersDisplay() {
         const element = document.querySelector(".filtersPopup");
-        element.style.maxHeight = element.style.maxHeight === "0px" || element.style.maxHeight === "" ? "100%" : "0";
+        if (element.style.maxHeight === "0px" || element.style.maxHeight === "") {
+            element.style.maxHeight = "100%";
+        } else {
+            element.style.maxHeight = "0";
+        }
     }
 
     return (

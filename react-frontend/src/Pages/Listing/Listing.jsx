@@ -4,12 +4,13 @@ import {useLocation} from "react-router-dom";
 import axios from "axios";
 // Internal Modules
 import Header from "@/Components/Header/Header";
-import RightNav from "@/Components/Navigation/Right/RightNav.jsx";
+import RightNav from "@/Components/Navigation/RightNav/RightNav.jsx";
 import Main from "@/Components/Listing/Main/Main"
 import Specifics from "@/Components/Listing/Specifics/Specifics"
 import Reviews from "@/Components/Listing/Reviews/Reviews"
 // Stylesheets
 import "./Listing.scss";
+
 
 const Listing = () => {
     const [listing, setListing] = useState({});
