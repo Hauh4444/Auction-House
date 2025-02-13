@@ -2,10 +2,12 @@ import sqlite3
 
 DB_FILE = "database/auctionhouse.db"
 
+
 def get_db():
     conn = sqlite3.connect(DB_FILE)
     conn.row_factory = sqlite3.Row
     return conn
+
 
 def init_db():
     db = get_db()

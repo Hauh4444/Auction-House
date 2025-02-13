@@ -1,32 +1,33 @@
 from dataclasses import dataclass
 from datetime import datetime
 
+
 @dataclass
 class Listing:
     def __init__(
-        self,
-        user_id: int,
-        title: int,
-        title_short: str,
-        description: str,
-        item_specifics: str,
-        category_id: str,
-        listing_type: str,
-        buy_now_price: float,
-        status: str,
-        image_encoded: str,
-        starting_price: float | None = None,
-        reserve_price: float | None = None,
-        current_price: float | None = None,
-        auction_start: datetime | None = None,
-        auction_end: datetime | None = None,
-        bids: int | None = None,
-        purchases: int | None = None,
-        average_review: float | None = None,
-        total_reviews: int | None = None,
-        created_at: datetime | None = None,
-        updated_at: datetime | None = None,
-        listing_id: int | None = None
+            self,
+            user_id: int,
+            title: int,
+            title_short: str,
+            description: str,
+            item_specifics: str,
+            category_id: str,
+            listing_type: str,
+            buy_now_price: float,
+            status: str,
+            image_encoded: str,
+            starting_price: float | None = None,
+            reserve_price: float | None = None,
+            current_price: float | None = None,
+            auction_start: datetime | None = None,
+            auction_end: datetime | None = None,
+            bids: int | None = None,
+            purchases: int | None = None,
+            average_review: float | None = None,
+            total_reviews: int | None = None,
+            created_at: datetime | None = None,
+            updated_at: datetime | None = None,
+            listing_id: int | None = None
     ):
         self.listing_id = listing_id
         self.user_id = user_id
@@ -77,19 +78,20 @@ class Listing:
             "updated_at": self.updated_at
         }
 
+
 @dataclass
 class Category:
     def __init__(
-        self,
-        name: str,
-        description: str,
-        image_encoded: str | None = None,
-        created_at: datetime | None = None,
-        updated_at: datetime | None = None,
-        category_id: int | None = None
+            self,
+            name: str,
+            description: str,
+            image_encoded: str | None = None,
+            created_at: datetime | None = None,
+            updated_at: datetime | None = None,
+            category_id: int | None = None
     ):
         self.category_id = category_id
-        self.name = name 
+        self.name = name
         self.description = description
         self.image_encoded = image_encoded
         self.created_at = created_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")

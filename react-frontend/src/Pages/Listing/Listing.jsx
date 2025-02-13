@@ -1,13 +1,13 @@
 // External Libraries
-import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import {useEffect, useState} from "react";
+import {useLocation} from "react-router-dom";
 import axios from "axios";
 // Internal Modules
 import Header from "@/Components/Header/Header";
-import RightNavigation from "@/Components/RightNavigation/RightNavigation";
-import ListingMain from "@/Components/ListingMain/ListingMain"
-import ListingSpecifics from "@/Components/ListingSpecifics/ListingSpecifics"
-import ListingReviews from "@/Components/ListingReviews/ListingReviews"
+import RightNav from "@/Components/Navigation/Right/RightNav.jsx";
+import Main from "@/Components/Listing/Main/Main"
+import Specifics from "@/Components/Listing/Specifics/Specifics"
+import Reviews from "@/Components/Listing/Reviews/Reviews"
 // Stylesheets
 import "./Listing.scss";
 
@@ -30,16 +30,16 @@ const Listing = () => {
     return (
         <div className="listingPage">
             <div className="mainPage">
-                <Header />
+                <Header/>
                 <div className="listing">
-                    <ListingMain listing={listing} />
+                    <Main listing={listing}/>
                     <div className="lesserInfo">
-                        <ListingSpecifics listing={listing} />
-                        <ListingReviews listing_id={listing.listing_id} />
+                        <Specifics listing={listing}/>
+                        <Reviews listing_id={listing.listing_id}/>
                     </div>
                 </div>
             </div>
-            <RightNavigation />
+            <RightNav/>
         </div>
     )
 }

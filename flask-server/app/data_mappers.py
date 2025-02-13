@@ -1,6 +1,8 @@
+from datetime import datetime
+
 from .database import get_db
 from .entities import Category, Listing
-from datetime import datetime
+
 
 class ListingMapper:
     @staticmethod
@@ -15,7 +17,7 @@ class ListingMapper:
             conditions.append(f"buy_now_price > {args['min_price']}")
         if "max_price" in args:
             conditions.append(f"buy_now_price < {args['max_price']}")
-        # Search query filter
+        # SearchNav query filter
         if "query" in args:
             query = args["query"]
             conditions.append(f"(title LIKE '%{query}%' OR description LIKE '%{query}%')")
@@ -78,6 +80,7 @@ class ListingMapper:
         cursor.execute(f"DELETE FROM listings WHERE listing_id={listing_id}")
         db.commit()
         return cursor.rowcount  # Returns number of rows deleted
+
 
 class CategoryMapper:
     @staticmethod

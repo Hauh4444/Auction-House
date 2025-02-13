@@ -1,15 +1,15 @@
 // External Libraries
-import { useEffect, useState } from "react";
-import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
-import { MdArrowBackIosNew, MdArrowForwardIos } from "react-icons/md";
-import { Button } from "@mui/material";
+import {useEffect, useState} from "react";
+import {createSearchParams, useLocation, useNavigate} from "react-router-dom";
+import {MdArrowBackIosNew, MdArrowForwardIos} from "react-icons/md";
+import {Button} from "@mui/material";
 import axios from "axios";
 // Internal Modules
 import Header from "@/Components/Header/Header";
-import RightNavigation from "@/Components/RightNavigation/RightNavigation";
-import CategoryListings from "@/Components/CategoryListings/CategoryListings";
-import CategoryBestSellers from "@/Components/CategoryBestSellers/CategoryBestSellers";
-import CategoryNewListings from "@/Components/CategoryNewListings/CategoryNewListings";
+import RightNav from "@/Components/Navigation/Right/RightNav.jsx";
+import CategoryListings from "@/Components/Category/Listings/CategoryListings.jsx";
+import BestSellers from "@/Components/Category/BestSellers/BestSellers";
+import NewListings from "@/Components/Category/NewListings/NewListings";
 // Stylesheets
 import "./Category.scss";
 
@@ -51,7 +51,7 @@ const Category = () => {
     return (
         <div className="categoryPage">
             <div className="mainPage">
-                <Header />
+                <Header/>
                 <div className="head">
                     <div className="info">
                         <h1>{category.name}</h1>
@@ -59,21 +59,22 @@ const Category = () => {
                     </div>
                     <div className="image">
                         {category.image_encoded ? (
-                            <img src={`data:image/jpg;base64,${category.image_encoded}`} alt={category.title} />
+                            <img src={`data:image/jpg;base64,${category.image_encoded}`} alt={category.title}/>
                         ) : (
                             <div>No image available</div>
                         )}
                     </div>
                 </div>
-                <CategoryBestSellers />
-                <CategoryNewListings />
-                <CategoryListings />
+                <BestSellers/>
+                <NewListings/>
+                <CategoryListings/>
                 <div className="pagination">
-                    <Button onClick={() => pagination(-1)}><MdArrowBackIosNew className="icon" />&ensp;Previous</Button>
-                    <Button style={{ marginLeft: "25px" }} onClick={() => pagination(1)}>Next&ensp;<MdArrowForwardIos className="icon" /></Button>
+                    <Button onClick={() => pagination(-1)}><MdArrowBackIosNew className="icon"/>&ensp;Previous</Button>
+                    <Button style={{marginLeft: "25px"}} onClick={() => pagination(1)}>Next&ensp;<MdArrowForwardIos
+                        className="icon"/></Button>
                 </div>
             </div>
-            <RightNavigation />
+            <RightNav/>
         </div>
     );
 };

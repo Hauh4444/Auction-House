@@ -1,5 +1,7 @@
 from flask import jsonify
+
 from .data_mappers import CategoryMapper, ListingMapper
+
 
 class ListingService:
     @staticmethod
@@ -34,7 +36,8 @@ class ListingService:
         if deleted_rows:
             return jsonify({"message": "Listing deleted"}), 200
         return jsonify({"error": "Listing not found"}), 404
-    
+
+
 class CategoryService:
     @staticmethod
     def get_all_categories():
@@ -46,25 +49,25 @@ class CategoryService:
         category = CategoryMapper.get_category_by_id(category_id)
         if category:
             return jsonify(category), 200
-        return jsonify({"error": "Category not found"}), 404
+        return jsonify({"error": "CategoryNav not found"}), 404
 
     @staticmethod
     def create_category(data):
         if not data.get("name"):
-            return jsonify({"error": "Category name is required"}), 400
+            return jsonify({"error": "CategoryNav name is required"}), 400
         category_id = CategoryMapper.create_category(data)
-        return jsonify({"message": "Category created", "category_id": category_id}), 201
+        return jsonify({"message": "CategoryNav created", "category_id": category_id}), 201
 
     @staticmethod
     def update_category(category_id, data):
         updated_rows = CategoryMapper.update_category(category_id, data)
         if updated_rows:
-            return jsonify({"message": "Category updated"}), 200
-        return jsonify({"error": "Category not found"}), 404
+            return jsonify({"message": "CategoryNav updated"}), 200
+        return jsonify({"error": "CategoryNav not found"}), 404
 
     @staticmethod
     def delete_category(category_id):
         deleted_rows = CategoryMapper.delete_category(category_id)
         if deleted_rows:
-            return jsonify({"message": "Category deleted"}), 200
-        return jsonify({"error": "Category not found"}), 404
+            return jsonify({"message": "CategoryNav deleted"}), 200
+        return jsonify({"error": "CategoryNav not found"}), 404

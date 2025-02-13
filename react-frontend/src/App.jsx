@@ -1,6 +1,6 @@
 // External Libraries
-import { useEffect, useState } from "react";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
+import {useEffect, useState} from "react";
+import {createTheme, ThemeProvider} from "@mui/material/styles";
 // Internal Modules
 import PublicRoutes from "@/Routes/PublicRoutes";
 // Stylesheets
@@ -44,7 +44,7 @@ function App() {
     // This should be updated based on `isDarkMode`-> isDarkMode ? darkTheme : lightTheme
     return (
         <ThemeProvider theme={lightTheme}>
-            <PublicRoutes />
+            <PublicRoutes/>
         </ThemeProvider>
     );
 }

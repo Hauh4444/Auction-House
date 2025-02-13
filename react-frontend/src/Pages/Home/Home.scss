@@ -1,7 +1,8 @@
 // Built In Modules
 @use "sass:map";
 // Custom Variables
-@use "@/assets/variables.modules" as *;
+@use "@/assets/variables.modules.scss" as *;
+
 $featuredColor1: #f94914;
 $featuredColor2: #e61984;
 
@@ -21,72 +22,72 @@ $featuredColor2: #e61984;
                 font-weight: normal;
             }
 
-                .listing.first {
-                    margin-left: 0 !important;
+            .listing.first {
+                margin-left: 0 !important;
+            }
+
+            .listing {
+                width: 20%;
+                height: 300px;
+                margin: 10vh 0 0 calc(20% / 3);
+                border-radius: 10px;
+                box-shadow: 0 2px 4px map.get($theme-colors, mainColor4);
+                background-color: map.get($theme-colors, mainColor1);
+                display: inline-flex;
+                flex-direction: column;
+
+                .image {
+                    height: 200px;
+                    border-radius: 10px;
+                    display: flex;
+                    flex-basis: 200px;
+                    justify-content: center;
+
+                    img {
+                        width: auto;
+                        height: auto;
+                        max-width: 100%;
+                        max-height: 100%;
+                        object-fit: contain;
+                    }
                 }
 
-                .listing {
-                    width: 20%;
-                    height: 300px;
-                    margin: 10vh 0 0 calc(20% / 3);
-                    border-radius: 10px;
-                    box-shadow: 0 2px 4px map.get($theme-colors, mainColor4);
-                    background-color: map.get($theme-colors, mainColor1);
-                    display: inline-flex;
-                    flex-direction: column;
+                .info {
+                    width: 100%;
+                    height: 100px;
+                    padding-left: 15px;
+                    flex-basis: 100px;
 
-                    .image {
-                        height: 200px;
-                        border-radius: 10px;
+                    .title {
+                        width: 185px;
+                        height: fit-content;
+                        padding: 0;
                         display: flex;
-                        flex-basis: 200px;
-                        justify-content: center;
+                        justify-content: start;
+                        text-transform: none;
 
-                        img {
-                            width: auto;
-                            height: auto;
-                            max-width: 100%;
-                            max-height: 100%;
-                            object-fit: contain;
+                        &:hover {
+                            background-color: map.get($theme-colors, mainColor1);
                         }
                     }
 
-                    .info {
-                        width: 100%;
-                        height: 100px;
-                        padding-left: 15px;
-                        flex-basis: 100px;
+                    .reviews {
+                        width: fit-content;
+                        margin: 10px 0 5px 0;
+                    }
 
-                        .title {
-                            width: 185px;
-                            height: fit-content;
-                            padding: 0;
-                            display: flex;
-                            justify-content: start;
-                            text-transform: none;
+                    .price {
+                        width: fit-content;
+                        margin: 5px 0;
+                    }
 
-                            &:hover {
-                                background-color: map.get($theme-colors, mainColor1);
-                            }
-                        }
-
-                        .reviews {
-                            width: fit-content;
-                            margin: 10px 0 5px 0;
-                        }
-
-                        .price {
-                            width: fit-content;
-                            margin: 5px 0;
-                        }
-
-                        .title,
-                        .price {
-                            font-size: 16px;
-                            color: map.get($theme-colors, mainColor3);
-                        }
+                    .title,
+                    .price {
+                        font-size: 16px;
+                        color: map.get($theme-colors, mainColor3);
                     }
                 }
             }
         }
     }
+}

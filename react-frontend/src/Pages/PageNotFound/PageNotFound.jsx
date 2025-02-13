@@ -1,5 +1,5 @@
 // External Libraries
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 // Stylesheets
 import "./PageNotFound.scss";
 
@@ -7,7 +7,7 @@ const PageNotFound = () => {
     return (
         <>
             <section className="mainSection">
-                <img src="/assets/404.jpg" className="notFoundImage" alt="Page Not Found" />
+                <img src="/assets/404.jpg" className="notFoundImage" alt="Page Not Found"/>
             </section>
             <div>
                 <Link to="/">

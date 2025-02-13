@@ -1,13 +1,13 @@
 // External Libraries
-import { useEffect, useState } from "react";
-import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
-import { MdArrowBackIosNew, MdArrowForwardIos } from "react-icons/md";
-import { Button } from "@mui/material";
+import {useEffect, useState} from "react";
+import {createSearchParams, useLocation, useNavigate} from "react-router-dom";
+import {MdArrowBackIosNew, MdArrowForwardIos} from "react-icons/md";
+import {Button} from "@mui/material";
 // Internal Modules
 import Header from "@/Components/Header/Header";
-import SearchNavigation from "@/Components/SearchNavigation/SearchNavigation";
-import RightNavigation from "@/Components/RightNavigation/RightNavigation";
-import SearchListings from "@/Components/SearchListings/SearchListings";
+import SearchNav from "@/Components/Navigation/Search/SearchNav.jsx";
+import RightNav from "@/Components/Navigation/Right/RightNav.jsx";
+import SearchListings from "@/Components/Search/Listings/SearchListings.jsx";
 // Stylesheets
 import "./Search.scss";
 
@@ -22,12 +22,12 @@ const Search = () => {
         if (filters.nav === "view-all") {
             setPaginationButtons(
                 <div className="pagination">
-                    <Button onClick={() => pagination(-1)}><MdArrowBackIosNew className="icon" />&ensp;Previous</Button>
-                    <Button style={{ marginLeft: "25px" }} onClick={() => pagination(1)}>Next&ensp;<MdArrowForwardIos className="icon" /></Button>
+                    <Button onClick={() => pagination(-1)}><MdArrowBackIosNew className="icon"/>&ensp;Previous</Button>
+                    <Button style={{marginLeft: "25px"}} onClick={() => pagination(1)}>Next&ensp;<MdArrowForwardIos
+                        className="icon"/></Button>
                 </div>
             );
-        }
-        else {
+        } else {
             setPaginationButtons(null);
         }
     }, [location.search])
@@ -44,12 +44,12 @@ const Search = () => {
     return (
         <div className="searchPage">
             <div className="mainPage">
-                <Header />
-                <SearchNavigation />
-                <SearchListings />
+                <Header/>
+                <SearchNav/>
+                <SearchListings/>
                 {paginationButtons}
             </div>
-            <RightNavigation />
+            <RightNav/>
         </div>
     )
 }

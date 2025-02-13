@@ -1,10 +1,10 @@
 // External Libraries
-import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
-import { BsGrid3X3GapFill } from "react-icons/bs";
-import { Button } from "@mui/material";
+import {useLocation, useNavigate} from "react-router-dom";
+import {BsGrid3X3GapFill} from "react-icons/bs";
+import {Button} from "@mui/material";
 // Internal Modules
-import SearchBar from "@/Components/SearchBar/SearchBar";
-import CategoriesNavigation from "@/Components/CategoriesNavigation/CategoriesNavigation.jsx";
+import Bar from "@/Components/Search/Bar/Bar";
+import CategoryNav from "@/Components/Navigation/Category/CategoryNav.jsx";
 // Stylesheets
 import "./Header.scss";
 
@@ -22,36 +22,38 @@ const Header = () => {
             <div className="header">
                 <div className="headNav">
                     <Button className="btn" onClick={() => {
-                        navigate({
-                            pathname: "/",
-                            search: createSearchParams({
-                                nav: "home",
-                            }).toString(),
-                        })
+                        navigate("/")
                     }}>
+
                         Home
                     </Button>
-                    <Button className="btn" onClick={() => {navigate("/search")}}>
+                    <Button className="btn" onClick={() => {
+                        navigate("/search")
+                    }}>
                         Shop All
                     </Button>
-                    <Button className="btn" onClick={() => {navigate("/about")}}>
+                    <Button className="btn" onClick={() => {
+                        navigate("/about")
+                    }}>
                         About
                     </Button>
-                    <Button className="btn" onClick={() => {navigate("/contact")}}>
+                    <Button className="btn" onClick={() => {
+                        navigate("/contact")
+                    }}>
                         Contact
                     </Button>
                     {location.pathname !== "/" ? (
                         <Button className="btn categoriesBtn" onClick={toggleCategoriesDisplay}>
-                            Categories&ensp;<BsGrid3X3GapFill className="icon" />
+                            Categories&ensp;<BsGrid3X3GapFill className="icon"/>
                         </Button>
                     ) : (
                         <></>
                     )}
                 </div>
-                <SearchBar />
+                <Bar/>
             </div>
             {location.pathname !== "/" ? (
-                <CategoriesNavigation />
+                <CategoryNav/>
             ) : (
                 <></>
             )}

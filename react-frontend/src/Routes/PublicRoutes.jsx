@@ -1,5 +1,5 @@
 // External Libraries
-import { Routes, Route } from "react-router-dom";
+import {Route, Routes} from "react-router-dom";
 // Internal Modules
 import Home from "@/Pages/Home/Home";
 import Search from "@/Pages/Search/Search";
@@ -14,15 +14,15 @@ import PageNotFound from "@/Pages/PageNotFound/PageNotFound";
 const PublicRoutes = () => {
     return (
         <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/search" element={<Search />} />
-            <Route path="/category" element={<Category />} />
-            <Route path="/listings" element={<Listing />} />
-            <Route path="/sign-in" element={<SignIn />} />
-            <Route path="/create-account" element={<CreateAccount />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="*" element={<PageNotFound />} />
+            <Route path="/" element={<Home/>}/>
+            <Route path="/search" element={<Search/>}/>
+            <Route path="/category" element={<Category/>}/>
+            <Route path="/listings" element={<Listing/>}/>
+            <Route path="/sign-in" element={<SignIn/>}/>
+            <Route path="/create-account" element={<CreateAccount/>}/>
+            <Route path="/about" element={<About/>}/>
+            <Route path="/contact" element={<Contact/>}/>
+            <Route path="*" element={<PageNotFound/>}/>
         </Routes>
     )
 };

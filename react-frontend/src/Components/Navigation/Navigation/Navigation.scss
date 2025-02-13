@@ -1,0 +1,67 @@
+// Built In Modules
+@use "sass:map";
+// Custom Variables
+@use "../../../assets/variables.modules" as *;
+
+.homeNav,
+.searchNav {
+    width: fit-content;
+    height: 60px;
+    margin: 15px auto;
+    display: block;
+
+    .navBtn {
+        min-width: fit-content;
+        height: 40px;
+        margin: 10px 15px;
+        border: 4px solid map.get($theme-colors, mainColor1);
+        font-size: 14px;
+        font-weight: normal;
+        text-transform: none;
+        color: map.get($theme-colors, mainColor2);
+        transition: all 0.5s ease;
+    }
+
+    .selected,
+    .navBtn:hover {
+        border-bottom: 4px solid map.get($theme-colors, accentColor1);
+        background-color: map.get($theme-colors, mainColor1);
+        color: map.get($theme-colors, mainColor3) !important;
+    }
+
+    .filtersBtn {
+        padding: 0 15px;
+        border: none;
+        border-radius: 25px;
+        display: block;
+        overflow: hidden;
+        float: right;
+        color: map.get($theme-colors, accentColor1);
+
+        &::after {
+            background: linear-gradient(to right, map.get($theme-colors, accentColor1), map.get($theme-colors, accentColor2)) no-repeat;
+            position: absolute;
+            z-index: -1;
+            opacity: 0;
+            inset: 0;
+            content: "";
+            transition: opacity 0.5s ease;
+        }
+
+        &:hover::after {
+            opacity: 1;
+        }
+
+        &:hover {
+            border: none;
+            background-color: transparent;
+            color: map.get($theme-colors, mainColor1) !important;
+        }
+
+        .icon {
+            position: relative;
+            top: 3px;
+            font-size: 16px;
+        }
+    }
+}

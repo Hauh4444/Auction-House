@@ -1,4 +1,3 @@
-
 const PrivateRoutes = () => {
     return (
         <>
