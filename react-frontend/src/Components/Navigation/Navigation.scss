@@ -1,21 +1,23 @@
+// Built In Modules
 @use "sass:map";
+// Custom Variables
 @use "@/assets/variables.modules" as *;
 
 .homeNav,
-.searchNav,
-.categoryNav {
+.searchNav {
     width: fit-content;
     height: 60px;
-    margin: 0 auto;
+    margin: 15px auto;
     display: block;
 
     .navBtn {
+        min-width: fit-content;
         height: 40px;
         margin: 10px 15px;
         border: 4px solid map.get($theme-colors, mainColor1);
         font-size: 14px;
         font-weight: normal;
-        text-transform: capitalize;
+        text-transform: none;
         color: map.get($theme-colors, mainColor2);
         transition: all 0.5s ease;
     }
@@ -27,8 +29,8 @@
         color: map.get($theme-colors, mainColor3) !important;
     }
 
-    .categoriesBtn,
-    .sortBtn {
+    .filtersBtn {
+        padding: 0 15px;
         border: none;
         border-radius: 25px;
         display: block;
@@ -45,14 +47,17 @@
             content: "";
             transition: opacity 0.5s ease;
         }
+
         &:hover::after {
             opacity: 1;
         }
+
         &:hover {
             border: none;
             background-color: transparent;
             color: map.get($theme-colors, mainColor1) !important;
         }
+
         .icon {
             position: relative;
             top: 3px;

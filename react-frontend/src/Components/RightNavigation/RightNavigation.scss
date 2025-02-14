@@ -1,11 +1,13 @@
+// Built In Modules
 @use "sass:map";
+// Custom Variables
 @use "@/assets/variables.modules" as *;
 
 .rightNav {
     .navBar {
         width: 50px;
         height: 100%;
-        background-color: map.get($theme-colors, mainColor4);
+        background-color: map.get($theme-colors, mainColor5);
         position: fixed;
         top: 0;
         right: 0;
@@ -23,6 +25,7 @@
                 font-size: 25px;
                 color: map.get($theme-colors, accentColor1);
             }
+
             .outline {
                 position: absolute;
                 font-size: 25px;

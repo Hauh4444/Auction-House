@@ -1,9 +1,12 @@
+// External Libraries
 import { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { useNavigate, createSearchParams } from "react-router-dom";
 import { TextField, Button } from "@mui/material";
+// Stylesheets
 import "./SearchBar.scss";
-import { variables } from "@/assets/variables.modules.js"
+// Custom Variables
+import { variables } from "@/assets/variables.modules.js";
 
 const SearchBar = () => {
     const [query, setQuery] = useState("");
@@ -11,23 +14,30 @@ const SearchBar = () => {
 
     function navigateSearch() {
         if (query === "") {
-            navigate("/");
+            navigate({
+                pathname: "/",
+                search: createSearchParams({
+                    nav: "view-all",
+                }).toString(),
+            });
         }
         else {
             navigate({
                 pathname: "/search",
                 search: createSearchParams({
-                    q: query,
+                    query: query,
+                    start: 0,
+                    range: 10,
+                    nav: "best-results",
                 }).toString(),
             });
-            navigate(0);
         }
     }
 
     return (
         <div className="searchBar">
             <TextField
-                className="searchInput"
+                className="input"
                 value={query}
                 placeholder="Search"
                 onChange={(e) => setQuery(e.target.value)}
@@ -43,7 +53,7 @@ const SearchBar = () => {
                     },
                 }}
             />
-            <Button className="searchButton" onClick={navigateSearch}>
+            <Button className="btn" onClick={navigateSearch}>
                 <svg width="0" height="0">
                     <defs>
                         <linearGradient id="gradient" x1="0%" y1="50%" x2="100%" y2="50%">
@@ -52,7 +62,7 @@ const SearchBar = () => {
                         </linearGradient>
                     </defs>
                 </svg>
-                <FaSearch className="searchIcon" style={{ fill: "url(#gradient)" }} />
+                <FaSearch className="icon" style={{ fill: "url(#gradient)" }} />
             </Button>
         </div>
     )

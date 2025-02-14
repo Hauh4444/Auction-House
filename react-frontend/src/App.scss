@@ -1,3 +1,58 @@
+// Built In Modules
+@use "sass:map";
+// Custom Variables
+@use "@/assets/variables.modules" as *;
+
 .mainPage {
     width: calc(100% - 50px);
+    overflow-x: hidden;
+
+    .pagination {
+        width: fit-content;
+        height: 100px;
+        margin: 0 auto;
+        align-content: center;
+
+        Button {
+            width: 125px;
+            height: 50px;
+            box-shadow: 0 2px 4px map.get($theme-colors, mainColor4);
+            text-transform: none;
+            color: map.get($theme-colors, mainColor3);
+
+            .icon {
+                font-size: 16px;
+            }
+        }
+    }
+}
+
+.review,
+.reviews {
+    .stars {
+        .blankStar {
+            color: map.get($theme-colors, mainColor4);
+        }
+
+        .filledStar,
+        .halfStar {
+            color: map.get($theme-colors, accentColor1);
+            position: relative;
+            left: -80px;
+        }
+
+        .blankStar,
+        .filledStar,
+        .halfStar {
+            font-size: 16px;
+        }
+    }
+
+    .totalReviews {
+        position: relative;
+        top: -3px;
+        font-size: 12px;
+        font-weight: bold;
+        color: map.get($theme-colors, accentColor4);
+    }
 }

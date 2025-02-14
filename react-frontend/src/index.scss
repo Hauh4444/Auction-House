@@ -1,5 +1,8 @@
+// Built In Modules
 @use "sass:map";
+// Custom Variables
 @use "@/assets/variables.modules" as *;
+// External Resources
 @import "@fontsource/roboto/300.css";
 @import "@fontsource/roboto/400.css";
 @import "@fontsource/roboto/500.css";
@@ -7,7 +10,9 @@
 
 html {
     font-family: Roboto, "sans-serif";
+    scroll-behavior: smooth;
 }
+
 body {
     margin: 0;
     background-color: map.get($theme-colors, mainColor1);

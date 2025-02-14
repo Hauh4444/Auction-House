@@ -1,51 +1,41 @@
-import Header from "@/Components/Header/Header";
-import RightNavigation from "@//Components/RightNavigation/RightNavigation";
+// External Libraries
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { Button } from "@mui/material";
 import axios from "axios";
+// Internal Modules
+import Header from "@/Components/Header/Header";
+import RightNavigation from "@/Components/RightNavigation/RightNavigation";
+import ListingMain from "@/Components/ListingMain/ListingMain"
+import ListingSpecifics from "@/Components/ListingSpecifics/ListingSpecifics"
+import ListingReviews from "@/Components/ListingReviews/ListingReviews"
+// Stylesheets
 import "./Listing.scss";
 
 const Listing = () => {
     const [listing, setListing] = useState({});
     const location = useLocation();
-    const queryParams = new URLSearchParams(location.search);
 
     useEffect(() => {
-        axios.get("http://127.0.0.1:5000/api/listings/" + queryParams.get("key"), {
+        const filters = Object.fromEntries(new URLSearchParams(location.search).entries());
+
+        axios.get("http://127.0.0.1:5000/api/listings/" + filters.key, {
             headers: {
                 "Content-Type": "application/json",
             },
         })
-            .then(res => {
-                setListing(res.data.listing);
-            })
-            .catch(err => {
-                console.log(err);
-            });
-    }, []);
+            .then(res => setListing(res.data))
+            .catch(err => console.log(err));
+    }, [location.search]);
 
     return (
         <div className="listingPage">
             <div className="mainPage">
                 <Header />
                 <div className="listing">
-                    <div className="listingInfo">
-                        <div className="listingTitle">
-                            {listing.title}
-                        </div>
-                        <div className="listingPrice">
-                            ${listing.price}
-                        </div>
-                        <Button className="addCartBtn">
-                            Add to Cart
-                        </Button>
-                    </div>
-                    <div className="listingImage">
-                        <img src={"data:image/jpg;base64," + listing.image} alt="" />
-                    </div>
-                    <div className="listingDescription">
-
+                    <ListingMain listing={listing} />
+                    <div className="lesserInfo">
+                        <ListingSpecifics listing={listing} />
+                        <ListingReviews listing_id={listing.listing_id} />
                     </div>
                 </div>
             </div>

@@ -5,4 +5,6 @@ export const variables = {
     mainColor4: "#c5c6d0",
     accentColor1: "#feb000",
     accentColor2: "#f9c349",
+    accentColor3: "#051094",
+    accentColor4: "#1338be",
 }
