@@ -104,3 +104,138 @@ class Category:
             "created_at": self.created_at,
             "updated_at": self.updated_at
         }
+    
+@dataclass
+class Transaction:
+    def __init__(
+        self,
+        listing_id: int,
+        buyer_id: int,
+        seller_id: int,
+        transaction_date: datetime,
+        transaction_type: str,  # "auction" or "buy_now"
+        amount: float,
+        payment_method: str,
+        status: str,  # e.g., "pending", "completed", "canceled"
+        shipping_address: str,
+        tracking_number: str | None = None,
+        created_at: datetime | None = None,
+        updated_at: datetime | None = None,
+        transaction_id: int | None = None
+    ):
+        self.transaction_id = transaction_id
+        self.listing_id = listing_id
+        self.buyer_id = buyer_id
+        self.seller_id = seller_id
+        self.transaction_date = transaction_date.strftime("%Y-%m-%d %H:%M:%S")
+        self.transaction_type = transaction_type
+        self.amount = amount
+        self.payment_method = payment_method
+        self.status = status
+        self.shipping_address = shipping_address
+        self.tracking_number = tracking_number
+        self.created_at = created_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.updated_at = updated_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    def to_dict(self):
+        return {
+            "transaction_id": self.transaction_id,
+            "listing_id": self.listing_id,
+            "buyer_id": self.buyer_id,
+            "seller_id": self.seller_id,
+            "transaction_date": self.transaction_date,
+            "transaction_type": self.transaction_type,
+            "amount": self.amount,
+            "payment_method": self.payment_method,
+            "status": self.status,
+            "shipping_address": self.shipping_address,
+            "tracking_number": self.tracking_number,
+            "created_at": self.created_at,
+            "updated_at": self.updated_at
+        }
+    
+@dataclass
+class Order:
+    def __init__(
+        self,
+        user_id: int,
+        order_date: datetime,
+        status: str,
+        total_amount: float,
+        payment_status: str,
+        payment_method: str,
+        shipping_address: str,
+        shipping_method: str,
+        tracking_number: str | None = None,
+        shipping_cost: float | None = None,
+        created_at: datetime | None = None,
+        updated_at: datetime | None = None,
+        order_id: int | None = None
+    ):
+        self.order_id = order_id
+        self.user_id = user_id
+        self.order_date = order_date.strftime("%Y-%m-%d %H:%M:%S")
+        self.status = status
+        self.total_amount = total_amount
+        self.payment_status = payment_status
+        self.payment_method = payment_method
+        self.shipping_address = shipping_address
+        self.shipping_method = shipping_method
+        self.tracking_number = tracking_number
+        self.shipping_cost = shipping_cost
+        self.created_at = created_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.updated_at = updated_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+@dataclass
+class UserProfile:
+    def __init__(
+        self,
+        user_id: int,
+        first_name: str,
+        last_name: str,
+        date_of_birth: str,
+        phone_number: str,
+        address: str,
+        city: str,
+        state: str,
+        country: str,
+        profile_picture: str | None = None,
+        bio: str | None = None,
+        social_links: dict | None = None,
+        created_at: datetime | None = None,
+        updated_at: datetime | None = None,
+        profile_id: int | None = None
+    ):
+        self.profile_id = profile_id
+        self.user_id = user_id
+        self.first_name = first_name
+        self.last_name = last_name
+        self.date_of_birth = date_of_birth
+        self.phone_number = phone_number
+        self.address = address
+        self.city = city
+        self.state = state
+        self.country = country
+        self.profile_picture = profile_picture
+        self.bio = bio
+        self.social_links = social_links or {}
+        self.created_at = created_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.updated_at = updated_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    def to_dict(self):
+        return {
+            "profile_id": self.profile_id,
+            "user_id": self.user_id,
+            "first_name": self.first_name,
+            "last_name": self.last_name,
+            "date_of_birth": self.date_of_birth,
+            "phone_number": self.phone_number,
+            "address": self.address,
+            "city": self.city,
+            "state": self.state,
+            "country": self.country,
+            "profile_picture": self.profile_picture,
+            "bio": self.bio,
+            "social_links": self.social_links,
+            "created_at": self.created_at,
+            "updated_at": self.updated_at
+        }
