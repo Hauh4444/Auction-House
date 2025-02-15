@@ -1,13 +1,13 @@
 // External Libraries
-import {useEffect, useState} from "react";
-import {createSearchParams, useLocation, useNavigate} from "react-router-dom";
-import {MdArrowBackIosNew, MdArrowForwardIos} from "react-icons/md";
-import {Button} from "@mui/material";
+import { useEffect, useState } from "react";
+import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
+import { MdArrowBackIosNew, MdArrowForwardIos } from "react-icons/md";
+import { Button } from "@mui/material";
 // Internal Modules
 import Header from "@/Components/Header/Header";
-import SearchNav from "@/Components/Navigation/SearchNav/SearchNav.jsx";
-import RightNav from "@/Components/Navigation/RightNav/RightNav.jsx";
-import SearchListings from "@/Components/Search/SearchListings/SearchListings.jsx";
+import SearchNav from "@/Components/Navigation/SearchNav/SearchNav";
+import RightNav from "@/Components/Navigation/RightNav/RightNav";
+import SearchListings from "@/Components/Search/SearchListings/SearchListings";
 // Stylesheets
 import "./Search.scss";
 

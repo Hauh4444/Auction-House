@@ -1,12 +1,12 @@
 // External Libraries
-import {useState} from "react";
-import {FaSearch} from "react-icons/fa";
-import {createSearchParams, useNavigate} from "react-router-dom";
-import {Button, TextField} from "@mui/material";
+import { useState } from "react";
+import { FaSearch } from "react-icons/fa";
+import { createSearchParams, useNavigate } from "react-router-dom";
+import { Button, TextField } from "@mui/material";
 // Stylesheets
 import "./Bar.scss";
 // Custom Variables
-import {variables} from "@/assets/variables.modules.js";
+import { variables } from "@/assets/variables.modules.js";
 
 const Bar = () => {
     const [query, setQuery] = useState("");

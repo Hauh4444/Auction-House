@@ -1,15 +1,15 @@
 // External Libraries
-import {useNavigate} from "react-router-dom";
-import {BsThreeDots} from "react-icons/bs";
-import {RiAccountCircle2Fill, RiAccountCircle2Line} from "react-icons/ri";
-import {IoCart, IoCartOutline, IoFlag, IoFlagOutline} from "react-icons/io5";
-import {HiOutlineUserGroup, HiUserGroup} from "react-icons/hi2";
-import {PiTruckFill, PiTruckLight} from "react-icons/pi";
-import {Button} from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { BsThreeDots } from "react-icons/bs";
+import { RiAccountCircle2Fill, RiAccountCircle2Line } from "react-icons/ri";
+import { IoCart, IoCartOutline, IoFlag, IoFlagOutline } from "react-icons/io5";
+import { HiOutlineUserGroup, HiUserGroup } from "react-icons/hi2";
+import { PiTruckFill, PiTruckLight } from "react-icons/pi";
+import { Button } from "@mui/material";
 // Stylesheets
 import "./RightNav.scss";
 // Custom Variables
-import {variables} from "@/assets/variables.modules.js";
+import { variables } from "@/assets/variables.modules.js";
 
 const RightNav = () => {
     const navigate = useNavigate();
@@ -23,7 +23,7 @@ const RightNav = () => {
                         color: variables.mainColor3,
                     }}/>
                 </Button>
-                <Button className="btn" style={{marginBottom: "15px"}}>
+                <Button className="btn" style={{marginBottom: "15px"}} onClick={() => navigate("/account")}>
                     <RiAccountCircle2Fill className="fill"/>
                     <RiAccountCircle2Line className="outline"/>
                 </Button>

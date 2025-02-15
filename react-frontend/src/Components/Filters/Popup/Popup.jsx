@@ -1,7 +1,7 @@
 // External Libraries
-import {useEffect, useState} from "react";
-import {createSearchParams, useLocation, useNavigate} from "react-router-dom";
-import {FormControl, Input, InputLabel, MenuItem, Select} from "@mui/material"
+import { useEffect, useState } from "react";
+import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
+import { FormControl, Input, InputLabel, MenuItem, Select } from "@mui/material"
 import axios from "axios";
 // Stylesheets
 import "./Popup.scss"
@@ -114,12 +114,12 @@ const Popup = () => {
                 </Select>
             </FormControl>
             <FormControl size="small">
-                <InputLabel id="categoryLabel">CategoryNav</InputLabel>
+                <InputLabel id="categoryLabel">Category</InputLabel>
                 <Select
                     labelid="categoryLabel"
                     className="category"
                     value={category}
-                    label="CategoryNav"
+                    label="Category"
                     onChange={(e) => {
                         updateFilter("category_id", e.target.value)
                     }}

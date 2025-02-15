@@ -7,7 +7,7 @@ const Specifics = ({listing}) => {
 
     return (
         <div className="specifics">
-            {listing.item_specifics ? (
+            {listing.item_specifics && (
                 JSON.parse(listing.item_specifics) instanceof Object ? (
                     !Array.isArray(JSON.parse(listing.item_specifics)) ? (
                         <table>
@@ -31,8 +31,6 @@ const Specifics = ({listing}) => {
                 ) : (
                     <p>{listing.item_specifics}</p>
                 )
-            ) : (
-                <></>
             )}
         </div>
     )

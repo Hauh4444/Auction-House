@@ -1,5 +1,5 @@
 // External Libraries
-import {LiaStarHalfSolid, LiaStarSolid} from "react-icons/lia";
+import { LiaStarHalfSolid, LiaStarSolid } from "react-icons/lia";
 import PropTypes from "prop-types";
 // Stylesheets
 import "./Reviews.scss";
@@ -57,7 +57,7 @@ const Reviews = ({listing_id}) => {
 
     return (
         <div className="reviewSection">
-            {reviews ? (
+            {reviews && (
                 reviews.map((review, index) => (
                     <div className="review" key={index}>
                         <div className="left">
@@ -71,8 +71,6 @@ const Reviews = ({listing_id}) => {
                         </div>
                     </div>
                 ))
-            ) : (
-                <></>
             )}
         </div>
     )

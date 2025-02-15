@@ -1,8 +1,8 @@
 // External Libraries
-import {useEffect, useState} from "react";
-import {createSearchParams, useLocation, useNavigate} from "react-router-dom";
-import {LiaStarHalfSolid, LiaStarSolid} from "react-icons/lia";
-import {Button} from "@mui/material";
+import { useEffect, useState } from  "react";
+import { createSearchParams, useLocation, useNavigate } from  "react-router-dom";
+import { LiaStarHalfSolid, LiaStarSolid } from  "react-icons/lia";
+import { Button } from  "@mui/material";
 import axios from "axios";
 import PropTypes from "prop-types";
 // Stylesheets
@@ -62,7 +62,7 @@ const CategoryListings = () => {
                             <img src={"data:image/jpg;base64," + listing.image_encoded} alt=""/>
                         </div>
                         <div className="info">
-                            <div className="reviews">
+                            <div className="review">
                                 {renderStars(listing.average_review)}
                                 <span className="totalReviews"
                                       style={{left: -16 * Math.ceil(listing.average_review) + "px"}}>

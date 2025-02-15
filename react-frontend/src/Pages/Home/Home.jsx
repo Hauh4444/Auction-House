@@ -1,10 +1,10 @@
 // External Libraries
-import {useLocation} from "react-router-dom";
+import { useLocation } from "react-router-dom";
 // Internal Modules
-import CategoryNav from "@/Components/Navigation/CategoryNav/CategoryNav.jsx";
+import CategoryNav from "@/Components/Navigation/CategoryNav/CategoryNav";
 import Header from "@/Components/Header/Header";
-import HomeNav from "@/Components/Navigation/HomeNav/HomeNav.jsx";
-import RightNav from "@/Components/Navigation/RightNav/RightNav.jsx";
+import HomeNav from "@/Components/Navigation/HomeNav/HomeNav";
+import RightNav from "@/Components/Navigation/RightNav/RightNav";
 // Stylesheets
 import "./Home.scss";
 
@@ -17,10 +17,8 @@ const Home = () => {
             <div className="mainPage">
                 <Header/>
                 <HomeNav/>
-                {!filters.nav ? (
+                {!filters.nav && (
                     <CategoryNav/>
-                ) : (
-                    <></>
                 )}
             </div>
             <RightNav/>

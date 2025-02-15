@@ -1,5 +1,5 @@
 // External Libraries
-import {Button} from "@mui/material";
+import { Button } from "@mui/material";
 import PropTypes from "prop-types";
 // Stylesheets
 import "./Main.scss"

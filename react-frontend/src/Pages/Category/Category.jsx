@@ -1,13 +1,13 @@
 // External Libraries
-import {useEffect, useState} from "react";
-import {createSearchParams, useLocation, useNavigate} from "react-router-dom";
-import {MdArrowBackIosNew, MdArrowForwardIos} from "react-icons/md";
-import {Button} from "@mui/material";
+import { useEffect, useState } from "react";
+import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
+import { MdArrowBackIosNew, MdArrowForwardIos } from "react-icons/md";
+import { Button } from "@mui/material";
 import axios from "axios";
 // Internal Modules
 import Header from "@/Components/Header/Header";
-import RightNav from "@/Components/Navigation/RightNav/RightNav.jsx";
-import CategoryListings from "@/Components/Category/CategoryListings/CategoryListings.jsx";
+import RightNav from "@/Components/Navigation/RightNav/RightNav";
+import CategoryListings from "@/Components/Category/CategoryListings/CategoryListings";
 import BestSellers from "@/Components/Category/BestSellers/BestSellers";
 import NewListings from "@/Components/Category/NewListings/NewListings";
 // Stylesheets

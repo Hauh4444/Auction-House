@@ -1,5 +1,5 @@
 // External Libraries
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 // Stylesheets
 import "./PageNotFound.scss";
 

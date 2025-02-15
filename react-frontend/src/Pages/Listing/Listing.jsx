@@ -1,10 +1,10 @@
 // External Libraries
-import {useEffect, useState} from "react";
-import {useLocation} from "react-router-dom";
+import { useEffect, useState } from  "react";
+import { useLocation } from  "react-router-dom";
 import axios from "axios";
 // Internal Modules
 import Header from "@/Components/Header/Header";
-import RightNav from "@/Components/Navigation/RightNav/RightNav.jsx";
+import RightNav from "@/Components/Navigation/RightNav/RightNav";
 import Main from "@/Components/Listing/Main/Main"
 import Specifics from "@/Components/Listing/Specifics/Specifics"
 import Reviews from "@/Components/Listing/Reviews/Reviews"

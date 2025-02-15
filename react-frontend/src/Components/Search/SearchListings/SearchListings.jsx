@@ -1,8 +1,8 @@
 // External Libraries
-import {useEffect, useState} from "react";
-import {createSearchParams, useLocation, useNavigate} from "react-router-dom";
-import {LiaStarHalfSolid, LiaStarSolid} from "react-icons/lia";
-import {Button} from "@mui/material";
+import { useEffect, useState } from "react";
+import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
+import { LiaStarHalfSolid, LiaStarSolid } from "react-icons/lia";
+import { Button } from "@mui/material";
 import PropTypes from "prop-types";
 import axios from "axios";
 // Stylesheets
@@ -56,7 +56,7 @@ const SearchListings = () => {
     }, [location.search]);
 
     const navigateToListing = (id) => {
-        navigate(`/listings?key=${id}`);
+        navigate(`/listing?key=${id}`);
     }
 
     return (
@@ -70,7 +70,7 @@ const SearchListings = () => {
                         <Button className="title" onClick={() => navigateToListing(listing.listing_id)}>
                             {listing.title}
                         </Button>
-                        <div className="reviews">
+                        <div className="review">
                             {renderStars(listing.average_review)}
                             <span className="totalReviews"
                                   style={{left: -16 * Math.ceil(listing.average_review) + "px"}}>

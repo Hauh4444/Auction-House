@@ -27,8 +27,7 @@
     }
 }
 
-.review,
-.reviews {
+.review {
     .stars {
         .blankStar {
             color: map.get($theme-colors, mainColor4);

@@ -1,7 +1,7 @@
 // External Libraries
-import {useEffect, useState} from "react";
-import {useLocation, useNavigate} from "react-router-dom";
-import {Button} from "@mui/material";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Button } from "@mui/material";
 import axios from "axios";
 // Stylesheets
 import "./CategoryNav.scss";

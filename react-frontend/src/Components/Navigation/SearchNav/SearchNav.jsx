@@ -1,11 +1,11 @@
 // External Libraries
-import {useEffect} from "react";
-import {createSearchParams, useLocation, useNavigate} from "react-router-dom";
-import {MdFilterAlt} from "react-icons/md";
-import {Button} from "@mui/material";
+import { useEffect } from "react";
+import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
+import { MdFilterAlt } from "react-icons/md";
+import { Button } from "@mui/material";
 // Internal Modules
 import toggleNav from "@/Components/Navigation/Navigation/Navigation.js";
-import Popup from "@/Components/Filters/Popup/Popup.jsx";
+import Popup from "@/Components/Filters/Popup/Popup";
 // Stylesheets
 import "@/Components/Navigation/Navigation/Navigation.scss";
 
