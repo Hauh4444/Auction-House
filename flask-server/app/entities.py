@@ -4,6 +4,33 @@ from datetime import datetime
 
 @dataclass
 class Listing:
+    """
+    Represents a listing in the system.
+
+    Attributes:
+        listing_id (int, optional): The unique identifier for the listing.
+        user_id (int): The ID of the user who created the listing.
+        title (int): The title of the listing.
+        title_short (str): A short version of the title.
+        description (str): The detailed description of the listing.
+        item_specifics (str): Specific details about the item.
+        category_id (str): The category the listing belongs to.
+        listing_type (str): The type of listing (e.g., auction, buy now).
+        buy_now_price (float): The price to buy the item immediately.
+        status (str): The status of the listing (e.g., active, sold, expired).
+        image_encoded (str): Encoded image data of the listing.
+        starting_price (float, optional): The starting price for auctions.
+        reserve_price (float, optional): The minimum price a seller is willing to accept.
+        current_price (float, optional): The current price in an auction.
+        auction_start (datetime, optional): The start time of the auction.
+        auction_end (datetime, optional): The end time of the auction.
+        bids (int, optional): The number of bids placed.
+        purchases (int, optional): The number of purchases made.
+        average_review (float, optional): The average review score.
+        total_reviews (int, optional): The total number of reviews.
+        created_at (datetime, optional): The creation timestamp.
+        updated_at (datetime, optional): The last updated timestamp.
+    """
     def __init__(
             self,
             user_id: int,
@@ -53,6 +80,7 @@ class Listing:
         self.updated_at = updated_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     def to_dict(self):
+        """Converts the listing object to a dictionary representation."""
         return {
             "listing_id": self.listing_id,
             "user_id": self.user_id,
@@ -81,6 +109,17 @@ class Listing:
 
 @dataclass
 class Category:
+    """
+    Represents a category in the system.
+
+    Attributes:
+        category_id (int, optional): The unique identifier for the category.
+        name (str): The name of the category.
+        description (str): The description of the category.
+        image_encoded (str, optional): Encoded image data for the category.
+        created_at (datetime, optional): The creation timestamp.
+        updated_at (datetime, optional): The last updated timestamp.
+    """
     def __init__(
             self,
             name: str,
@@ -98,6 +137,7 @@ class Category:
         self.updated_at = updated_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     def to_dict(self):
+        """Converts the category object to a dictionary representation."""
         return {
             "category_id": self.category_id,
             "name": self.name,
@@ -110,6 +150,24 @@ class Category:
 
 @dataclass
 class Transaction:
+    """
+    Represents a transaction in the system.
+
+    Attributes:
+        transaction_id (int, optional): The unique identifier for the transaction.
+        listing_id (int): The ID of the listing involved.
+        buyer_id (int): The ID of the buyer.
+        seller_id (int): The ID of the seller.
+        transaction_date (datetime): The date and time of the transaction.
+        transaction_type (str): The type of transaction ("auction" or "buy_now").
+        amount (float): The transaction amount.
+        payment_method (str): The method used for payment.
+        status (str): The status of the transaction (e.g., pending, completed, canceled).
+        shipping_address (str): The shipping address for the order.
+        tracking_number (str, optional): The tracking number for shipment.
+        created_at (datetime, optional): The creation timestamp.
+        updated_at (datetime, optional): The last updated timestamp.
+    """
     def __init__(
             self,
             listing_id: int,
@@ -141,6 +199,7 @@ class Transaction:
         self.updated_at = updated_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     def to_dict(self):
+        """Converts the transaction object to a dictionary representation."""
         return {
             "transaction_id": self.transaction_id,
             "listing_id": self.listing_id,
@@ -160,6 +219,24 @@ class Transaction:
 
 @dataclass
 class Order:
+    """
+    Represents an order in the system.
+
+    Attributes:
+        order_id (int, optional): The unique identifier for the order.
+        user_id (int): The ID of the user who placed the order.
+        order_date (datetime): The date and time the order was placed.
+        status (str): The status of the order (e.g., processing, shipped, delivered).
+        total_amount (float): The total amount of the order.
+        payment_status (str): The payment status (e.g., paid, pending, failed).
+        payment_method (str): The method used for payment.
+        shipping_address (str): The shipping address.
+        shipping_method (str): The chosen shipping method.
+        tracking_number (str, optional): The tracking number for shipment.
+        shipping_cost (float, optional): The cost of shipping.
+        created_at (datetime, optional): The creation timestamp.
+        updated_at (datetime, optional): The last updated timestamp.
+    """
     def __init__(
             self,
             user_id: int,
@@ -190,9 +267,47 @@ class Order:
         self.created_at = created_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self.updated_at = updated_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
+    def to_dict(self):
+        """Converts the order object to a dictionary representation."""
+        return {
+            "order_id": self.order_id,
+            "user_id": self.user_id,
+            "order_date": self.order_date,
+            "status": self.status,
+            "total_amount": self.total_amount,
+            "payment_status": self.payment_status,
+            "payement_method": self.payment_method,
+            "shipping_address": self.shipping_address,
+            "shipping_method": self.shipping_method,
+            "tracking_number": self.tracking_number,
+            "shipping_cost": self.shipping_cost,
+            "created_at": self.created_at,
+            "updated_at": self.updated_at
+        }
+
 
 @dataclass
 class UserProfile:
+    """
+    Represents a user profile in the system.
+
+    Attributes:
+        profile_id (int, optional): The unique identifier for the profile.
+        user_id (int): The ID of the user.
+        first_name (str): The first name of the user.
+        last_name (str): The last name of the user.
+        date_of_birth (str): The user's date of birth.
+        phone_number (str): The user's phone number.
+        address (str): The user's address.
+        city (str): The city where the user resides.
+        state (str): The state where the user resides.
+        country (str): The country of the user.
+        profile_picture (str, optional): The encoded profile picture.
+        bio (str, optional): A short biography of the user.
+        social_links (dict, optional): A dictionary of social media links.
+        created_at (datetime, optional): The creation timestamp.
+        updated_at (datetime, optional): The last updated timestamp.
+    """
     def __init__(
             self,
             user_id: int,
@@ -228,6 +343,7 @@ class UserProfile:
         self.updated_at = updated_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     def to_dict(self):
+        """Converts the user profile object to a dictionary representation."""
         return {
             "profile_id": self.profile_id,
             "user_id": self.user_id,

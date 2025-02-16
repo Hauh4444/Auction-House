@@ -35,10 +35,11 @@
    2. Staff User
    3. User Profile
    4. Reviews
-5. Other Functionality
-   1. Backup/Recovery of Database
-   2. Rate Limiting API Requests
-   3. Session Based User Authentication
+5. Other
+   1. Modularization of Services, Data Mappers, and Entities
+   2. Backup/Recovery of Database
+   3. Rate Limiting API Requests
+   4. Session Based User Authentication
 
 # Dinkleberg's Auction House
 

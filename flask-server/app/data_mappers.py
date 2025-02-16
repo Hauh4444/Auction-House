@@ -96,7 +96,6 @@ class ListingMapper:
         """
         db = get_db()
         cursor = db.cursor()
-        data["updated_at"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         conditions = [f"{key}='{data[key]}'" for key in data if key not in ["listing_id", "created_at"]]
         statement = "UPDATE listings SET " + ", ".join(conditions) + f" WHERE listing_id={listing_id}"
         cursor.execute(statement)
@@ -186,7 +185,6 @@ class CategoryMapper:
         """
         db = get_db()
         cursor = db.cursor()
-        data["updated_at"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         conditions = [f"{key}='{data[key]}'" for key in data if key not in ["category_id", "created_at"]]
         statement = "UPDATE categories SET " + ", ".join(conditions) + f" WHERE category_id={category_id}"
         cursor.execute(statement)
