@@ -1,3 +1,45 @@
+# TODO
+
+## React Frontend
+1. Document Components
+   1. Header
+   2. Listing
+   3. Navigation
+   4. Search
+2. Create Pages
+   1. Account Management
+   2. User Dashboard
+   3. Browse
+   4. Review
+   5. Product Upload
+   6. Seller Profile
+3. Implement Functionality
+   1. Social Media Sharing
+   2. Localization of Currency/Language
+
+## Flask Server
+1. Routes
+   1. User
+   2. User Profile
+   3. Reviews
+2. Services
+   1. User
+   2. User Profile
+   3. Reviews
+3. Data Mappers
+   1. User
+   2. User Profile
+   3. Reviews
+4. Entities
+   1. User
+   2. Staff User
+   3. User Profile
+   4. Reviews
+5. Other Functionality
+   1. Backup/Recovery of Database
+   2. Rate Limiting API Requests
+   3. Session Based User Authentication
+
 # Dinkleberg's Auction House
 
 ## Setup

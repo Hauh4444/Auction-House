@@ -1,39 +1,60 @@
 // External Libraries
 import { useEffect, useState } from "react";
 import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
-import { FormControl, Input, InputLabel, MenuItem, Select } from "@mui/material"
+import { FormControl, Input, InputLabel, MenuItem, Select } from "@mui/material";
 import axios from "axios";
+
 // Stylesheets
-import "./Popup.scss"
+import "./Popup.scss";
 
+/**
+ * Popup component that allows users to filter a list of items based on different criteria.
+ *
+ * Features:
+ * - Sorting items by different parameters (e.g., relevance, price, creation date)
+ * - Filtering items by category, listing type, and price range
+ * - Fetches categories from an API to populate the category dropdown
+ * - Updates the URL search parameters to reflect selected filters
+ */
 const Popup = () => {
-    const navigate = useNavigate();
-    const location = useLocation();
+    const navigate = useNavigate(); // Navigate function for routing
+    const location = useLocation(); // Hook to access the current location (URL)
+    // Extract query parameters from the URL
     const filters = Object.fromEntries(new URLSearchParams(location.search).entries());
-    const [sortBy, setSortBy] = useState(filters.sort || "relevance");
-    const [categories, setCategories] = useState([]);
-    const [category, setCategory] = useState(filters.category_id || "All");
-    const [listingType, setListingType] = useState(filters.listing_type || "All");
-    const [minPrice, setMinPrice] = useState();
-    const [maxPrice, setMaxPrice] = useState();
 
+    // State variables for managing filter options
+    const [sortBy, setSortBy] = useState(filters.sort || "relevance"); // Default to "relevance" if no sort filter is provided
+    const [categories, setCategories] = useState([]); // Stores category list fetched from API
+    const [category, setCategory] = useState(filters.category_id || "All"); // Default to "All" if no category filter is provided
+    const [listingType, setListingType] = useState(filters.listing_type || "All"); // Default to "All" if no listing type filter is provided
+    const [minPrice, setMinPrice] = useState(); // State for minimum price
+    const [maxPrice, setMaxPrice] = useState(); // State for maximum price
+
+    // Effect hook to fetch categories from the API on component mount
     useEffect(() => {
         axios.get("http://127.0.0.1:5000/api/categories", {
             headers: {
                 "Content-Type": "application/json",
             }
         })
-            .then(res => setCategories(res.data))
-            .catch(err => console.log(err));
-    }, []);
+            .then(res => setCategories(res.data)) // Update state with fetched data
+            .catch(err => console.log(err)); // Log errors if any
+    }, []); // Empty dependency array to ensure it runs only once when the component is mounted
 
+    /**
+     * Updates the URL search parameters and state when a filter is changed.
+     * @param {string} filter The name of the filter being updated.
+     * @param {string} value The value of the filter.
+     */
     function updateFilter(filter, value) {
+        // Handle sorting filter separately, as it involves both "sort" and "order" parameters
         if (filter === "sort") {
-            setSortBy(value);
+            setSortBy(value); // Update the sort criteria
             if (value === "relevance") {
-                delete filters.sort;
+                delete filters.sort; // Remove sort and order if "relevance" is selected
                 delete filters.order;
             } else {
+                // Define sorting options with respective fields and order
                 const sortMap = {
                     "created_at_asc": ["created_at", "asc"],
                     "created_at_desc": ["created_at", "desc"],
@@ -45,6 +66,7 @@ const Popup = () => {
                     "average_review": ["average_review", "desc"],
                     "total_reviews": ["total_reviews", "desc"]
                 };
+                // Set sort and order parameters if a valid option is selected
                 if (sortMap[value]) {
                     const [sortField, order] = sortMap[value];
                     filters.sort = sortField;
@@ -57,38 +79,46 @@ const Popup = () => {
         } else {
             let valueToSet;
             if (value !== "All" && value !== "") {
-                valueToSet = value;
+                valueToSet = value; // Set filter value if not "All" or empty
             } else {
-                valueToSet = undefined;
+                valueToSet = undefined; // Set filter value to undefined for "All" or empty
             }
-            setFilterState(filter, valueToSet);
+            setFilterState(filter, valueToSet); // Update the corresponding filter state
             if (valueToSet) {
-                filters[filter] = valueToSet;
+                filters[filter] = valueToSet; // Add to filters if value is set
             } else {
-                delete filters[filter];
+                delete filters[filter]; // Remove from filters if value is empty
             }
         }
+
+        // Navigate to the same page with updated search parameters
         navigate({
             pathname: location.pathname,
             search: createSearchParams(filters).toString(),
         });
     }
 
+    /**
+     * Updates the state of a specific filter based on the filter type.
+     * @param {string} filter The name of the filter being updated.
+     * @param {string} value The value of the filter.
+     */
     function setFilterState(filter, value) {
         if (filter === "category_id") {
-            setCategory(value || "All");
+            setCategory(value || "All"); // Update category filter state
         } else if (filter === "listing_type") {
-            setListingType(value || "All");
+            setListingType(value || "All"); // Update listing type filter state
         } else if (filter === "min_price") {
-            setMinPrice(value);
+            setMinPrice(value); // Update minimum price filter state
         } else if (filter === "max_price") {
-            setMaxPrice(value);
+            setMaxPrice(value); // Update maximum price filter state
         }
     }
 
     return (
         <div className="filtersPopup">
-            <div style={{height: "20px"}}/>
+            <div style={{ height: "20px" }} /> {/* Spacer */}
+            {/* Sort By Filter */}
             <FormControl size="small">
                 <InputLabel id="sortByLabel">Sort By</InputLabel>
                 <Select
@@ -113,6 +143,8 @@ const Popup = () => {
                     <MenuItem value="total_reviews">Total Reviews</MenuItem>
                 </Select>
             </FormControl>
+
+            {/* Category Filter */}
             <FormControl size="small">
                 <InputLabel id="categoryLabel">Category</InputLabel>
                 <Select
@@ -131,6 +163,8 @@ const Popup = () => {
                     ))}
                 </Select>
             </FormControl>
+
+            {/* Listing Type Filter */}
             <FormControl size="small">
                 <InputLabel id="listingTypeLabel">Listing Type</InputLabel>
                 <Select
@@ -148,6 +182,8 @@ const Popup = () => {
                     <MenuItem value="buy_now">Buy Now</MenuItem>
                 </Select>
             </FormControl>
+
+            {/* Minimum Price Filter */}
             <FormControl size="small">
                 <InputLabel id="minPriceLabel">Min Price</InputLabel>
                 <Input
@@ -162,6 +198,8 @@ const Popup = () => {
                     variant="outlined"
                 />
             </FormControl>
+
+            {/* Maximum Price Filter */}
             <FormControl size="small">
                 <InputLabel id="maxPriceLabel">Max Price</InputLabel>
                 <Input
