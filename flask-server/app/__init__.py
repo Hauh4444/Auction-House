@@ -2,8 +2,8 @@ from flask import Flask
 from flask_cors import CORS
 
 from .database import init_db
-from .routes.category import category_bp
-from .routes.listings import listings_bp
+from .routes.category_routes import category_bp
+from .routes.listing_routes import listings_bp
 
 # Initialize Flask application
 app = Flask(__name__)
