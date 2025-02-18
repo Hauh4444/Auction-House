@@ -1,5 +1,6 @@
 from flask import Blueprint, request
-from ..services import CategoryService
+
+from ..services.categories import CategoryService
 
 # Blueprint for category-related routes
 category_bp = Blueprint('category_bp', __name__)
