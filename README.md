@@ -6,40 +6,10 @@
    2. Listing
    3. Navigation
    4. Search
-2. Create Pages
-   1. Account Management
-   2. User Dashboard
-   3. Browse
-   4. Review
-   5. Product Upload
-   6. Seller Profile
-3. Implement Functionality
-   1. Social Media Sharing
-   2. Localization of Currency/Language
-
-## Flask Server
-1. Routes
-   1. User
-   2. User Profile
-   3. Reviews
-2. Services
-   1. User
-   2. User Profile
-   3. Reviews
-3. Data Mappers
-   1. User
-   2. User Profile
-   3. Reviews
-4. Entities
-   1. User
-   2. Staff User
-   3. User Profile
-   4. Reviews
-5. Other
-   1. Modularization of Services, Data Mappers, and Entities
-   2. Backup/Recovery of Database
-   3. Rate Limiting API Requests
-   4. Session Based User Authentication
+   5. Reviews
+   6. User
+   7. CategoriesPopup
+   8. Other Docstrings
 
 # Dinkleberg's Auction House
 
@@ -49,7 +19,7 @@
 ### React Frontend
 1. In a terminal, change to the `react-frontend` directory.
 2. Run the `npm install` command to install node modules.
-3. Run the `npm install react react-router-dom react-icons prop-types vite @mui/material @mui/styled-engine-sc styled-components axios sass` command to install the necessary dependencies.
+3. Run the `npm install react react-router-dom react-icons react-share prop-types vite @mui/material @mui/styled-engine-sc styled-components axios sass` command to install the necessary dependencies.
 
 ### Flask Server
 1. In a terminal, change to the `flask-server` directory.
@@ -61,13 +31,9 @@
 
 ### React Frontend
 1. In a terminal, change to the `react-frontend` directory.
-2. Run the `npm install` command to install node modules.
-3. Run the `npm run dev` command to launch the React app.
+2. Run the `npm run dev` command to launch the React app.
 
 ### Flask Backend
-1. In a terminal, change to the `flask-server` directory.
-2. If you have Flask installed directly onto your machine:
-    1. Run the `flask run --debug` command to run the Flask server.
-3. If you have a virtual environment:
-    1. Run the `.venv/Scripts/activate` command to activate the virtual environment.
-    2. Run the `flask run --debug` command to run the Flask server.
+1. In a terminal, change to the `flask-server` directory. 
+2. Run the `.venv/Scripts/activate` command to activate the virtual environment. 
+3. Run the `flask run --debug` command to run the Flask server.

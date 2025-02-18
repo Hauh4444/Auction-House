@@ -1,0 +1,12 @@
+// Built In Modules
+@use "sass:map";
+// Custom Variables
+@use "@/assets/variables.modules" as *;
+
+.card {
+    width: fit-content;
+    margin: 50px auto;
+    padding: 25px;
+    border-radius: 10px !important;
+    box-shadow: 0 2px 4px map.get($theme-colors, mainColor4);
+}

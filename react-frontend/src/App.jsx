@@ -1,8 +1,10 @@
 // External Libraries
 import { useEffect, useState } from  "react";
 import { createTheme, ThemeProvider } from  "@mui/material/styles";
+
 // Internal Modules
 import PublicRoutes from "@/Routes/PublicRoutes";
+
 // Stylesheets
 import "./App.scss";
 
@@ -35,13 +37,13 @@ function App() {
         // Add the listener and clean it up when the component is unmounted
         mediaQuery.addEventListener("change", changeListener);
         return () => mediaQuery.removeEventListener("change", changeListener);
-    }, []);
+    }, []); // Empty dependency array to ensure it runs only once when the component is mounted
 
     // Apply the light theme regardless of user preference for now
     return (
         <ThemeProvider theme={lightTheme}>
             {/* Public routes of the app */}
-            <PublicRoutes/>
+            <PublicRoutes />
         </ThemeProvider>
     );
 }

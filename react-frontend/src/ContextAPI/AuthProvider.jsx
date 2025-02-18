@@ -38,10 +38,11 @@ const AuthProvider = ({ children }) => {
                 console.log(err); // Log errors if any
                 setUser(null); // Clear user state on error
             });
-    }, []);
+    }, []); // Empty dependency array to ensure it runs only once when the component is mounted
 
     // Function to create a new user account
     const createAccount = useCallback((credentials) => {
+        // Post credential data to the backend API
         axios.post("http://127.0.0.1:5000/api/register", {
             headers: {
                 "Content-Type": "application/json",
@@ -55,6 +56,7 @@ const AuthProvider = ({ children }) => {
 
     // Function to log in an existing user
     const login = useCallback((credentials) => {
+        // Post login with credentials to the backend API
         axios.post("http://127.0.0.1:5000/api/login", {
             headers: {
                 "Content-Type": "application/json",
@@ -68,6 +70,7 @@ const AuthProvider = ({ children }) => {
 
     // Function to log out the current user
     const logout = useCallback(() => {
+        // Post logout to the backend API
         axios.post("http://127.0.0.1:5000/api/logout", {
             headers: {
                 "Content-Type": "application/json",
@@ -76,7 +79,7 @@ const AuthProvider = ({ children }) => {
         })
             .then(() => setUser(null)) // Clear the user state on logout
             .catch(err => console.log(err)); // Log errors if any
-    }, []);
+    }, []); // Empty dependency array to ensure it runs only once when the component is mounted
 
     return (
         // Provide the auth context to the rest of the app

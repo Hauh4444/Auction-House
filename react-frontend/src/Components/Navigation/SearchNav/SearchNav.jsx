@@ -3,9 +3,11 @@ import { useEffect } from "react";
 import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
 import { MdFilterAlt } from "react-icons/md";
 import { Button } from "@mui/material";
+
 // Internal Modules
-import toggleNav from "@/Components/Navigation/Navigation/Navigation.js";
+import toggleNav from "@/Components/Navigation/Navigation/Navigation";
 import Popup from "@/Components/Filters/Popup/Popup";
+
 // Stylesheets
 import "@/Components/Navigation/Navigation/Navigation.scss";
 
@@ -79,11 +81,11 @@ const SearchNav = () => {
                     View All
                 </Button>
                 <Button className="navBtn filtersBtn" onClick={toggleFiltersDisplay}>
-                    Filters&ensp;<MdFilterAlt className="icon"/>
+                    Filters&ensp;<MdFilterAlt className="icon" />
                 </Button>
             </div>
-            <Popup/>
-        </>
+            <Popup />
+        < />
     )
 }
 

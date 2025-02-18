@@ -14,7 +14,7 @@ import "./index.scss";
 createRoot(document.getElementById("root")).render(
     <StrictMode>
         <BrowserRouter>
-            <App/> {/* Main App component */}
+            <App /> {/* Main App component */}
         </BrowserRouter>
     </StrictMode>
 );

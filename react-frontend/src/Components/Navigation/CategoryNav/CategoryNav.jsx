@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 import axios from "axios";
+
 // Stylesheets
 import "./CategoryNav.scss";
 
@@ -19,7 +20,7 @@ const CategoryNav = () => {
         })
             .then(res => setCategories(res.data))
             .catch(err => console.log(err));
-    }, []);
+    }, []); // Empty dependency array to ensure it runs only once when the component is mounted
 
     const navigateToCategory = (id) => {
         if (location.pathname !== "/") {
@@ -47,7 +48,7 @@ const CategoryNav = () => {
                         <div className="category" key={index}>
                             <div className="image">
                                 {category.image_encoded ? (
-                                    <img src={`data:image/jpg;base64,${category.image_encoded}`} alt={category.title}/>
+                                    <img src={`data:image/jpg;base64,${category.image_encoded}`} alt={category.title} />
                                 ) : (
                                     <div>No image available</div>
                                 )}
@@ -62,7 +63,7 @@ const CategoryNav = () => {
                     ))}
                 </div>
             )}
-        </>
+        < />
     )
 }
 

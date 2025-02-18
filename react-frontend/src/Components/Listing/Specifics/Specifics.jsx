@@ -1,5 +1,6 @@
 // External Libraries
 import PropTypes from "prop-types";
+
 // Stylesheets
 import "./Specifics.scss";
 
@@ -36,6 +37,7 @@ const Specifics = ({listing}) => {
     )
 }
 
+// Define the expected shape of the listing prop
 Specifics.propTypes = {
     listing: PropTypes.shape({
         item_specifics: PropTypes.string,

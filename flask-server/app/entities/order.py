@@ -26,9 +26,9 @@ class Order:
             self,
             user_id: int,
             order_date: datetime,
-            status: str,
+            status: str, # "pending", "processing", "shipped", "delivered", "cancelled", "returned"
             total_amount: float,
-            payment_status: str,
+            payment_status: str, # "pending", "completed", "failed", "refunded"
             payment_method: str,
             shipping_address: str,
             shipping_method: str,
@@ -38,6 +38,13 @@ class Order:
             updated_at: datetime | None = None,
             order_id: int | None = None
     ):
+        self.VALID_STATUSES = {"pending", "processing", "shipped", "delivered", "cancelled", "returned"}
+        self.VALID_PAYMENT_STATUSES = {"pending", "completed", "failed", "refunded"}
+        if status not in self.VALID_STATUSES:
+            raise ValueError(f"Listing type must be one of {self.VALID_STATUSES}, got '{status}' instead")
+        if payment_status not in self.VALID_PAYMENT_STATUSES:
+            raise ValueError(f"Listing type must be one of {self.VALID_PAYMENT_STATUSES}, got '{payment_status}' instead")
+
         self.order_id = order_id
         self.user_id = user_id
         self.order_date = order_date.strftime("%Y-%m-%d %H:%M:%S")

@@ -2,9 +2,11 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { BsGrid3X3GapFill } from "react-icons/bs";
 import { Button } from "@mui/material";
+
 // Internal Modules
 import Bar from "@/Components/Search/Bar/Bar";
 import CategoryNav from "@/Components/Navigation/CategoryNav/CategoryNav";
+
 // Stylesheets
 import "./Header.scss";
 
@@ -48,16 +50,16 @@ const Header = () => {
                     </Button>
                     {location.pathname !== "/" && (
                         <Button className="btn categoriesBtn" onClick={toggleCategoriesDisplay}>
-                            Categories&ensp;<BsGrid3X3GapFill className="icon"/>
+                            Categories&ensp;<BsGrid3X3GapFill className="icon" />
                         </Button>
                     )}
                 </div>
-                <Bar/>
+                <Bar />
             </div>
             {location.pathname !== "/" && (
-                <CategoryNav/>
+                <CategoryNav />
             )}
-        </>
+        < />
     )
 }
 

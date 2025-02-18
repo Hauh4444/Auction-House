@@ -24,14 +24,14 @@ const renderStars = (averageReview) => {
         <span className="stars">
             {/* Render empty stars */}
             {Array.from({length: 5}, (_, index) => (
-                <LiaStarSolid className="blankStar" key={index}/>
+                <LiaStarSolid className="blankStar" key={index} />
             ))}
             {/* Render filled stars */}
             {Array.from({length: filledStars}, (_, index) => (
-                <LiaStarSolid className="filledStar" key={index}/>
+                <LiaStarSolid className="filledStar" key={index} />
             ))}
             {/* Render half star if needed */}
-            {halfStar && <LiaStarHalfSolid className="halfStar"/>}
+            {halfStar && <LiaStarHalfSolid className="halfStar" />}
         </span>
     );
 };
@@ -76,7 +76,7 @@ const BestSellers = () => {
                 {bestSellers.map((listing, index) => (
                     <div className={`listing ${index === 0 ? "first" : ""}`} key={index}>
                         <div className="image">
-                            <img src={`data:image/jpg;base64,${listing.image_encoded}`} alt=""/>
+                            <img src={`data:image/jpg;base64,${listing.image_encoded}`} alt="" />
                         </div>
                         <div className="info">
                             <div className="review">
@@ -94,7 +94,7 @@ const BestSellers = () => {
                     </div>
                 ))}
             </div>
-        </>
+        < />
     )
 }
 

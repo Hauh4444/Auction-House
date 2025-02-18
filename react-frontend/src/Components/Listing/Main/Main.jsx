@@ -1,34 +1,57 @@
 // External Libraries
+import { useLocation } from "react-router-dom";
+import { FacebookShareButton, FacebookIcon, TwitterShareButton, XIcon, PinterestShareButton, PinterestIcon } from "react-share";
 import { Button } from "@mui/material";
 import PropTypes from "prop-types";
+
 // Stylesheets
 import "./Main.scss"
 
 const Main = ({listing}) => {
+    const location = useLocation();
 
     return (
         <div className="main">
             <div className="info">
                 <div className="title">{listing.title}</div>
-                {listing.listing_type === "auction" ? (
+                {listing.listing_type === "auction" && (
                     <>
                         <div className="bid">${listing.current_price}</div>
                         <Button className="placeBidBtn">Place Bid</Button>
                         <p className="bidDescription">{listing.bids} bids. Ends: {listing.auction_end}</p>
-                        <div className="price">${listing.buy_now_price}</div>
-                        <Button className="addCartBtn">Add to Cart</Button>
-                    </>
-                ) : (
-                    <>
-                        <div className="price">${listing.buy_now_price}</div>
-                        <Button className="addCartBtn">Add to Cart</Button>
-                    </>
+                    < />
                 )}
+                <div className="price">${listing.buy_now_price}</div>
+                <Button className="addCartBtn">Add to Cart</Button>
+                <div className="shareButtons">
+                    <FacebookShareButton
+                        className="shareBtn"
+                        url={location.href}
+                        network="Facebook"
+                    >
+                        <FacebookIcon size={24} round={true} />
+                    </FacebookShareButton>
+                    <TwitterShareButton
+                        className="shareBtn"
+                        url={location.href}
+                        network="Twitter"
+                    >
+                        <XIcon size={24} round={true} />
+                    </TwitterShareButton>
+                    <PinterestShareButton
+                        className="shareBtn"
+                        url={location.href}
+                        network="Pinterest"
+                        media={listing.image_encoded}
+                    >
+                        <PinterestIcon size={24} round={true} />
+                    </PinterestShareButton>
+                </div>
             </div>
             <div className="image">
                 {/* Checking if image data exists; if yes, displaying image, otherwise a fallback message */}
                 {listing.image_encoded ? (
-                    <img src={"data:image/jpg;base64," + listing.image_encoded} alt={listing.title}/>
+                    <img src={"data:image/jpg;base64," + listing.image_encoded} alt={listing.title} />
                 ) : (
                     <div>No image available</div>
                 )}

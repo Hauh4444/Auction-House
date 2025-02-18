@@ -20,7 +20,7 @@ const CategoriesPopup = () => {
             .catch(err => {
                 console.log(err);
             });
-    }, []);
+    }, []); // Empty dependency array to ensure it runs only once when the component is mounted
 
     function navigateToCategory(category) {
         navigate({

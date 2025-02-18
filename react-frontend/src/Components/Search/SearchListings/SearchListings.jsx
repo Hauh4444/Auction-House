@@ -5,6 +5,7 @@ import { LiaStarHalfSolid, LiaStarSolid } from "react-icons/lia";
 import { Button } from "@mui/material";
 import PropTypes from "prop-types";
 import axios from "axios";
+
 // Stylesheets
 import "./SearchListings.scss";
 
@@ -14,12 +15,12 @@ const renderStars = (averageReview) => {
     return (
         <span className="stars">
             {Array.from({length: 5}, (_, index) => (
-                <LiaStarSolid className="blankStar" key={index}/>
+                <LiaStarSolid className="blankStar" key={index} />
             ))}
             {Array.from({length: filledStars}, (_, index) => (
-                <LiaStarSolid className="filledStar" key={index}/>
+                <LiaStarSolid className="filledStar" key={index} />
             ))}
-            {halfStar && <LiaStarHalfSolid className="halfStar"/>}
+            {halfStar && <LiaStarHalfSolid className="halfStar" />}
         </span>
     );
 };
@@ -64,7 +65,7 @@ const SearchListings = () => {
             {listings.map((listing, index) => (
                 <div className="listing" key={index}>
                     <div className="image">
-                        <img src={"data:image/jpg;base64," + listing.image_encoded} alt=""/>
+                        <img src={"data:image/jpg;base64," + listing.image_encoded} alt="" />
                     </div>
                     <div className="info">
                         <Button className="title" onClick={() => navigateToListing(listing.listing_id)}>
@@ -92,6 +93,7 @@ const SearchListings = () => {
     )
 }
 
+// Define the expected shape of the bestSellers prop
 SearchListings.propTypes = {
     bestSellers: PropTypes.shape({
         listing_id: PropTypes.number,
