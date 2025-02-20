@@ -4,6 +4,17 @@ import { Button } from "@mui/material";
 import axios from "axios";
 import "./CategoriesPopup.scss"
 
+/**
+ * CategoriesPopup component fetches a list of categories from an API and displays them as buttons.
+ * Clicking a category button navigates to a category page with the selected category as a query parameter.
+ *
+ * Features:
+ * - Fetches category data from "http://127.0.0.1:5000/api/categories" when mounted.
+ * - Stores the fetched categories in state.
+ * - Generates a button for each category, which navigates to the corresponding category page.
+ *
+ * @returns {JSX.Element} A popup displaying category buttons.
+ */
 const CategoriesPopup = () => {
     const [categories, setCategories] = useState([]);
     const navigate = useNavigate();

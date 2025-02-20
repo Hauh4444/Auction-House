@@ -23,6 +23,8 @@ import "./Listing.scss";
  * - Retrieves listing data from the Flask server using Axios.
  * - Displays listing details using child components.
  * - Includes a navigation bar and header.
+ *
+ * @returns {JSX.Element} The rendered homepage containing the header, navigation, and conditionally rendered category navigation.
  */
 const Listing = () => {
     // State to store the listing data

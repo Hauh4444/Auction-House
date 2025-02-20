@@ -7,6 +7,30 @@ import PropTypes from "prop-types";
 // Stylesheets
 import "./Main.scss"
 
+/**
+ * Main component displays detailed information about a product listing.
+ *
+ * Features:
+ * - Displays the product title, price, and description.
+ * - If the listing is an auction, it shows the current bid price, bid count, and auction end time.
+ * - Provides "Place Bid" and "Add to Cart" buttons.
+ * - Includes social media share buttons for Facebook, Twitter, and Pinterest.
+ * - Displays the product image if available; otherwise, a fallback message is shown.
+ * - If the description is formatted as an array, it is displayed as a list.
+ *
+ * @param {Object} props - Component props.
+ * @param {Object} props.listing - The listing object containing product details.
+ * @param {string} props.listing.title - The product title.
+ * @param {string} props.listing.description - The product description (JSON-formatted array or string).
+ * @param {string} props.listing.listing_type - The type of listing (e.g., "auction").
+ * @param {number} props.listing.current_price - The current bid price (if auction).
+ * @param {number} props.listing.buy_now_price - The buy-now price.
+ * @param {string} props.listing.auction_end - The auction end date/time.
+ * @param {string} props.listing.image_encoded - Base64-encoded image data.
+ * @param {number} props.listing.bids - The number of bids (if auction).
+ *
+ * @returns {JSX.Element} The rendered product details section.
+ */
 const Main = ({listing}) => {
     const location = useLocation();
 

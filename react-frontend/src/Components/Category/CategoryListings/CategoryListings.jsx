@@ -36,6 +36,18 @@ const renderStars = (averageReview) => {
     );
 };
 
+/**
+ * CategoryListings component fetches and displays product listings for a selected category.
+ * Listings are retrieved from an API and displayed with pagination support.
+ * Each listing includes an image, title, price, and review rating.
+ *
+ * Features:
+ * - Fetches listings from "http://127.0.0.1:5000/api/listings" when mounted or when filters change.
+ * - Uses URL query parameters to filter and paginate listings.
+ * - Displays listings with images, ratings, and a button to navigate to the listing's details page.
+ *
+ * @returns {JSX.Element} A section displaying category-specific listings.
+ */
 const CategoryListings = () => {
     const navigate = useNavigate(); // Navigate function for routing
     const location = useLocation(); // Hook to access the current location (URL)

@@ -10,6 +10,25 @@ import "./Bar.scss";
 // Custom Variables
 import { variables } from "@/assets/variables.modules.js";
 
+/**
+ * Bar Component
+ *
+ * This component renders a search bar that allows users to input search queries
+ * and navigate to the search results page. If the input is empty, it redirects
+ * users to the home page with a default view of "view-all". The search bar
+ * provides a seamless search experience via both keyboard interactions (Enter key)
+ * and a clickable search button.
+ *
+ * Features:
+ * - Captures user input for search queries.
+ * - Redirects to the home page if the input is empty.
+ * - Redirects to the search results page with query parameters based on user input.
+ * - Supports both button click and Enter key for initiating search.
+ *
+ * @returns {JSX.Element} The rendered search bar component containing an input field
+ *                        and a search button.
+ */
+
 const Bar = () => {
     const [query, setQuery] = useState("");
     const navigate = useNavigate();

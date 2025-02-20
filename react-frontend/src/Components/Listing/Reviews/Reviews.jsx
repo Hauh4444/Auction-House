@@ -19,17 +19,34 @@ const renderStars = (averageReview) => {
     const halfStar = averageReview > filledStars;
     return (
         <span className="stars">
+            {/* Render empty stars */}
             {Array.from({length: 5}, (_, index) => (
                 <LiaStarSolid className="blankStar" key={index} />
             ))}
+            {/* Render filled stars */}
             {Array.from({length: filledStars}, (_, index) => (
                 <LiaStarSolid className="filledStar" key={index} />
             ))}
+            {/* Render half star if needed */}
             {halfStar && <LiaStarHalfSolid className="halfStar" />}
         </span>
     );
 };
 
+/**
+ * Reviews component fetches and displays user reviews for a given product listing.
+ *
+ * Features:
+ * - Fetches reviews from the API based on the provided listing ID.
+ * - Displays each review with the reviewer's username, review title, description, and date.
+ * - Uses a star rating system to visually represent the rating score.
+ * - Limits the display to the top three highest-rated reviews.
+ *
+ * @param {Object} props - Component props.
+ * @param {number} props.listing_id - The unique ID of the listing for which reviews are fetched.
+ *
+ * @returns {JSX.Element} A section displaying user reviews.
+ */
 const Reviews = ({listing_id}) => {
     const [reviews, setReviews] = useState([]);
 

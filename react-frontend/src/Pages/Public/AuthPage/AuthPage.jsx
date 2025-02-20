@@ -10,12 +10,21 @@ import { useAuth } from "@/ContextAPI/AuthProvider";
 import "./AuthPage.scss";
 
 /**
- * Browse Component
+ * AuthPage Component
  *
- * This component serves as both a login and registration page, allowing users to:
- * - Login with a username and password.
- * - Create a new account by providing additional details.
- * - Toggle between login and registration views.
+ * This component serves as both a login and registration page for users.
+ * It allows users to log in with their username and password, create a new account
+ * by providing additional details (first name, last name, email), and toggle between
+ * login and registration views. The component handles form submissions and
+ * validates the input for account creation.
+ *
+ * Features:
+ * - User login with a username and password.
+ * - Account creation with username, first name, last name, email, and password.
+ * - Input validation for password confirmation.
+ * - Toggle between login and registration forms.
+ *
+ * @returns {JSX.Element} The rendered authentication page containing the login and registration forms.
  */
 const AuthPage = () => {
     // State variables for user input fields

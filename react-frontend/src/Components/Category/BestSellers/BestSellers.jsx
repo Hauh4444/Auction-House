@@ -36,6 +36,18 @@ const renderStars = (averageReview) => {
     );
 };
 
+/**
+ * BestSellers component fetches and displays the top-selling listings from an API.
+ * Listings are filtered based on query parameters and sorted by the number of purchases.
+ * Each listing includes an image, title, price, and review rating.
+ *
+ * Features:
+ * - Fetches best-selling listings from "http://127.0.0.1:5000/api/listings" when mounted or when filters change.
+ * - Displays listings with images, ratings, and a button to navigate to the listing's details page.
+ * - Uses the `renderStars` function to visualize star ratings.
+ *
+ * @returns {JSX.Element} A section displaying the best-selling listings.
+ */
 const BestSellers = () => {
     const navigate = useNavigate(); // Navigate function for routing
     const location = useLocation(); // Hook to access the current location (URL)

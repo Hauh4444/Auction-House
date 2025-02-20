@@ -36,6 +36,18 @@ const renderStars = (averageReview) => {
     );
 };
 
+/**
+ * NewListings component fetches and displays the newest product listings from an API.
+ * Listings are retrieved based on the selected category and sorted by creation date.
+ * Each listing includes an image, title, price, and review rating.
+ *
+ * Features:
+ * - Fetches the latest listings from "http://127.0.0.1:5000/api/listings" when mounted or when filters change.
+ * - Uses URL query parameters to filter listings by category.
+ * - Displays listings with images, ratings, and a button to navigate to the listing's details page.
+ *
+ * @returns {JSX.Element} A section displaying the newest listings.
+ */
 const NewListings = () => {
     const navigate = useNavigate(); // Navigate function for routing
     const location = useLocation(); // Hook to access the current location (URL)

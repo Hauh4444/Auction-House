@@ -1,12 +1,38 @@
 // Built In Modules
 @use "sass:map";
 // Custom Variables
-@use "@/assets/variables.modules" as *;
+@use "@/assets/variables.modules.scss" as *;
 
-.card {
-    width: fit-content;
+.userProfileCard {
+    width: 600px;
     margin: 50px auto;
     padding: 25px;
     border-radius: 10px !important;
     box-shadow: 0 2px 4px map.get($theme-colors, mainColor4);
+
+    .content {
+        .profileInfo {
+            width: 50%;
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        img {
+            width: 50%;
+            display: inline-block;
+        }
+
+        .input {
+            margin-bottom: 10px;
+        }
+
+        .shortField {
+            width: calc(50% - 5px);
+            display: inline-flex;
+        }
+
+        .btn {
+            float: right;
+        }
+    }
 }

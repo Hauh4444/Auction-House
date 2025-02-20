@@ -4,6 +4,21 @@ import PropTypes from "prop-types";
 // Stylesheets
 import "./Specifics.scss";
 
+/**
+ * Specifics component displays detailed item-specific information for a given listing.
+ *
+ * Features:
+ * - Parses and displays item specifics from a JSON string.
+ * - If item specifics contain key-value pairs, they are displayed in a table format.
+ * - If item specifics are an array, they are displayed as a list.
+ * - If item specifics are a plain string, they are shown as a paragraph.
+ *
+ * @param {Object} props - Component props.
+ * @param {Object} props.listing - The listing object containing item specifics.
+ * @param {string} props.listing.item_specifics - A JSON-encoded string of item specifics.
+ *
+ * @returns {JSX.Element} A section displaying the item's specific details.
+ */
 const Specifics = ({listing}) => {
 
     return (

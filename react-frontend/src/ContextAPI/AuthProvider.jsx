@@ -9,12 +9,19 @@ const AuthContext = createContext(null);
 /**
  * AuthProvider Component
  *
- * Provides authentication-related methods and state to the rest of the application.
- * This includes methods to check the authentication status, create an account, login, and logout.
- * The context will be used to share the user information and authentication methods across components.
+ * This component provides authentication-related methods and state to the rest of the application.
+ * It manages user authentication, including checking the authentication status, creating accounts,
+ * logging in, and logging out. The context allows child components to access user information and
+ * authentication methods seamlessly throughout the application.
+ *
+ * Features:
+ * - Provides methods to check if a user is authenticated.
+ * - Allows account creation and user login.
+ * - Supports user logout functionality.
  *
  * @param {Object} children - The child components that will have access to the authentication context.
- * @returns {JSX.Element} The AuthContext.Provider with authentication methods and state.
+ *
+ * @returns {JSX.Element} The AuthContext.Provider containing the user state and authentication methods.
  */
 const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null); // State to store the current user

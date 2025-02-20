@@ -9,6 +9,16 @@ import toggleNav from "@/Components/Navigation/Navigation/Navigation";
 // Stylesheets
 import "@/Components/Navigation/Navigation/Navigation.scss";
 
+/**
+ * HomeNav component provides a navigation bar for the home page, allowing users to switch between different sections.
+ *
+ * Features:
+ * - Updates the URL query parameters based on the selected navigation button.
+ * - Highlights the currently selected navigation button based on the URL state.
+ * - Uses the `toggleNav` function to handle navigation toggling.
+ *
+ * @returns {JSX.Element} A navigation bar with buttons for Home, Orders, Lists, Deals, and Sell.
+ */
 const HomeNav = () => {
     const navigate = useNavigate();
     const location = useLocation();

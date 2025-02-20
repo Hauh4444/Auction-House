@@ -9,8 +9,18 @@ import App from "@/App";
 // Stylesheets
 import "./index.scss";
 
-// Render the root of the React app, wrapped in StrictMode and BrowserRouter
-// StrictMode helps identify potential problems in the app, and BrowserRouter enables client-side routing.
+/**
+ * Entry Point of the Application
+ *
+ * This file serves as the main entry point for the React application. It sets up the root rendering of
+ * the app, wrapping it in `StrictMode` for detecting potential problems and `BrowserRouter`
+ * for enabling client-side routing.
+ *
+ * Features:
+ * - Renders the root React component using `createRoot` from `react-dom/client`.
+ * - Utilizes `StrictMode` to highlight potential issues in the application.
+ * - Employs `BrowserRouter` to facilitate client-side routing within the app.
+ */
 createRoot(document.getElementById("root")).render(
     <StrictMode>
         <BrowserRouter>

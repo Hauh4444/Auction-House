@@ -1,15 +1,22 @@
-# TODO
+# TODO Documentation
 
 ## React Frontend
-1. Document Components
-   1. Header
-   2. Listing
-   3. Navigation
-   4. Search
-   5. Reviews
-   6. User
-   7. CategoriesPopup
-   8. Other Docstrings
+1. Components
+   1. CategoriesPopup
+   2. Header
+   3. Listing
+      1. Main 
+      2. Reviews 
+      3. Specifics 
+   4. Navigation
+      1. CategoryNav 
+      2. HomeNav 
+      3. Navigation 
+      4. RightNav 
+      5. SearchNav 
+   5. Search 
+      1. Bar 
+      2. SearchListings
 
 # Dinkleberg's Auction House
 

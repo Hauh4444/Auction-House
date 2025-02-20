@@ -7,6 +7,16 @@ import axios from "axios";
 // Stylesheets
 import "./CategoryNav.scss";
 
+/**
+ * CategoryNav component displays a list of product categories and provides navigation functionality.
+ *
+ * Features:
+ * - Fetches category data from an API on component mount.
+ * - Displays categories in a popup or a grid layout depending on the current page.
+ * - Allows users to navigate to specific category pages using query parameters.
+ *
+ * @returns {JSX.Element} A section displaying categories with navigation buttons.
+ */
 const CategoryNav = () => {
     const [categories, setCategories] = useState([]);
     const navigate = useNavigate();

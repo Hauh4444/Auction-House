@@ -47,14 +47,14 @@ import SystemLogs from "@/Pages/Admin/SystemLogs/SystemLogs";
 /**
  * PublicRoutes Component
  *
- * This component defines the routing for the public and private sections of the application.
- * It uses the `AuthProvider` context to manage the user's authentication state.
- * Public routes are accessible to all users.
- * The routes protected by the `PrivateRoute` component can only be accessed by authenticated users.
- * The routes protected by the `StaffRoute` component can only be accessed by authenticated users with staff privelages.
- * The routes protected by the `Admin` component can only be accessed by authenticated users with admin privelages.
+ * This component defines the routing structure for both public and private sections of the application.
+ * It utilizes the `AuthProvider` context to manage the user's authentication state. The routing setup includes:
+ * - Public routes that are accessible to all users.
+ * - Private routes that are protected by the `PrivateRoute` component, allowing access only to authenticated users.
+ * - Staff routes that are protected by the `StaffRoute` component, allowing access only to authenticated users with staff privileges.
+ * - Admin routes that are protected by the `AdminRoute` component, allowing access only to authenticated users with admin privileges.
  *
- * @returns {JSX.Element} The PublicRoutes for the public and private pages.
+ * @returns {JSX.Element} The configured routes for public and private pages.
  */
 const PublicRoutes = () => {
 
@@ -81,8 +81,8 @@ const PublicRoutes = () => {
                     <Route path="/seller-profile" element={<SellerProfile />} />
                     <Route path="/account" element={<UserAccount />} />
                     <Route path="/dashboard" element={<UserDashboard />} />
+                    <Route path="/profile" element={<UserProfile />} />
                 </Route>
-                <Route path="/profile" element={<UserProfile />} />
 
                 {/* Protected PublicRoutes for Staff Users */}
                 <Route element={<StaffRoute />}>

@@ -7,11 +7,11 @@ import { useAuth } from "@/ContextAPI/AuthProvider";
 /**
  * PrivateRoute Component
  *
- * This component is used to protect routes that require authentication.
- * If the user is not authenticated, it redirects them to the login page.
- * If the user is authenticated, it renders the child routes by using the Outlet component.
+ * This component is used to protect routes that require user authentication. It ensures that:
+ * - If the user is not authenticated, they are redirected to the login page.
+ * - If the user is authenticated, the component renders the child routes using the Outlet component.
  *
- * @returns {JSX.Element} A Redirect to the login page or allow the protected routes.
+ * @returns {JSX.Element} A redirection to the login page or the child protected routes.
  */
 const PrivateRoute = () => {
     // Fetch the authentication context

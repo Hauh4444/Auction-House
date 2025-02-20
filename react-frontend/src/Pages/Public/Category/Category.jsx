@@ -18,13 +18,16 @@ import "./Category.scss";
 /**
  * Category Component
  *
- * This component fetches and displays category details including name, description, and image.
- * It also provides pagination functionality for category listings.
+ * This component fetches and displays details for a specific category, including its name,
+ * description, and image. It also provides functionality for pagination of category listings,
+ * allowing users to navigate through different pages of listings.
  *
  * Features:
- * - Fetches category data from the backend API based on query parameters.
- * - Displays best sellers, new listings, and category-specific listings.
- * - Implements pagination using React Router navigation.
+ * - Fetches category data from a backend API based on the 'category_id' query parameter.
+ * - Displays the category's best sellers, new listings, and specific category listings.
+ * - Implements pagination using React Router, allowing users to navigate between pages of listings.
+ *
+ * @returns {JSX.Element} The rendered category page containing category information and listings.
  */
 const Category = () => {
     // State to store the category data

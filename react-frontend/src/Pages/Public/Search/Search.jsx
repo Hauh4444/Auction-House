@@ -23,6 +23,8 @@ import "./Search.scss";
  * - Retrieves query parameters from the URL.
  * - Displays search results using `SearchListings`.
  * - Provides pagination buttons when 'view-all' mode is enabled.
+ *
+ * @returns {JSX.Element} The rendered homepage containing the header, navigation, and conditionally rendered category navigation.
  */
 const Search = () => {
     // State to store the pagination buttons

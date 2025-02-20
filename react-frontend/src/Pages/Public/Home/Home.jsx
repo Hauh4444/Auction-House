@@ -13,13 +13,15 @@ import "./Home.scss";
 /**
  * Home Component
  *
- * This component represents the homepage of the application.
- * It dynamically adjusts content based on URL query parameters.
+ * This component represents the homepage of the application. It dynamically adjusts its content
+ * based on URL query parameters, providing a tailored user experience.
  *
  * Features:
- * - Displays a header and main navigation.
- * - Optionally renders the `CategoryNav` component if 'nav' filter is not present.
- * - Includes a right-side navigation panel.
+ * - Displays a header and main navigation for the application.
+ * - Conditionally renders the `CategoryNav` component based on the absence of the 'nav' filter in the URL.
+ * - Includes a right-side navigation panel for additional navigation options.
+ *
+ * @returns {JSX.Element} The rendered homepage containing the header, navigation, and conditionally rendered category navigation.
  */
 const Home = () => {
     const location = useLocation(); // Hook to access the current location (URL)

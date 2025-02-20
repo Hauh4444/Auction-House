@@ -13,6 +13,25 @@ import "./RightNav.scss";
 // Custom Variables
 import { variables } from "@/assets/variables.modules.js";
 
+/**
+ * RightNav Component
+ *
+ * This component renders a navigation sidebar that provides users with access
+ * to various features of the application. It includes buttons for account
+ * management, notifications, cart functionality, user groups, and shipping
+ * options, each represented by relevant icons. The buttons are styled using
+ * Material-UI components and positioned using flexbox to maintain a clean
+ * layout.
+ *
+ * Features:
+ * - Navigates to the account page when the account button is clicked.
+ * - Includes icons for visual representation of each feature, enhancing
+ *   user experience.
+ *
+ * @returns {JSX.Element} A sidebar navigation component with buttons
+ *                       corresponding to different functionalities of the
+ *                       application.
+ */
 const RightNav = () => {
     const navigate = useNavigate();
 

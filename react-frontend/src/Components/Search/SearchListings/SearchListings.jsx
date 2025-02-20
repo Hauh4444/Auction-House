@@ -9,22 +9,51 @@ import axios from "axios";
 // Stylesheets
 import "./SearchListings.scss";
 
+/**
+ * Renders the star rating based on the average review score.
+ * It will display filled, empty, or half stars accordingly.
+ *
+ * @param {number} averageReview - The average review score of the product.
+ * @returns {JSX.Element} A span element with the appropriate number of stars.
+ */
 const renderStars = (averageReview) => {
     const filledStars = Math.floor(averageReview);
     const halfStar = averageReview > filledStars;
     return (
         <span className="stars">
+            {/* Render empty stars */}
             {Array.from({length: 5}, (_, index) => (
                 <LiaStarSolid className="blankStar" key={index} />
             ))}
+            {/* Render filled stars */}
             {Array.from({length: filledStars}, (_, index) => (
                 <LiaStarSolid className="filledStar" key={index} />
             ))}
+            {/* Render half star if needed */}
             {halfStar && <LiaStarHalfSolid className="halfStar" />}
         </span>
     );
 };
 
+/**
+ * SearchListings Component
+ *
+ * This component fetches and displays a list of product listings based on the
+ * current search filters specified in the URL. It supports pagination, sorting
+ * by various criteria such as creation date and purchase count, and provides
+ * a visual representation of average reviews using star ratings. Users can click
+ * on a listing to navigate to its detailed view or add it to their cart.
+ *
+ * Features:
+ * - Fetches listings from a specified API based on URL parameters.
+ * - Displays average reviews using a star rating system.
+ * - Supports pagination and sorting based on various criteria.
+ * - Navigates to a detailed listing view upon user interaction.
+ *
+ * @returns {JSX.Element} The rendered component containing a list of product
+ *                        listings, each with an image, title, review stars,
+ *                        price, and an "Add to Cart" button.
+ */
 const SearchListings = () => {
     const [listings, setListings] = useState([]);
     const navigate = useNavigate();
