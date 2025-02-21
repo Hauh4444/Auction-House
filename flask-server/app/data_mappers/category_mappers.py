@@ -26,11 +26,11 @@ class CategoryMapper:
             category_id (int): The ID of the category to retrieve.
 
         Returns:
-            dict: CategoryNav details if found, otherwise None.
+            dict: Category details if found, otherwise None.
         """
         db = get_db()
         cursor = db.cursor()
-        cursor.execute(f"SELECT * FROM categories WHERE category_id={category_id}")
+        cursor.execute("SELECT * FROM categories WHERE category_id=?", (category_id,))
         category = cursor.fetchone()
         return Category(**category).to_dict() if category else None
 
@@ -68,9 +68,11 @@ class CategoryMapper:
         """
         db = get_db()
         cursor = db.cursor()
-        conditions = [f"{key}='{data[key]}'" for key in data if key not in ["category_id", "created_at"]]
-        statement = "UPDATE categories SET " + ", ".join(conditions) + f" WHERE category_id={category_id}"
-        cursor.execute(statement)
+        set_clause = ", ".join([f"{key}=?" for key in data if key not in ["category_id", "created_at"]])
+        values = [data[key] for key in data if key not in ["category_id", "created_at"]]
+        values.append(category_id)
+        statement = f"UPDATE categories SET {set_clause} WHERE category_id=?"
+        cursor.execute(statement, values)
         db.commit()
         return cursor.rowcount
 
@@ -86,6 +88,6 @@ class CategoryMapper:
         """
         db = get_db()
         cursor = db.cursor()
-        cursor.execute(f"DELETE FROM categories WHERE category_id={category_id}")
+        cursor.execute("DELETE FROM categories WHERE category_id=?", (category_id,))
         db.commit()
         return cursor.rowcount

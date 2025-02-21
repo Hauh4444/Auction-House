@@ -50,7 +50,17 @@ class ReviewMapper:
             (listing_id, user_id, username, title, description, stars, created_at) 
             VALUES (?, ?, ?, ?, ?, ?, ?)
         """
-        cursor.execute(statement, tuple(Review(**data).to_dict().values())[1:])  # Exclude review_id
+        # Explicitly extract the values from the data dictionary, excluding review_id if it exists
+        values = [
+            data['listing_id'],
+            data['user_id'],
+            data['username'],
+            data['title'],
+            data['description'],
+            data['stars'],
+            data['created_at']
+        ]
+        cursor.execute(statement, values)
         db.commit()
         return cursor.lastrowid
 
