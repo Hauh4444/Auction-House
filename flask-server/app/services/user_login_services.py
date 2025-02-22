@@ -1,7 +1,7 @@
 from flask import jsonify
 from ..data_mappers.user_login_mappers import UserMapper
-from datetime import datetime
 import hashlib
+
 
 class UserLoginService:
     @staticmethod

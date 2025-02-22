@@ -1,6 +1,6 @@
 from flask import Blueprint, request
 
-from ..services.listings import ListingService
+from ..services.listing_services import ListingService
 
 # Blueprint for listing-related routes
 listings_bp = Blueprint('listings_bp', __name__)

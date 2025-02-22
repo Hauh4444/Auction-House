@@ -1,5 +1,5 @@
 from ..database import get_db
-from ..entities.chat_messages import Chat_Messages
+from ..entities.chat_message import Chat_Messages
 
 class ChatMessagesMapper:
     """Handles database operations related to chat messages."""

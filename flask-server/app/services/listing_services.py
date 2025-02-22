@@ -1,5 +1,5 @@
 from flask import jsonify
-from ..data_mappers.listings import ListingMapper
+from ..data_mappers.listing_mappers import ListingMapper
 
 
 class ListingService:

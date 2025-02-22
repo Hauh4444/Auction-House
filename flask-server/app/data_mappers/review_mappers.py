@@ -1,16 +1,11 @@
 from ..database import get_db
-from ..entities.reviews import Review
+from ..entities.review import Review
 
 class ReviewMapper:
     """Handles database operations related to reviews."""
 
     @staticmethod
     def get_all_reviews():
-        """Retrieve all reviews from the database.
-
-        Returns:
-            list: A list of review dictionaries.
-        """
         db = get_db()
         cursor = db.cursor()
         cursor.execute("SELECT * FROM reviews")
