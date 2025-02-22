@@ -18,28 +18,40 @@ class ListingMapper:
         db = get_db()
         cursor = db.cursor()
         statement = "SELECT * FROM listings"
-        # Set conditions for any value we might want to directly check against
-        conditions = [f"{key}='{args[key]}'" for key in ["category_id", "listing_type"] if key in args]
-        # Price conditions
+        conditions = []
+        values = []
+
+        # Add conditions
+        if "category_id" in args:
+            conditions.append("category_id=?")
+            values.append(args["category_id"])
+        if "listing_type" in args:
+            conditions.append("listing_type=?")
+            values.append(args["listing_type"])
         if "min_price" in args:
-            conditions.append(f"buy_now_price > {args['min_price']}")
+            conditions.append("buy_now_price > ?")
+            values.append(args["min_price"])
         if "max_price" in args:
-            conditions.append(f"buy_now_price < {args['max_price']}")
-        # SearchNav query filter
+            conditions.append("buy_now_price < ?")
+            values.append(args["max_price"])
         if "query" in args:
             query = args["query"]
-            conditions.append(f"(title LIKE '%{query}%' OR description LIKE '%{query}%')")
-        # Add check conditions to statement
+            conditions.append("(title LIKE ? OR description LIKE ?)")
+            values.extend([f'%{query}%', f'%{query}%'])
+
         if conditions:
             statement += " WHERE " + " AND ".join(conditions)
-        # Sort conditions
+
+        # Add sorting
         if "sort" in args and "order" in args:
             statement += f" ORDER BY {args['sort']} {args['order'].upper()}"
-        # Start and range of entries conditions
-        if "start" in args and "range" in args:
-            statement += f" LIMIT {args['range']} OFFSET {args['start']}"
 
-        cursor.execute(statement)
+        # Add pagination
+        if "start" in args and "range" in args:
+            statement += " LIMIT ? OFFSET ?"
+            values.extend([args["range"], args["start"]])
+
+        cursor.execute(statement, values)
         listings = cursor.fetchall()
         return [Listing(**listing).to_dict() for listing in listings]
 
@@ -55,7 +67,7 @@ class ListingMapper:
         """
         db = get_db()
         cursor = db.cursor()
-        cursor.execute(f"SELECT * FROM listings WHERE listing_id={listing_id}")
+        cursor.execute("SELECT * FROM listings WHERE listing_id=?", (listing_id,))
         listing = cursor.fetchone()
         return Listing(**listing).to_dict() if listing else None
 
@@ -95,9 +107,11 @@ class ListingMapper:
         """
         db = get_db()
         cursor = db.cursor()
-        conditions = [f"{key}='{data[key]}'" for key in data if key not in ["listing_id", "created_at"]]
-        statement = "UPDATE listings SET " + ", ".join(conditions) + f" WHERE listing_id={listing_id}"
-        cursor.execute(statement)
+        set_clause = ", ".join([f"{key}=?" for key in data if key not in ["listing_id", "created_at"]])
+        values = [data[key] for key in data if key not in ["listing_id", "created_at"]]
+        values.append(listing_id)
+        statement = f"UPDATE listings SET {set_clause} WHERE listing_id=?"
+        cursor.execute(statement, values)
         db.commit()
         return cursor.rowcount
 
@@ -113,7 +127,7 @@ class ListingMapper:
         """
         db = get_db()
         cursor = db.cursor()
-        cursor.execute(f"DELETE FROM listings WHERE listing_id={listing_id}")
+        cursor.execute("DELETE FROM listings WHERE listing_id=?", (listing_id,))
         db.commit()
         return cursor.rowcount
 
