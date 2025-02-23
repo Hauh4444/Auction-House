@@ -10,9 +10,6 @@ import SearchNav from "@/Components/Navigation/SearchNav/SearchNav";
 import RightNav from "@/Components/Navigation/RightNav/RightNav";
 import SearchListings from "@/Components/Search/SearchListings/SearchListings";
 
-// Stylesheets
-import "./Search.scss";
-
 /**
  * Search Component
  *
@@ -72,7 +69,7 @@ const Search = () => {
     }
 
     return (
-        <div className="searchPage">
+        <div className="searchPage page">
             <div className="mainPage">
                 {/* Page Header */}
                 <Header />

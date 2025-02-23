@@ -6,9 +6,9 @@ import axios from "axios";
 // Internal Modules
 import Header from "@/Components/Header/Header";
 import RightNav from "@/Components/Navigation/RightNav/RightNav";
-import Main from "@/Components/Listing/Main/Main"
-import Specifics from "@/Components/Listing/Specifics/Specifics"
-import Reviews from "@/Components/Listing/Reviews/Reviews"
+import Main from "@/Components/Listing/Main/Main";
+import Specifics from "@/Components/Listing/Specifics/Specifics";
+import Reviews from "@/Components/Listing/Reviews/Reviews";
 
 // Stylesheets
 import "./Listing.scss";
@@ -50,7 +50,7 @@ const Listing = () => {
     }, [location.search]); // Call on update of URL filters
 
     return (
-        <div className="listingPage">
+        <div className="listingPage page">
             <div className="mainPage">
                 {/* Page Header */}
                 <Header />

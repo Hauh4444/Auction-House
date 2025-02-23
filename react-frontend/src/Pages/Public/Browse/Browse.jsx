@@ -1,5 +1,3 @@
-import "./Browse.scss";
-
 const Browse = () => {
 
     return (

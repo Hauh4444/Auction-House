@@ -5,7 +5,7 @@ import { Button } from "@mui/material";
 import PropTypes from "prop-types";
 
 // Stylesheets
-import "./Main.scss"
+import "./Main.scss";
 
 /**
  * Main component displays detailed information about a product listing.

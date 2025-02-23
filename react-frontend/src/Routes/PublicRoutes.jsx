@@ -4,7 +4,7 @@ import { Route, Routes } from "react-router-dom";
 // Public Internal Modules
 import About from "@/Pages/Public/About/About";
 import AuthPage from "@/Pages/Public/AuthPage/AuthPage";
-import Browse from "@/Pages/Public/Browse/Browse"
+import Browse from "@/Pages/Public/Browse/Browse";
 import Category from "@/Pages/Public/Category/Category";
 import Contact from "@/Pages/Public/Contact/Contact";
 import Home from "@/Pages/Public/Home/Home";
@@ -13,19 +13,22 @@ import PageNotFound from "@/Pages/Public/PageNotFound/PageNotFound";
 import Search from "@/Pages/Public/Search/Search";
 
 // Internal Authentication Modules
-import AuthProvider from "@/ContextAPI/AuthProvider"
+import AuthProvider from "@/ContextAPI/AuthProvider";
 import PrivateRoute from "@/Routes/PrivateRoute";
 import StaffRoute from "@/Routes/StaffRoute";
 import AdminRoute from "@/Routes/AdminRoute";
 
 // Private Internal Modules
 import ListingDetails from "@/Pages/Private/ListingDetails/ListingDetails";
+import Lists from "@/Pages/Private/Lists/Lists";
+import Messages from "@/Pages/Private/Messages/Messages";
 import MyBids from "@/Pages/Private/MyBids/MyBids";
 import ProductUpload from "@/Pages/Private/ProductUpload/ProductUpload";
-import Review from "@/Pages/Private/Review/Review"
+import Report from "@/Pages/Private/Report/Report";
+import Review from "@/Pages/Private/Review/Review";
+import Security from "@/Pages/Private/Security/Security";
 import SellerProfile from "@/Pages/Private/SellerProfile/SellerProfile";
 import UserAccount from "@/Pages/Private/UserAccount/UserAccount";
-import UserDashboard from "@/Pages/Private/UserDashboard/UserDashboard";
 import UserProfile from "@/Pages/Private/UserProfile/UserProfile";
 
 // Staff Internal Modules
@@ -74,14 +77,17 @@ const PublicRoutes = () => {
 
                 {/* Protected PublicRoutes for Authenticated Users */}
                 <Route element={<PrivateRoute />}>
-                    <Route path="/listings/:id" element={<ListingDetails />} />
-                    <Route path="/my-bids" element={<MyBids />} />
-                    <Route path="/upload-product" element={<ProductUpload />} />
-                    <Route path="/review" element={<Review />} />
-                    <Route path="/seller-profile" element={<SellerProfile />} />
-                    <Route path="/account" element={<UserAccount />} />
-                    <Route path="/dashboard" element={<UserDashboard />} />
-                    <Route path="/profile" element={<UserProfile />} />
+                    <Route path="/user/listings/:id" element={<ListingDetails />} />
+                    <Route path="/user/lists" element={<Lists />} />
+                    <Route path="/user/messages" element={<Messages />} />
+                    <Route path="/user/my-bids" element={<MyBids />} />
+                    <Route path="/user/upload-product" element={<ProductUpload />} />
+                    <Route path="/user/report" element={<Report />} />
+                    <Route path="/user/review" element={<Review />} />
+                    <Route path="/user/security" element={<Security />} />
+                    <Route path="/user/seller-profile" element={<SellerProfile />} />
+                    <Route path="/user/account" element={<UserAccount />} />
+                    <Route path="/user/profile" element={<UserProfile />} />
                 </Route>
 
                 {/* Protected PublicRoutes for Staff Users */}

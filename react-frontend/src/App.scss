@@ -3,25 +3,30 @@
 // Custom Variables
 @use "@/assets/variables.modules.scss" as *;
 
-.mainPage {
-    width: calc(100% - 50px);
-    overflow-x: hidden;
+.page {
+    width: 100%;
+    height: 100vh;
 
-    .pagination {
-        width: fit-content;
-        height: 100px;
-        margin: 0 auto;
-        align-content: center;
+    .mainPage {
+        width: calc(100% - 50px);
+        overflow-x: hidden;
 
-        Button {
-            width: 125px;
-            height: 50px;
-            box-shadow: 0 2px 4px map.get($theme-colors, mainColor4);
-            text-transform: none;
-            color: map.get($theme-colors, mainColor3);
+        .pagination {
+            width: fit-content;
+            height: 100px;
+            margin: 0 auto;
+            align-content: center;
 
-            .icon {
-                font-size: 16px;
+            Button {
+                width: 125px;
+                height: 50px;
+                box-shadow: 0 2px 4px map.get($theme-colors, mainColor4);
+                text-transform: none;
+                color: map.get($theme-colors, mainColor3);
+
+                .icon {
+                    font-size: 16px;
+                }
             }
         }
     }

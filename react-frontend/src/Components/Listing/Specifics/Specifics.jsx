@@ -29,12 +29,12 @@ const Specifics = ({listing}) => {
                         <table>
                             <caption>Item Specifics</caption>
                             <tbody>
-                            {Object.keys(JSON.parse(listing.item_specifics)).map((key, index) =>
+                            {Object.keys(JSON.parse(listing.item_specifics)).map((key, index) => (
                                 <tr key={index}>
                                     <th>{key}</th>
                                     <td>{JSON.parse(listing.item_specifics)[key]}</td>
                                 </tr>
-                            )}
+                            ))}
                             </tbody>
                         </table>
                     ) : (

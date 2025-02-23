@@ -37,6 +37,7 @@
         overflow: hidden;
         float: right;
         color: map.get($theme-colors, accentColor1);
+        transition: all 0.5s ease;
 
         &::after {
             background: linear-gradient(to right, map.get($theme-colors, accentColor1), map.get($theme-colors, accentColor2)) no-repeat;

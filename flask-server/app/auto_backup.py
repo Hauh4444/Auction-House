@@ -1,5 +1,4 @@
 from flask import send_file
-import redis
 import sqlite3
 import os
 import threading

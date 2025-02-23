@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, createSearchParams } from "react-router-dom";
 import { Button } from "@mui/material";
 import axios from "axios";
-import "./CategoriesPopup.scss"
+import "./CategoriesPopup.scss";
 
 /**
  * CategoriesPopup component fetches a list of categories from an API and displays them as buttons.

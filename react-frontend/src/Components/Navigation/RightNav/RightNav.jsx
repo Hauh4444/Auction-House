@@ -44,7 +44,7 @@ const RightNav = () => {
                         color: variables.mainColor3,
                     }} />
                 </Button>
-                <Button className="btn" style={{marginBottom: "15px"}} onClick={() => navigate("/account")}>
+                <Button className="btn" style={{marginBottom: "15px"}} onClick={() => navigate("/user/account")}>
                     <RiAccountCircle2Fill className="fill" />
                     <RiAccountCircle2Line className="outline" />
                 </Button>

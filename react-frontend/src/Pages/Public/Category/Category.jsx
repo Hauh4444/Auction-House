@@ -80,7 +80,7 @@ const Category = () => {
     }
 
     return (
-        <div className="categoryPage">
+        <div className="categoryPage page">
             <div className="mainPage">
                 {/* Page Header */}
                 <Header />

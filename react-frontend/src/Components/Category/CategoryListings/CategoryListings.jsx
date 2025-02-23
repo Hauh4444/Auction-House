@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 
 // Stylesheets
 import "./CategoryListings.scss";
-import "../Listings.scss"
+import "../Listings.scss";
 
 /**
  * Renders the star rating based on the average review score.

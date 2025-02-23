@@ -7,8 +7,8 @@ import axios from "axios";
 import PropTypes from "prop-types";
 
 // Stylesheets
-import "./NewListings.scss"
-import "../Listings.scss"
+import "./NewListings.scss";
+import "../Listings.scss";
 
 /**
  * Renders the star rating based on the average review score.

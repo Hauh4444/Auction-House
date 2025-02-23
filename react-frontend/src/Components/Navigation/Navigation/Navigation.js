@@ -12,8 +12,6 @@
  *
  * @param {Event} e - The event object representing the click event,
  *                    which contains information about the clicked element.
- *
- * @returns {void} This function does not return a value.
  */
 function toggleNav(e) {
     document.querySelectorAll(".navBtn").forEach(element => {

@@ -23,10 +23,6 @@
 .categoryListings {
     width: 70%;
 
-    .listing.first {
-        margin-left: 0 !important;
-    }
-
     .listing {
         width: 20%;
         height: 300px;
@@ -36,6 +32,10 @@
         background-color: map.get($theme-colors, mainColor1);
         display: inline-flex;
         flex-direction: column;
+
+        &.first {
+            margin-left: 0 !important;
+        }
 
         .image {
             height: 200px;
