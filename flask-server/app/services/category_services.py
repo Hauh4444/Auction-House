@@ -1,5 +1,5 @@
 from flask import jsonify
-from ..data_mappers.category_mappers import CategoryMapper
+from ..data_mappers.category_mapper import CategoryMapper
 
 
 class CategoryService:

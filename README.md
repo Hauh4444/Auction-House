@@ -1,7 +1,10 @@
-# TODO Documentation
+# TODO
 
 ## React Frontend
-1. Components
+1. Pages
+   1. User Account
+   2. User Profile
+2. Document Components
    1. CategoriesPopup
    2. Header
    3. Listing
@@ -10,10 +13,9 @@
       3. Specifics 
    4. Navigation
       1. CategoryNav 
-      2. UserDashboardNav 
-      3. Navigation 
-      4. RightNav 
-      5. SearchNav 
+      2. Navigation 
+      3. RightNav 
+      4. SearchNav 
    5. Search 
       1. Bar 
       2. SearchListings

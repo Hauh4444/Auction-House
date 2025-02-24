@@ -1,23 +1,13 @@
 from flask import Flask
 from flask_cors import CORS
-from flask_limiter import Limiter
-from flask_limiter.util import get_remote_address
 
 from .database import init_db
 from .auto_backup import start_scheduled_backup
-from .routes import category_bp, listings_bp
+from .routes import category_bp, listings_bp, review_bp, user_bp, user_profile_bp
 
 
 # Initialize Flask application
 app = Flask(__name__)
-
-# Initialize Limiter
-limiter = Limiter(
-    get_remote_address,
-    app=app,
-    storage_uri="redis://localhost:6379/0",
-    default_limits=["100 per hour", "20 per minute"]  # Default limit for all routes
-)
 
 # Enable Cross-Origin Resource Sharing (CORS) for frontend communication
 CORS(app, resources={r"/api/*": {"origins": "http://localhost:5173"}})
@@ -28,9 +18,12 @@ init_db()
 # Initialize auto backup
 start_scheduled_backup()
 
-# Register Blueprints for category and listings routes
+# Register Blueprints for routes
 app.register_blueprint(listings_bp, url_prefix='/api/listings')
 app.register_blueprint(category_bp, url_prefix='/api/categories')
+app.register_blueprint(review_bp, url_prefix='/api/reviews')
+app.register_blueprint(user_bp, url_prefix='/api/user')
+app.register_blueprint(user_profile_bp, url_prefix='/api/profile')
 
 # Test route to check if the server is running
 @app.route('/test', methods=['GET'])

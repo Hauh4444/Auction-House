@@ -1,5 +1,5 @@
 from flask import jsonify
-from ..data_mappers.review_mappers import ReviewMapper
+from ..data_mappers.review_mapper import ReviewMapper
 
 class ReviewService:
     @staticmethod

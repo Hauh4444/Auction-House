@@ -1,5 +1,5 @@
 from flask import jsonify
-from ..data_mappers.user_login_mappers import UserMapper
+from ..data_mappers.user_login_mapper import UserMapper
 import hashlib
 
 
