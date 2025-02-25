@@ -7,8 +7,8 @@ import axios from "axios";
 import PropTypes from "prop-types";
 
 // Stylesheets
-import "./NewListings.scss"
-import "../Listings.scss"
+import "./NewListings.scss";
+import "../Listings.scss";
 
 /**
  * Renders the star rating based on the average review score.
@@ -24,18 +24,30 @@ const renderStars = (averageReview) => {
         <span className="stars">
             {/* Render empty stars */}
             {Array.from({length: 5}, (_, index) => (
-                <LiaStarSolid className="blankStar" key={index}/>
+                <LiaStarSolid className="blankStar" key={index} />
             ))}
             {/* Render filled stars */}
             {Array.from({length: filledStars}, (_, index) => (
-                <LiaStarSolid className="filledStar" key={index}/>
+                <LiaStarSolid className="filledStar" key={index} />
             ))}
             {/* Render half star if needed */}
-            {halfStar && <LiaStarHalfSolid className="halfStar"/>}
+            {halfStar && <LiaStarHalfSolid className="halfStar" />}
         </span>
     );
 };
 
+/**
+ * NewListings component fetches and displays the newest product listings from an API.
+ * Listings are retrieved based on the selected category and sorted by creation date.
+ * Each listing includes an image, title, price, and review rating.
+ *
+ * Features:
+ * - Fetches the latest listings from "http://127.0.0.1:5000/api/listings" when mounted or when filters change.
+ * - Uses URL query parameters to filter listings by category.
+ * - Displays listings with images, ratings, and a button to navigate to the listing's details page.
+ *
+ * @returns {JSX.Element} A section displaying the newest listings.
+ */
 const NewListings = () => {
     const navigate = useNavigate(); // Navigate function for routing
     const location = useLocation(); // Hook to access the current location (URL)
@@ -76,7 +88,7 @@ const NewListings = () => {
                 {newListings.map((listing, index) => (
                     <div className={`listing ${index === 0 ? "first" : ""}`} key={index}>
                         <div className="image">
-                            <img src={`data:image/jpg;base64,${listing.image_encoded}`} alt=""/>
+                            <img src={`data:image/jpg;base64,${listing.image_encoded}`} alt="" />
                         </div>
                         <div className="info">
                             <div className="review">
@@ -94,7 +106,7 @@ const NewListings = () => {
                     </div>
                 ))}
             </div>
-        </>
+        < />
     );
 };
 

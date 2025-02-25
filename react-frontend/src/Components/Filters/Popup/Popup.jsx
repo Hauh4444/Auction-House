@@ -8,13 +8,24 @@ import axios from "axios";
 import "./Popup.scss";
 
 /**
- * Popup component that allows users to filter a list of items based on different criteria.
+ * Popup Component
+ *
+ * This component renders a filter popup that allows users to refine
+ * their search results based on various criteria such as sorting options,
+ * categories, listing types, and price ranges. It fetches the list of
+ * categories from the API on mount and updates the URL parameters
+ * dynamically when filters are applied.
  *
  * Features:
- * - Sorting items by different parameters (e.g., relevance, price, creation date)
- * - Filtering items by category, listing type, and price range
- * - Fetches categories from an API to populate the category dropdown
- * - Updates the URL search parameters to reflect selected filters
+ * - A dropdown to select sorting criteria (e.g., relevance, date, price).
+ * - A dropdown to select categories fetched from an API.
+ * - A dropdown to select the type of listing (e.g., auction, buy now).
+ * - Input fields for minimum and maximum price ranges.
+ *
+ * The filters update the URL query parameters and reflect the current
+ * state of the filters applied.
+ *
+ * @returns {JSX.Element} A filter popup component with various filtering options.
  */
 const Popup = () => {
     const navigate = useNavigate(); // Navigate function for routing

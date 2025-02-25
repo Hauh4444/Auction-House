@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 
 // Stylesheets
 import "./CategoryListings.scss";
-import "../Listings.scss"
+import "../Listings.scss";
 
 /**
  * Renders the star rating based on the average review score.
@@ -24,18 +24,30 @@ const renderStars = (averageReview) => {
         <span className="stars">
             {/* Render empty stars */}
             {Array.from({length: 5}, (_, index) => (
-                <LiaStarSolid className="blankStar" key={index}/>
+                <LiaStarSolid className="blankStar" key={index} />
             ))}
             {/* Render filled stars */}
             {Array.from({length: filledStars}, (_, index) => (
-                <LiaStarSolid className="filledStar" key={index}/>
+                <LiaStarSolid className="filledStar" key={index} />
             ))}
             {/* Render half star if needed */}
-            {halfStar && <LiaStarHalfSolid className="halfStar"/>}
+            {halfStar && <LiaStarHalfSolid className="halfStar" />}
         </span>
     );
 };
 
+/**
+ * CategoryListings component fetches and displays product listings for a selected category.
+ * Listings are retrieved from an API and displayed with pagination support.
+ * Each listing includes an image, title, price, and review rating.
+ *
+ * Features:
+ * - Fetches listings from "http://127.0.0.1:5000/api/listings" when mounted or when filters change.
+ * - Uses URL query parameters to filter and paginate listings.
+ * - Displays listings with images, ratings, and a button to navigate to the listing's details page.
+ *
+ * @returns {JSX.Element} A section displaying category-specific listings.
+ */
 const CategoryListings = () => {
     const navigate = useNavigate(); // Navigate function for routing
     const location = useLocation(); // Hook to access the current location (URL)
@@ -76,7 +88,7 @@ const CategoryListings = () => {
                 {listings.map((listing, index) => (
                     <div className={`listing ${index % 4 === 0 ? "first" : ""}`} key={index}>
                         <div className="image">
-                            <img src={"data:image/jpg;base64," + listing.image_encoded} alt=""/>
+                            <img src={`data:image/jpg;base64,${listing.image_encoded}`} alt="" />
                         </div>
                         <div className="info">
                             <div className="review">
@@ -94,7 +106,7 @@ const CategoryListings = () => {
                     </div>
                 ))}
             </div>
-        </>
+        < />
     );
 };
 

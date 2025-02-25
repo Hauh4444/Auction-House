@@ -3,9 +3,20 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 import axios from "axios";
+
 // Stylesheets
 import "./CategoryNav.scss";
 
+/**
+ * CategoryNav component displays a list of product categories and provides navigation functionality.
+ *
+ * Features:
+ * - Fetches category data from an API on component mount.
+ * - Displays categories in a popup or a grid layout depending on the current page.
+ * - Allows users to navigate to specific category pages using query parameters.
+ *
+ * @returns {JSX.Element} A section displaying categories with navigation buttons.
+ */
 const CategoryNav = () => {
     const [categories, setCategories] = useState([]);
     const navigate = useNavigate();
@@ -19,7 +30,7 @@ const CategoryNav = () => {
         })
             .then(res => setCategories(res.data))
             .catch(err => console.log(err));
-    }, []);
+    }, []); // Empty dependency array to ensure it runs only once when the component is mounted
 
     const navigateToCategory = (id) => {
         if (location.pathname !== "/") {
@@ -47,7 +58,7 @@ const CategoryNav = () => {
                         <div className="category" key={index}>
                             <div className="image">
                                 {category.image_encoded ? (
-                                    <img src={`data:image/jpg;base64,${category.image_encoded}`} alt={category.title}/>
+                                    <img src={`data:image/jpg;base64,${category.image_encoded}`} alt={category.title} />
                                 ) : (
                                     <div>No image available</div>
                                 )}
@@ -62,7 +73,7 @@ const CategoryNav = () => {
                     ))}
                 </div>
             )}
-        </>
+        < />
     )
 }
 

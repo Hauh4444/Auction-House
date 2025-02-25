@@ -3,12 +3,33 @@ import { useEffect } from "react";
 import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
 import { MdFilterAlt } from "react-icons/md";
 import { Button } from "@mui/material";
+
 // Internal Modules
-import toggleNav from "@/Components/Navigation/Navigation/Navigation.js";
+import toggleNav from "@/Components/Navigation/Navigation/Navigation";
 import Popup from "@/Components/Filters/Popup/Popup";
+
 // Stylesheets
 import "@/Components/Navigation/Navigation/Navigation.scss";
 
+/**
+ * SearchNav Component
+ *
+ * This component provides a navigation bar for the search page,
+ * allowing users to filter search results based on different categories.
+ * It includes buttons for "Best Results," "Best Sellers," "New,"
+ * and "View All," enabling users to navigate between different
+ * types of search results. The component also features a button to
+ * toggle the visibility of a filter popup, which allows users to
+ * apply additional filters to their search.
+ *
+ * The component updates the URL query parameters based on the
+ * selected navigation option and maintains the selected state
+ * for the navigation buttons to enhance user experience.
+ *
+ * @returns {JSX.Element} A navigation component for the search page
+ *                        with buttons for different result categories
+ *                        and a filter popup.
+ */
 const SearchNav = () => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -79,11 +100,11 @@ const SearchNav = () => {
                     View All
                 </Button>
                 <Button className="navBtn filtersBtn" onClick={toggleFiltersDisplay}>
-                    Filters&ensp;<MdFilterAlt className="icon"/>
+                    Filters&ensp;<MdFilterAlt className="icon" />
                 </Button>
             </div>
-            <Popup/>
-        </>
+            <Popup />
+        < />
     )
 }
 
