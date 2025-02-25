@@ -3,14 +3,14 @@ from ..data_mappers.review_mapper import ReviewMapper
 
 class ReviewService:
     @staticmethod
-    def get_all_reviews():
+    def get_all_reviews(request):
         """
         Retrieves a list of all reviews.
         
         Returns:
             A JSON response containing the list of reviews with a 200 status code.
         """
-        reviews = ReviewMapper.get_all_reviews()
+        reviews = ReviewMapper.get_all_reviews(args=request.args)
         return jsonify(reviews), 200
     
     @staticmethod

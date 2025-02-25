@@ -88,7 +88,7 @@ const CategoryListings = () => {
                 {listings.map((listing, index) => (
                     <div className={`listing ${index % 4 === 0 ? "first" : ""}`} key={index}>
                         <div className="image">
-                            <img src={"data:image/jpg;base64," + listing.image_encoded} alt="" />
+                            <img src={`data:image/jpg;base64,${listing.image_encoded}`} alt="" />
                         </div>
                         <div className="info">
                             <div className="review">

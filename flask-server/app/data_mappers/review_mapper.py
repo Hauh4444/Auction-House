@@ -5,10 +5,28 @@ class ReviewMapper:
     """Handles database operations related to reviews."""
 
     @staticmethod
-    def get_all_reviews():
+    def get_all_reviews(args):
+
         db = get_db()
         cursor = db.cursor()
-        cursor.execute("SELECT * FROM reviews")
+        statement = "SELECT * FROM reviews"
+        values = []
+
+        # Add conditions
+        if "listing_id" in args:
+            statement += " WHERE listing_id=?"
+            values.append(args["listing_id"])
+
+        # Add sorting
+        if "sort" in args and "order" in args:
+            statement += f" ORDER BY {args['sort']} {args['order'].upper()}"
+
+        # Add start and range
+        if "start" in args and "range" in args:
+            statement += " LIMIT ? OFFSET ?"
+            values.extend([args["range"], args["start"]])
+
+        cursor.execute(statement, values)
         reviews = cursor.fetchall()
         return [Review(**review).to_dict() for review in reviews]
 

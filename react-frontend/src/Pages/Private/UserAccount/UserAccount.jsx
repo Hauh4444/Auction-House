@@ -28,7 +28,8 @@ const UserAccount = () => {
 
     const cardInfo = {
         "orders": ["Your Orders", "View and manage your orders"],
-        "security": ["Login & Security", "Edit login, name, phone number, and password"],
+        "security": ["Login & Security", "Edit login information: username, password, etc"],
+        "profile": ["Your Profile", "Edit profile information: name, address, etc "],
         "payment-info": ["Your Payments", "View transactions, manage payment methods and settings"],
         "lists": ["Your Lists", "View, modify, and share your lists, or create new ones"],
         "seller-profile": ["Seller Profile", "View and manage your seller profile"],
@@ -41,6 +42,7 @@ const UserAccount = () => {
             <div className="mainPage">
                 {/* Page Header */}
                 <Header />
+                <h1>Your Account</h1>
                 {/* Account Navigation Cards */}
                 <div className="accountNav">
                     {/* Map Dictionary to Cards */}

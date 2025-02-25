@@ -18,17 +18,17 @@ class UserProfileService:
         return jsonify(user_profiles), 200
 
     @staticmethod
-    def get_user_profile_by_id(profile_id):
+    def get_user_profile_by_id(user_id):
         """
-        Retrieves a specific user profile by its ID.
+        Retrieves a specific user profile by its associate user ID.
 
         Args:
-            profile_id: The ID of the profile to retrieve.
+            user_id: The ID of the user to retrieve.
 
         Returns:
             A JSON response with the profile data if found, otherwise a 404 error with a message.
         """
-        profile = UserProfileMapper.get_user_profile_by_id(profile_id)
+        profile = UserProfileMapper.get_user_profile_by_id(user_id)
         if profile:
             return jsonify(profile), 200
         return jsonify({"error": "User profile not found"}), 404

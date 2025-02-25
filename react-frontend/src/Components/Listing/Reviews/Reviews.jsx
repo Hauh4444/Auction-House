@@ -53,7 +53,7 @@ const Reviews = ({listing_id}) => {
     // Effect hook to fetch reviews from the API on component mount and URL filter update
     useEffect(() => {
         // Fetch best sellers from the backend API
-        axios.get("http://127.0.0.1:5000/api/listings", {
+        axios.get("http://127.0.0.1:5000/api/reviews", {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -67,7 +67,7 @@ const Reviews = ({listing_id}) => {
         })
             .then(res => setReviews(res.data)) // Update state with fetched data
             .catch(err => console.log(err)); // Log errors if any
-    }, []); // Empty dependency array to ensure it runs only once when the component is mounted
+    }, [listing_id]); // Empty dependency array to ensure it runs only once when the component is mounted
 
     return (
         <div className="reviewSection">
@@ -92,14 +92,7 @@ const Reviews = ({listing_id}) => {
 
 // Define the expected shape of the listing_id and reviews props
 Reviews.propTypes = {
-    listing_id: PropTypes.number,
-    reviews: PropTypes.shape({
-        username: PropTypes.string,
-        title: PropTypes.string,
-        description: PropTypes.string,
-        stars: PropTypes.number,
-        created_at: PropTypes.string,
-    }),
+    listing_id: PropTypes.number
 };
 
 export default Reviews;

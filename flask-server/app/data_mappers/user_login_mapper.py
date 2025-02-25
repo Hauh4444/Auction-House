@@ -30,7 +30,7 @@ class UserMapper:
             username (str): The username of the user to retrieve.
 
         Returns:
-            dict: User details if found, otherwise None.
+            Object: User details if found, otherwise None.
         """
         db = get_db()
         cursor = db.cursor()

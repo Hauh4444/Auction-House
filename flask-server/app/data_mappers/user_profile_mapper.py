@@ -6,18 +6,18 @@ class UserProfileMapper:
     """Handles database operations related to user profiles."""
 
     @staticmethod
-    def get_user_profile_by_id(profile_id):
-        """Retrieve a user profile by its ID.
+    def get_user_profile_by_id(user_id):
+        """Retrieve a user profile by its associated user ID.
 
         Args:
-            profile_id (int): The ID of the profile to retrieve.
+            user_id (int): The ID of the user to retrieve.
 
         Returns:
             dict: User profile details if found, otherwise None.
         """
         db = get_db()
         cursor = db.cursor()
-        cursor.execute("SELECT * FROM user_profiles WHERE profile_id = ?", (profile_id,))
+        cursor.execute("SELECT * FROM user_profiles WHERE user_id = ?", (user_id,))
         profile = cursor.fetchone()
         return UserProfile(**profile).to_dict() if profile else None
 
@@ -55,11 +55,22 @@ class UserProfileMapper:
         """
         db = get_db()
         cursor = db.cursor()
-        conditions = [f"{key} = ?" for key in data if key not in ["profile_id", "created_at"]]
+
+        # Filter out the keys you don't want to update
+        filtered_data = {key: value for key, value in data.items() if key not in ["profile_id", "created_at"]}
+
+        # Build the condition placeholders (SET part)
+        conditions = [f"{key} = ?" for key in filtered_data]
         statement = "UPDATE user_profiles SET " + ", ".join(conditions) + " WHERE profile_id = ?"
-        values = list(data.values()) + [profile_id]
+
+        # Create the values list (filtered data values + profile_id for WHERE clause)
+        values = list(filtered_data.values()) + [profile_id]
+
+        # Execute the statement
         cursor.execute(statement, values)
         db.commit()
+
+        # Return the number of rows affected
         return cursor.rowcount
 
     @staticmethod

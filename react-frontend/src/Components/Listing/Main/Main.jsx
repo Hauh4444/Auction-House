@@ -51,21 +51,18 @@ const Main = ({listing}) => {
                     <FacebookShareButton
                         className="shareBtn"
                         url={location.href}
-                        network="Facebook"
                     >
                         <FacebookIcon size={24} round={true} />
                     </FacebookShareButton>
                     <TwitterShareButton
                         className="shareBtn"
                         url={location.href}
-                        network="Twitter"
                     >
                         <XIcon size={24} round={true} />
                     </TwitterShareButton>
                     <PinterestShareButton
                         className="shareBtn"
                         url={location.href}
-                        network="Pinterest"
                         media={listing.image_encoded}
                     >
                         <PinterestIcon size={24} round={true} />
@@ -75,7 +72,7 @@ const Main = ({listing}) => {
             <div className="image">
                 {/* Checking if image data exists; if yes, displaying image, otherwise a fallback message */}
                 {listing.image_encoded ? (
-                    <img src={"data:image/jpg;base64," + listing.image_encoded} alt={listing.title} />
+                    <img src={`data:image/jpg;base64,${listing.image_encoded}`} alt={listing.title} />
                 ) : (
                     <div>No image available</div>
                 )}

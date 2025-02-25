@@ -4,6 +4,9 @@ import { Card, CardHeader, CardContent, TextField, Button } from "@mui/material"
 import axios from "axios";
 import PropTypes from "prop-types";
 
+// Internal Modules
+import { useAuth } from "@/ContextAPI/AuthProvider";
+
 // Stylesheets
 import "./UserProfileCard.scss";
 
@@ -27,10 +30,25 @@ import "./UserProfileCard.scss";
 const UserProfileCard = () => {
     const [edit, setEdit] = useState(false);
     const [profile, setProfile] = useState({})
+    const [newProfilePicture, setNewProfilePicture] = useState(""); // For storing the new image
+
+    const auth = useAuth(); // Access authentication functions from the AuthProvider context
+
+    const fields = [
+        { label: "First Name", name: "first_name", type: "text", value: profile.first_name },
+        { label: "Last Name", name: "last_name", type: "text", value: profile.last_name },
+        { label: "Date of Birth", name: "date_of_birth", type: "text", value: profile.date_of_birth },
+        { label: "Phone Number", name: "phone_number", type: "text", value: profile.phone_number },
+        { label: "Address", name: "address", type: "text", style: { float: "left" }, value: profile.address },
+        { label: "City", name: "city", type: "text", style: { float: "right" }, value: profile.city },
+        { label: "State", name: "state", type: "text", style: { float: "left" }, value: profile.state },
+        { label: "Country", name: "country", type: "text", style: { float: "right" }, value: profile.country },
+        { label: "Bio", name: "bio", type: "text", multiline: true, rows: 5, maxrows: 10, fullWidth: true, value: profile.bio },
+    ];
 
     // Fetch user profile data from the backend API
     useEffect(() => {
-        axios.get("http://127.0.0.1:5000/api/get_user_profile", {
+        axios.get("http://127.0.0.1:5000/api/profile/" + auth.user, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -40,9 +58,42 @@ const UserProfileCard = () => {
             .catch(err => console.log(err)); // Log errors if any
     }, []); // Empty dependency array to ensure it runs only once when the component is mounted
 
+    const encodeImageToBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+
+            reader.onloadend = () => {
+                // The result is the base64 encoded string
+                const base64String = reader.result.split(',')[1]; // Remove data URL prefix
+                resolve(base64String);
+            };
+
+            reader.onerror = (error) => {
+                reject(error);
+            };
+
+            reader.readAsDataURL(file); // This converts the file into a base64 string
+        });
+    };
+
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            encodeImageToBase64(file)
+                .then((base64String) => {
+                    const image = base64String;
+                    setNewProfilePicture(`data:image/jpg;base64,${image}`); // Temporarily display the new image
+                    setProfile({ ...profile, profile_picture: image }); // Save the file object for upload
+                })
+                .catch((error) => {
+                    console.error('Error encoding image:', error);
+                });
+        }
+    };
+
     // On submit, post updated user profile data to the backend API
     const handleSubmit = () => {
-        axios.post("http://127.0.0.1:5000/api/update_user_profile", {
+        axios.put("http://127.0.0.1:5000/api/profile/" + profile.profile_id, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -61,133 +112,63 @@ const UserProfileCard = () => {
                     /* If edit mode is off, display the data */
                     <>
                         <div className="profileInfo">
-                            <p><strong>Name:</strong> {profile.first_name} {profile.last_name}</p>
-                            <p><strong>Date of Birth:</strong> {profile.date_of_birth}</p>
-                            <p><strong>Phone Number:</strong> {profile.phone_number}</p>
-                            <p><strong>Address:</strong> {profile.address}</p>
-                            <p><strong>City:</strong> {profile.city}</p>
-                            <p><strong>State:</strong> {profile.state}</p>
-                            <p><strong>Country:</strong> {profile.country}</p>
+                            <img
+                                src={newProfilePicture || `data:image/jpg;base64,${profile.profile_picture}`}
+                                alt="Profile"
+                                className="profile-image"
+                            />
+                            {fields.map((field) => (
+                                <p key={field.name}>
+                                    <strong>{field.label}:</strong> {field.value}
+                                </p>
+                            ))}
                         </div>
-                        {/*<img src={`data:image/jpg;base64,${profile.profile_picture}`} alt="" />*/}
-                        <p className="bio"><strong>Bio:</strong> {profile.bio}</p>
                         {/* Toggle edit mode button */}
                         <Button className="btn" onClick={() => setEdit(true)}>Edit</Button>
                     </>
                 ) : (
                     /* If edit mode is on, display the data as text fields that can be editted and submitted */
                     <>
-                        {/* First name field */}
-                        <TextField
-                            className="input shortField"
-                            style={{ float: "left" }}
-                            label="First Name"
-                            name="first_name"
-                            type="text"
-                            variant="outlined"
-                            value={profile.first_name}
-                            onChange={(e) => setProfile({...profile, [e.target.name]: e.target.value})}
-                            required
-                        />
-                        {/* Last name field */}
-                        <TextField
-                            className="input shortField"
-                            style={{ float: "right" }}
-                            label="Last Name"
-                            name="last_name"
-                            type="text"
-                            variant="outlined"
-                            value={profile.last_name}
-                            onChange={(e) => setProfile({...profile, [e.target.name]: e.target.value})}
-                            required
-                        />
-                        {/* Date of birth field */}
-                        <TextField
-                            className="input shortField"
-                            style={{ float: "left" }}
-                            label="Date of Birth"
-                            name="date_of_birth"
-                            type="text"
-                            variant="outlined"
-                            value={profile.date_of_birth}
-                            onChange={(e) => setProfile({...profile, [e.target.name]: e.target.value})}
-                            required
-                        />
-                        {/* Phone number field */}
-                        <TextField
-                            className="input shortField"
-                            style={{ float: "right" }}
-                            label="Phone Number"
-                            name="phone_number"
-                            type="text"
-                            variant="outlined"
-                            value={profile.phone_number}
-                            onChange={(e) => setProfile({...profile, [e.target.name]: e.target.value})}
-                            required
-                        />
-                        {/* Address field */}
-                        <TextField
-                            className="input shortField"
-                            style={{ float: "left" }}
-                            label="Address"
-                            name="address"
-                            type="text"
-                            variant="outlined"
-                            value={profile.address}
-                            onChange={(e) => setProfile({...profile, [e.target.name]: e.target.value})}
-                            required
-                        />
-                        {/* City field */}
-                        <TextField
-                            className="input shortField"
-                            style={{ float: "right" }}
-                            label="City"
-                            name="city"
-                            type="text"
-                            variant="outlined"
-                            value={profile.city}
-                            onChange={(e) => setProfile({...profile, [e.target.name]: e.target.value})}
-                            required
-                        />
-                        {/* State field */}
-                        <TextField
-                            className="input shortField"
-                            style={{ float: "left" }}
-                            label="State"
-                            name="state"
-                            type="text"
-                            variant="outlined"
-                            value={profile.state}
-                            onChange={(e) => setProfile({...profile, [e.target.name]: e.target.value})}
-                            required
-                        />
-                        {/* Country field */}
-                        <TextField
-                            className="input shortField"
-                            style={{ float: "right" }}
-                            label="Country"
-                            name="country"
-                            type="text"
-                            variant="outlined"
-                            value={profile.country}
-                            onChange={(e) => setProfile({...profile, [e.target.name]: e.target.value})}
-                            required
-                        />
-                        {/* Bio field */}
-                        <TextField
-                            className="input bio"
-                            label="Bio"
-                            name="bio"
-                            type="text"
-                            variant="outlined"
-                            multiline
-                            rows={5}
-                            maxrows={10}
-                            fullWidth
-                            value={profile.bio}
-                            onChange={(e) => setProfile({...profile, [e.target.name]: e.target.value})}
-                            required
-                        />
+                        {/* Profile Picture Replace Button */}
+                        <div className="imageUpload">
+                            <img
+                                src={newProfilePicture || `data:image/jpg;base64,${profile.profile_picture}`}
+                                alt="Profile"
+                                className="profile-image"
+                            />
+                            <input
+                                type="file"
+                                accept="image/*"
+                                id="profile-picture"
+                                style={{ display: "none" }}
+                                onChange={handleImageChange}
+                            />
+                            <Button
+                                className="btn"
+                                component="label"
+                                htmlFor="profile-picture"
+                            >
+                                Choose File
+                            </Button>
+                        </div>
+                        {fields.map((field) => (
+                            <TextField
+                                key={field.name}
+                                className={`input ${field.name === 'bio' ? 'bio' : 'shortField'}`}
+                                style={{ display: "flex", ...field.style }}
+                                label={field.label}
+                                name={field.name}
+                                type={field.type}
+                                variant="outlined"
+                                value={profile[field.name]}
+                                onChange={(e) => setProfile({ ...profile, [e.target.name]: e.target.value })}
+                                required
+                                multiline={field.multiline}
+                                rows={field.rows}
+                                maxrows={field.maxrows}
+                                fullWidth={field.fullWidth}
+                            />
+                        ))}
                         {/* Submit button */}
                         <Button className="btn" onClick={() => handleSubmit(profile)}>Submit</Button>
                     </>
@@ -200,6 +181,7 @@ const UserProfileCard = () => {
 // Define the expected shape of the profile prop
 UserProfileCard.propTypes = {
     profile: PropTypes.shape({
+        profile_id: PropTypes.number,
         first_name: PropTypes.string,
         last_name: PropTypes.string,
         date_of_birth: PropTypes.string,

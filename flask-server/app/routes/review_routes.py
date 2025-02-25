@@ -14,7 +14,7 @@ def get_all_reviews():
     Returns:
         JSON response containing a list of all reviews.
     """
-    return ReviewService.get_all_reviews()
+    return ReviewService.get_all_reviews(request)
 
 
 # GET /api/reviews/{id}

@@ -94,7 +94,7 @@ const SearchListings = () => {
             {listings.map((listing, index) => (
                 <div className="listing" key={index}>
                     <div className="image">
-                        <img src={"data:image/jpg;base64," + listing.image_encoded} alt="" />
+                        <img src={`data:image/jpg;base64,${listing.image_encoded}`} alt="" />
                     </div>
                     <div className="info">
                         <Button className="title" onClick={() => navigateToListing(listing.listing_id)}>

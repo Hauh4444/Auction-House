@@ -2,11 +2,19 @@ from flask import jsonify, session
 from flask_login import login_user, logout_user, current_user
 
 from ..data_mappers.user_login_mapper import UserMapper
+from ..services.user_profile_services import UserProfileService
+from datetime import datetime, date
 import hashlib
 
 class UserLoginService:
     @staticmethod
     def check_auth_status():
+        """
+        Checks authentication status of current session
+
+        Returns:
+            A JSON response with the authentication status and user id if authenticated, otherwise a 401 error
+        """
         if current_user.is_authenticated:
             return jsonify({"authenticated": True, "user": current_user.id}), 200
         return jsonify({"authenticated": False}), 401
@@ -42,9 +50,8 @@ class UserLoginService:
         """
         user = UserMapper.get_user_by_username(username)
         if user and user.password_hash == UserLoginService.hash_password(password):
-            # Update the last login timestamp
-            UserMapper.update_last_login(user.user_id)
-            login_user(user, remember=True)
+            UserMapper.update_last_login(user.user_id) # Update the last login timestamp
+            login_user(user, remember=True) # Login User using flask login
             session["user_id"] = user.user_id  # Store user ID in session
             return jsonify({"message": "Login successful", "user": user}), 200
         return jsonify({"error": "Invalid username or password"}), 401
@@ -60,7 +67,7 @@ class UserLoginService:
         Returns:
             A JSON response with a success message and the newly created user ID, or a 400 error if registration fails.
         """
-        data = request.json["data"]
+        data = request.json
 
         data["password_hash"] = UserLoginService.hash_password(data["password"])
 
@@ -95,6 +102,14 @@ class UserLoginService:
             A hashed version of the password.
         """
         return hashlib.sha256(password.encode('utf-8')).hexdigest()
+
+    @staticmethod
+    def password_reset_request(email):
+        return 404
+
+    @staticmethod
+    def reset_user_password(reset_token, new_password):
+        return 404
 
     @staticmethod
     def get_user_by_username(username):

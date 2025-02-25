@@ -21,7 +21,6 @@
                 background-color: map.get($theme-colors, mainColor1);
                 box-shadow: 0 2px 4px map.get($theme-colors, mainColor4);
                 border-radius: 10px;
-                display: inline-flex;
                 flex-direction: column;
                 overflow: hidden;
                 text-transform: none;

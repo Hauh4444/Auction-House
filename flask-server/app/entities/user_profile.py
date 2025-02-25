@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, date
 
 
 @dataclass
@@ -29,7 +29,7 @@ class UserProfile:
             user_id: int,
             first_name: str,
             last_name: str,
-            date_of_birth: str,
+            date_of_birth: date,
             phone_number: str,
             address: str,
             city: str,
@@ -54,7 +54,7 @@ class UserProfile:
         self.country = country
         self.profile_picture = profile_picture
         self.bio = bio
-        self.social_links = social_links or {}
+        self.social_links = social_links
         self.created_at = created_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self.updated_at = updated_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 

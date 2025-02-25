@@ -20,6 +20,7 @@ app.config.update(
     SESSION_COOKIE_SECURE = True,
 )
 
+# Initialize the login manager and session into the app
 login_manager.init_app(app)
 Session(app)
 

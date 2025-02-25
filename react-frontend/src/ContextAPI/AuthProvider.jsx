@@ -35,19 +35,6 @@ const AuthProvider = ({ children }) => {
         }
     }, []);
 
-    // Function to create a new user account
-    const createAccount = useCallback(async (credentials) => {
-        try {
-            await axios.post("http://127.0.0.1:5000/api/user/register", credentials);
-            await checkAuthStatus(); // Check authentication status after account creation
-            return true; // Indicate success
-        } catch (err) {
-            console.log(err);
-            setError("Failed to create account.");
-            return false; // Indicate failure
-        }
-    }, [checkAuthStatus]);
-
     // Function to log in an existing user
     const login = useCallback(async (credentials) => {
         try {
@@ -60,6 +47,19 @@ const AuthProvider = ({ children }) => {
             return false; // Indicate failure
         }
     }, [checkAuthStatus]);
+
+    // Function to create a new user account
+    const createAccount = useCallback(async (credentials) => {
+        try {
+            await axios.post("http://127.0.0.1:5000/api/user/register", credentials);
+            await login(credentials); // Attempt to login after account creation
+            return true; // Indicate success
+        } catch (err) {
+            console.log(err);
+            setError("Failed to create account.");
+            return false; // Indicate failure
+        }
+    }, [login]);
 
     // Function to log out the current user
     const logout = useCallback(async () => {
