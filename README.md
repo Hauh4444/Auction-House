@@ -1,10 +1,7 @@
 # TODO
 
 ## React Frontend
-1. Pages
-   1. User Account
-   2. User Profile
-2. Document Components
+1. Document Components
    1. CategoriesPopup
    2. Header
    3. Listing

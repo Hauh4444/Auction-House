@@ -32,13 +32,11 @@ def login_user():
         JSON response indicating the login status.
     """
     data = request.json
-    username = data.get("username")
-    password = data.get("password")
 
-    if not username or not password:
+    if not data.get("username") or not data.get("password"):
         return jsonify({"error": "Username and password are required"}), 400
 
-    return UserLoginService.login_user(username, password)
+    return UserLoginService.login_user(data.get("username"), data.get("password"))
 
 
 # POST /api/user/logout - Logout of current user
@@ -67,12 +65,11 @@ def password_reset_request():
         JSON response indicating the status of the reset request.
     """
     data = request.json
-    email = data.get("email")
 
-    if not email:
+    if not data.get("email"):
         return jsonify({"error": "Email is required"}), 400
 
-    return UserLoginService.password_reset_request(email)
+    return UserLoginService.password_reset_request(data.get("email"))
 
 
 # POST /api/user/password_reset - Reset user password

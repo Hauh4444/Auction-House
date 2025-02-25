@@ -1,10 +1,11 @@
 from flask import jsonify, session
 from flask_login import login_user, logout_user, current_user
 
+import hashlib
+
 from ..data_mappers.user_login_mapper import UserMapper
 from ..services.user_profile_services import UserProfileService
-from datetime import datetime, date
-import hashlib
+from ..services.session_services import SessionService
 
 class UserLoginService:
     @staticmethod
@@ -53,6 +54,7 @@ class UserLoginService:
             UserMapper.update_last_login(user.user_id) # Update the last login timestamp
             login_user(user, remember=True) # Login User using flask login
             session["user_id"] = user.user_id  # Store user ID in session
+            SessionService.create_session()
             return jsonify({"message": "Login successful", "user": user}), 200
         return jsonify({"error": "Invalid username or password"}), 401
 
@@ -74,6 +76,7 @@ class UserLoginService:
         if not data.get("username") or not data.get("password_hash") or not data.get("email"):
             return jsonify({"error": "Username, password, and email are required"}), 400
 
+        UserProfileService.create_user_profile(data)
         # Create the new user in the database
         user_id = UserMapper.create_user(data)
         return jsonify({"message": "User registered successfully", "user_id": user_id}), 201
