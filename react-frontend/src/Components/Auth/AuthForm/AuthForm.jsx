@@ -47,20 +47,19 @@ const AuthForm = () => {
      *
      * @param {Event} e - Form submission event.
      */
-    const handleSubmitLogin = (e) => {
+    const handleSubmitLogin = async (e) => {
         e.preventDefault(); // Prevents default form submission behavior
 
         // Attempt login authorization
-        auth.login({
+        const success = await auth.login({
             username,
             password,
         });
 
         // Navigate to home page on successful login
-        if (auth.user) {
-            navigate("/");
-        }
-        else {
+        if (success) {
+            navigate("/"); // Navigate only if login is successful
+        } else {
             setLoginError("Incorrect username or password");
         }
     };
@@ -73,7 +72,7 @@ const AuthForm = () => {
      *
      * @param {Event} e - Form submission event.
      */
-    const handleSubmitCreateAccount = (e) => {
+    const handleSubmitCreateAccount = async (e) => {
         e.preventDefault(); // Prevents default form submission behavior
 
         // Check if passwords match
@@ -85,7 +84,7 @@ const AuthForm = () => {
         }
 
         // Attempt create account authorization
-        auth.createAccount({
+        const success = await auth.createAccount({
             username,
             firstName,
             lastName,
@@ -94,13 +93,13 @@ const AuthForm = () => {
         });
 
         // Navigate to home page on successful registration
-        if (auth.user) {
-            navigate("/");
-        }
-        else {
+        if (success) {
+            navigate("/"); // Navigate only if account creation is successful
+        } else {
             setLoginError("Error creating account");
         }
     };
+
 
     return (
         <div className="authForm">

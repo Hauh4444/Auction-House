@@ -50,17 +50,18 @@ class UserProfileService:
         return jsonify({"message": "User profile created", "profile_id": profile_id}), 201
 
     @staticmethod
-    def update_user_profile(profile_id, data):
+    def update_user_profile(profile_id, request):
         """
         Updates an existing user profile by its ID with the provided data.
 
         Args:
             profile_id: The ID of the profile to update.
-            data: A dictionary containing the fields to update.
+            request: A dictionary containing the fields to update.
 
         Returns:
             A JSON response with a success message if the profile was updated, or a 404 error if the profile was not found.
         """
+        data = request.json["data"]
         updated_rows = UserProfileMapper.update_user_profile(profile_id, data)
         if updated_rows:
             return jsonify({"message": "User profile updated"}), 200

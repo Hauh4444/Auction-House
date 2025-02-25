@@ -2,6 +2,7 @@ from ..database import get_db
 from ..entities.user import User
 from datetime import datetime
 
+
 class UserMapper:
     """Handles database operations related to user logins."""
 
@@ -35,7 +36,7 @@ class UserMapper:
         cursor = db.cursor()
         cursor.execute("SELECT * FROM users WHERE username = ?", (username,))
         user = cursor.fetchone()
-        return User(**user).to_dict() if user else None
+        return User(**user) if user else None
 
     @staticmethod
     def update_last_login(user_id):
@@ -76,7 +77,7 @@ class UserMapper:
             data["email"],
             data.get("created_at", datetime.now().strftime("%Y-%m-%d %H:%M:%S")),
             data.get("updated_at", datetime.now().strftime("%Y-%m-%d %H:%M:%S")),
-            data.get("last_login"),
+            data.get("last_login", datetime.now().strftime("%Y-%m-%d %H:%M:%S")),
             data.get("is_active", True)
         ))
         db.commit()

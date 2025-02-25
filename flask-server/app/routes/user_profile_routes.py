@@ -16,8 +16,7 @@ def get_user_profile_by_id(profile_id):
 @user_profile_bp.route('/<int:profile_id>', methods=['PUT'])
 def update_user_profile(profile_id):
     """Update user profile information."""
-    data = request.json
-    return UserProfileService.update_user_profile(profile_id, data)
+    return UserProfileService.update_user_profile(profile_id, request)
 
 # WON'T BE USED YET
 

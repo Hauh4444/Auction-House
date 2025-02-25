@@ -1,4 +1,5 @@
 from flask import Blueprint, request, jsonify
+from flask_login import login_required
 from ..services.user_login_services import UserLoginService
 
 # Blueprint for user login-related routes
@@ -16,8 +17,7 @@ def register_user():
     Returns:
         JSON response indicating the registration status.
     """
-    data = request.json
-    return UserLoginService.register_user(data)
+    return UserLoginService.register_user(request)
 
 
 # POST /api/user/login - Login with username and password
@@ -43,6 +43,7 @@ def login_user():
 
 # POST /api/user/logout - Logout of current user
 @user_bp.route('/logout', methods=['POST'])
+@login_required
 def logout_user():
     """Log out the current user.
 
