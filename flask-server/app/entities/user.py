@@ -1,6 +1,8 @@
+from flask_login import UserMixin
+
 from dataclasses import dataclass
 from datetime import datetime
-from flask_login import UserMixin
+
 from ..database import get_db
 
 
@@ -54,7 +56,6 @@ class User(UserMixin):
 
     @property
     def id(self):
-        """Returns the user_id as the required `id` property for Flask-Login."""
         return self.user_id
 
     @property
@@ -75,7 +76,6 @@ class User(UserMixin):
 
     @username.setter
     def username(self, new_username):
-        """Sets a new username and updates it in the database."""
         if not new_username or len(new_username) < 3:
             raise ValueError("Username must be at least 3 characters long.")
 
@@ -84,4 +84,4 @@ class User(UserMixin):
         cursor.execute("UPDATE users SET username = ? WHERE user_id = ?", (new_username, self.user_id))
         db.commit()
 
-        self._username = new_username  # Update the attribute
+        self._username = new_username

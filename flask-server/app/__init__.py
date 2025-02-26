@@ -8,7 +8,7 @@ from datetime import timedelta
 
 from .utils import login_manager
 from .database import init_db
-from .auto_backup import start_scheduled_backup
+from .utils import start_scheduled_backup
 from .routes import category_bp, listings_bp, review_bp, user_bp, user_profile_bp
 
 # Initialize Flask application

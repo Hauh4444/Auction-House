@@ -1,4 +1,5 @@
 from flask import jsonify
+
 from ..data_mappers.listing_mapper import ListingMapper
 
 
@@ -14,7 +15,7 @@ class ListingService:
         Returns:
             A JSON response containing the list of listings with a 200 status code.
         """
-        listings = ListingMapper.get_all_listings(args=request.args)
+        listings = ListingMapper.get_all_listings(request.args)
         return jsonify(listings), 200
 
     @staticmethod

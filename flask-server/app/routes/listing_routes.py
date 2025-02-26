@@ -8,7 +8,7 @@ listings_bp = Blueprint('listings_bp', __name__)
 
 # GET /api/listings
 @listings_bp.route('/', methods=['GET'])
-def getAllListings():
+def get_all_listings():
     """Retrieve all listings with optional filters.
 
     Returns:
@@ -19,7 +19,7 @@ def getAllListings():
 
 # GET /api/listings/{id}
 @listings_bp.route('/<int:listing_id>', methods=['GET'])
-def getListing(listing_id):
+def get_listing(listing_id):
     """Retrieve a single listing by its ID.
 
     Args:
@@ -33,7 +33,7 @@ def getListing(listing_id):
 
 # POST /api/listings
 @listings_bp.route('/', methods=['POST'])
-def createListing():
+def create_listing():
     """Create a new listing.
 
     Expects:
@@ -48,7 +48,7 @@ def createListing():
 
 # PUT /api/listings/{id}
 @listings_bp.route('/<int:listing_id>', methods=['PUT'])
-def updateListing(listing_id):
+def update_listing(listing_id):
     """Update an existing listing by its ID.
 
     Args:

@@ -10,7 +10,7 @@ class ReviewService:
         Returns:
             A JSON response containing the list of reviews with a 200 status code.
         """
-        reviews = ReviewMapper.get_all_reviews(args=request.args)
+        reviews = ReviewMapper.get_all_reviews(request.args)
         return jsonify(reviews), 200
     
     @staticmethod

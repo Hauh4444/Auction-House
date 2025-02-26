@@ -85,12 +85,12 @@ class ListingMapper:
         cursor = db.cursor()
         statement = """
             INSERT INTO listings 
-            (listing_id, user_id, title, title_short, description, item_specifics, category_id, listing_type, starting_price, 
+            (user_id, title, title_short, description, item_specifics, category_id, listing_type, starting_price, 
             reserve_price, current_price, buy_now_price, auction_start, auction_end, status, image_encoded, bids, purchases, 
             average_review, total_reviews, created_at, updated_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """
-        cursor.execute(statement, tuple(Listing(**data).to_dict().values()))
+        cursor.execute(statement, tuple(Listing(**data).to_dict().values())[1:])
         db.commit()
         return cursor.lastrowid
 

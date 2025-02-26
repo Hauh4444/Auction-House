@@ -1,5 +1,5 @@
 from ..database import get_db
-from ..entities.transactions import Transaction
+from ..entities.transaction import Transaction
 
 class TransactionMapper:
     """Handles database operations related to transactions."""
