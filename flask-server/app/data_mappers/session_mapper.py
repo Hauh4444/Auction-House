@@ -26,7 +26,7 @@ class SessionMapper:
         cursor = db.cursor()
         statement = """
             INSERT INTO sessions 
-            (user_id, session_token, created_at, expires_at) 
+            (user_id, token, created_at, expires_at) 
             VALUES (?, ?, ?, ?)
         """
         cursor.execute(statement, tuple(Session(**data).to_dict().values())[1:])

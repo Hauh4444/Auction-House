@@ -6,7 +6,20 @@ class UserProfileMapper:
     """Handles database operations related to user profiles."""
 
     @staticmethod
-    def get_user_profile_by_id(user_id):
+    def get_all_user_profiles():
+        """Retrieve all user profiles from the database.
+
+        Returns:
+            list: A list of user profile dictionaries.
+        """
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute("SELECT * FROM user_profiles")
+        profiles = cursor.fetchall()
+        return [UserProfile(**profile).to_dict() for profile in profiles]
+
+    @staticmethod
+    def get_user_profile(user_id):
         """Retrieve a user profile by its associated user ID.
 
         Args:
@@ -74,17 +87,17 @@ class UserProfileMapper:
         return cursor.rowcount
 
     @staticmethod
-    def delete_user_profile(profile_id):
+    def delete_user_profile(user_id):
         """Delete a user profile by its ID.
 
         Args:
-            profile_id (int): The ID of the profile to delete.
+            user_id (int): The ID of the user associated with the profile to delete.
 
         Returns:
             int: Number of rows deleted.
         """
         db = get_db()
         cursor = db.cursor()
-        cursor.execute("DELETE FROM user_profiles WHERE profile_id = ?", (profile_id,))
+        cursor.execute("DELETE FROM user_profiles WHERE user_id = ?", (user_id,))
         db.commit()
         return cursor.rowcount

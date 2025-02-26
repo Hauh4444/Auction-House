@@ -33,7 +33,7 @@ def get_category(category_id):
 
 # POST /api/categories
 @category_bp.route('/', methods=['POST'])
-def createCategory():
+def create_category():
     """Create a new category.
 
     Expects:
@@ -48,7 +48,7 @@ def createCategory():
 
 # PUT /api/categories/{id}
 @category_bp.route('/<int:category_id>', methods=['PUT'])
-def updateCategory(category_id):
+def update_category(category_id):
     """Update an existing category by its ID.
 
     Args:
@@ -66,7 +66,7 @@ def updateCategory(category_id):
 
 # DELETE /api/categories/{id}
 @category_bp.route('/<int:category_id>', methods=['DELETE'])
-def deleteCategory(category_id):
+def delete_category(category_id):
     """Delete a category by its ID.
 
     Args:

@@ -1,14 +1,27 @@
 from flask import Blueprint, request, jsonify
 from flask_login import login_required
+
 from ..services.user_login_services import UserLoginService
 
 # Blueprint for user login-related routes
 user_bp = Blueprint('user_bp', __name__)
 
 
+# GET /api/user/{id} - Get user login details
+@user_bp.route('/<int:user_id>', methods=['GET'])
+@login_required
+def get_user(user_id):
+    """Get the details of the currently logged-in user.
+
+    Returns:
+        JSON response with user details.
+    """
+    return UserLoginService.get_user_by_id(user_id)
+
+
 # POST /api/user/register - Register a new user
 @user_bp.route('/register', methods=['POST'])
-def register_user():
+def create_user():
     """Register a new user.
 
     Expects:
@@ -17,7 +30,45 @@ def register_user():
     Returns:
         JSON response indicating the registration status.
     """
-    return UserLoginService.register_user(request)
+    return UserLoginService.create_user(request)
+
+# PUT /api/user/{id} - Update a user
+@user_bp.route('/<int:user_id>', methods=['PUT'])
+@login_required
+def update_user(user_id):
+    """Updates a user.
+
+    Expects:
+        JSON payload with updated user profile details.
+
+    Returns:
+        JSON response indicating the updated user profile.
+    """
+    return UserLoginService.update_user(user_id, request)
+
+
+# DELETE /api/user/{id} - Delete user login credentials and user profile
+@user_bp.route('/<int:user_id>', methods=['DELETE'])
+@login_required
+def delete_user(user_id):
+    """Delete the user login credentials and user profile.
+
+    Returns:
+        JSON response indicating the deletion status.
+    """
+    return UserLoginService.delete_user(user_id)
+
+
+# GET /api/user/auth_status - Check authentication status
+@user_bp.route('/auth_status', methods=['GET'])
+@login_required
+def check_auth_status():
+    """Check the authentication status of the current user.
+
+    Returns:
+        JSON response indicating whether the user is logged in or not.
+    """
+    return UserLoginService.check_auth_status()
 
 
 # POST /api/user/login - Login with username and password
@@ -55,6 +106,7 @@ def logout_user():
 
 # POST /api/user/password_reset_request - Request a password reset email
 @user_bp.route('/password_reset_request', methods=['POST'])
+@login_required
 def password_reset_request():
     """Request a password reset email.
 
@@ -74,6 +126,7 @@ def password_reset_request():
 
 # POST /api/user/password_reset - Reset user password
 @user_bp.route('/password_reset', methods=['POST'])
+@login_required
 def password_reset():
     """Reset the user password.
 
@@ -91,36 +144,3 @@ def password_reset():
         return jsonify({"error": "Reset token and new password are required"}), 400
 
     return UserLoginService.reset_user_password(reset_token, new_password)
-
-
-# GET /api/user/{id} - Get user login details
-@user_bp.route('/<int:user_id>', methods=['GET'])
-def get_user_details(user_id):
-    """Get the details of the currently logged-in user.
-
-    Returns:
-        JSON response with user details.
-    """
-    return UserLoginService.get_user_by_id(user_id)
-
-
-# GET /api/user/auth_status - Check authentication status
-@user_bp.route('/auth_status', methods=['GET'])
-def check_auth_status():
-    """Check the authentication status of the current user.
-
-    Returns:
-        JSON response indicating whether the user is logged in or not.
-    """
-    return UserLoginService.check_auth_status()
-
-
-# DELETE /api/user/{id} - Delete user login credentials and user profile
-@user_bp.route('/<int:user_id>', methods=['DELETE'])
-def delete_user(user_id):
-    """Delete the user login credentials and user profile.
-
-    Returns:
-        JSON response indicating the deletion status.
-    """
-    return UserLoginService.delete_user(user_id)

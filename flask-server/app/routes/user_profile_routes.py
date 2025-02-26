@@ -7,50 +7,57 @@ from ..services.user_profile_services import UserProfileService
 user_profile_bp = Blueprint('user_profile_bp', __name__)
 
 
+# GET /api/profile
+@user_profile_bp.route('/', methods=['GET'])
+@login_required
+def get_all_user_profiles():
+    """Retrieve all user profiles.
+
+    Returns:
+        Response: JSON response with all user profiles.
+    """
+    return UserProfileService.get_all_user_profiles()
+
+
 # GET /api/profile/{id}
 @user_profile_bp.route('/<int:user_id>', methods=['GET'])
 @login_required
-def get_user_profile_by_id(user_id):
-    """Retrieve user profile information."""
-    return UserProfileService.get_user_profile_by_id(user_id)
+def get_user_profile(user_id):
+    """Retrieve user profile information by user ID.
+
+    Args:
+        user_id (int): The unique identifier of the user.
+
+    Returns:
+        Response: JSON response containing user profile details.
+    """
+    return UserProfileService.get_user_profile(user_id)
+
+
+# POST /api/profile
+@user_profile_bp.route('/', methods=['POST'])
+def create_user_profile():
+    """Create a new user profile.
+
+    Expects:
+        JSON payload with user profile details.
+
+    Returns:
+        Response: JSON response containing the newly created user profile.
+    """
+    return UserProfileService.create_user_profile(request)
 
 
 # PUT /api/profile/{id}
 @user_profile_bp.route('/<int:profile_id>', methods=['PUT'])
 @login_required
 def update_user_profile(profile_id):
-    """Update user profile information."""
+    """Update an existing user profile.
+
+    Args:
+        profile_id (int): The unique identifier of the user profile to be updated.
+
+    Returns:
+        Response: JSON response with updated profile details.
+    """
     return UserProfileService.update_user_profile(profile_id, request)
-
-# WON'T BE USED YET
-
-# GET /api/profile/orders
-@user_profile_bp.route('/orders', methods=['GET'])
-@login_required
-def get_user_orders():
-    """Retrieve past orders by the user."""
-    return UserProfileService.get_user_orders(request)
-
-
-# GET /api/profile/orders/{id}
-@user_profile_bp.route('/orders/<int:order_id>', methods=['GET'])
-@login_required
-def get_order_details(order_id):
-    """Retrieve past order details by order ID."""
-    return UserProfileService.get_order_details(order_id)
-
-
-# GET /api/profile/bids
-@user_profile_bp.route('/bids', methods=['GET'])
-@login_required
-def get_user_bids():
-    """Retrieve past bids by the user."""
-    return UserProfileService.get_user_bids(request)
-
-
-# GET /api/profile/listings
-@user_profile_bp.route('/listings', methods=['GET'])
-@login_required
-def get_user_listings():
-    """Retrieve past listings by the user."""
-    return UserProfileService.get_user_listings(request)

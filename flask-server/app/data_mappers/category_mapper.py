@@ -48,10 +48,10 @@ class CategoryMapper:
         cursor = db.cursor()
         statement = """
             INSERT INTO categories 
-            (category_id, name, description, image_encoded, created_at, updated_at) 
-            VALUES (?, ?, ?, ?, ?, ?)
+            (name, description, image_encoded, created_at, updated_at) 
+            VALUES (?, ?, ?, ?, ?)
         """
-        cursor.execute(statement, tuple(Category(**data).to_dict().values()))
+        cursor.execute(statement, tuple(Category(**data).to_dict().values())[1:])
         db.commit()
         return cursor.lastrowid
 
