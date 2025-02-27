@@ -34,11 +34,11 @@ class Listing:
     def __init__(
             self,
             user_id: int,
-            title: int,
+            category_id: int,
+            title: str,
             title_short: str,
             description: str,
             item_specifics: str,
-            category_id: str,
             listing_type: str, # "auction", "buy_now"
             buy_now_price: float,
             status: str, # "active", "sold", "cancelled", "ended", "draft"
