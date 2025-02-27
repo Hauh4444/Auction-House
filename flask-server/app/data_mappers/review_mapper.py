@@ -6,17 +6,17 @@ class ReviewMapper:
     """Handles database operations related to reviews."""
 
     @staticmethod
-    def get_all_reviews(args, session=None):
+    def get_all_reviews(args, db_session=None):
         """Retrieve all reviews with optional filtering
 
         Args:
-            args (dict): Dictionary of query parameters
-            session: Optional database session to be used in tests.
+            args (dict): Dictionary of query parameters.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             list: A list of review dictionaries matching the query conditions.
         """
-        db = session or get_db()
+        db = db_session or get_db()
         cursor = db.cursor()
         statement = "SELECT * FROM reviews"
         values = []
@@ -40,34 +40,34 @@ class ReviewMapper:
         return [Review(**review).to_dict() for review in reviews]
 
     @staticmethod
-    def get_review_by_id(review_id, session=None):
+    def get_review_by_id(review_id, db_session=None):
         """Retrieve a review by its ID.
 
         Args:
             review_id (int): The ID of the review to retrieve.
-            session: Optional database session to be used in tests.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             dict: Review details if found, otherwise None.
         """
-        db = session or get_db()
+        db = db_session or get_db()
         cursor = db.cursor()
         cursor.execute("SELECT * FROM reviews WHERE review_id=?", (review_id,))
         review = cursor.fetchone()
         return Review(**review).to_dict() if review else None
 
     @staticmethod
-    def create_review(data, session=None):
+    def create_review(data, db_session=None):
         """Create a new review in the database.
 
         Args:
             data (dict): Dictionary containing review details.
-            session: Optional database session to be used in tests.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             int: The ID of the newly created review.
         """
-        db = session or get_db()
+        db = db_session or get_db()
         cursor = db.cursor()
         statement = """
             INSERT INTO reviews 
@@ -89,18 +89,18 @@ class ReviewMapper:
         return cursor.lastrowid
 
     @staticmethod
-    def update_review(review_id, data, session=None):
+    def update_review(review_id, data, db_session=None):
         """Update an existing review.
 
         Args:
             review_id (int): The ID of the review to update.
             data (dict): Dictionary of fields to update.
-            session: Optional database session to be used in tests.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             int: Number of rows updated.
         """
-        db = session or get_db()
+        db = db_session or get_db()
         cursor = db.cursor()
         conditions = [f"{key}=?" for key in data if key != "review_id"]
         values = list(data.values())
@@ -111,17 +111,17 @@ class ReviewMapper:
         return cursor.rowcount
 
     @staticmethod
-    def delete_review(review_id, session=None):
+    def delete_review(review_id, db_session=None):
         """Delete a review by its ID.
 
         Args:
             review_id (int): The ID of the review to delete.
-            session: Optional database session to be used in tests.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             int: Number of rows deleted.
         """
-        db = session or get_db()
+        db = db_session or get_db()
         cursor = db.cursor()
         cursor.execute("DELETE FROM reviews WHERE review_id=?", (review_id,))
         db.commit()

@@ -219,7 +219,7 @@ def init_db():
         );
         """,
         """
-        CREATE TABLE IF NOT EXISTS user_profiles (
+        CREATE TABLE IF NOT EXISTS profiles (
             "profile_id" INTEGER PRIMARY KEY AUTOINCREMENT,
             "user_id" INTEGER NOT NULL UNIQUE,
             "first_name" VARCHAR NOT NULL,

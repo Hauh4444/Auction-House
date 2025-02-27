@@ -5,11 +5,14 @@ from flask_limiter.util import get_remote_address
 from flask_session import Session
 
 from datetime import timedelta
+from dotenv import load_dotenv
 
 from .utils import login_manager
 from .database import init_db
 from .utils import start_scheduled_backup
-from .routes import category_bp, listings_bp, review_bp, user_bp, user_profile_bp
+from .routes import category_bp, listings_bp, review_bp, user_bp, profile_bp, auth_bp
+
+load_dotenv()
 
 # Initialize Flask application
 app = Flask(__name__)
@@ -29,7 +32,7 @@ app.config.update(
 limiter = Limiter(
     get_remote_address,
     app=app,
-    default_limits=["100 per hour", "20 per minute"], # Default limit for all routes
+    default_limits=["10000 per hour", "2000 per minute"], # Default limit for all routes
     storage_uri = "memory://",
 )
 
@@ -51,7 +54,8 @@ app.register_blueprint(listings_bp, url_prefix='/api/listings')
 app.register_blueprint(category_bp, url_prefix='/api/categories')
 app.register_blueprint(review_bp, url_prefix='/api/reviews')
 app.register_blueprint(user_bp, url_prefix='/api/user')
-app.register_blueprint(user_profile_bp, url_prefix='/api/profile')
+app.register_blueprint(profile_bp, url_prefix='/api/profile')
+app.register_blueprint(auth_bp, url_prefix='/api/auth')
 
 
 # Test route to check if the server is running

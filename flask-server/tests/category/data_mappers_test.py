@@ -1,5 +1,6 @@
 import pytest
 from unittest.mock import MagicMock
+
 from app.data_mappers.category_mapper import CategoryMapper
 
 
@@ -23,7 +24,7 @@ def test_get_category(mock_db_session):
     }
 
     # Call the method you are testing
-    category = CategoryMapper.get_category_by_id(category_id=5, session=mock_db_session)
+    category = CategoryMapper.get_category_by_id(category_id=5, db_session=mock_db_session)
 
     assert category is not None
     assert category["category_id"] == 5

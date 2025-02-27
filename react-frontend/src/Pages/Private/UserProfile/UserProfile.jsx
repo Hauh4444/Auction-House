@@ -15,13 +15,13 @@ import "./UserProfile.scss";
 /**
  * UserProfile Component
  *
- * This component renders the user profile page, which includes a header, a user profile card,
+ * This component renders the profile page, which includes a header, a profile card,
  * and a right-side navigation panel. The main content is displayed in the center, and additional
  * navigation options are available on the right. Users can toggle between viewing their profile
  * and editing their details, including their profile picture.
  *
  * Features:
- * - Fetches and displays user profile data.
+ * - Fetches and displays profile data.
  * - Allows users to edit their profile, including personal details and profile picture.
  * - Provides a button to toggle between view and edit modes.
  * - Submits updated profile data to the backend API.
@@ -30,7 +30,7 @@ import "./UserProfile.scss";
  */
 const UserProfile = () => {
     const [edit, setEdit] = useState(false); // State to toggle between view and edit modes
-    const [profile, setProfile] = useState({}) // State to hold user profile data
+    const [profile, setProfile] = useState({}) // State to hold profile data
     const [newProfilePicture, setNewProfilePicture] = useState(""); // For storing the new image
 
     const auth = useAuth(); // Access authentication functions from the AuthProvider context
@@ -48,7 +48,7 @@ const UserProfile = () => {
         { label: "Bio", name: "bio", type: "text", multiline: true, rows: 5, maxrows: 10, fullWidth: true, value: profile.bio },
     ];
 
-    // Fetch user profile data from the backend API
+    // Fetch profile data from the backend API
     useEffect(() => {
         axios.get("http://127.0.0.1:5000/api/profile/" + auth.user, {
             headers: {
@@ -93,7 +93,7 @@ const UserProfile = () => {
         }
     };
 
-    // On submit, post updated user profile data to the backend API
+    // On submit, post updated profile data to the backend API
     const handleSubmit = () => {
         axios.put("http://127.0.0.1:5000/api/profile/" + profile.profile_id, {
             headers: {
@@ -111,9 +111,9 @@ const UserProfile = () => {
             <div className="mainPage">
                 {/* Page Header */}
                 <Header />
-                {/* User Profile Card */}
+                {/* profile Card */}
                 <Card className="userProfileCard">
-                    <CardHeader title="User Profile" sx={{width: "fit-content", margin: "0 auto"}}></CardHeader>
+                    <CardHeader title="profile" sx={{width: "fit-content", margin: "0 auto"}}></CardHeader>
                     <CardContent className="content">
                         {!edit ? (
                             /* If edit mode is off, display the data */

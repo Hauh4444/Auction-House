@@ -6,50 +6,50 @@ class DeliveryMapper:
     """Handles database operations related to deliveries."""
 
     @staticmethod
-    def get_all_deliveries(session=None):
+    def get_all_deliveries(db_session=None):
         """Retrieve all deliveries from the database.
 
         Args:
-            session: Optional database session to be used in tests.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             list: A list of delivery dictionaries.
         """
-        db = session or get_db()
+        db = db_session or get_db()
         cursor = db.cursor()
         cursor.execute("SELECT * FROM deliveries")
         deliveries = cursor.fetchall()
         return [Delivery(**delivery).to_dict() for delivery in deliveries]
 
     @staticmethod
-    def get_delivery_by_id(delivery_id, session=None):
+    def get_delivery_by_id(delivery_id, db_session=None):
         """Retrieve a delivery by its ID.
 
         Args:
             delivery_id (int): The ID of the delivery to retrieve.
-            session: Optional database session to be used in tests.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             dict: Delivery details if found, otherwise None.
         """
-        db = session or get_db()
+        db = db_session or get_db()
         cursor = db.cursor()
         cursor.execute("SELECT * FROM deliveries WHERE delivery_id = ?", (delivery_id,))
         delivery = cursor.fetchone()
         return Delivery(**delivery).to_dict() if delivery else None
 
     @staticmethod
-    def create_delivery(data, session=None):
+    def create_delivery(data, db_session=None):
         """Create a new delivery record in the database.
 
         Args:
             data (dict): Dictionary containing delivery details.
-            session: Optional database session to be used in tests.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             int: The ID of the newly created delivery.
         """
-        db = session or get_db()
+        db = db_session or get_db()
         cursor = db.cursor()
         statement = """
             INSERT INTO deliveries 
@@ -62,18 +62,18 @@ class DeliveryMapper:
         return cursor.lastrowid
 
     @staticmethod
-    def update_delivery(delivery_id, data, session=None):
+    def update_delivery(delivery_id, data, db_session=None):
         """Update an existing delivery.
 
         Args:
             delivery_id (int): The ID of the delivery to update.
             data (dict): Dictionary of fields to update.
-            session: Optional database session to be used in tests.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             int: Number of rows updated.
         """
-        db = session or get_db()
+        db = db_session or get_db()
         cursor = db.cursor()
         conditions = [f"{key} = ?" for key in data if key not in ["delivery_id", "created_at"]]
         values = [data[key] for key in data if key not in ["delivery_id", "created_at"]]
@@ -84,17 +84,17 @@ class DeliveryMapper:
         return cursor.rowcount
 
     @staticmethod
-    def delete_delivery(delivery_id, session=None):
+    def delete_delivery(delivery_id, db_session=None):
         """Delete a delivery by its ID.
 
         Args:
             delivery_id (int): The ID of the delivery to delete.
-            session: Optional database session to be used in tests.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             int: Number of rows deleted.
         """
-        db = session or get_db()
+        db = db_session or get_db()
         cursor = db.cursor()
         cursor.execute("DELETE FROM deliveries WHERE delivery_id = ?", (delivery_id,))
         db.commit()

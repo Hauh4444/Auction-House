@@ -1,7 +1,7 @@
 from flask import send_file
 from flask_login import LoginManager
 import sqlite3, os, threading, time
-from .data_mappers.user_login_mapper import UserMapper
+from .data_mappers.auth_mapper import AuthMapper
 from .entities.user import User
 
 login_manager = LoginManager()
@@ -9,21 +9,24 @@ login_manager = LoginManager()
 db_name = "./database/auctionhouse.db"
 backup_file = "./database/auctionhouse_backup.sql"
 
+
 @login_manager.user_loader
-def load_user(user_id):
+def load_user(user_id, db_session=None):
     """
     Loads a user by their ID for Flask-Login session management.
 
     Args:
         user_id (int): The user ID.
+        db_session: Optional database session to be used in tests.
 
     Returns:
         User: A User object if found, else None.
     """
-    user_data = UserMapper.get_user_by_id(user_id)
+    user_data = AuthMapper.get_user_by_id(user_id, db_session=db_session)
     if isinstance(user_data, dict):
         return User(**user_data)
     return user_data
+
 
 def backup_database():
     """
@@ -47,6 +50,7 @@ def backup_database():
     except Exception as e:
         return f"Error: {str(e)}"
 
+
 def scheduled_backup():
     """
     Runs an infinite loop that triggers the database backup process every 12 hours.
@@ -55,11 +59,13 @@ def scheduled_backup():
         backup_database()
         time.sleep(12 * 60 * 60) # Sleep for 12 hours
 
+
 def start_scheduled_backup():
     """
     Starts the scheduled database backup process in a separate daemon thread.
     """
     threading.Thread(target=scheduled_backup, daemon=True).start()
+
 
 def download_backup():
     """

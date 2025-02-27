@@ -1,0 +1,59 @@
+from flask import jsonify
+
+from .profile_services import ProfileService
+from ..data_mappers.user_mapper import UserMapper
+
+
+class UserService:
+    @staticmethod
+    def get_user(user_id, db_session=None):
+        """
+        Retrieves a user by their ID.
+
+        Args:
+            user_id: The ID of the user to retrieve.
+            db_session: Optional database session to be used in tests.
+
+        Returns:
+            A JSON response with the user details if found, otherwise a 404 error with a message.
+        """
+        user = UserMapper.get_user(user_id, db_session=db_session)
+        if user:
+            return jsonify(user), 200
+        return jsonify({"error": "User not found"}), 404
+
+    @staticmethod
+    def update_user(user_id, data, db_session=None):
+        """
+        Updates user information.
+
+        Args:
+            user_id: The ID of the user to update.
+            data: A dictionary containing the request arguments.
+            db_session: Optional database session to be used in tests.
+
+        Returns:
+            A JSON response indicating success or an error message if the user is not found.
+        """
+        updated_rows = UserMapper.update_user(user_id, data, db_session=db_session)
+        if updated_rows:
+            return jsonify({"message": "User updated successfully"}), 200
+        return jsonify({"error": "User not found"}), 404
+
+    @staticmethod
+    def delete_user(user_id, db_session=None):
+        """
+        Deletes a user by their ID.
+
+        Args:
+            user_id: The ID of the user to delete.
+            db_session: Optional database session to be used in tests.
+
+        Returns:
+            A JSON response with a success message if the user was deleted, or a 404 error if the user was not found.
+        """
+        ProfileService.delete_profile(user_id, db_session=db_session)
+        deleted_user_rows = UserMapper.delete_user(user_id, db_session=db_session)
+        if deleted_user_rows:
+            return jsonify({"message": "User deleted"}), 200
+        return jsonify({"error": "User not found"}), 404

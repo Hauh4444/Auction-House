@@ -32,7 +32,7 @@ def test_get_listing(mock_db_session):
     }
 
     # Call the method you are testing
-    listing = ListingMapper.get_listing_by_id(listing_id=18, session=mock_db_session)
+    listing = ListingMapper.get_listing_by_id(listing_id=18, db_session=mock_db_session)
 
     assert listing is not None
     assert listing["listing_id"] == 1

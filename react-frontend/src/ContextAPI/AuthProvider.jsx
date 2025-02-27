@@ -23,7 +23,7 @@ const AuthProvider = ({ children }) => {
     // Function to check if the user is authenticated
     const checkAuthStatus = useCallback(async () => {
         try {
-            const res = await axios.get("http://127.0.0.1:5000/api/user/auth_status");
+            const res = await axios.get("http://127.0.0.1:5000/api/auth/auth_status");
             if (res.data.authenticated) {
                 setUser(res.data.user); // Set the user state if authenticated
             } else {
@@ -38,7 +38,7 @@ const AuthProvider = ({ children }) => {
     // Function to log in an existing user
     const login = useCallback(async (credentials) => {
         try {
-            await axios.post("http://127.0.0.1:5000/api/user/login", credentials);
+            await axios.post("http://127.0.0.1:5000/api/auth/login", credentials);
             await checkAuthStatus(); // Check authentication status after login
             return true; // Indicate success
         } catch (err) {
@@ -51,7 +51,7 @@ const AuthProvider = ({ children }) => {
     // Function to create a new user account
     const createAccount = useCallback(async (credentials) => {
         try {
-            await axios.post("http://127.0.0.1:5000/api/user/register", credentials);
+            await axios.post("http://127.0.0.1:5000/api/auth/register", credentials);
             await login(credentials); // Attempt to login after account creation
             return true; // Indicate success
         } catch (err) {
@@ -64,7 +64,7 @@ const AuthProvider = ({ children }) => {
     // Function to log out the current user
     const logout = useCallback(async () => {
         try {
-            await axios.post("http://127.0.0.1:5000/api/user/logout");
+            await axios.post("http://127.0.0.1:5000/api/auth/logout");
             setUser(null); // Clear the user state on logout
         } catch (err) {
             console.log(err);

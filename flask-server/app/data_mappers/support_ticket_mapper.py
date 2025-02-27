@@ -7,51 +7,51 @@ class SupportTicketMapper:
     """Handles database operations related to support tickets."""
 
     @staticmethod
-    def get_ticket_by_id(ticket_id, session=None):
+    def get_ticket_by_id(ticket_id, db_session=None):
         """Retrieve a support ticket by its ID.
 
         Args:
             ticket_id (int): The ID of the support ticket.
-            session: Optional database session to be used in tests.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             dict: Support ticket details if found, otherwise None.
         """
-        db = session or get_db()
+        db = db_session or get_db()
         cursor = db.cursor()
         cursor.execute("SELECT * FROM support_tickets WHERE ticket_id = ?", (ticket_id,))
         ticket = cursor.fetchone()
         return SupportTicket(**ticket).to_dict() if ticket else None
 
     @staticmethod
-    def get_tickets_by_user_id(user_id, session=None):
+    def get_tickets_by_user_id(user_id, db_session=None):
         """Retrieve all support tickets for a given user.
 
         Args:
             user_id (int): The ID of the user.
-            session: Optional database session to be used in tests.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             list: A list of support ticket dictionaries.
         """
-        db = session or get_db()
+        db = db_session or get_db()
         cursor = db.cursor()
         cursor.execute("SELECT * FROM support_tickets WHERE user_id = ?", (user_id,))
         tickets = cursor.fetchall()
         return [SupportTicket(**ticket).to_dict() for ticket in tickets]
 
     @staticmethod
-    def create_ticket(data, session=None):
+    def create_ticket(data, db_session=None):
         """Create a new support ticket.
 
         Args:
             data (dict): Dictionary containing support ticket details.
-            session: Optional database session to be used in tests.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             int: The ID of the newly created ticket.
         """
-        db = session or get_db()
+        db = db_session or get_db()
         cursor = db.cursor()
         statement = """
             INSERT INTO support_tickets (user_id, order_id, subject, status, priority, assigned_to, created_at, updated_at) 
@@ -62,18 +62,18 @@ class SupportTicketMapper:
         return cursor.lastrowid
 
     @staticmethod
-    def update_ticket(ticket_id, updates, session=None):
+    def update_ticket(ticket_id, updates, db_session=None):
         """Update a support ticket's details.
 
         Args:
             ticket_id (int): The ID of the ticket to update.
             updates (dict): A dictionary of the fields to update.
-            session: Optional database session to be used in tests.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             int: Number of rows updated.
         """
-        db = session or get_db()
+        db = db_session or get_db()
         cursor = db.cursor()
         update_clause = ", ".join(f"{key} = ?" for key in updates.keys())
         values = list(updates.values()) + [ticket_id]
@@ -82,17 +82,17 @@ class SupportTicketMapper:
         return cursor.rowcount
 
     @staticmethod
-    def delete_ticket(ticket_id, session=None):
+    def delete_ticket(ticket_id, db_session=None):
         """Delete a support ticket by its ID.
 
         Args:
             ticket_id (int): The ID of the ticket to delete.
-            session: Optional database session to be used in tests.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             int: Number of rows deleted.
         """
-        db = session or get_db()
+        db = db_session or get_db()
         cursor = db.cursor()
         cursor.execute("DELETE FROM support_tickets WHERE ticket_id = ?", (ticket_id,))
         db.commit()
