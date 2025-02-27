@@ -92,8 +92,8 @@ class UserLoginService:
         Returns:
             A JSON response with a success message if the user was deleted, or a 404 error if the user was not found.
         """
-        deleted_user_rows = UserMapper.delete_user(user_id)
         UserProfileService.delete_user_profile(user_id)
+        deleted_user_rows = UserMapper.delete_user(user_id)
         if deleted_user_rows:
             return jsonify({"message": "User deleted"}), 200
         return jsonify({"error": "User not found"}), 404

@@ -34,20 +34,6 @@ def get_user_profile(user_id):
     return UserProfileService.get_user_profile(user_id)
 
 
-# POST /api/profile
-@user_profile_bp.route('/', methods=['POST'])
-def create_user_profile():
-    """Create a new user profile.
-
-    Expects:
-        JSON payload with user profile details.
-
-    Returns:
-        Response: JSON response containing the newly created user profile.
-    """
-    return UserProfileService.create_user_profile(request)
-
-
 # PUT /api/profile/{id}
 @user_profile_bp.route('/<int:profile_id>', methods=['PUT'])
 @login_required
