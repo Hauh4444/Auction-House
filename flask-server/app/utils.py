@@ -53,7 +53,7 @@ def scheduled_backup():
     """
     while True:
         backup_database()
-        time.sleep(12 * 60 * 60)  # Sleep for 12 hours
+        time.sleep(12 * 60 * 60) # Sleep for 12 hours
 
 def start_scheduled_backup():
     """

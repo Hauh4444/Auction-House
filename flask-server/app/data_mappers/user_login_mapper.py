@@ -8,16 +8,17 @@ class UserMapper:
     """Handles database operations related to user logins."""
 
     @staticmethod
-    def get_user_by_id(user_id):
+    def get_user_by_id(user_id, session=None):
         """Retrieve a user by their ID.
 
         Args:
             user_id (int): The ID of the user to retrieve.
+            session: Optional database session to be used in tests.
 
         Returns:
             dict: User details if found, otherwise None.
         """
-        db = get_db()
+        db = session or get_db()
         cursor = db.cursor()
 
         # Check in users table
@@ -34,16 +35,17 @@ class UserMapper:
             return StaffUser(**user).to_dict() if user else None
 
     @staticmethod
-    def get_user_by_username(username):
+    def get_user_by_username(username, session=None):
         """Retrieve a user by their username.
 
         Args:
             username (str): The username of the user to retrieve.
+            session: Optional database session to be used in tests.
 
         Returns:
             Object: User details if found, otherwise None.
         """
-        db = get_db()
+        db = session or get_db()
         cursor = db.cursor()
 
         # Check in users table
@@ -60,16 +62,17 @@ class UserMapper:
             return StaffUser(**user) if user else None
 
     @staticmethod
-    def create_user(data):
+    def create_user(data, session=None):
         """Create a new user in the database.
 
         Args:
             data (dict): Dictionary containing user details.
+            session: Optional database session to be used in tests.
 
         Returns:
             int: The ID of the newly created user.
         """
-        db = get_db()
+        db = session or get_db()
         cursor = db.cursor()
         statement = """
             INSERT INTO users (username, password_hash, email, created_at, updated_at, last_login, is_active)
@@ -88,17 +91,18 @@ class UserMapper:
         return cursor.lastrowid
 
     @staticmethod
-    def update_user(user_id, data):
+    def update_user(user_id, data, session=None):
         """Update an existing user.
 
         Args:
             user_id (int): The ID of the user to update.
             data (dict): Dictionary of fields to update.
+            session: Optional database session to be used in tests.
 
         Returns:
             int: Number of rows updated.
         """
-        db = get_db()
+        db = session or get_db()
         cursor = db.cursor()
         conditions = [f"{key} = ?" for key in data.keys()]
         statement = f"UPDATE users SET {', '.join(conditions)} WHERE user_id = ?"
@@ -107,32 +111,34 @@ class UserMapper:
         return cursor.rowcount
 
     @staticmethod
-    def delete_user(user_id):
+    def delete_user(user_id, session=None):
         """Delete a user by their ID.
 
         Args:
             user_id (int): The ID of the user to delete.
+            session: Optional database session to be used in tests.
 
         Returns:
             int: Number of rows deleted.
         """
-        db = get_db()
+        db = session or get_db()
         cursor = db.cursor()
         cursor.execute("DELETE FROM users WHERE user_id = ?", (user_id,))
         db.commit()
         return cursor.rowcount
 
     @staticmethod
-    def update_last_login(user_id):
+    def update_last_login(user_id, session=None):
         """Update the last login timestamp for a user.
 
         Args:
             user_id (int): The ID of the user to update.
+            session: Optional database session to be used in tests.
 
         Returns:
             int: Number of rows updated.
         """
-        db = get_db()
+        db = session or get_db()
         cursor = db.cursor()
         statement = "UPDATE users SET last_login = ? WHERE user_id = ?"
         cursor.execute(statement, (datetime.now().strftime("%Y-%m-%d %H:%M:%S"), user_id))

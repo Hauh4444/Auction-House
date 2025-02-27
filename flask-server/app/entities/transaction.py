@@ -28,10 +28,10 @@ class Transaction:
             buyer_id: int,
             seller_id: int,
             transaction_date: datetime,
-            transaction_type: str,  # "auction", "buy_now"
+            transaction_type: str, # "auction", "buy_now"
             amount: float,
             payment_method: str,
-            status: str,  # "pending", "completed", "failed", "refunded"
+            status: str, # "pending", "completed", "failed", "refunded"
             shipping_address: str,
             tracking_number: str | None = None,
             created_at: datetime | None = None,

@@ -6,45 +6,50 @@ class UserProfileMapper:
     """Handles database operations related to user profiles."""
 
     @staticmethod
-    def get_all_user_profiles():
+    def get_all_user_profiles(session=None):
         """Retrieve all user profiles from the database.
+
+        Args:
+            session: Optional database session to be used in tests.
 
         Returns:
             list: A list of user profile dictionaries.
         """
-        db = get_db()
+        db = session or get_db()
         cursor = db.cursor()
         cursor.execute("SELECT * FROM user_profiles")
         profiles = cursor.fetchall()
         return [UserProfile(**profile).to_dict() for profile in profiles]
 
     @staticmethod
-    def get_user_profile(user_id):
+    def get_user_profile(user_id, session=None):
         """Retrieve a user profile by its associated user ID.
 
         Args:
             user_id (int): The ID of the user to retrieve.
+            session: Optional database session to be used in tests.
 
         Returns:
             dict: User profile details if found, otherwise None.
         """
-        db = get_db()
+        db = session or get_db()
         cursor = db.cursor()
         cursor.execute("SELECT * FROM user_profiles WHERE user_id = ?", (user_id,))
         profile = cursor.fetchone()
         return UserProfile(**profile).to_dict() if profile else None
 
     @staticmethod
-    def create_user_profile(data):
+    def create_user_profile(data, session=None):
         """Create a new user profile in the database.
 
         Args:
             data (dict): Dictionary containing profile details.
+            session: Optional database session to be used in tests.
 
         Returns:
             int: The ID of the newly created profile.
         """
-        db = get_db()
+        db = session or get_db()
         cursor = db.cursor()
         statement = """
             INSERT INTO user_profiles 
@@ -56,17 +61,18 @@ class UserProfileMapper:
         return cursor.lastrowid
 
     @staticmethod
-    def update_user_profile(profile_id, data):
+    def update_user_profile(profile_id, data, session=None):
         """Update an existing user profile.
 
         Args:
             profile_id (int): The ID of the profile to update.
             data (dict): Dictionary of fields to update.
+            session: Optional database session to be used in tests.
 
         Returns:
             int: Number of rows updated.
         """
-        db = get_db()
+        db = session or get_db()
         cursor = db.cursor()
 
         # Filter out the keys you don't want to update
@@ -87,16 +93,17 @@ class UserProfileMapper:
         return cursor.rowcount
 
     @staticmethod
-    def delete_user_profile(user_id):
+    def delete_user_profile(user_id, session=None):
         """Delete a user profile by its ID.
 
         Args:
             user_id (int): The ID of the user associated with the profile to delete.
+            session: Optional database session to be used in tests.
 
         Returns:
             int: Number of rows deleted.
         """
-        db = get_db()
+        db = session or get_db()
         cursor = db.cursor()
         cursor.execute("DELETE FROM user_profiles WHERE user_id = ?", (user_id,))
         db.commit()

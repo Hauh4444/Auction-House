@@ -10,7 +10,7 @@ def get_db():
         sqlite3.Connection: A database connection object.
     """
     conn = sqlite3.connect(DB_FILE)
-    conn.row_factory = sqlite3.Row  # Enables row access by column name
+    conn.row_factory = sqlite3.Row # Enables row access by column name
     return conn
 
 

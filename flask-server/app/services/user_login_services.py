@@ -173,7 +173,7 @@ class UserLoginService:
         Returns:
             A JSON response indicating whether the request was successful.
         """
-        return 404
+        return email
 
     @staticmethod
     def reset_user_password(reset_token, new_password):
@@ -187,4 +187,4 @@ class UserLoginService:
         Returns:
             A JSON response indicating whether the password reset was successful.
         """
-        return 404
+        return reset_token, new_password

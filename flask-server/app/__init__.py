@@ -25,11 +25,12 @@ app.config.update(
     PERMANENT_SESSION_LIFETIME = timedelta(hours=24),
 )
 
-# Initialize Limiter
+# Initialize Limiter with Redis as storage
 limiter = Limiter(
     get_remote_address,
     app=app,
-    default_limits=["100 per hour", "20 per minute"]  # Default limit for all routes
+    default_limits=["100 per hour", "20 per minute"], # Default limit for all routes
+    storage_uri = "memory://",
 )
 
 # Initialize the login manager and session into the app
