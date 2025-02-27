@@ -1,4 +1,5 @@
 from flask import Blueprint, request
+from flask_login import login_required
 
 from ..services.review_services import ReviewService
 
@@ -18,7 +19,7 @@ def get_all_reviews(db_session=None):
         JSON response containing a list of all reviews.
     """
     args = request.args
-    return ReviewService.get_all_reviews(args, db_session=db_session)
+    return ReviewService.get_all_reviews(args=args, db_session=db_session)
 
 
 # GET /api/reviews/{id}
@@ -33,11 +34,12 @@ def get_review(review_id, db_session=None):
     Returns:
         JSON response containing review details.
     """
-    return ReviewService.get_review_by_id(review_id, db_session=db_session)
+    return ReviewService.get_review_by_id(review_id=review_id, db_session=db_session)
 
 
 # POST /api/reviews
 @review_bp.route('/', methods=['POST'])
+@login_required
 def create_review(db_session=None):
     """Create a new review.
 
@@ -51,11 +53,12 @@ def create_review(db_session=None):
         JSON response containing the created review.
     """
     data = request.json
-    return ReviewService.create_review(data, db_session=db_session)
+    return ReviewService.create_review(data=data, db_session=db_session)
 
 
 # PUT /api/reviews/{id}
 @review_bp.route('/<int:review_id>', methods=['PUT'])
+@login_required
 def update_review(review_id, db_session=None):
     """Update an existing review by its ID.
 
@@ -70,11 +73,12 @@ def update_review(review_id, db_session=None):
         JSON response containing the updated review.
     """
     data = request.json
-    return ReviewService.update_review(review_id, data, db_session=db_session)
+    return ReviewService.update_review(review_id=review_id, data=data, db_session=db_session)
 
 
 # DELETE /api/reviews/{id}
 @review_bp.route('/<int:review_id>', methods=['DELETE'])
+@login_required
 def delete_review(review_id, db_session=None):
     """Delete a review by its ID.
 
@@ -85,4 +89,4 @@ def delete_review(review_id, db_session=None):
     Returns:
         JSON response indicating the deletion status.
     """
-    return ReviewService.delete_review(review_id, db_session=db_session)
+    return ReviewService.delete_review(review_id=review_id, db_session=db_session)

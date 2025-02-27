@@ -1,4 +1,5 @@
 from flask import Blueprint, request
+from flask_login import login_required
 
 from ..services.listing_services import ListingService
 
@@ -18,7 +19,7 @@ def get_all_listings(db_session=None):
         JSON response containing a list of all listings.
     """
     args = request.args
-    return ListingService.get_all_listings(args, db_session=db_session)
+    return ListingService.get_all_listings(args=args, db_session=db_session)
 
 
 # GET /api/listings/{id}
@@ -33,11 +34,12 @@ def get_listing(listing_id, db_session=None):
     Returns:
         JSON response containing listing details.
     """
-    return ListingService.get_listing_by_id(listing_id, db_session=db_session)
+    return ListingService.get_listing_by_id(listing_id=listing_id, db_session=db_session)
 
 
 # POST /api/listings
 @listings_bp.route('/', methods=['POST'])
+@login_required
 def create_listing(db_session=None):
     """Create a new listing.
 
@@ -51,11 +53,12 @@ def create_listing(db_session=None):
         JSON response containing the created listing.
     """
     data = request.json
-    return ListingService.create_listing(data, db_session=db_session)
+    return ListingService.create_listing(data=data, db_session=db_session)
 
 
 # PUT /api/listings/{id}
 @listings_bp.route('/<int:listing_id>', methods=['PUT'])
+@login_required
 def update_listing(listing_id, db_session=None):
     """Update an existing listing by its ID.
 
@@ -70,11 +73,12 @@ def update_listing(listing_id, db_session=None):
         JSON response containing the updated listing.
     """
     data = request.json
-    return ListingService.update_listing(listing_id, data, db_session=db_session)
+    return ListingService.update_listing(listing_id=listing_id, data=data, db_session=db_session)
 
 
 # DELETE /api/listings/{id}
 @listings_bp.route('/<int:listing_id>', methods=['DELETE'])
+@login_required
 def deleteListing(listing_id, db_session=None):
     """Delete a listing by its ID.
 
@@ -85,4 +89,4 @@ def deleteListing(listing_id, db_session=None):
     Returns:
         JSON response indicating the deletion status.
     """
-    return ListingService.delete_listing(listing_id, db_session=db_session)
+    return ListingService.delete_listing(listing_id=listing_id, db_session=db_session)

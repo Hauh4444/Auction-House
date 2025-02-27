@@ -30,7 +30,7 @@ class CategoryService:
         Returns:
             A JSON response with the category data if found, otherwise a 404 error with a message.
         """
-        category = CategoryMapper.get_category_by_id(category_id, db_session=db_session)
+        category = CategoryMapper.get_category_by_id(category_id=category_id, db_session=db_session)
         if category:
             return jsonify(category), 200
         return jsonify({"error": "CategoryNav not found"}), 404
@@ -49,7 +49,7 @@ class CategoryService:
         """
         if not data.get("name"):
             return jsonify({"error": "CategoryNav name is required"}), 400
-        category_id = CategoryMapper.create_category(data, db_session=db_session)
+        category_id = CategoryMapper.create_category(data=data, db_session=db_session)
         return jsonify({"message": "CategoryNav created", "category_id": category_id}), 201
 
     @staticmethod
@@ -65,7 +65,7 @@ class CategoryService:
         Returns:
             A JSON response with a success message if the category was updated, or a 404 error if the category was not found.
         """
-        updated_rows = CategoryMapper.update_category(category_id, data, db_session=db_session)
+        updated_rows = CategoryMapper.update_category(category_id=category_id, data=data, db_session=db_session)
         if updated_rows:
             return jsonify({"message": "CategoryNav updated"}), 200
         return jsonify({"error": "CategoryNav not found"}), 404
@@ -82,7 +82,7 @@ class CategoryService:
         Returns:
             A JSON response with a success message if the category was deleted, or a 404 error if the category was not found.
         """
-        deleted_rows = CategoryMapper.delete_category(category_id, db_session=db_session)
+        deleted_rows = CategoryMapper.delete_category(category_id=category_id, db_session=db_session)
         if deleted_rows:
             return jsonify({"message": "CategoryNav deleted"}), 200
         return jsonify({"error": "CategoryNav not found"}), 404

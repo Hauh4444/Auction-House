@@ -33,12 +33,12 @@ class AuthService:
         Returns:
             A JSON response indicating success with the user ID or an error message.
         """
-        data["password_hash"] = AuthService.hash_password(data["password"])
+        data["password_hash"] = AuthService.hash_password(password=data["password"])
         if not data.get("username") or not data.get("password_hash") or not data.get("email"):
             return jsonify({"error": "Username, password, and email are required"}), 400
 
-        ProfileService.create_profile(data, db_session=db_session)
-        user_id = AuthMapper.create_user(data, db_session=db_session)
+        ProfileService.create_profile(data=data, db_session=db_session)
+        user_id = AuthMapper.create_user(data=data, db_session=db_session)
         return jsonify({"message": "User registered successfully", "user_id": user_id}), 201
 
     @staticmethod
@@ -55,18 +55,18 @@ class AuthService:
             A JSON response containing a success message and the user details if login is successful,
             or a 401 error if the username or password is incorrect.
         """
-        user = AuthMapper.get_user_by_username(username, db_session=db_session)
-        if user and user.password_hash == AuthService.hash_password(password):
+        user = AuthMapper.get_user_by_username(username=username, db_session=db_session)
+        if user and user.password_hash == AuthService.hash_password(password=password):
             if user.__class__.__name__ == "User":
-                AuthMapper.update_last_login(user.user_id, db_session=db_session)
-                login_user(user, remember=True)
+                AuthMapper.update_last_login(user_id=user.user_id, db_session=db_session)
                 session["user_id"] = user.user_id
                 session["role"] = "user"
             else:
-                AuthMapper.update_last_login(user.staff_id, user.role, db_session=db_session)
-                login_user(user, remember=True)
+                AuthMapper.update_last_login(user_id=user.staff_id, role=user.role, db_session=db_session)
                 session["user_id"] = user.staff_id
                 session["role"] = user.role
+            user.is_active = True
+            login_user(user=user, remember=True)
             SessionService.create_session(db_session=db_session)
             return jsonify({"message": "Login successful", "user": user}), 200
         return jsonify({"error": "Invalid username or password"}), 401
@@ -79,6 +79,7 @@ class AuthService:
         Returns:
             A JSON response indicating the success of the logout operation.
         """
+        current_user.is_active = False
         logout_user()
         session.clear()
         return jsonify({"message": "Logout successful"}), 200

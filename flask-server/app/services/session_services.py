@@ -22,5 +22,5 @@ class SessionService:
             "role": session["role"],
             "expires_at": datetime.now() + timedelta(days=1),
         }
-        session_id = SessionMapper.create_session(data, db_session=db_session)
+        session_id = SessionMapper.create_session(data=data, db_session=db_session)
         return jsonify({"message": "Session created", "session_id": session_id}), 201

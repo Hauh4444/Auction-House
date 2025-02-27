@@ -35,7 +35,7 @@ def get_profile(user_id, db_session=None):
     Returns:
         Response: JSON response containing profile details.
     """
-    return ProfileService.get_profile(user_id, db_session=db_session)
+    return ProfileService.get_profile(user_id=user_id, db_session=db_session)
 
 
 # PUT /api/profile/{id}
@@ -52,4 +52,4 @@ def update_profile(profile_id, db_session=None):
         Response: JSON response with updated profile details.
     """
     data = request.json["data"]
-    return ProfileService.update_profile(profile_id, data, db_session=db_session)
+    return ProfileService.update_profile(profile_id, data=data, db_session=db_session)

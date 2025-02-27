@@ -16,7 +16,7 @@ class ListingService:
         Returns:
             A JSON response containing the list of listings with a 200 status code.
         """
-        listings = ListingMapper.get_all_listings(args, db_session=db_session)
+        listings = ListingMapper.get_all_listings(args=args, db_session=db_session)
         return jsonify(listings), 200
 
     @staticmethod
@@ -31,7 +31,7 @@ class ListingService:
         Returns:
             A JSON response with the listing data if found, otherwise a 404 error with a message.
         """
-        listing = ListingMapper.get_listing_by_id(listing_id, db_session=db_session)
+        listing = ListingMapper.get_listing_by_id(listing_id=listing_id, db_session=db_session)
         if listing:
             return jsonify(listing), 200
         return jsonify({"error": "Listing not found"}), 404
@@ -50,7 +50,7 @@ class ListingService:
         """
         if not data.get("title"):
             return jsonify({"error": "Listing title is required"}), 400
-        listing_id = ListingMapper.create_listing(data, db_session=db_session)
+        listing_id = ListingMapper.create_listing(data=data, db_session=db_session)
         return jsonify({"message": "Listing created", "listing_id": listing_id}), 201
 
     @staticmethod
@@ -66,7 +66,7 @@ class ListingService:
         Returns:
             A JSON response with a success message if the listing was updated, or a 404 error if the listing was not found.
         """
-        updated_rows = ListingMapper.update_listing(listing_id, data, db_session=db_session)
+        updated_rows = ListingMapper.update_listing(listing_id=listing_id, data=data, db_session=db_session)
         if updated_rows:
             return jsonify({"message": "Listing updated"}), 200
         return jsonify({"error": "Listing not found"}), 404
@@ -83,7 +83,7 @@ class ListingService:
         Returns:
             A JSON response with a success message if the listing was deleted, or a 404 error if the listing was not found.
         """
-        deleted_rows = ListingMapper.delete_listing(listing_id, db_session=db_session)
+        deleted_rows = ListingMapper.delete_listing(listing_id=listing_id, db_session=db_session)
         if deleted_rows:
             return jsonify({"message": "Listing deleted"}), 200
         return jsonify({"error": "Listing not found"}), 404

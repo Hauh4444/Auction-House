@@ -1,6 +1,9 @@
-import sqlite3
+from flask import send_file
+
+import sqlite3, os
 
 DB_FILE = "database/auctionhouse.db"
+BACKUP_FILE = "./database/auctionhouse_backup.sql"
 
 
 def get_db():
@@ -9,7 +12,7 @@ def get_db():
     Returns:
         sqlite3.Connection: A database connection object.
     """
-    conn = sqlite3.connect(DB_FILE)
+    conn = sqlite3.connect(database=DB_FILE)
     conn.row_factory = sqlite3.Row # Enables row access by column name
     return conn
 
@@ -256,3 +259,39 @@ def init_db():
         cursor.execute(table)
 
     db.commit()
+
+
+def backup_database():
+    """
+    Creates a backup of the SQLite database by exporting its contents.
+
+    Returns:
+        str: A success message if the backup is created successfully.
+        tuple: An error message and HTTP status code if the database file is not found.
+    """
+    try:
+        if not os.path.exists(path=DB_FILE):
+            return "Database file not found!", 404
+
+        conn = sqlite3.connect(database=DB_FILE)
+        with open(BACKUP_FILE, "w") as f:
+            for line in conn.iterdump():
+                f.write(f"{line}\n")
+        conn.close()
+
+        return "Database backup created successfully."
+    except Exception as e:
+        return f"Error: {str(e)}"
+
+
+def download_backup():
+    """
+    Allows users to download the most recent database backup file.
+
+    Returns:
+        Flask response: The backup file as an attachment if found.
+        tuple: An error message and HTTP status code if the backup file is not found.
+    """
+    if not os.path.exists(path=BACKUP_FILE):
+        return "Backup file not found!", 404
+    return send_file(path_or_file=BACKUP_FILE, as_attachment=True)

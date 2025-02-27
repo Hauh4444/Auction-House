@@ -69,7 +69,11 @@ const CategoryListings = () => {
             headers: {
                 "Content-Type": "application/json",
             },
-            params: createSearchParams(filters), // Pass filters as search params
+            params: {
+                category_id: filters.category_id, // Filter by category ID
+                start: filters.start, // Starting position
+                range: filters.range, // Number of listings to fetch
+            }
         })
             .then(res => setListings(res.data)) // Update state with fetched data
             .catch(err => console.log(err)); // Log errors if any

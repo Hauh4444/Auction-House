@@ -20,7 +20,7 @@ def get_user(user_id, db_session=None):
     Returns:
         JSON response with user details.
     """
-    return UserService.get_user(user_id, db_session=db_session)
+    return UserService.get_user(user_id=user_id, db_session=db_session)
 
 
 # PUT /api/user/{id} - Update a user
@@ -40,7 +40,7 @@ def update_user(user_id, db_session=None):
         JSON response indicating the updated profile.
     """
     data = request.json
-    return UserService.update_user(user_id, data, db_session=db_session)
+    return UserService.update_user(user_id=user_id, data=data, db_session=db_session)
 
 
 # DELETE /api/user/{id} - Delete user login credentials and profile
@@ -56,4 +56,4 @@ def delete_user(user_id, db_session=None):
     Returns:
         JSON response indicating the deletion status.
     """
-    return UserService.delete_user(user_id, db_session=db_session)
+    return UserService.delete_user(user_id=user_id, db_session=db_session)

@@ -24,6 +24,19 @@ class Category:
             updated_at: datetime | None = None,
             category_id: int | None = None
     ):
+        if not isinstance(name, str):
+            raise TypeError("name must be a string")
+        if not isinstance(description, str):
+            raise TypeError("description must be a string")
+        if image_encoded is not None and not isinstance(image_encoded, str):
+            raise TypeError("image_encoded must be a string or None")
+        if created_at is not None and not isinstance(created_at, datetime) and not isinstance(created_at, str):
+            raise TypeError("created_at must be a datetime or None")
+        if updated_at is not None and not isinstance(updated_at, datetime) and not isinstance(created_at, str):
+            raise TypeError("updated_at must be a datetime or None")
+        if category_id is not None and not isinstance(category_id, int):
+            raise TypeError("category_id must be an int or None")
+
         self.category_id = category_id
         self.name = name
         self.description = description

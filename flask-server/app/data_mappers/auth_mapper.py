@@ -110,7 +110,7 @@ class AuthMapper:
         if not role:
             statement = "UPDATE users SET last_login = ? WHERE user_id = ?"
         else:
-            statement = "UPDATE staff_users SET last_login = ? WHERE user_id = ?"
+            statement = "UPDATE staff_users SET last_login = ? WHERE staff_id = ?"
 
         cursor.execute(statement, (datetime.now().strftime("%Y-%m-%d %H:%M:%S"), user_id))
         db.commit()

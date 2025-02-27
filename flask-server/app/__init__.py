@@ -6,10 +6,10 @@ from flask_session import Session
 
 from datetime import timedelta
 from dotenv import load_dotenv
+from apscheduler.schedulers.background import BackgroundScheduler
 
 from .utils import login_manager
-from .database import init_db
-from .utils import start_scheduled_backup
+from .database import init_db, backup_database
 from .routes import category_bp, listings_bp, review_bp, user_bp, profile_bp, auth_bp
 
 load_dotenv()
@@ -41,21 +41,18 @@ login_manager.init_app(app)
 Session(app)
 
 # Enable Cross-Origin Resource Sharing (CORS) for frontend communication
-CORS(app, supports_credentials=True, resources={r"/api/*": {"origins": "http://localhost:5173"}})
+CORS(app=app, supports_credentials=True, resources={r"/api/*": {"origins": "http://localhost:5173"}})
 
 # Initialize database
 init_db()
 
-# Initialize auto backup
-start_scheduled_backup()
-
 # Register Blueprints for routes
-app.register_blueprint(listings_bp, url_prefix='/api/listings')
-app.register_blueprint(category_bp, url_prefix='/api/categories')
-app.register_blueprint(review_bp, url_prefix='/api/reviews')
-app.register_blueprint(user_bp, url_prefix='/api/user')
-app.register_blueprint(profile_bp, url_prefix='/api/profile')
-app.register_blueprint(auth_bp, url_prefix='/api/auth')
+app.register_blueprint(blueprint=listings_bp, url_prefix='/api/listings')
+app.register_blueprint(blueprint=category_bp, url_prefix='/api/categories')
+app.register_blueprint(blueprint=review_bp, url_prefix='/api/reviews')
+app.register_blueprint(blueprint=user_bp, url_prefix='/api/user')
+app.register_blueprint(blueprint=profile_bp, url_prefix='/api/profile')
+app.register_blueprint(blueprint=auth_bp, url_prefix='/api/auth')
 
 
 # Test route to check if the server is running
@@ -69,5 +66,12 @@ def test():
     return 'Success'
 
 if __name__ == '__main__':
-    # Run the Flask application in debug mode
-    app.run(debug=True)
+    # Schedule background job to backup database
+    scheduler = BackgroundScheduler()
+    scheduler.add_job(backup_database, 'cron', hour=12, minute=0)  # Runs every day at Noon
+    scheduler.start()
+
+    try:
+        app.run(debug=True)
+    except (KeyboardInterrupt, SystemExit):
+        scheduler.shutdown()

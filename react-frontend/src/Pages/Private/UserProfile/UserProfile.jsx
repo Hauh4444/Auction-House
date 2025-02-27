@@ -113,7 +113,7 @@ const UserProfile = () => {
                 <Header />
                 {/* profile Card */}
                 <Card className="userProfileCard">
-                    <CardHeader title="profile" sx={{width: "fit-content", margin: "0 auto"}}></CardHeader>
+                    <CardHeader title="Your Profile" sx={{width: "fit-content", margin: "0 auto"}}></CardHeader>
                     <CardContent className="content">
                         {!edit ? (
                             /* If edit mode is off, display the data */

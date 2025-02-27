@@ -30,7 +30,7 @@ class ProfileService:
         Returns:
             A JSON response with the profile data if found, otherwise a 404 error with a message.
         """
-        profile = ProfileMapper.get_profile(user_id, db_session=db_session)
+        profile = ProfileMapper.get_profile(user_id=user_id, db_session=db_session)
         if profile:
             return jsonify(profile), 200
         return jsonify({"error": "profile not found"}), 404
@@ -49,7 +49,7 @@ class ProfileService:
         """
         if not data.get("user_id") or not data.get("first_name") or not data.get("last_name"):
             return jsonify({"error": "Required fields are missing"}), 400
-        profile_id = ProfileMapper.create_profile(data, db_session=db_session)
+        profile_id = ProfileMapper.create_profile(data=data, db_session=db_session)
         return jsonify({"message": "profile created", "profile_id": profile_id}), 201
 
     @staticmethod
@@ -65,7 +65,7 @@ class ProfileService:
         Returns:
             A JSON response with a success message if the profile was updated, or a 404 error if the profile was not found.
         """
-        updated_rows = ProfileMapper.update_profile(profile_id, data, db_session=db_session)
+        updated_rows = ProfileMapper.update_profile(profile_id=profile_id, data=data, db_session=db_session)
         if updated_rows:
             return jsonify({"message": "profile updated"}), 200
         return jsonify({"error": "profile not found"}), 404
@@ -82,7 +82,7 @@ class ProfileService:
         Returns:
             A JSON response with a success message if the profile was deleted, or a 404 error if the profile was not found.
         """
-        deleted_rows = ProfileMapper.delete_profile(user_id, db_session=db_session)
+        deleted_rows = ProfileMapper.delete_profile(user_id=user_id, db_session=db_session)
         if deleted_rows:
             return jsonify({"message": "profile deleted"}), 200
         return jsonify({"error": "profile not found"}), 404

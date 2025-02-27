@@ -1,4 +1,5 @@
 from flask import Blueprint, request
+from flask_login import login_required
 
 from ..services.category_services import CategoryService
 
@@ -32,11 +33,12 @@ def get_category(category_id, db_session=None):
     Returns:
         JSON response containing category details.
     """
-    return CategoryService.get_category_by_id(category_id, db_session=db_session)
+    return CategoryService.get_category_by_id(category_id=category_id, db_session=db_session)
 
 
 # POST /api/categories
 @category_bp.route('/', methods=['POST'])
+@login_required
 def create_category(db_session=None):
     """Create a new category.
 
@@ -50,11 +52,12 @@ def create_category(db_session=None):
         JSON response containing the created category.
     """
     data = request.json
-    return CategoryService.create_category(data, db_session=db_session)
+    return CategoryService.create_category(data=data, db_session=db_session)
 
 
 # PUT /api/categories/{id}
 @category_bp.route('/<int:category_id>', methods=['PUT'])
+@login_required
 def update_category(category_id, db_session=None):
     """Update an existing category by its ID.
 
@@ -69,11 +72,12 @@ def update_category(category_id, db_session=None):
         JSON response containing the updated category.
     """
     data = request.json
-    return CategoryService.update_category(category_id, data, db_session=db_session)
+    return CategoryService.update_category(category_id=category_id, data=data, db_session=db_session)
 
 
 # DELETE /api/categories/{id}
 @category_bp.route('/<int:category_id>', methods=['DELETE'])
+@login_required
 def delete_category(category_id, db_session=None):
     """Delete a category by its ID.
 
@@ -84,4 +88,4 @@ def delete_category(category_id, db_session=None):
     Returns:
         JSON response indicating the deletion status.
     """
-    return CategoryService.delete_category(category_id, db_session=db_session)
+    return CategoryService.delete_category(category_id=category_id, db_session=db_session)

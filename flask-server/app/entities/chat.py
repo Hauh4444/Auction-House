@@ -21,6 +21,15 @@ class Chat:
             created_at: datetime | None = None,
             chat_id: int | None = None
     ):
+        if not isinstance(user1_id, int):
+            raise TypeError("user1_id must be a int")
+        if not isinstance(user2_id, int):
+            raise TypeError("user2_id must be a int")
+        if created_at is not None and not isinstance(created_at, datetime) and not isinstance(created_at, str):
+            raise TypeError("created_at must be a datetime or None")
+        if chat_id is not None and not isinstance(chat_id, int):
+            raise TypeError("chat_id must be an int or None")
+
         self.chat_id = chat_id
         self.user1_id = user1_id
         self.user2_id = user2_id
