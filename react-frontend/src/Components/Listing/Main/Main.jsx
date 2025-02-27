@@ -31,55 +31,54 @@ import "./Main.scss";
  *
  * @returns {JSX.Element} The rendered product details section.
  */
-const Main = ({listing}) => {
-    const location = useLocation();
+const Main = ({ listing }) => {
+    const location = useLocation(); // Hook to access the current location (URL)
 
     return (
         <div className="main">
             <div className="info">
+                {/* Display product title */}
                 <div className="title">{listing.title}</div>
+
+                {/* Display auction-specific details if listing is an auction */}
                 {listing.listing_type === "auction" && (
                     <>
                         <div className="bid">${listing.current_price}</div>
                         <Button className="placeBidBtn">Place Bid</Button>
                         <p className="bidDescription">{listing.bids} bids. Ends: {listing.auction_end}</p>
-                    < />
+                    </>
                 )}
+
+                {/* Display buy-now price */}
                 <div className="price">${listing.buy_now_price}</div>
                 <Button className="addCartBtn">Add to Cart</Button>
+
+                {/* Social media share buttons */}
                 <div className="shareButtons">
-                    <FacebookShareButton
-                        className="shareBtn"
-                        url={location.href}
-                    >
+                    <FacebookShareButton className="shareBtn" url={location.href}>
                         <FacebookIcon size={24} round={true} />
                     </FacebookShareButton>
-                    <TwitterShareButton
-                        className="shareBtn"
-                        url={location.href}
-                    >
+                    <TwitterShareButton className="shareBtn" url={location.href}>
                         <XIcon size={24} round={true} />
                     </TwitterShareButton>
-                    <PinterestShareButton
-                        className="shareBtn"
-                        url={location.href}
-                        media={listing.image_encoded}
-                    >
+                    <PinterestShareButton className="shareBtn" url={location.href} media={listing.image_encoded}>
                         <PinterestIcon size={24} round={true} />
                     </PinterestShareButton>
                 </div>
             </div>
+
+            {/* Display product image or fallback message */}
             <div className="image">
-                {/* Checking if image data exists; if yes, displaying image, otherwise a fallback message */}
                 {listing.image_encoded ? (
                     <img src={`data:image/jpg;base64,${listing.image_encoded}`} alt={listing.title} />
                 ) : (
                     <div>No image available</div>
                 )}
             </div>
+
+            {/* Display product description */}
             <div className="description">
                 <div className="title">Description:</div>
-                {/* If the description is an array and has data, display it as a list */}
                 {listing.description &&
                 Array.isArray(JSON.parse(listing.description)) &&
                 JSON.parse(listing.description).length > 0 ? (
@@ -93,9 +92,10 @@ const Main = ({listing}) => {
                 )}
             </div>
         </div>
-    )
-}
+    );
+};
 
+// Define PropTypes for type-checking the listing object
 Main.propTypes = {
     listing: PropTypes.shape({
         title: PropTypes.string,

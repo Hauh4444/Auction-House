@@ -17,8 +17,8 @@ import "./SearchListings.scss";
  * @returns {JSX.Element} A span element with the appropriate number of stars.
  */
 const renderStars = (averageReview) => {
-    const filledStars = Math.floor(averageReview);
-    const halfStar = averageReview > filledStars;
+    const filledStars = Math.floor(averageReview); // Calculate number of filled stars
+    const halfStar = averageReview > filledStars; // Check if half star is needed
     return (
         <span className="stars">
             {/* Render empty stars */}
@@ -55,17 +55,19 @@ const renderStars = (averageReview) => {
  *                        price, and an "Add to Cart" button.
  */
 const SearchListings = () => {
-    const [listings, setListings] = useState([]);
-    const navigate = useNavigate();
-    const location = useLocation();
+    const [listings, setListings] = useState([]); // State to hold product listings
+    const navigate = useNavigate(); // Hook for navigation
+    const location = useLocation(); // Hook to access the current location (URL)
 
     useEffect(() => {
-        const filters = Object.fromEntries(new URLSearchParams(location.search).entries());
+        const filters = Object.fromEntries(new URLSearchParams(location.search).entries()); // Extract filters from URL
 
+        // Adjust filters for pagination
         if (filters.page) {
             filters.start = ((filters.page - 1) * 10).toString();
             filters.range = "10";
         }
+        // Apply sorting logic based on filter (new or best-sellers)
         if (filters.nav === "new") {
             filters.sort = "created_at";
             filters.order = "desc";
@@ -75,16 +77,18 @@ const SearchListings = () => {
             filters.order = "desc";
         }
 
+        // Fetch listings from the API with the specified filters
         axios.get("http://127.0.0.1:5000/api/listings", {
             headers: {
                 "Content-Type": "application/json",
             },
-            params: createSearchParams(filters),
+            params: createSearchParams(filters), // Convert filters to query parameters
         })
-            .then(res => setListings(res.data))
-            .catch(err => console.log(err));
-    }, [location.search]);
+            .then(res => setListings(res.data)) // Set the fetched listings into state
+            .catch(err => console.log(err)); // Handle errors
+    }, [location.search]); // Re-run the effect whenever search params change
 
+    // Function to navigate to a detailed view of a listing
     const navigateToListing = (id) => {
         navigate(`/listing?key=${id}`);
     }
@@ -94,23 +98,28 @@ const SearchListings = () => {
             {listings.map((listing, index) => (
                 <div className="listing" key={index}>
                     <div className="image">
+                        {/* Display the product image */}
                         <img src={`data:image/jpg;base64,${listing.image_encoded}`} alt="" />
                     </div>
                     <div className="info">
+                        {/* Button to navigate to the detailed listing view */}
                         <Button className="title" onClick={() => navigateToListing(listing.listing_id)}>
                             {listing.title}
                         </Button>
                         <div className="review">
+                            {/* Render the star rating based on the average review */}
                             {renderStars(listing.average_review)}
+                            {/* Display the total number of reviews */}
                             <span className="totalReviews"
                                   style={{left: -16 * Math.ceil(listing.average_review) + "px"}}>
                                 &emsp;{listing.total_reviews}
                             </span>
                         </div>
                         <h2 className="price">
-                            ${listing.buy_now_price}
+                            ${listing.buy_now_price} {/* Display the product price */}
                         </h2>
                         <div className="bottomDetails">
+                            {/* Button to add the product to the cart */}
                             <Button className="addCartBtn">
                                 Add to Cart
                             </Button>
@@ -122,7 +131,7 @@ const SearchListings = () => {
     )
 }
 
-// Define the expected shape of the bestSellers prop
+// Define the expected shape of the listings prop
 SearchListings.propTypes = {
     bestSellers: PropTypes.shape({
         listing_id: PropTypes.number,

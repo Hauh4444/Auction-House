@@ -30,25 +30,28 @@ import { variables } from "@/assets/variables.modules.js";
  */
 
 const Bar = () => {
-    const [query, setQuery] = useState("");
-    const navigate = useNavigate();
+    const [query, setQuery] = useState(""); // State to hold the search query input
+    const navigate = useNavigate(); // Hook to navigate between pages
 
+    // Function to navigate to the search results or home page based on query input
     function navigateSearch() {
+        // If the search input is empty, navigate to home page with default view
         if (query === "") {
             navigate({
                 pathname: "/",
                 search: createSearchParams({
-                    nav: "view-all",
+                    nav: "view-all", // Default view "view-all"
                 }).toString(),
             });
         } else {
+            // Otherwise, navigate to the search results page with the query and other filters
             navigate({
                 pathname: "/search",
                 search: createSearchParams({
-                    query: query,
-                    start: "0",
-                    range: "10",
-                    nav: "best-results",
+                    query: query, // User's search query
+                    start: "0", // Start pagination from the first page
+                    range: "10", // Limit results to 10
+                    nav: "best-results", // Default to "best-results" view
                 }).toString(),
             });
         }
@@ -56,14 +59,15 @@ const Bar = () => {
 
     return (
         <div className="searchBar">
+            {/* Input field for the search query */}
             <TextField
                 className="input"
-                value={query}
-                placeholder="Search"
-                onChange={(e) => setQuery(e.target.value)}
+                value={query} // Bind the input value to the query state
+                placeholder="Search" // Placeholder text
+                onChange={(e) => setQuery(e.target.value)} // Update query on input change
                 onKeyDown={(e) => {
                     if (e.key === "Enter") {
-                        navigateSearch()
+                        navigateSearch() // Trigger search when Enter key is pressed
                     }
                 }}
                 variant="outlined"
@@ -72,20 +76,23 @@ const Bar = () => {
                 sx={{
                     "& .MuiOutlinedInput-root": {
                         "& fieldset": {
-                            border: `none`,
+                            border: `none`, // Remove the border around the input field
                         },
                     },
                 }}
             />
+            {/* Search button with an icon */}
             <Button className="btn" onClick={navigateSearch}>
                 <svg width="0" height="0">
                     <defs>
+                        {/* Gradient definition for the search icon */}
                         <linearGradient id="gradient" x1="0%" y1="50%" x2="100%" y2="50%">
                             <stop stopColor={variables.accentColor1} offset="0%" />
                             <stop stopColor={variables.accentColor2} offset="100%" />
                         </linearGradient>
                     </defs>
                 </svg>
+                {/* Search icon with applied gradient color */}
                 <FaSearch className="icon" style={{fill: "url(#gradient)"}} />
             </Button>
         </div>

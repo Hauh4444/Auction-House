@@ -19,12 +19,13 @@ import "./Specifics.scss";
  *
  * @returns {JSX.Element} A section displaying the item's specific details.
  */
-const Specifics = ({listing}) => {
-
+const Specifics = ({ listing }) => {
     return (
         <div className="specifics">
             {listing.item_specifics && (
+                // Check if item_specifics is a parsed object
                 JSON.parse(listing.item_specifics) instanceof Object ? (
+                    // If it's not an array, display as a table of key-value pairs
                     !Array.isArray(JSON.parse(listing.item_specifics)) ? (
                         <table>
                             <caption>Item Specifics</caption>
@@ -38,6 +39,7 @@ const Specifics = ({listing}) => {
                             </tbody>
                         </table>
                     ) : (
+                        // If it's an array, display each item as a list
                         <ul>
                             {Object.keys(JSON.parse(listing.item_specifics)).map((item, index) => (
                                 <li key={index}>{item}</li>
@@ -45,12 +47,13 @@ const Specifics = ({listing}) => {
                         </ul>
                     )
                 ) : (
+                    // If it's a plain string, display it as a paragraph
                     <p>{listing.item_specifics}</p>
                 )
             )}
         </div>
-    )
-}
+    );
+};
 
 // Define the expected shape of the listing prop
 Specifics.propTypes = {

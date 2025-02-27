@@ -24,14 +24,18 @@ import "./Header.scss";
  */
 const Header = () => {
     const navigate = useNavigate();
-    const location = useLocation();
+    const location = useLocation(); // Hook to access the current location (URL)
 
+    /**
+     * Toggles the visibility of the categories popup.
+     * Adjusts the `maxHeight` CSS property to show or hide the popup.
+     */
     function toggleCategoriesDisplay() {
         const element = document.querySelector(".categoriesPopup");
         if (element.style.maxHeight === "0px" || element.style.maxHeight === "") {
-            element.style.maxHeight = "100%";
+            element.style.maxHeight = "100%"; // Expands the popup
         } else {
-            element.style.maxHeight = "0";
+            element.style.maxHeight = "0"; // Collapses the popup
         }
     }
 
@@ -39,40 +43,36 @@ const Header = () => {
         <>
             <div className="header">
                 <div className="headNav">
-                    <Button className="btn" onClick={() => {
-                        navigate("/")
-                    }}>
-
+                    {/* Navigation Buttons */}
+                    <Button className="btn" onClick={() => navigate("/")}>
                         Home
                     </Button>
-                    <Button className="btn" onClick={() => {
-                        navigate("/search")
-                    }}>
+                    <Button className="btn" onClick={() => navigate("/search")}>
                         Shop All
                     </Button>
-                    <Button className="btn" onClick={() => {
-                        navigate("/about")
-                    }}>
+                    <Button className="btn" onClick={() => navigate("/about")}>
                         About
                     </Button>
-                    <Button className="btn" onClick={() => {
-                        navigate("/contact")
-                    }}>
+                    <Button className="btn" onClick={() => navigate("/contact")}>
                         Contact
                     </Button>
+
+                    {/* Categories Button (Hidden on Homepage) */}
                     {location.pathname !== "/" && (
                         <Button className="btn categoriesBtn" onClick={toggleCategoriesDisplay}>
                             Categories&ensp;<BsGrid3X3GapFill className="icon" />
                         </Button>
                     )}
                 </div>
+
+                {/* Search Bar Component */}
                 <Bar />
             </div>
-            {location.pathname !== "/" && (
-                <CategoryNav />
-            )}
-        < />
-    )
+
+            {/* Category Navigation (Hidden on Homepage) */}
+            {location.pathname !== "/" && <CategoryNav />}
+        </>
+    );
 }
 
 export default Header;

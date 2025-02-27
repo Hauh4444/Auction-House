@@ -1,22 +1,3 @@
-# TODO
-
-## React Frontend
-1. Document Components
-   1. CategoriesPopup
-   2. Header
-   3. Listing
-      1. Main 
-      2. Reviews 
-      3. Specifics 
-   4. Navigation
-      1. CategoryNav 
-      2. Navigation 
-      3. RightNav 
-      4. SearchNav 
-   5. Search 
-      1. Bar 
-      2. SearchListings
-
 # Dinkleberg's Auction House
 
 ## Setup

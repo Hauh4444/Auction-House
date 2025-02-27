@@ -33,36 +33,36 @@ import { variables } from "@/assets/variables.modules.js";
  *                       application.
  */
 const RightNav = () => {
-    const navigate = useNavigate();
+    const navigate = useNavigate(); // Navigate function for routing
 
     return (
-        <nav className="rightNav" style={{flexBasis: "15%"}}>
-            <div className="navBar">
-                <Button className="btn">
+        <nav className="rightNav" style={{flexBasis: "15%"}}> {/* Navigation container */}
+            <div className="navBar"> {/* Navigation bar container */}
+                <Button className="btn"> {/* Button for menu */}
                     <BsThreeDots className="menuBtn" style={{
-                        fontSize: "25px",
-                        color: variables.mainColor3,
+                        fontSize: "25px", // Font size for the menu icon
+                        color: variables.mainColor3, // Custom color from variables
                     }} />
                 </Button>
-                <Button className="btn" style={{marginBottom: "15px"}} onClick={() => navigate("/user/account")}>
-                    <RiAccountCircle2Fill className="fill" />
-                    <RiAccountCircle2Line className="outline" />
+                <Button className="btn" style={{marginBottom: "15px"}} onClick={() => navigate("/user/account")}> {/* Button for account */}
+                    <RiAccountCircle2Fill className="fill" /> {/* Filled account icon */}
+                    <RiAccountCircle2Line className="outline" /> {/* Outlined account icon */}
                 </Button>
-                <Button className="btn" style={{marginBottom: "15px"}}>
-                    <IoFlag className="fill" />
-                    <IoFlagOutline className="outline" />
+                <Button className="btn" style={{marginBottom: "15px"}}> {/* Button for flag */}
+                    <IoFlag className="fill" /> {/* Filled flag icon */}
+                    <IoFlagOutline className="outline" /> {/* Outlined flag icon */}
                 </Button>
-                <Button className="btn" style={{marginBottom: "15px"}}>
-                    <IoCart className="fill" />
-                    <IoCartOutline className="outline" />
+                <Button className="btn" style={{marginBottom: "15px"}}> {/* Button for cart */}
+                    <IoCart className="fill" /> {/* Filled cart icon */}
+                    <IoCartOutline className="outline" /> {/* Outlined cart icon */}
                 </Button>
-                <Button className="btn" style={{marginBottom: "15px"}}>
-                    <HiUserGroup className="fill" />
-                    <HiOutlineUserGroup className="outline" />
+                <Button className="btn" style={{marginBottom: "15px"}}> {/* Button for user group */}
+                    <HiUserGroup className="fill" /> {/* Filled user group icon */}
+                    <HiOutlineUserGroup className="outline" /> {/* Outlined user group icon */}
                 </Button>
-                <Button className="btn" style={{marginBottom: "15px"}}>
-                    <PiTruckFill className="fill" />
-                    <PiTruckLight className="outline" />
+                <Button className="btn" style={{marginBottom: "15px"}}> {/* Button for truck */}
+                    <PiTruckFill className="fill" /> {/* Filled truck icon */}
+                    <PiTruckLight className="outline" /> {/* Outlined truck icon */}
                 </Button>
             </div>
         </nav>

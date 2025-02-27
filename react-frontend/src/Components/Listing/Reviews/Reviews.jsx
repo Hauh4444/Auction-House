@@ -1,5 +1,5 @@
 // External Libraries
-import { useEffect, useState } from  "react";
+import { useEffect, useState } from "react";
 import { LiaStarHalfSolid, LiaStarSolid } from "react-icons/lia";
 import axios from "axios";
 import PropTypes from "prop-types";
@@ -17,14 +17,15 @@ import "./Reviews.scss";
 const renderStars = (averageReview) => {
     const filledStars = Math.floor(averageReview);
     const halfStar = averageReview > filledStars;
+
     return (
         <span className="stars">
             {/* Render empty stars */}
-            {Array.from({length: 5}, (_, index) => (
+            {Array.from({ length: 5 }, (_, index) => (
                 <LiaStarSolid className="blankStar" key={index} />
             ))}
             {/* Render filled stars */}
-            {Array.from({length: filledStars}, (_, index) => (
+            {Array.from({ length: filledStars }, (_, index) => (
                 <LiaStarSolid className="filledStar" key={index} />
             ))}
             {/* Render half star if needed */}
@@ -47,12 +48,11 @@ const renderStars = (averageReview) => {
  *
  * @returns {JSX.Element} A section displaying user reviews.
  */
-const Reviews = ({listing_id}) => {
+const Reviews = ({ listing_id }) => {
     const [reviews, setReviews] = useState([]);
 
     // Effect hook to fetch reviews from the API on component mount and URL filter update
     useEffect(() => {
-        // Fetch best sellers from the backend API
         axios.get("http://127.0.0.1:5000/api/reviews", {
             headers: {
                 "Content-Type": "application/json",
@@ -63,15 +63,15 @@ const Reviews = ({listing_id}) => {
                 order: "desc", // Order in descending order
                 start: 0, // Start from the first item
                 range: 3, // Limit to 3 items
-            }
+            },
         })
-            .then(res => setReviews(res.data)) // Update state with fetched data
-            .catch(err => console.log(err)); // Log errors if any
-    }, [listing_id]); // Empty dependency array to ensure it runs only once when the component is mounted
+            .then((res) => setReviews(res.data)) // Update state with fetched data
+            .catch((err) => console.log(err)); // Log errors if any
+    }, [listing_id]);
 
     return (
         <div className="reviewSection">
-            {reviews && (
+            {reviews &&
                 reviews.map((review, index) => (
                     <div className="review" key={index}>
                         <div className="left">
@@ -84,15 +84,14 @@ const Reviews = ({listing_id}) => {
                             <p>{review.description}</p>
                         </div>
                     </div>
-                ))
-            )}
+                ))}
         </div>
-    )
-}
+    );
+};
 
 // Define the expected shape of the listing_id and reviews props
 Reviews.propTypes = {
-    listing_id: PropTypes.number
+    listing_id: PropTypes.number,
 };
 
 export default Reviews;
