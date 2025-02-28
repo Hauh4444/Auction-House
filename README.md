@@ -1,5 +1,27 @@
 # Dinkleberg's Auction House
 
+### React Frontend
+1. Private Pages
+2. Live Auction Bidding UI
+3. Checkout Flow
+4. Purchasing/Bidding Functionality
+5. Localization of Currency/Language
+6. Public Pages
+7. Documentation
+
+### Flask Server
+1. Bidding Flow
+2. Purchasing Flow
+3. Payment Functionality
+4. Password Recovery with Email Connection
+5. User History
+6. Recovery System for Database
+7. Verify Authentication for Routes
+8. Notifications
+9. Documentation
+10. Unit Testing
+11. Integration Testing
+
 ## Setup
 1. Ensure you have [Node.js](https://nodejs.org/en/download) installed on your machine.
 
