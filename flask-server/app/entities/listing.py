@@ -87,10 +87,10 @@ class Listing:
             raise TypeError(f"reserve_price must be a number, got {type(reserve_price).__name__}")
         if current_price is not None and not isinstance(current_price, (int, float)):
             raise TypeError(f"current_price must be a number, got {type(current_price).__name__}")
-        if auction_start is not None and not isinstance(auction_start, datetime) and not isinstance(created_at, str):
-            raise TypeError(f"auction_start must be a datetime, got {type(auction_start).__name__}")
-        if auction_end is not None and not isinstance(auction_end, datetime) and not isinstance(created_at, str):
-            raise TypeError(f"auction_end must be a datetime, got {type(auction_end).__name__}")
+        if auction_start is not None and not isinstance(auction_start, datetime):
+            raise TypeError(f"auction_start must be a datetime,, or None, got {type(auction_start).__name__}")
+        if auction_end is not None and not isinstance(auction_end, datetime):
+            raise TypeError(f"auction_end must be a datetime,, or None, got {type(auction_end).__name__}")
         if bids is not None and not isinstance(bids, int):
             raise TypeError(f"bids must be an int, got {type(bids).__name__}")
         if purchases is not None and not isinstance(purchases, int):
@@ -99,10 +99,10 @@ class Listing:
             raise TypeError(f"average_review must be a number, got {type(average_review).__name__}")
         if total_reviews is not None and not isinstance(total_reviews, int):
             raise TypeError(f"total_reviews must be an int, got {type(total_reviews).__name__}")
-        if created_at is not None and not isinstance(created_at, datetime) and not isinstance(created_at, str):
-            raise TypeError(f"created_at must be a datetime, got {type(created_at).__name__}")
-        if updated_at is not None and not isinstance(updated_at, datetime) and not isinstance(created_at, str):
-            raise TypeError(f"updated_at must be a datetime, got {type(updated_at).__name__}")
+        if created_at is not None and not isinstance(created_at, datetime):
+            raise TypeError(f"created_at must be a datetime,, or None, got {type(created_at).__name__}")
+        if updated_at is not None and not isinstance(updated_at, datetime):
+            raise TypeError(f"updated_at must be a datetime,, or None, got {type(updated_at).__name__}")
 
         # Value checks
         if listing_type not in self.VALID_LISTING_TYPES:
@@ -130,8 +130,8 @@ class Listing:
         self.purchases = purchases
         self.average_review = average_review
         self.total_reviews = total_reviews
-        self.created_at = created_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        self.updated_at = updated_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.created_at = created_at or datetime.now()
+        self.updated_at = updated_at or datetime.now()
 
     def to_dict(self):
         """Converts the listing object to a dictionary representation."""

@@ -1,5 +1,7 @@
 from flask_login import LoginManager
 
+import hashlib
+
 from .data_mappers.auth_mapper import AuthMapper
 from .entities.user import User
 from .entities.staff_user import StaffUser
@@ -25,3 +27,16 @@ def load_user(user_id, db_session=None):
     elif isinstance(user_data, dict):
         return StaffUser(**user_data)
     return user_data
+
+
+def hash_password(password):
+    """
+    Hashes the password using SHA256.
+
+    Args:
+        password: The password to hash.
+
+    Returns:
+        A hashed version of the password.
+    """
+    return hashlib.sha256(password.encode('utf-8')).hexdigest()

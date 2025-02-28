@@ -21,19 +21,21 @@ class Chat:
             created_at: datetime | None = None,
             chat_id: int | None = None
     ):
+        # Type checks
         if not isinstance(user1_id, int):
-            raise TypeError("user1_id must be a int")
+            raise TypeError(f"user1_id must be a int, got {type(user1_id).__name__}")
         if not isinstance(user2_id, int):
-            raise TypeError("user2_id must be a int")
-        if created_at is not None and not isinstance(created_at, datetime) and not isinstance(created_at, str):
-            raise TypeError("created_at must be a datetime or None")
+            raise TypeError(f"user2_id must be a int, got {type(user2_id).__name__}")
+
+        if created_at is not None and not isinstance(created_at, datetime):
+            raise TypeError(f"created_at must be a datetime,, or None, got {type(created_at).__name__}")
         if chat_id is not None and not isinstance(chat_id, int):
-            raise TypeError("chat_id must be an int or None")
+            raise TypeError(f"chat_id must be an int or None, got {type(chat_id).__name__}")
 
         self.chat_id = chat_id
         self.user1_id = user1_id
         self.user2_id = user2_id
-        self.created_at = created_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.created_at = created_at or datetime.now()
 
     def to_dict(self):
         """Converts the chat object to a dictionary representation."""

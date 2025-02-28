@@ -112,6 +112,6 @@ class AuthMapper:
         else:
             statement = "UPDATE staff_users SET last_login = ? WHERE staff_id = ?"
 
-        cursor.execute(statement, (datetime.now().strftime("%Y-%m-%d %H:%M:%S"), user_id))
+        cursor.execute(statement, (datetime.now(), user_id))
         db.commit()
         return cursor.rowcount

@@ -10,7 +10,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 
 from .utils import login_manager
 from .database import init_db, backup_database
-from .routes import category_bp, listings_bp, review_bp, user_bp, profile_bp, auth_bp
+from .routes import category_bp, listings_bp, review_bp, user_bp, history_bp, profile_bp, auth_bp
 
 load_dotenv()
 
@@ -51,6 +51,7 @@ app.register_blueprint(blueprint=listings_bp, url_prefix='/api/listings')
 app.register_blueprint(blueprint=category_bp, url_prefix='/api/categories')
 app.register_blueprint(blueprint=review_bp, url_prefix='/api/reviews')
 app.register_blueprint(blueprint=user_bp, url_prefix='/api/user')
+app.register_blueprint(blueprint=history_bp, url_prefix='/api/user/<int:id>')
 app.register_blueprint(blueprint=profile_bp, url_prefix='/api/profile')
 app.register_blueprint(blueprint=auth_bp, url_prefix='/api/auth')
 

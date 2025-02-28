@@ -78,7 +78,7 @@ class SupportTicketMapper:
         cursor = db.cursor()
         update_clause = ", ".join(f"{key} = ?" for key in updates.keys())
         values = list(updates.values()) + [ticket_id]
-        cursor.execute(f"UPDATE support_tickets SET {update_clause}, updated_at = ? WHERE ticket_id = ?", (*values, datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
+        cursor.execute(f"UPDATE support_tickets SET {update_clause}, updated_at = ? WHERE ticket_id = ?", (*values, datetime.now()))
         db.commit()
         return cursor.rowcount
 

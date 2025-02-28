@@ -1,11 +1,10 @@
 from flask import jsonify, session
 from flask_login import login_user, logout_user, current_user
 
-import hashlib
-
 from .profile_services import ProfileService
 from ..services.session_services import SessionService
 from ..data_mappers.auth_mapper import AuthMapper
+from ..utils import hash_password
 
 
 class AuthService:
@@ -33,7 +32,7 @@ class AuthService:
         Returns:
             A JSON response indicating success with the user ID or an error message.
         """
-        data["password_hash"] = AuthService.hash_password(password=data["password"])
+        data["password_hash"] = hash_password(password=data["password"])
         if not data.get("username") or not data.get("password_hash") or not data.get("email"):
             return jsonify({"error": "Username, password, and email are required"}), 400
 
@@ -55,19 +54,13 @@ class AuthService:
             A JSON response containing a success message and the user details if login is successful,
             or a 401 error if the username or password is incorrect.
         """
-        user = AuthMapper.get_user_by_username(username=username, db_session=db_session)
-        if user and user.password_hash == AuthService.hash_password(password=password):
-            if user.__class__.__name__ == "User":
-                AuthMapper.update_last_login(user_id=user.user_id, db_session=db_session)
-                session["user_id"] = user.user_id
-                session["role"] = "user"
-            else:
-                AuthMapper.update_last_login(user_id=user.staff_id, role=user.role, db_session=db_session)
-                session["user_id"] = user.staff_id
-                session["role"] = user.role
+        user = AuthMapper.get_user_by_username(username, db_session)
+        if user and user.password_hash == hash_password(password):
+            session["user_id"], session["role"] = (user.user_id, "user") if user.__class__.__name__ == "User" else (user.staff_id, user.role)
+            AuthMapper.update_last_login(user_id=session["user_id"], role=session["role"] if "role" in session else "user", db_session=db_session)
             user.is_active = True
-            login_user(user=user, remember=True)
-            SessionService.create_session(db_session=db_session)
+            login_user(user, remember=True)
+            SessionService.create_session(db_session)
             return jsonify({"message": "Login successful", "user": user}), 200
         return jsonify({"error": "Invalid username or password"}), 401
 
@@ -83,19 +76,6 @@ class AuthService:
         logout_user()
         session.clear()
         return jsonify({"message": "Logout successful"}), 200
-
-    @staticmethod
-    def hash_password(password):
-        """
-        Hashes the password using SHA256.
-
-        Args:
-            password: The password to hash.
-
-        Returns:
-            A hashed version of the password.
-        """
-        return hashlib.sha256(password.encode('utf-8')).hexdigest()
 
     @staticmethod
     def password_reset_request(email):

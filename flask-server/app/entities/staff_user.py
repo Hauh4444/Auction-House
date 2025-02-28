@@ -45,9 +45,9 @@ class StaffUser(UserMixin):
         self.email = email
         self.phone = phone
         self.role = role
-        self.created_at = created_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        self.updated_at = updated_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        self.last_login = last_login or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.created_at = created_at or datetime.now()
+        self.updated_at = updated_at or datetime.now()
+        self.last_login = last_login or datetime.now()
         self.is_active = bool(is_active)
 
     def to_dict(self):

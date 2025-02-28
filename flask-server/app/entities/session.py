@@ -17,7 +17,7 @@ class Session:
         self.user_id = user_id
         self.role = role
         self.token = token
-        self.created_at = created_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.created_at = created_at or datetime.now()
         self.expires_at = expires_at
 
     def to_dict(self):

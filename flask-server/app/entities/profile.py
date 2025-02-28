@@ -55,8 +55,8 @@ class Profile:
         self.profile_picture = profile_picture
         self.bio = bio
         self.social_links = social_links
-        self.created_at = created_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        self.updated_at = updated_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.created_at = created_at or datetime.now()
+        self.updated_at = updated_at or datetime.now()
 
     def to_dict(self):
         """Converts the profile object to a dictionary representation."""

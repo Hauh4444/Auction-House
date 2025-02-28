@@ -35,7 +35,7 @@ class Review:
         self.title = title
         self.description = description
         self.stars = stars
-        self.created_at = created_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.created_at = created_at or datetime.now()
 
     def to_dict(self):
         """Converts the review object to a dictionary representation."""

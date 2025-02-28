@@ -40,6 +40,10 @@ class Transaction:
     ):
         self.VALID_TRANSACTION_TYPES = {"auction", "buy_now"}
         self.VALID_STATUSES = {"pending", "completed", "failed", "refunded"}
+
+        # Type checks
+
+        # Value checks
         if transaction_type not in self.VALID_TRANSACTION_TYPES:
             raise ValueError(f"Listing type must be one of {self.VALID_TRANSACTION_TYPES}, got '{transaction_type}' instead")
         if status not in self.VALID_STATUSES:
@@ -49,15 +53,15 @@ class Transaction:
         self.listing_id = listing_id
         self.buyer_id = buyer_id
         self.seller_id = seller_id
-        self.transaction_date = transaction_date.strftime("%Y-%m-%d %H:%M:%S")
+        self.transaction_date = transaction_date
         self.transaction_type = transaction_type
         self.amount = amount
         self.payment_method = payment_method
         self.status = status
         self.shipping_address = shipping_address
         self.tracking_number = tracking_number
-        self.created_at = created_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        self.updated_at = updated_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.created_at = created_at or datetime.now()
+        self.updated_at = updated_at or datetime.now()
 
     def to_dict(self):
         """Converts the transaction object to a dictionary representation."""

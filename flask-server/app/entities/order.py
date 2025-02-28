@@ -40,6 +40,10 @@ class Order:
     ):
         self.VALID_STATUSES = {"pending", "processing", "shipped", "delivered", "cancelled", "returned"}
         self.VALID_PAYMENT_STATUSES = {"pending", "completed", "failed", "refunded"}
+
+        # Type checks
+
+        # Value checks
         if status not in self.VALID_STATUSES:
             raise ValueError(f"Listing type must be one of {self.VALID_STATUSES}, got '{status}' instead")
         if payment_status not in self.VALID_PAYMENT_STATUSES:
@@ -47,7 +51,7 @@ class Order:
 
         self.order_id = order_id
         self.user_id = user_id
-        self.order_date = order_date.strftime("%Y-%m-%d %H:%M:%S")
+        self.order_date = order_date
         self.status = status
         self.total_amount = total_amount
         self.payment_status = payment_status
@@ -56,8 +60,8 @@ class Order:
         self.shipping_method = shipping_method
         self.tracking_number = tracking_number
         self.shipping_cost = shipping_cost
-        self.created_at = created_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        self.updated_at = updated_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.created_at = created_at or datetime.now()
+        self.updated_at = updated_at or datetime.now()
 
     def to_dict(self):
         """Converts the order object to a dictionary representation."""
