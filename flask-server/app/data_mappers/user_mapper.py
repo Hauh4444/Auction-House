@@ -1,5 +1,5 @@
 from ..database import get_db
-from ..entities.user import User
+from ..entities import User
 
 
 class UserMapper:

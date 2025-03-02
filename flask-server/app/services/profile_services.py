@@ -1,6 +1,6 @@
 from flask import jsonify
 
-from ..data_mappers.profile_mapper import ProfileMapper
+from ..data_mappers import ProfileMapper
 
 
 class ProfileService:

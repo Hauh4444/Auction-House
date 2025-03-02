@@ -24,12 +24,13 @@ class Category:
             updated_at: datetime | None = None,
             category_id: int | None = None
     ):
-        # Type checks
+        # Type checks for required attributes
         if not isinstance(name, str):
             raise TypeError(f"name must be a str, got {type(name).__name__}")
         if not isinstance(description, str):
             raise TypeError(f"description must be a str, got {type(description).__name__}")
 
+        # Type checks for optional attributes
         if image_encoded is not None and not isinstance(image_encoded, str):
             raise TypeError(f"image_encoded must be a str or None, got {type(image_encoded).__name__}")
         if created_at is not None and not isinstance(created_at, datetime):

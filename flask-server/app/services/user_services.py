@@ -1,7 +1,7 @@
 from flask import jsonify
 
 from .profile_services import ProfileService
-from ..data_mappers.user_mapper import UserMapper
+from ..data_mappers import UserMapper
 
 
 class UserService:

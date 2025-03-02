@@ -1,7 +1,7 @@
 from flask import Blueprint, request
 from flask_login import login_required
 
-from ..services.category_services import CategoryService
+from ..services import CategoryService
 
 # Blueprint for category-related routes
 category_bp = Blueprint('category_bp', __name__)

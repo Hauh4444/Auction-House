@@ -1,5 +1,5 @@
 from ..database import get_db
-from ..entities.listing import Listing
+from ..entities import Listing
 
 
 class ListingMapper:

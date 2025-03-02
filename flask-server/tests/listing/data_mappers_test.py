@@ -2,7 +2,7 @@ import pytest
 from unittest.mock import MagicMock
 from datetime import datetime
 
-from app.data_mappers.listing_mapper import ListingMapper
+from app.data_mappers import ListingMapper
 
 
 @pytest.fixture
@@ -179,16 +179,16 @@ def test_create_listing_db_failure(mock_db_session):
 
 def test_update_listing_invalid_id(mock_db_session):
     mock_cursor = mock_db_session.cursor.return_value
-    mock_cursor.rowcount = 0  # Simulate no rows were updated
+    mock_cursor.rowcount = 0 # Simulate no rows were updated
 
     data = {
         "title": "Updated Laptop",
         "buy_now_price": 1300
     }
 
-    rows_updated = ListingMapper.update_listing(listing_id=999, data=data, db_session=mock_db_session)  # Invalid ID
+    rows_updated = ListingMapper.update_listing(listing_id=999, data=data, db_session=mock_db_session) # Invalid ID
 
-    assert rows_updated == 0  # Expecting no rows to be updated
+    assert rows_updated == 0 # Expecting no rows to be updated
 
 
 def test_delete_listing_db_failure(mock_db_session):

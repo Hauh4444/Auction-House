@@ -3,7 +3,7 @@ from unittest.mock import MagicMock
 
 from datetime import datetime
 
-from app.entities.category import Category
+from app.entities import Category
 
 
 @pytest.fixture

@@ -1,5 +1,5 @@
 from ..database import get_db
-from ..entities.review import Review
+from ..entities import Review
 
 
 class ReviewMapper:

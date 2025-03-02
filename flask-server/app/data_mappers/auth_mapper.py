@@ -2,8 +2,7 @@ from pymysql import DatabaseError
 from datetime import datetime
 
 from ..database import get_db
-from ..entities.user import User
-from ..entities.staff_user import StaffUser
+from ..entities import User, StaffUser
 
 
 class AuthMapper:

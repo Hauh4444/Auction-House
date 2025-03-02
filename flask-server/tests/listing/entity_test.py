@@ -2,7 +2,7 @@ import pytest
 from unittest.mock import MagicMock
 from datetime import datetime
 
-from app.entities.listing import Listing
+from app.entities import Listing
 
 
 @pytest.fixture

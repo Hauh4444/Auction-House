@@ -2,7 +2,8 @@ from flask import jsonify, session
 
 from datetime import datetime, timedelta
 
-from ..data_mappers.session_mapper import SessionMapper
+from ..data_mappers import SessionMapper
+
 
 class SessionService:
     @staticmethod

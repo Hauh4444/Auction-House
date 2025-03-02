@@ -1,5 +1,5 @@
 from ..database import get_db
-from ..entities.delivery import Delivery
+from ..entities import Delivery
 
 
 class DeliveryMapper:

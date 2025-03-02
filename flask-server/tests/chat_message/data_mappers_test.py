@@ -2,7 +2,7 @@ import pytest
 from unittest.mock import MagicMock
 from datetime import datetime
 
-from app.data_mappers.chat_message_mapper import ChatMessagesMapper
+from app.data_mappers import ChatMessagesMapper
 
 
 @pytest.fixture

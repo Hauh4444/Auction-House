@@ -2,9 +2,8 @@ from flask_login import LoginManager
 
 import hashlib
 
-from .data_mappers.auth_mapper import AuthMapper
-from .entities.user import User
-from .entities.staff_user import StaffUser
+from .data_mappers import AuthMapper
+from .entities import User, StaffUser
 
 login_manager = LoginManager()
 

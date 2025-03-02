@@ -33,7 +33,7 @@ class Delivery:
             state: str,
             postal_code: str,
             country: str,
-            delivery_status: str,
+            delivery_status: str, # "pending", "processing", "shipped", "in_transit", "out_for_delivery", "delivered", "cancelled", "returned", "failed"
             tracking_number: str | None = None,
             courier: str | None = None,
             estimated_delivery_date: date | None = None,
@@ -44,7 +44,7 @@ class Delivery:
     ):
         self.VALID_DELIVERY_STATUSES = {"pending", "processing", "shipped", "in_transit", "out_for_delivery", "delivered", "cancelled", "returned", "failed"}
 
-        # Type checks
+        # Type checks for required attributes
         if not isinstance(order_id, int):
             raise TypeError(f"order_id must be an int, got {type(order_id).__name__}")
         if not isinstance(user_id, int):
@@ -62,6 +62,7 @@ class Delivery:
         if not isinstance(delivery_status, str):
             raise TypeError(f"delivery_status must be a str, got {type(delivery_status).__name__}")
 
+        # Type checks for optional attributes
         if tracking_number is not None and not isinstance(tracking_number, str):
             raise TypeError(f"tracking_number must be a str, got {type(tracking_number).__name__}")
         if courier is not None and not isinstance(courier, str):
@@ -75,7 +76,7 @@ class Delivery:
         if updated_at is not None and not isinstance(updated_at, datetime):
             raise TypeError(f"updated_at must be a datetime,, or None, got {type(updated_at).__name__}")
 
-        # Value checks
+        # Value checks for enumerated attributes
         if delivery_status not in self.VALID_DELIVERY_STATUSES:
             raise ValueError(f"delivery_status must be one of {self.VALID_DELIVERY_STATUSES}, got '{delivery_status}' instead")
 

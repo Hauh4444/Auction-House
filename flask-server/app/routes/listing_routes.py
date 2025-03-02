@@ -1,7 +1,7 @@
 from flask import Blueprint, request
 from flask_login import login_required
 
-from ..services.listing_services import ListingService
+from ..services import ListingService
 
 # Blueprint for listing-related routes
 listings_bp = Blueprint('listings_bp', __name__)

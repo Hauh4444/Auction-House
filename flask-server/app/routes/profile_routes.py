@@ -1,7 +1,7 @@
 from flask import Blueprint, request
 from flask_login import login_required
 
-from ..services.profile_services import ProfileService
+from ..services import ProfileService
 
 # Blueprint for profile-related routes
 profile_bp = Blueprint('profile_bp', __name__)

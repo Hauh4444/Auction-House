@@ -1,8 +1,7 @@
 import pytest
 from unittest.mock import MagicMock
-from datetime import datetime
 
-from app.data_mappers.delivery_mapper import DeliveryMapper
+from app.data_mappers import DeliveryMapper
 
 
 @pytest.fixture

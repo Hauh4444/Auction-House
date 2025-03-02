@@ -3,7 +3,7 @@ from unittest.mock import MagicMock
 
 from datetime import datetime, date
 
-from app.entities.delivery import Delivery
+from app.entities import Delivery
 
 
 @pytest.fixture

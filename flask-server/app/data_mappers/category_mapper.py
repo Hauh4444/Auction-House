@@ -1,5 +1,5 @@
 from ..database import get_db
-from ..entities.category import Category
+from ..entities import Category
 
 
 class CategoryMapper:

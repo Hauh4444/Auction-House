@@ -3,7 +3,7 @@ from unittest.mock import MagicMock
 
 from datetime import datetime
 
-from app.entities.chat_message import ChatMessage
+from app.entities import ChatMessage
 
 
 @pytest.fixture

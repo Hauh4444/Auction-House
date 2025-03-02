@@ -39,9 +39,9 @@ class Listing:
             title_short: str,
             description: str,
             item_specifics: str,
-            listing_type: str,  # "auction", "buy_now"
+            listing_type: str, # "auction", "buy_now"
             buy_now_price: float,
-            status: str,  # "active", "sold", "cancelled", "ended", "draft"
+            status: str, # "active", "sold", "cancelled", "ended", "draft"
             image_encoded: str,
             starting_price: float | None = None,
             reserve_price: float | None = None,
@@ -59,7 +59,7 @@ class Listing:
         self.VALID_LISTING_TYPES = {"auction", "buy_now"}
         self.VALID_STATUSES = {"active", "sold", "cancelled", "ended", "draft"}
 
-        # Type checks
+        # Type checks for required attributes
         if not isinstance(user_id, int):
             raise TypeError(f"user_id must be an int, got {type(user_id).__name__}")
         if not isinstance(category_id, int):
@@ -81,6 +81,7 @@ class Listing:
         if not isinstance(image_encoded, str):
             raise TypeError(f"image_encoded must be a str, got {type(image_encoded).__name__}")
 
+        # Type checks for optional attributes
         if starting_price is not None and not isinstance(starting_price, (int, float)):
             raise TypeError(f"starting_price must be a number, got {type(starting_price).__name__}")
         if reserve_price is not None and not isinstance(reserve_price, (int, float)):
@@ -104,7 +105,7 @@ class Listing:
         if updated_at is not None and not isinstance(updated_at, datetime):
             raise TypeError(f"updated_at must be a datetime,, or None, got {type(updated_at).__name__}")
 
-        # Value checks
+        # Value checks for enumerated attributes
         if listing_type not in self.VALID_LISTING_TYPES:
             raise ValueError(f"listing_type must be one of {self.VALID_LISTING_TYPES}, got '{listing_type}' instead")
         if status not in self.VALID_STATUSES:

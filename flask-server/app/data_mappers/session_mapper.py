@@ -1,5 +1,5 @@
 from ..database import get_db
-from ..entities.session import Session
+from ..entities import Session
 
 
 class SessionMapper:

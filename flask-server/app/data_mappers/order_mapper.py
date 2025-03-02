@@ -1,5 +1,5 @@
 from ..database import get_db
-from ..entities.order import Order
+from ..entities import Order
 
 
 class OrderMapper:

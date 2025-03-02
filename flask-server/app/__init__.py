@@ -10,7 +10,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 
 from .utils import login_manager
 from .database import init_db, backup_database
-from .routes import category_bp, listings_bp, review_bp, user_bp, history_bp, profile_bp, auth_bp
+from .routes import *
 
 load_dotenv()
 
@@ -66,10 +66,11 @@ def test():
     """
     return 'Success'
 
+
 if __name__ == '__main__':
     # Schedule background job to backup database
     scheduler = BackgroundScheduler()
-    scheduler.add_job(backup_database, 'cron', hour=12, minute=0)  # Runs every day at Noon
+    scheduler.add_job(backup_database, 'cron', hour=12, minute=0) # Runs every day at Noon
     scheduler.start()
 
     try:

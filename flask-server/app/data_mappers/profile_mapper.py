@@ -1,5 +1,5 @@
 from ..database import get_db
-from ..entities.profile import Profile
+from ..entities import Profile
 
 
 class ProfileMapper:

@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from ..database import get_db
-from ..entities.support_ticket import SupportTicket
+from ..entities import SupportTicket
 
 
 class SupportTicketMapper:

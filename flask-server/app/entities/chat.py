@@ -21,12 +21,13 @@ class Chat:
             created_at: datetime | None = None,
             chat_id: int | None = None
     ):
-        # Type checks
+        # Type checks for required attributes
         if not isinstance(user1_id, int):
             raise TypeError(f"user1_id must be a int, got {type(user1_id).__name__}")
         if not isinstance(user2_id, int):
             raise TypeError(f"user2_id must be a int, got {type(user2_id).__name__}")
 
+        # Type checks for optional attributes
         if created_at is not None and not isinstance(created_at, datetime):
             raise TypeError(f"created_at must be a datetime,, or None, got {type(created_at).__name__}")
         if chat_id is not None and not isinstance(chat_id, int):

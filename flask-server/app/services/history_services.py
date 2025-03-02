@@ -4,7 +4,7 @@ from flask import jsonify
 class HistoryService:
     # TODO: Services that align with each route
     #       Each service will call the appropriate, already created data mappers
-    #       Do not create new data mappers for these services
+    #       DO NOT CREATE NEW DATA MAPPERS FOR THESE SERVICES USE EXISTING ONES
 
     @staticmethod
     def get_history():

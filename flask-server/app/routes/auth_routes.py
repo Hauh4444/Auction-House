@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from flask_login import login_required
 
-from ..services.auth_services import AuthService
+from ..services import AuthService
 
 # Blueprint for user login-related routes
 auth_bp = Blueprint('auth_bp', __name__)

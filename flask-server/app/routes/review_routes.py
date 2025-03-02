@@ -1,7 +1,7 @@
 from flask import Blueprint, request
 from flask_login import login_required
 
-from ..services.review_services import ReviewService
+from ..services import ReviewService
 
 # Blueprint for review-related routes
 review_bp = Blueprint('review_bp', __name__)

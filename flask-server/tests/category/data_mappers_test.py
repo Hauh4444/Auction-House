@@ -2,7 +2,7 @@ import pytest
 from unittest.mock import MagicMock
 from datetime import datetime
 
-from app.data_mappers.category_mapper import CategoryMapper
+from app.data_mappers import CategoryMapper
 
 
 @pytest.fixture
@@ -176,7 +176,7 @@ def test_update_category_invalid_id(mock_db_session):
         "description": "Updated gadgets"
     }
 
-    rows_updated = CategoryMapper.update_category(category_id=999, data=data, db_session=mock_db_session)  # Invalid ID
+    rows_updated = CategoryMapper.update_category(category_id=999, data=data, db_session=mock_db_session) # Invalid ID
 
     assert rows_updated == 0
 

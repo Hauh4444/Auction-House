@@ -1,5 +1,3 @@
-from flask import send_file
-
 import sqlite3, os
 
 DB_FILE = "database/auctionhouse.db"

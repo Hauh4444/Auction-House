@@ -1,5 +1,5 @@
 from ..database import get_db
-from ..entities.transaction import Transaction
+from ..entities import Transaction
 
 
 class TransactionMapper:

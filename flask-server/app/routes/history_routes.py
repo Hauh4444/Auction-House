@@ -1,7 +1,7 @@
 from flask import Blueprint, request
 from flask_login import login_required
 
-from ..services.history_services import HistoryService
+from ..services import HistoryService
 
 # Blueprint for history-related routes
 history_bp = Blueprint('history_bp', __name__)

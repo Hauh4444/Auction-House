@@ -2,8 +2,8 @@ from flask import jsonify, session
 from flask_login import login_user, logout_user, current_user
 
 from .profile_services import ProfileService
-from ..services.session_services import SessionService
-from ..data_mappers.auth_mapper import AuthMapper
+from .session_services import SessionService
+from ..data_mappers import AuthMapper
 from ..utils import hash_password
 
 
