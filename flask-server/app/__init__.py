@@ -9,7 +9,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 import os, pkgutil, importlib
 
 from .utils import login_manager
-from .database import init_db, backup_database
+from .database import backup_database
 from .routes import *
 
 load_dotenv()
@@ -36,9 +36,6 @@ Session(app)
 # Enable Cross-Origin Resource Sharing (CORS) for frontend communication
 CORS(app=app, supports_credentials=True, resources={r"/api/*": {"origins": "http://localhost:5173"}})
 
-# Initialize database
-init_db()
-
 # Iterate through the modules in the routes package
 for _, module_name, _ in pkgutil.iter_modules(routes.__path__):
     # Dynamically import the module
@@ -58,13 +55,7 @@ def test():
     return 'Success'
 
 
-if __name__ == '__main__':
-    # Schedule background job to backup database
-    scheduler = BackgroundScheduler()
-    scheduler.add_job(backup_database, trigger='cron', hour=12, minute=0) # Runs every day at Noon
-    scheduler.start()
-
-    try:
-        app.run(debug=True)
-    except (KeyboardInterrupt, SystemExit):
-        scheduler.shutdown()
+# Schedule background job to backup database
+scheduler = BackgroundScheduler()
+scheduler.add_job(backup_database, trigger='cron', hour=12, minute=0) # Runs every day at Noon
+scheduler.start()
