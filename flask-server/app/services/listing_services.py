@@ -22,6 +22,7 @@ class ListingService:
         response = Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
         return response
 
+
     @staticmethod
     def get_listing_by_id(listing_id, db_session=None):
         """
@@ -44,6 +45,7 @@ class ListingService:
         data = {"error": "Listing not found"}
         response = Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
         return response
+
 
     @staticmethod
     def create_listing(data, db_session=None):
@@ -68,6 +70,7 @@ class ListingService:
         response = Response(response=jsonify(data).get_data(), status=201, mimetype='application/json')
         return response
 
+
     @staticmethod
     def update_listing(listing_id, data, db_session=None):
         """
@@ -91,6 +94,7 @@ class ListingService:
         data = {"error": "Listing not found"}
         response = Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
         return response
+
 
     @staticmethod
     def delete_listing(listing_id, db_session=None):

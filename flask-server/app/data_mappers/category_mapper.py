@@ -4,7 +4,6 @@ from ..entities import Category
 
 class CategoryMapper:
     """Handles database operations related to categories."""
-
     @staticmethod
     def get_all_categories(db_session=None):
         """Retrieve all categories from the database.
@@ -20,6 +19,7 @@ class CategoryMapper:
         cursor.execute("SELECT * FROM categories")
         categories = cursor.fetchall()
         return [Category(**category).to_dict() for category in categories]
+
 
     @staticmethod
     def get_category_by_id(category_id, db_session=None):
@@ -37,6 +37,7 @@ class CategoryMapper:
         cursor.execute("SELECT * FROM categories WHERE category_id=?", (category_id,))
         category = cursor.fetchone()
         return Category(**category).to_dict() if category else None
+
 
     @staticmethod
     def create_category(data, db_session=None):
@@ -60,6 +61,7 @@ class CategoryMapper:
         db.commit()
         return cursor.lastrowid
 
+
     @staticmethod
     def update_category(category_id, data, db_session=None):
         """Update an existing category.
@@ -81,6 +83,7 @@ class CategoryMapper:
         cursor.execute(statement, values)
         db.commit()
         return cursor.rowcount
+
 
     @staticmethod
     def delete_category(category_id, db_session=None):

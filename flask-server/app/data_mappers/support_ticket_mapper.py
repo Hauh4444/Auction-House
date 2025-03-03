@@ -6,7 +6,6 @@ from ..entities import SupportTicket
 
 class SupportTicketMapper:
     """Handles database operations related to support tickets."""
-
     @staticmethod
     def get_ticket_by_id(ticket_id, db_session=None):
         """Retrieve a support ticket by its ID.
@@ -24,6 +23,7 @@ class SupportTicketMapper:
         ticket = cursor.fetchone()
         return SupportTicket(**ticket).to_dict() if ticket else None
 
+
     @staticmethod
     def get_tickets_by_user_id(user_id, db_session=None):
         """Retrieve all support tickets for a given user.
@@ -40,6 +40,7 @@ class SupportTicketMapper:
         cursor.execute("SELECT * FROM support_tickets WHERE user_id = ?", (user_id,))
         tickets = cursor.fetchall()
         return [SupportTicket(**ticket).to_dict() for ticket in tickets]
+
 
     @staticmethod
     def create_ticket(data, db_session=None):
@@ -62,6 +63,7 @@ class SupportTicketMapper:
         db.commit()
         return cursor.lastrowid
 
+
     @staticmethod
     def update_ticket(ticket_id, updates, db_session=None):
         """Update a support ticket's details.
@@ -81,6 +83,7 @@ class SupportTicketMapper:
         cursor.execute(f"UPDATE support_tickets SET {update_clause}, updated_at = ? WHERE ticket_id = ?", (*values, datetime.now()))
         db.commit()
         return cursor.rowcount
+
 
     @staticmethod
     def delete_ticket(ticket_id, db_session=None):

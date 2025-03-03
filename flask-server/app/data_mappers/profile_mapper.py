@@ -4,7 +4,6 @@ from ..entities import Profile
 
 class ProfileMapper:
     """Handles database operations related to profiles."""
-
     @staticmethod
     def get_all_profiles(db_session=None):
         """Retrieve all profiles from the database.
@@ -20,6 +19,7 @@ class ProfileMapper:
         cursor.execute("SELECT * FROM profiles")
         profiles = cursor.fetchall()
         return [Profile(**profile).to_dict() for profile in profiles]
+
 
     @staticmethod
     def get_profile(user_id, db_session=None):
@@ -37,6 +37,7 @@ class ProfileMapper:
         cursor.execute("SELECT * FROM profiles WHERE user_id = ?", (user_id,))
         profile = cursor.fetchone()
         return Profile(**profile).to_dict() if profile else None
+
 
     @staticmethod
     def create_profile(data, db_session=None):
@@ -59,6 +60,7 @@ class ProfileMapper:
         cursor.execute(statement, tuple(Profile(**data).to_dict().values())[1:])
         db.commit()
         return cursor.lastrowid
+
 
     @staticmethod
     def update_profile(profile_id, data, db_session=None):
@@ -91,6 +93,7 @@ class ProfileMapper:
 
         # Return the number of rows affected
         return cursor.rowcount
+
 
     @staticmethod
     def delete_profile(user_id, db_session=None):

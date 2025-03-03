@@ -26,6 +26,7 @@ class AuthService:
         response = Response(response=jsonify(data).get_data(), status=401, mimetype="application/json")
         return response
 
+
     @staticmethod
     def create_user(data, db_session=None):
         """
@@ -51,6 +52,7 @@ class AuthService:
         data = {"message": "User registered successfully", "user_id": user_id}
         response = Response(response=jsonify(data).get_data(), status=201, mimetype='application/json')
         return response
+
 
     @staticmethod
     def login_user(username, password, db_session=None):
@@ -82,6 +84,7 @@ class AuthService:
         response = Response(response=jsonify(data).get_data(), status=401, mimetype='application/json')
         return response
 
+
     @staticmethod
     def logout_user():
         """
@@ -98,6 +101,7 @@ class AuthService:
         response = Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
         return response
 
+
     @staticmethod
     def password_reset_request(email):
         """
@@ -110,6 +114,7 @@ class AuthService:
             A Response object indicating whether the request was successful.
         """
         return email
+
 
     @staticmethod
     def reset_user_password(reset_token, new_password):

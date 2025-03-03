@@ -4,7 +4,6 @@ from ..entities import Review
 
 class ReviewMapper:
     """Handles database operations related to reviews."""
-
     @staticmethod
     def get_all_reviews(args, db_session=None):
         """Retrieve all reviews with optional filtering
@@ -39,6 +38,7 @@ class ReviewMapper:
         reviews = cursor.fetchall()
         return [Review(**review).to_dict() for review in reviews]
 
+
     @staticmethod
     def get_review_by_id(review_id, db_session=None):
         """Retrieve a review by its ID.
@@ -55,6 +55,7 @@ class ReviewMapper:
         cursor.execute("SELECT * FROM reviews WHERE review_id=?", (review_id,))
         review = cursor.fetchone()
         return Review(**review).to_dict() if review else None
+
 
     @staticmethod
     def create_review(data, db_session=None):
@@ -88,6 +89,7 @@ class ReviewMapper:
         db.commit()
         return cursor.lastrowid
 
+
     @staticmethod
     def update_review(review_id, data, db_session=None):
         """Update an existing review.
@@ -109,6 +111,7 @@ class ReviewMapper:
         cursor.execute(statement, values)
         db.commit()
         return cursor.rowcount
+
 
     @staticmethod
     def delete_review(review_id, db_session=None):

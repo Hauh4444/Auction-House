@@ -1,29 +1,14 @@
-from .auth_mapper import AuthMapper
-from .category_mapper import CategoryMapper
-from .chat_mapper import ChatMapper
-from .chat_message_mapper import ChatMessagesMapper
-from .delivery_mapper import DeliveryMapper
-from .listing_mapper import ListingMapper
-from .order_mapper import OrderMapper
-from .profile_mapper import ProfileMapper
-from .review_mapper import ReviewMapper
-from .session_mapper import SessionMapper
-from .support_ticket_mapper import SupportTicketMapper
-from .transaction_mapper import TransactionMapper
-from .user_mapper import UserMapper
+import pkgutil, importlib
 
-__all__ = [
-    "AuthMapper",
-    "CategoryMapper",
-    "ChatMapper",
-    "ChatMessagesMapper",
-    "DeliveryMapper",
-    "ListingMapper",
-    "OrderMapper",
-    "ProfileMapper",
-    "ReviewMapper",
-    "SessionMapper",
-    "SupportTicketMapper",
-    "TransactionMapper",
-    "UserMapper"
-]
+
+# Dynamically import all classes from modules in the data mappers package
+for _, module_name, _ in pkgutil.iter_modules(__path__):
+    # Dynamically import the module
+    module = importlib.import_module(f".{module_name}", package="app.data_mappers")
+
+    # Import only classes from the module
+    for item_name in dir(module):
+        item = getattr(module, item_name)
+        # Check if it's a class (and not an import or other objects)
+        if isinstance(item, type) and item.__module__ == module.__name__:
+            globals()[item_name] = item  # Add the class to the global namespace

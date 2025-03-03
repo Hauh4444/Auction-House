@@ -4,7 +4,6 @@ from ..entities import Delivery
 
 class DeliveryMapper:
     """Handles database operations related to deliveries."""
-
     @staticmethod
     def get_all_deliveries(db_session=None):
         """Retrieve all deliveries from the database.
@@ -20,6 +19,7 @@ class DeliveryMapper:
         cursor.execute("SELECT * FROM deliveries")
         deliveries = cursor.fetchall()
         return [Delivery(**delivery).to_dict() for delivery in deliveries]
+
 
     @staticmethod
     def get_delivery_by_id(delivery_id, db_session=None):
@@ -37,6 +37,7 @@ class DeliveryMapper:
         cursor.execute("SELECT * FROM deliveries WHERE delivery_id = ?", (delivery_id,))
         delivery = cursor.fetchone()
         return Delivery(**delivery).to_dict() if delivery else None
+
 
     @staticmethod
     def create_delivery(data, db_session=None):
@@ -61,6 +62,7 @@ class DeliveryMapper:
         db.commit()
         return cursor.lastrowid
 
+
     @staticmethod
     def update_delivery(delivery_id, data, db_session=None):
         """Update an existing delivery.
@@ -82,6 +84,7 @@ class DeliveryMapper:
         cursor.execute(statement, values)
         db.commit()
         return cursor.rowcount
+
 
     @staticmethod
     def delete_delivery(delivery_id, db_session=None):

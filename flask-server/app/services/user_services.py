@@ -28,6 +28,7 @@ class UserService:
         response = Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
         return response
 
+
     @staticmethod
     def update_user(user_id, data, db_session=None):
         """
@@ -51,6 +52,7 @@ class UserService:
         data = {"error": "User not found"}
         response = Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
         return response
+
 
     @staticmethod
     def delete_user(user_id, db_session=None):

@@ -4,11 +4,11 @@ from flask_login import login_required
 from ..services import AuthService
 
 # Blueprint for user login-related routes
-auth_bp = Blueprint('auth_bp', __name__)
+bp = Blueprint('auth_bp', __name__, url_prefix="/api/auth")
 
 
 # GET /api/auth/auth_status - Check authentication status
-@auth_bp.route('/auth_status', methods=['GET'])
+@bp.route('/auth_status', methods=['GET'])
 @login_required
 def check_auth_status():
     """Check the authentication status of the current user.
@@ -20,7 +20,7 @@ def check_auth_status():
 
 
 # POST /api/auth/register - Register a new user
-@auth_bp.route('/register', methods=['POST'])
+@bp.route('/register', methods=['POST'])
 def create_user(db_session=None):
     """Register a new user.
 
@@ -38,7 +38,7 @@ def create_user(db_session=None):
 
 
 # POST /api/auth/login - Login with username and password
-@auth_bp.route('/login', methods=['POST'])
+@bp.route('/login', methods=['POST'])
 def login_user(db_session=None):
     """Login a user by verifying their username and password.
 
@@ -58,7 +58,7 @@ def login_user(db_session=None):
 
 
 # POST /api/auth/logout - Logout of current user
-@auth_bp.route('/logout', methods=['POST'])
+@bp.route('/logout', methods=['POST'])
 @login_required
 def logout_user():
     """Log out the current user.
@@ -72,7 +72,7 @@ def logout_user():
 
 
 # POST /api/auth/password_reset_request - Request a password reset email
-@auth_bp.route('/password_reset_request', methods=['POST'])
+@bp.route('/password_reset_request', methods=['POST'])
 @login_required
 def password_reset_request():
     """Request a password reset email.
@@ -90,7 +90,7 @@ def password_reset_request():
 
 
 # POST /api/auth/password_reset - Reset user password
-@auth_bp.route('/password_reset', methods=['POST'])
+@bp.route('/password_reset', methods=['POST'])
 @login_required
 def password_reset():
     """Reset the user password.

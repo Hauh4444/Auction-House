@@ -4,7 +4,6 @@ from ..entities import Order
 
 class OrderMapper:
     """Handles database operations related to orders."""
-
     @staticmethod
     def get_all_orders(db_session=None):
         """Retrieve all orders from the database.
@@ -20,6 +19,7 @@ class OrderMapper:
         cursor.execute("SELECT * FROM orders")
         orders = cursor.fetchall()
         return [Order(**order).to_dict() for order in orders]
+
 
     @staticmethod
     def get_order_by_id(order_id, db_session=None):
@@ -37,6 +37,7 @@ class OrderMapper:
         cursor.execute("SELECT * FROM orders WHERE order_id = ?", (order_id,))
         order = cursor.fetchone()
         return Order(**order).to_dict() if order else None
+
 
     @staticmethod
     def create_order(data, db_session=None):
@@ -61,6 +62,7 @@ class OrderMapper:
         db.commit()
         return cursor.lastrowid
 
+
     @staticmethod
     def update_order(order_id, data, db_session=None):
         """Update an existing order.
@@ -82,6 +84,7 @@ class OrderMapper:
         cursor.execute(statement, values)
         db.commit()
         return cursor.rowcount
+
 
     @staticmethod
     def delete_order(order_id, db_session=None):

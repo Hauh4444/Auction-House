@@ -4,9 +4,9 @@ from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from flask_session import Session
 
-from datetime import timedelta
 from dotenv import load_dotenv
 from apscheduler.schedulers.background import BackgroundScheduler
+import os, pkgutil, importlib
 
 from .utils import login_manager
 from .database import init_db, backup_database
@@ -16,24 +16,17 @@ load_dotenv()
 
 # Initialize Flask application
 app = Flask(__name__)
-app.config.update(
-    SECRET_KEY = "JKx6[24MJ6}1%2/'%?Q)mQua,GxQDFRtI$3K9YsIgaTPimS307GK,xfyGk(n",
-    SESSION_TYPE = "filesystem",
-    SESSION_USE_SIGNER = True,
-    SESSION_COOKIE_NAME = "session",
-    SESSION_COOKIE_HTTPONLY = True,
-    SESSION_COOKIE_SAMESITE = "None",
-    SESSION_COOKIE_SECURE = True,
-    SESSION_PERMANENT = True,
-    PERMANENT_SESSION_LIFETIME = timedelta(hours=24),
-)
 
-# Initialize Limiter with Redis as storage
+# Load configuration from config.py based on environment
+config_class = os.getenv("FLASK_CONFIG", "app.config.DevelopmentConfig")
+app.config.from_object(config_class)
+
+# Initialize Limiter
 limiter = Limiter(
     get_remote_address,
     app=app,
     default_limits=["10000 per hour", "2000 per minute"], # Default limit for all routes
-    storage_uri = "memory://",
+    storage_uri="memory://",
 )
 
 # Initialize the login manager and session into the app
@@ -46,17 +39,15 @@ CORS(app=app, supports_credentials=True, resources={r"/api/*": {"origins": "http
 # Initialize database
 init_db()
 
-# Register Blueprints for routes
-app.register_blueprint(blueprint=listings_bp, url_prefix='/api/listings')
-app.register_blueprint(blueprint=category_bp, url_prefix='/api/categories')
-app.register_blueprint(blueprint=review_bp, url_prefix='/api/reviews')
-app.register_blueprint(blueprint=user_bp, url_prefix='/api/user')
-app.register_blueprint(blueprint=history_bp, url_prefix='/api/user/<int:id>')
-app.register_blueprint(blueprint=profile_bp, url_prefix='/api/profile')
-app.register_blueprint(blueprint=auth_bp, url_prefix='/api/auth')
+# Iterate through the modules in the routes package
+for _, module_name, _ in pkgutil.iter_modules(routes.__path__):
+    # Dynamically import the module
+    module = importlib.import_module(name=f".{module_name}", package="app.routes")
+    # Register the module blueprint
+    if hasattr(module, 'bp'):
+        app.register_blueprint(module.bp)
 
 
-# Test route to check if the server is running
 @app.route('/test', methods=['GET'])
 def test():
     """Health check endpoint to verify server status.
@@ -70,7 +61,7 @@ def test():
 if __name__ == '__main__':
     # Schedule background job to backup database
     scheduler = BackgroundScheduler()
-    scheduler.add_job(backup_database, 'cron', hour=12, minute=0) # Runs every day at Noon
+    scheduler.add_job(backup_database, trigger='cron', hour=12, minute=0) # Runs every day at Noon
     scheduler.start()
 
     try:

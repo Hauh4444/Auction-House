@@ -21,6 +21,7 @@ class ReviewService:
         response = Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
         return response
     
+
     @staticmethod
     def get_review_by_id(review_id, db_session=None):
         """
@@ -44,6 +45,7 @@ class ReviewService:
         response = Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
         return response
     
+
     @staticmethod
     def create_review(data, db_session=None):
         """
@@ -70,6 +72,7 @@ class ReviewService:
         response = Response(response=jsonify(data).get_data(), status=201, mimetype='application/json')
         return response
     
+
     @staticmethod
     def update_review(review_id, data, db_session=None):
         """
@@ -95,6 +98,7 @@ class ReviewService:
         response = Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
         return response
     
+
     @staticmethod
     def delete_review(review_id, db_session=None):
         """

@@ -1,31 +1,14 @@
-from .category import Category
-from .chat import Chat
-from .chat_message import ChatMessage
-from .delivery import Delivery
-from .listing import Listing
-from .order import Order
-from .profile import Profile
-from .review import Review
-from .session import Session
-from .staff_user import StaffUser
-from .support_ticket import SupportTicket
-from .ticket_message import TicketMessage
-from .transaction import Transaction
-from .user import User
+import pkgutil, importlib
 
-__all__ = [
-    "Category",
-    "Chat",
-    "ChatMessage",
-    "Delivery",
-    "Listing",
-    "Order",
-    "Profile",
-    "Review",
-    "Session",
-    "StaffUser",
-    "SupportTicket",
-    "TicketMessage",
-    "Transaction",
-    "User"
-]
+
+# Dynamically import all classes from modules in the entities package
+for _, module_name, _ in pkgutil.iter_modules(__path__):
+    # Dynamically import the module
+    module = importlib.import_module(f".{module_name}", package="app.entities")
+
+    # Import only classes from the module
+    for item_name in dir(module):
+        item = getattr(module, item_name)
+        # Check if it's a class (and not an import or other objects)
+        if isinstance(item, type) and item.__module__ == module.__name__:
+            globals()[item_name] = item  # Add the class to the global namespace

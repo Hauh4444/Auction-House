@@ -4,7 +4,6 @@ from ..entities import Listing
 
 class ListingMapper:
     """Handles database operations related to listings."""
-
     @staticmethod
     def get_all_listings(args, db_session=None):
         """Retrieve all listings with optional filtering, sorting, and pagination.
@@ -56,6 +55,7 @@ class ListingMapper:
         listings = cursor.fetchall()
         return [Listing(**listing).to_dict() for listing in listings]
 
+
     @staticmethod
     def get_listing_by_id(listing_id, db_session=None):
         """Retrieve a single listing by its ID.
@@ -72,6 +72,7 @@ class ListingMapper:
         cursor.execute("SELECT * FROM listings WHERE listing_id=?", (listing_id,))
         listing = cursor.fetchone()
         return Listing(**listing).to_dict() if listing else None
+
 
     @staticmethod
     def create_listing(data, db_session=None):
@@ -97,6 +98,7 @@ class ListingMapper:
         db.commit()
         return cursor.lastrowid
 
+
     @staticmethod
     def update_listing(listing_id, data, db_session=None):
         """Update an existing listing.
@@ -118,6 +120,7 @@ class ListingMapper:
         cursor.execute(statement, values)
         db.commit()
         return cursor.rowcount
+
 
     @staticmethod
     def delete_listing(listing_id, db_session=None):

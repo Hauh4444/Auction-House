@@ -4,7 +4,6 @@ from ..entities import Transaction
 
 class TransactionMapper:
     """Handles database operations related to transactions."""
-
     @staticmethod
     def get_all_transactions(db_session=None):
         """Retrieve all transactions from the database.
@@ -20,6 +19,7 @@ class TransactionMapper:
         cursor.execute("SELECT * FROM transactions")
         transactions = cursor.fetchall()
         return [Transaction(**transaction).to_dict() for transaction in transactions]
+
 
     @staticmethod
     def get_transaction_by_id(transaction_id, db_session=None):
@@ -37,6 +37,7 @@ class TransactionMapper:
         cursor.execute("SELECT * FROM transactions WHERE transaction_id = ?", (transaction_id,))
         transaction = cursor.fetchone()
         return Transaction(**transaction).to_dict() if transaction else None
+
 
     @staticmethod
     def create_transaction(data, db_session=None):
@@ -61,6 +62,7 @@ class TransactionMapper:
         db.commit()
         return cursor.lastrowid
 
+
     @staticmethod
     def update_transaction(transaction_id, data, db_session=None):
         """Update an existing transaction.
@@ -82,6 +84,7 @@ class TransactionMapper:
         cursor.execute(statement, values)
         db.commit()
         return cursor.rowcount
+
 
     @staticmethod
     def delete_transaction(transaction_id, db_session=None):

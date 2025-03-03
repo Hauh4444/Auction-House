@@ -4,7 +4,6 @@ from ..entities import Chat
 
 class ChatMapper:
     """Handles database operations related to chats."""
-
     @staticmethod
     def get_all_chats(db_session=None):
         """Retrieve all chats from the database.
@@ -20,6 +19,7 @@ class ChatMapper:
         cursor.execute("SELECT * FROM chats")
         chats = cursor.fetchall()
         return [Chat(**chat).to_dict() for chat in chats]
+
 
     @staticmethod
     def get_chat_by_id(chat_id, db_session=None):
@@ -37,6 +37,7 @@ class ChatMapper:
         cursor.execute("SELECT * FROM chats WHERE chat_id = ?", (chat_id,))
         chat = cursor.fetchone()
         return Chat(**chat).to_dict() if chat else None
+
 
     @staticmethod
     def create_chat(data, db_session=None):
@@ -58,6 +59,7 @@ class ChatMapper:
         cursor.execute(statement, tuple(Chat(**data).to_dict().values())[1:]) # Exclude chat_id (auto-incremented)
         db.commit()
         return cursor.lastrowid
+
 
     @staticmethod
     def delete_chat(chat_id, db_session=None):

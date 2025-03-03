@@ -4,11 +4,11 @@ from flask_login import login_required
 from ..services import CategoryService
 
 # Blueprint for category-related routes
-category_bp = Blueprint('category_bp', __name__)
+bp = Blueprint('category_bp', __name__, url_prefix="/api/categories")
 
 
 # GET /api/categories
-@category_bp.route('/', methods=['GET'])
+@bp.route('/', methods=['GET'])
 def get_all_categories(db_session=None):
     """Retrieve all categories.
 
@@ -22,7 +22,7 @@ def get_all_categories(db_session=None):
 
 
 # GET /api/categories/{id}
-@category_bp.route('/<int:category_id>', methods=['GET'])
+@bp.route('/<int:category_id>', methods=['GET'])
 def get_category(category_id, db_session=None):
     """Retrieve a single category by its ID.
 
@@ -37,7 +37,7 @@ def get_category(category_id, db_session=None):
 
 
 # POST /api/categories
-@category_bp.route('/', methods=['POST'])
+@bp.route('/', methods=['POST'])
 @login_required
 def create_category(db_session=None):
     """Create a new category.
@@ -56,7 +56,7 @@ def create_category(db_session=None):
 
 
 # PUT /api/categories/{id}
-@category_bp.route('/<int:category_id>', methods=['PUT'])
+@bp.route('/<int:category_id>', methods=['PUT'])
 @login_required
 def update_category(category_id, db_session=None):
     """Update an existing category by its ID.
@@ -76,7 +76,7 @@ def update_category(category_id, db_session=None):
 
 
 # DELETE /api/categories/{id}
-@category_bp.route('/<int:category_id>', methods=['DELETE'])
+@bp.route('/<int:category_id>', methods=['DELETE'])
 @login_required
 def delete_category(category_id, db_session=None):
     """Delete a category by its ID.

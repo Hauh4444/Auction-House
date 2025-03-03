@@ -4,7 +4,6 @@ from ..entities import User
 
 class UserMapper:
     """Handles database operations related to users."""
-
     @staticmethod
     def get_user(user_id, db_session=None):
         """Retrieve a user by their ID.
@@ -21,6 +20,7 @@ class UserMapper:
         cursor.execute("SELECT * FROM users WHERE user_id = ?", (user_id,))
         user = cursor.fetchone()
         return User(**user).to_dict()
+
 
     @staticmethod
     def update_user(user_id, data, db_session=None):
@@ -41,6 +41,7 @@ class UserMapper:
         cursor.execute(statement, tuple(data.values()) + (user_id,))
         db.commit()
         return cursor.rowcount
+
 
     @staticmethod
     def delete_user(user_id, db_session=None):

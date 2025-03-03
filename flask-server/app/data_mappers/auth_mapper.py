@@ -7,7 +7,6 @@ from ..entities import User, StaffUser
 
 class AuthMapper:
     """Handles database operations related to authorization."""
-
     @staticmethod
     def get_user_by_id(user_id, db_session=None):
         """Retrieve a user by their ID.
@@ -35,6 +34,7 @@ class AuthMapper:
             user = cursor.fetchone()
             return StaffUser(**user).to_dict() if user else None
 
+
     @staticmethod
     def get_user_by_username(username, db_session=None):
         """Retrieve a user by their username.
@@ -61,6 +61,7 @@ class AuthMapper:
             cursor.execute("SELECT * FROM staff_users WHERE username = ?", (username,))
             user = cursor.fetchone()
             return StaffUser(**user) if user else None
+
 
     @staticmethod
     def create_user(data, db_session=None):
@@ -90,6 +91,7 @@ class AuthMapper:
 
         db.commit()
         return cursor.lastrowid
+
 
     @staticmethod
     def update_last_login(user_id, role=None, db_session=None):

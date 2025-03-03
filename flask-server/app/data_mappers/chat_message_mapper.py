@@ -4,7 +4,6 @@ from ..entities import ChatMessage
 
 class ChatMessagesMapper:
     """Handles database operations related to chat messages."""
-
     @staticmethod
     def get_messages_by_chat_id(chat_id, db_session=None):
         """Retrieve all messages for a given chat.
@@ -22,6 +21,7 @@ class ChatMessagesMapper:
         messages = cursor.fetchall()
         return [ChatMessage(**message).to_dict() for message in messages]
 
+
     @staticmethod
     def get_message_by_id(message_id, db_session=None):
         """Retrieve a specific message by its ID.
@@ -38,6 +38,7 @@ class ChatMessagesMapper:
         cursor.execute("SELECT * FROM chat_messages WHERE message_id = ?", (message_id,))
         message = cursor.fetchone()
         return ChatMessage(**message).to_dict() if message else None
+
 
     @staticmethod
     def create_message(data, db_session=None):
@@ -59,6 +60,7 @@ class ChatMessagesMapper:
         cursor.execute(statement, tuple(ChatMessage(**data).to_dict().values())[1:]) # Exclude message_id (auto-incremented)
         db.commit()
         return cursor.lastrowid
+
 
     @staticmethod
     def delete_message(message_id, db_session=None):

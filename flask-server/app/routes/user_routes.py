@@ -4,11 +4,11 @@ from flask_login import login_required
 from ..services import UserService
 
 # Blueprint for user login-related routes
-user_bp = Blueprint('user_bp', __name__)
+bp = Blueprint('user_bp', __name__, url_prefix="/api/user")
 
 
 # GET /api/user/{id} - Get user login details
-@user_bp.route('/<int:user_id>', methods=['GET'])
+@bp.route('/<int:user_id>', methods=['GET'])
 @login_required
 def get_user(user_id, db_session=None):
     """Get the details of the currently logged-in user.
@@ -24,7 +24,7 @@ def get_user(user_id, db_session=None):
 
 
 # PUT /api/user/{id} - Update a user
-@user_bp.route('/<int:user_id>', methods=['PUT'])
+@bp.route('/<int:user_id>', methods=['PUT'])
 @login_required
 def update_user(user_id, db_session=None):
     """Updates a user.
@@ -44,7 +44,7 @@ def update_user(user_id, db_session=None):
 
 
 # DELETE /api/user/{id} - Delete user login credentials and profile
-@user_bp.route('/<int:user_id>', methods=['DELETE'])
+@bp.route('/<int:user_id>', methods=['DELETE'])
 @login_required
 def delete_user(user_id, db_session=None):
     """Delete the user login credentials and profile.

@@ -4,7 +4,7 @@ from flask_login import login_required
 from ..services import HistoryService
 
 # Blueprint for history-related routes
-history_bp = Blueprint('history_bp', __name__)
+bp = Blueprint('history_bp', __name__, url_prefix="/api/user/<int:id>")
 
 # TODO: GET /api/user/<int:id>/history          for full user history
 #       GET /api/user/<int:id>/orders           for user's previous orders

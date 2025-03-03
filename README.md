@@ -2,12 +2,25 @@
 
 ### React Frontend
 1. Private Pages
-2. Live Auction Bidding UI
-3. Checkout Flow
-4. Purchasing/Bidding Functionality
-5. Localization of Currency/Language
-6. Public Pages
-7. Documentation
+   1. Lists
+   2. My Bids
+   3. History
+   4. Product Upload
+   5. Report
+   6. Review
+   7. Security
+   8. Seller Profile
+   9. Live Bid
+2. Cart Context
+3. Live Bidding Context
+4. Localization of Currency/Language
+5. Public Pages
+   1. Browse
+   2. Page Not Found
+   3. About
+   4. Contact
+6. Documentation
+7. Testing
 
 ### Flask Server
 1. Bidding Flow

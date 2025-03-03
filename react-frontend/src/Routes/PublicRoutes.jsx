@@ -19,11 +19,11 @@ import StaffRoute from "@/Routes/StaffRoute";
 import AdminRoute from "@/Routes/AdminRoute";
 
 // Private Internal Modules
+import History from "@/Pages/Private/History/History";
 import ListingDetails from "@/Pages/Private/ListingDetails/ListingDetails";
 import Lists from "@/Pages/Private/Lists/Lists";
 import Messages from "@/Pages/Private/Messages/Messages";
 import MyBids from "@/Pages/Private/MyBids/MyBids";
-import Orders from "@/Pages/Private/Orders/Orders";
 import ProductUpload from "@/Pages/Private/ProductUpload/ProductUpload";
 import Report from "@/Pages/Private/Report/Report";
 import Review from "@/Pages/Private/Review/Review";
@@ -78,11 +78,11 @@ const PublicRoutes = () => {
 
                 {/* Protected PublicRoutes for Authenticated Users */}
                 <Route element={<PrivateRoute />}>
+                    <Route path="/user/history" element={<History />} />
                     <Route path="/user/listings/:id" element={<ListingDetails />} />
                     <Route path="/user/lists" element={<Lists />} />
                     <Route path="/user/messages" element={<Messages />} />
                     <Route path="/user/my-bids" element={<MyBids />} />
-                    <Route path="/user/orders" element={<Orders />} />
                     <Route path="/user/upload-product" element={<ProductUpload />} />
                     <Route path="/user/report" element={<Report />} />
                     <Route path="/user/review" element={<Review />} />

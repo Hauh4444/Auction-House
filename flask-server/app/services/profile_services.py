@@ -21,6 +21,7 @@ class ProfileService:
         response = Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
         return response
 
+
     @staticmethod
     def get_profile(user_id, db_session=None):
         """
@@ -43,6 +44,7 @@ class ProfileService:
         data = {"error": "Profile not found"}
         response = Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
         return response
+
 
     @staticmethod
     def create_profile(data, db_session=None):
@@ -67,6 +69,7 @@ class ProfileService:
         response = Response(response=jsonify(data).get_data(), status=201, mimetype='application/json')
         return response
 
+
     @staticmethod
     def update_profile(profile_id, data, db_session=None):
         """
@@ -90,6 +93,7 @@ class ProfileService:
         data = {"error": "Profile not found"}
         response = Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
         return response
+
 
     @staticmethod
     def delete_profile(user_id, db_session=None):

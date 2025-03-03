@@ -21,6 +21,7 @@ class CategoryService:
         response = Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
         return response
 
+
     @staticmethod
     def get_category_by_id(category_id, db_session=None):
         """
@@ -44,6 +45,7 @@ class CategoryService:
         response = Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
         return response
 
+
     @staticmethod
     def create_category(data, db_session=None):
         """
@@ -65,6 +67,7 @@ class CategoryService:
         data = {"message": "Category created", "category_id": category_id}
         response = Response(response=jsonify(data).get_data(), status=201, mimetype='application/json')
         return response
+
 
     @staticmethod
     def update_category(category_id, data, db_session=None):
@@ -89,6 +92,7 @@ class CategoryService:
         data = {"error": "Category not found"}
         response = Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
         return response
+
 
     @staticmethod
     def delete_category(category_id, db_session=None):

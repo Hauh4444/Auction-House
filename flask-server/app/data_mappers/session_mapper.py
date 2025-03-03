@@ -3,7 +3,7 @@ from ..entities import Session
 
 
 class SessionMapper:
-
+    """Handles database operations related to sessions."""
     @staticmethod
     def get_all_sessions(db_session=None):
         """
@@ -20,6 +20,7 @@ class SessionMapper:
         cursor.execute("SELECT * FROM sessions")
         sessions = cursor.fetchall()
         return [Session(**session).to_dict() for session in sessions]
+
 
     @staticmethod
     def get_session_by_id(session_id, db_session=None):
@@ -38,6 +39,7 @@ class SessionMapper:
         cursor.execute("SELECT * FROM sessions WHERE session_id = ?", (session_id,))
         session = cursor.fetchone()
         return Session(**session).to_dict() if session else None
+
 
     @staticmethod
     def create_session(data, db_session=None):
@@ -62,6 +64,7 @@ class SessionMapper:
         db.commit()
         return cursor.lastrowid
 
+
     @staticmethod
     def update_session(session_id, data, db_session=None):
         """
@@ -85,6 +88,7 @@ class SessionMapper:
         cursor.execute(statement, tuple(Session(**data).to_dict().values())[1:] + (session_id,))
         db.commit()
         return cursor.rowcount
+
 
     @staticmethod
     def delete_session(session_id, db_session=None):
