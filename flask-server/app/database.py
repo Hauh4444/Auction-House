@@ -1,7 +1,9 @@
+from datetime import date
 import sqlite3, os
 
+today = date.today()
 DB_FILE = "database/auctionhouse.db"
-BACKUP_FILE = "./database/auctionhouse_backup.sql"
+BACKUP_FILE = "./database/auctionhouse_backup_{today}.sql"
 
 
 def get_db():
