@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from datetime import datetime
 
+
 @dataclass
 class TicketMessage:
     """
@@ -28,7 +29,7 @@ class TicketMessage:
         self.user_sender_id = user_sender_id
         self.staff_sender_id = staff_sender_id
         self.message = message
-        self.sent_at = sent_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.sent_at = sent_at or datetime.now()
 
     def to_dict(self):
         """Converts the ticket message object to a dictionary representation."""

@@ -1,6 +1,7 @@
-import sqlite3
+import sqlite3, os
 
 DB_FILE = "database/auctionhouse.db"
+BACKUP_FILE = "./database/auctionhouse_backup.sql"
 
 
 def get_db():
@@ -9,25 +10,42 @@ def get_db():
     Returns:
         sqlite3.Connection: A database connection object.
     """
-    conn = sqlite3.connect(DB_FILE)
-    conn.row_factory = sqlite3.Row  # Enables row access by column name
+    # TODO If we fail to connect to database, call recover_backup() and attempt to connect again
+    conn = sqlite3.connect(database=DB_FILE)
+    conn.row_factory = sqlite3.Row # Enables row access by column name
     return conn
 
 
 def init_db():
-    """Initialize the database by creating necessary tables if they don't exist."""
+    # TODO Check if all tables exist that we expect to and if not, call recover_backup(), function should have no return
     db = get_db()
     cursor = db.cursor()
 
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS categories (
-            category_id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            description TEXT,
-            image_encoded TEXT,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        )
-    """)
 
-    db.commit()
+def backup_database():
+    """
+    Creates a backup of the SQLite database by exporting its contents.
+
+    Returns:
+        str: A success message if the backup is created successfully.
+        tuple: An error message and HTTP status code if the database file is not found.
+    """
+    # TODO Backup files need to be timestamped and not overridden upon new backups
+    try:
+        if not os.path.exists(path=DB_FILE):
+            return "Database file not found!", 404
+
+        conn = sqlite3.connect(database=DB_FILE)
+        with open(BACKUP_FILE, "w") as f:
+            for line in conn.iterdump():
+                f.write(f"{line}\n")
+        conn.close()
+
+        return "Database backup created successfully."
+    except Exception as e:
+        return f"Error: {str(e)}"
+
+
+def recover_backup():
+    # TODO this function will recover the database from the latest backup file, then delete that latest backup file
+    return

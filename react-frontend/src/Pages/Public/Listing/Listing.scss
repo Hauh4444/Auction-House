@@ -1,0 +1,19 @@
+// Built In Modules
+@use "sass:map";
+// Custom Variables
+@use "@/assets/variables.modules" as *;
+
+.listingPage {
+    .mainPage {
+        .listing {
+            .lesserInfo {
+                width: 100%;
+                margin-top: 2px;
+                padding: 98px 0;
+                display: flex;
+                box-shadow: 0 2px 4px map.get($theme-colors, mainColor4);
+                background-color: map.get($theme-colors, mainColor1);
+            }
+        }
+    }
+}

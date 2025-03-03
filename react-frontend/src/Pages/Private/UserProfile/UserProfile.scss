@@ -1,0 +1,92 @@
+// Built In Modules
+@use "sass:map";
+// Custom Variables
+@use "@/assets/variables.modules.scss" as *;
+
+.userProfilePage {
+    .mainPage {
+        .userProfileCard {
+            width: 600px;
+            margin: 50px auto;
+            padding: 25px;
+            border-radius: 10px !important;
+            box-shadow: 0 2px 4px map.get($theme-colors, mainColor4);
+            position: relative;
+            z-index: 0;
+
+            .content {
+                img {
+                    width: 45%;
+                    float: right;
+                }
+
+                .imageUpload {
+                    width: 48%;
+                    display: flex;
+                    flex-direction: column;
+                    float: right;
+
+                    img {
+                        width: 75%;
+                        margin: 0 auto;
+                    }
+
+                    .btn {
+                        width: fit-content;
+                        margin: 10px auto 0 auto;
+                    }
+                }
+
+                .profileInfo {
+                    width: 100%;
+                    display: inline-block;
+                    vertical-align: top;
+
+                    p {
+                        margin-top: 0;
+                    }
+                }
+
+                .input {
+                    margin-bottom: 10px;
+                }
+
+                .shortField {
+                    width: calc(50% - 5px);
+                    display: inline-flex;
+                }
+
+                .btn {
+                    float: right;
+                    background-color: map.get($theme-colors, mainColor1);
+                    box-shadow: 0 1px 2px map.get($theme-colors, mainColor4);
+                    border-radius: 5px;
+                    overflow: hidden;
+                    text-transform: none;
+                    color: map.get($theme-colors, mainColor3);
+                    transition: all 0.2s ease;
+
+                    &::after {
+                        background: linear-gradient(to right, map.get($theme-colors, accentColor3), map.get($theme-colors, accentColor4)) no-repeat;
+                        position: absolute;
+                        z-index: -1;
+                        opacity: 0;
+                        inset: 0;
+                        content: "";
+                        transition: opacity 0.5s ease;
+                    }
+
+                    &:hover::after {
+                        opacity: 1;
+                    }
+
+                    &:hover {
+                        border: none;
+                        background-color: transparent !important;
+                        color: map.get($theme-colors, mainColor1) !important;
+                    }
+                }
+            }
+        }
+    }
+}

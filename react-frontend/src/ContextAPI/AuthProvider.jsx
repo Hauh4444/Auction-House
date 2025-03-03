@@ -1,7 +1,9 @@
-// External Libraries
 import { createContext, useState, useCallback, useContext } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
+
+axios.defaults.withCredentials = true;
+axios.defaults.headers["Content-Type"] = "application/json";
 
 // Create the context to hold the authentication state
 const AuthContext = createContext(null);
@@ -9,78 +11,70 @@ const AuthContext = createContext(null);
 /**
  * AuthProvider Component
  *
- * Provides authentication-related methods and state to the rest of the application.
- * This includes methods to check the authentication status, create an account, login, and logout.
- * The context will be used to share the user information and authentication methods across components.
+ * Provides authentication methods and state to the application.
  *
  * @param {Object} children - The child components that will have access to the authentication context.
- * @returns {JSX.Element} The AuthContext.Provider with authentication methods and state.
+ * @returns {JSX.Element} The AuthContext.Provider containing the user state and authentication methods.
  */
 const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null); // State to store the current user
+    const [error, setError] = useState(""); // State for error messages
 
     // Function to check if the user is authenticated
     const checkAuthStatus = useCallback(async () => {
-        axios.get("http://127.0.0.1:5000/api/auth_status", {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            withCredentials: true, // Ensures cookies are sent with requests
-        })
-            .then(res => {
-                if (res.data.isAuthenticated) {
-                    setUser(res.data.user); // Set the user state if authenticated
-                } else {
-                    setUser(null); // Clear user state if not authenticated
-                }
-            })
-            .catch(err => {
-                console.log(err); // Log errors if any
-                setUser(null); // Clear user state on error
-            });
+        try {
+            const res = await axios.get("http://127.0.0.1:5000/api/auth/auth_status");
+            if (res.data.authenticated) {
+                setUser(res.data.user); // Set the user state if authenticated
+            } else {
+                setUser(null); // Clear user state if not authenticated
+            }
+        } catch (err) {
+            console.log(err);
+            setUser(null); // Clear user state on error
+        }
     }, []);
 
-    // Function to create a new user account
-    const createAccount = useCallback((credentials) => {
-        axios.post("http://127.0.0.1:5000/api/register", {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            withCredentials: true, // Ensures cookies are sent with requests
-            data: credentials, // Send user credentials to the backend
-        })
-            .then(() => checkAuthStatus()) // Check authentication status after account creation
-            .catch(err => console.log(err)); // Log errors if any
+    // Function to log in an existing user
+    const login = useCallback(async (credentials) => {
+        try {
+            await axios.post("http://127.0.0.1:5000/api/auth/login", credentials);
+            await checkAuthStatus(); // Check authentication status after login
+            return true; // Indicate success
+        } catch (err) {
+            console.log(err);
+            setError("Login failed. Please check your credentials.");
+            return false; // Indicate failure
+        }
     }, [checkAuthStatus]);
 
-    // Function to log in an existing user
-    const login = useCallback((credentials) => {
-        axios.post("http://127.0.0.1:5000/api/login", {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            withCredentials: true, // Ensures cookies are sent with requests
-            data: credentials, // Send login credentials to the backend
-        })
-            .then(() => checkAuthStatus()) // Check authentication status after login
-            .catch(err => console.log(err)); // Log errors if any
-    }, [checkAuthStatus]);
+    // Function to create a new user account
+    const createAccount = useCallback(async (credentials) => {
+        try {
+            await axios.post("http://127.0.0.1:5000/api/auth/register", credentials);
+            await login(credentials); // Attempt to login after account creation
+            return true; // Indicate success
+        } catch (err) {
+            console.log(err);
+            setError("Failed to create account.");
+            return false; // Indicate failure
+        }
+    }, [login]);
 
     // Function to log out the current user
-    const logout = useCallback(() => {
-        axios.post("http://127.0.0.1:5000/api/logout", {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            withCredentials: true, // Ensures cookies are sent with requests
-        })
-            .then(() => setUser(null)) // Clear the user state on logout
-            .catch(err => console.log(err)); // Log errors if any
+    const logout = useCallback(async () => {
+        try {
+            await axios.post("http://127.0.0.1:5000/api/auth/logout");
+            setUser(null); // Clear the user state on logout
+        } catch (err) {
+            console.log(err);
+            setError("Logout failed. Please try again.");
+        }
     }, []);
 
     return (
         // Provide the auth context to the rest of the app
-        <AuthContext.Provider value={{ user, createAccount, login, logout }}>
+        <AuthContext.Provider value={{ user, error, createAccount, login, logout }}>
             {children} {/* Render the child components */}
         </AuthContext.Provider>
     );
