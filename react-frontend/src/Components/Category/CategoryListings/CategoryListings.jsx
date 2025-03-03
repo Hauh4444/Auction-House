@@ -75,7 +75,7 @@ const CategoryListings = () => {
                 range: filters.range, // Number of listings to fetch
             }
         })
-            .then(res => setListings(res.data)) // Update state with fetched data
+            .then(res => setListings(res.data.listings)) // Update state with fetched data
             .catch(err => console.log(err)); // Log errors if any
     }, [location.search]);// Call on update of URL filters
 

@@ -49,7 +49,7 @@ const Category = () => {
                 "Content-Type": "application/json",
             },
         })
-            .then(res => setCategory(res.data)) // Update state with fetched data
+            .then(res => setCategory(res.data.category)) // Update state with fetched data
             .catch(err => console.log(err)); // Log errors if any
     }, [location.search]); // Call on update of URL filters
 

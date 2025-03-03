@@ -48,7 +48,7 @@ const Popup = () => {
                 "Content-Type": "application/json",
             }
         })
-            .then(res => setCategories(res.data)) // Update state with fetched data
+            .then(res => setCategories(res.data.categories)) // Update state with fetched data
             .catch(err => console.log(err)); // Log errors if any
     }, []); // Empty dependency array to ensure it runs only once when the component is mounted
 

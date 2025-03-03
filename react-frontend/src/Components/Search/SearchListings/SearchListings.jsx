@@ -84,7 +84,7 @@ const SearchListings = () => {
             },
             params: createSearchParams(filters), // Convert filters to query parameters
         })
-            .then(res => setListings(res.data)) // Set the fetched listings into state
+            .then(res => setListings(res.data.listings)) // Set the fetched listings into state
             .catch(err => console.log(err)); // Handle errors
     }, [location.search]); // Re-run the effect whenever search params change
 

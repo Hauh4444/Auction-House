@@ -88,9 +88,9 @@ class Listing:
             raise TypeError(f"reserve_price must be a number, got {type(reserve_price).__name__}")
         if current_price is not None and not isinstance(current_price, (int, float)):
             raise TypeError(f"current_price must be a number, got {type(current_price).__name__}")
-        if auction_start is not None and not isinstance(auction_start, datetime):
+        if auction_start is not None and not isinstance(auction_start, (datetime, str)):
             raise TypeError(f"auction_start must be a datetime,, or None, got {type(auction_start).__name__}")
-        if auction_end is not None and not isinstance(auction_end, datetime):
+        if auction_end is not None and not isinstance(auction_end, (datetime, str)):
             raise TypeError(f"auction_end must be a datetime,, or None, got {type(auction_end).__name__}")
         if bids is not None and not isinstance(bids, int):
             raise TypeError(f"bids must be an int, got {type(bids).__name__}")
@@ -100,9 +100,9 @@ class Listing:
             raise TypeError(f"average_review must be a number, got {type(average_review).__name__}")
         if total_reviews is not None and not isinstance(total_reviews, int):
             raise TypeError(f"total_reviews must be an int, got {type(total_reviews).__name__}")
-        if created_at is not None and not isinstance(created_at, datetime):
+        if created_at is not None and not isinstance(created_at, (datetime, str)):
             raise TypeError(f"created_at must be a datetime,, or None, got {type(created_at).__name__}")
-        if updated_at is not None and not isinstance(updated_at, datetime):
+        if updated_at is not None and not isinstance(updated_at, (datetime, str)):
             raise TypeError(f"updated_at must be a datetime,, or None, got {type(updated_at).__name__}")
 
         # Value checks for enumerated attributes

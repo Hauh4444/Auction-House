@@ -45,7 +45,7 @@ const Listing = () => {
                 "Content-Type": "application/json",
             },
         })
-            .then(res => setListing(res.data)) // Update state with fetched data
+            .then(res => setListing(res.data.listing)) // Update state with fetched data
             .catch(err => console.log(err)); // Log errors if any
     }, [location.search]); // Call on update of URL filters
 

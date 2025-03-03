@@ -3,6 +3,8 @@ from unittest.mock import MagicMock
 
 from datetime import datetime, date
 
+from apscheduler.util import datetime_to_utc_timestamp
+
 from app.entities import Delivery
 
 

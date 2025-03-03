@@ -1,4 +1,4 @@
-from flask import jsonify
+from flask import jsonify, Response
 
 from ..data_mappers import CategoryMapper
 
@@ -13,10 +13,13 @@ class CategoryService:
             db_session: Optional database session to be used in tests.
 
         Returns:
-            A JSON response containing the list of categories with a 200 status code.
+             containing the list of categories with a 200 status code.
         """
         categories = CategoryMapper.get_all_categories(db_session=db_session)
-        return jsonify(categories), 200
+
+        data = {"message": "Categories found", "categories": categories}
+        response = Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
+        return response
 
     @staticmethod
     def get_category_by_id(category_id, db_session=None):
@@ -28,12 +31,18 @@ class CategoryService:
             db_session: Optional database session to be used in tests.
 
         Returns:
-            A JSON response with the category data if found, otherwise a 404 error with a message.
+            A response object with the category data if found, otherwise a 404 error with a message.
         """
         category = CategoryMapper.get_category_by_id(category_id=category_id, db_session=db_session)
+
         if category:
-            return jsonify(category), 200
-        return jsonify({"error": "CategoryNav not found"}), 404
+            data = {"message": "Category found", "category": category}
+            response = Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
+            return response
+
+        data = {"error": "Category not found"}
+        response = Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
+        return response
 
     @staticmethod
     def create_category(data, db_session=None):
@@ -45,12 +54,17 @@ class CategoryService:
             db_session: Optional database session to be used in tests.
 
         Returns:
-            A JSON response with the success message and newly created category ID, or a 400 error if the name is missing.
+            A Response object with the success message and newly created category ID, or a 400 error if the name is missing.
         """
         if not data.get("name"):
-            return jsonify({"error": "CategoryNav name is required"}), 400
+            data = {"error": "Category name is required"}
+            response = Response(response=jsonify(data).get_data(), status=400, mimetype='application/json')
+            return response
+
         category_id = CategoryMapper.create_category(data=data, db_session=db_session)
-        return jsonify({"message": "CategoryNav created", "category_id": category_id}), 201
+        data = {"message": "Category created", "category_id": category_id}
+        response = Response(response=jsonify(data).get_data(), status=201, mimetype='application/json')
+        return response
 
     @staticmethod
     def update_category(category_id, data, db_session=None):
@@ -63,12 +77,18 @@ class CategoryService:
             db_session: Optional database session to be used in tests.
 
         Returns:
-            A JSON response with a success message if the category was updated, or a 404 error if the category was not found.
+            A Response object with a success message if the category was updated, or a 404 error if the category was not found.
         """
         updated_rows = CategoryMapper.update_category(category_id=category_id, data=data, db_session=db_session)
+
         if updated_rows:
-            return jsonify({"message": "CategoryNav updated"}), 200
-        return jsonify({"error": "CategoryNav not found"}), 404
+            data = {"message": "Category updated", "updated_rows": updated_rows}
+            response = Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
+            return response
+
+        data = {"error": "Category not found"}
+        response = Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
+        return response
 
     @staticmethod
     def delete_category(category_id, db_session=None):
@@ -80,9 +100,15 @@ class CategoryService:
             db_session: Optional database session to be used in tests.
 
         Returns:
-            A JSON response with a success message if the category was deleted, or a 404 error if the category was not found.
+            A Response object with a success message if the category was deleted, or a 404 error if the category was not found.
         """
         deleted_rows = CategoryMapper.delete_category(category_id=category_id, db_session=db_session)
+
         if deleted_rows:
-            return jsonify({"message": "CategoryNav deleted"}), 200
-        return jsonify({"error": "CategoryNav not found"}), 404
+            data = {"message": "Category deleted", "deleted_rows": deleted_rows}
+            response = Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
+            return response
+
+        data = {"error": "Category not found"}
+        response = Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
+        return response

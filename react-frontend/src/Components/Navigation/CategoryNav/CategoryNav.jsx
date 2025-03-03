@@ -29,7 +29,7 @@ const CategoryNav = () => {
                 "Content-Type": "application/json",
             }
         })
-            .then(res => setCategories(res.data)) // Set the fetched categories into the state
+            .then(res => setCategories(res.data.categories)) // Set the fetched categories into the state
             .catch(err => console.log(err)); // Log errors if any
     }, []); // Empty dependency array ensures the request runs once when the component mounts
 

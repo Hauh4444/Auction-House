@@ -1,4 +1,4 @@
-from flask import jsonify
+from flask import jsonify, Response
 
 from ..data_mappers import ListingMapper
 
@@ -14,10 +14,13 @@ class ListingService:
             db_session: Optional database session to be used in tests.
 
         Returns:
-            A JSON response containing the list of listings with a 200 status code.
+            A Response object containing the list of listings with a 200 status code.
         """
         listings = ListingMapper.get_all_listings(args=args, db_session=db_session)
-        return jsonify(listings), 200
+
+        data = {"message": "Listings found", "listings": listings}
+        response = Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
+        return response
 
     @staticmethod
     def get_listing_by_id(listing_id, db_session=None):
@@ -29,12 +32,18 @@ class ListingService:
             db_session: Optional database session to be used in tests.
 
         Returns:
-            A JSON response with the listing data if found, otherwise a 404 error with a message.
+            A Response object with the listing data if found, otherwise a 404 error with a message.
         """
         listing = ListingMapper.get_listing_by_id(listing_id=listing_id, db_session=db_session)
+
         if listing:
-            return jsonify(listing), 200
-        return jsonify({"error": "Listing not found"}), 404
+            data = {"message": "Listing found", "listing": listing}
+            response = Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
+            return response
+
+        data = {"error": "Listing not found"}
+        response = Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
+        return response
 
     @staticmethod
     def create_listing(data, db_session=None):
@@ -46,12 +55,18 @@ class ListingService:
             db_session: Optional database session to be used in tests.
 
         Returns:
-            A JSON response with the success message and newly created listing ID, or a 400 error if the title is missing.
+            A Response object with the success message and newly created listing ID, or a 400 error if the title is missing.
         """
         if not data.get("title"):
-            return jsonify({"error": "Listing title is required"}), 400
+            data = {"error": "Listing title is required"}
+            response = Response(response=jsonify(data).get_data(), status=400, mimetype='application/json')
+            return response
+
         listing_id = ListingMapper.create_listing(data=data, db_session=db_session)
-        return jsonify({"message": "Listing created", "listing_id": listing_id}), 201
+
+        data = {"message": "Listing created", "listing_id": listing_id}
+        response = Response(response=jsonify(data).get_data(), status=201, mimetype='application/json')
+        return response
 
     @staticmethod
     def update_listing(listing_id, data, db_session=None):
@@ -64,12 +79,18 @@ class ListingService:
             db_session: Optional database session to be used in tests.
 
         Returns:
-            A JSON response with a success message if the listing was updated, or a 404 error if the listing was not found.
+            A Response object with a success message if the listing was updated, or a 404 error if the listing was not found.
         """
         updated_rows = ListingMapper.update_listing(listing_id=listing_id, data=data, db_session=db_session)
+
         if updated_rows:
-            return jsonify({"message": "Listing updated"}), 200
-        return jsonify({"error": "Listing not found"}), 404
+            data = {"message": "Listing updated", "updated_rows": updated_rows}
+            response = Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
+            return response
+
+        data = {"error": "Listing not found"}
+        response = Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
+        return response
 
     @staticmethod
     def delete_listing(listing_id, db_session=None):
@@ -81,9 +102,15 @@ class ListingService:
             db_session: Optional database session to be used in tests.
 
         Returns:
-            A JSON response with a success message if the listing was deleted, or a 404 error if the listing was not found.
+            A Response object with a success message if the listing was deleted, or a 404 error if the listing was not found.
         """
         deleted_rows = ListingMapper.delete_listing(listing_id=listing_id, db_session=db_session)
+
         if deleted_rows:
-            return jsonify({"message": "Listing deleted"}), 200
-        return jsonify({"error": "Listing not found"}), 404
+            data = {"message": "Listing deleted", "deleted_rows": deleted_rows}
+            response = Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
+            return response
+
+        data = {"message": "Listing not found"}
+        response = Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
+        return response

@@ -65,7 +65,7 @@ const Reviews = ({ listing_id }) => {
                 range: 3, // Limit to 3 items
             },
         })
-            .then((res) => setReviews(res.data)) // Update state with fetched data
+            .then((res) => setReviews(res.data.reviews)) // Update state with fetched data
             .catch((err) => console.log(err)); // Log errors if any
     }, [listing_id]);
 

@@ -1,4 +1,4 @@
-from flask import jsonify, session
+from flask import jsonify, session, Response
 from flask_login import login_user, logout_user, current_user
 
 from .profile_services import ProfileService
@@ -14,11 +14,17 @@ class AuthService:
         Checks authentication status of the current session.
 
         Returns:
-            A JSON response with the authentication status and user ID if authenticated, otherwise a 401 error.
+            A Response object with the authentication status and user ID if authenticated, otherwise a 401 error.
         """
+
         if current_user.is_authenticated:
-            return jsonify({"authenticated": True, "user": current_user.id}), 200
-        return jsonify({"authenticated": False}), 401
+            data = {"authenticated": True, "user": current_user.id}
+            response = Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
+            return response
+
+        data = {"authenticated": False}
+        response = Response(response=jsonify(data).get_data(), status=401, mimetype="application/json")
+        return response
 
     @staticmethod
     def create_user(data, db_session=None):
@@ -30,15 +36,21 @@ class AuthService:
             db_session: Optional database session to be used in tests.
 
         Returns:
-            A JSON response indicating success with the user ID or an error message.
+            A Response object indicating success with the user ID or an error message.
         """
         data["password_hash"] = hash_password(password=data["password"])
+
         if not data.get("username") or not data.get("password_hash") or not data.get("email"):
-            return jsonify({"error": "Username, password, and email are required"}), 400
+            data = {"error": "Username, password, and email are required"}
+            response = Response(response=jsonify(data).get_data(), status=400, mimetype='application/json')
+            return response
 
         ProfileService.create_profile(data=data, db_session=db_session)
         user_id = AuthMapper.create_user(data=data, db_session=db_session)
-        return jsonify({"message": "User registered successfully", "user_id": user_id}), 201
+
+        data = {"message": "User registered successfully", "user_id": user_id}
+        response = Response(response=jsonify(data).get_data(), status=201, mimetype='application/json')
+        return response
 
     @staticmethod
     def login_user(username, password, db_session=None):
@@ -51,7 +63,7 @@ class AuthService:
             db_session: Optional database session to be used in tests.
 
         Returns:
-            A JSON response containing a success message and the user details if login is successful,
+            A Response object containing a success message and the user details if login is successful,
             or a 401 error if the username or password is incorrect.
         """
         user = AuthMapper.get_user_by_username(username, db_session)
@@ -61,8 +73,14 @@ class AuthService:
             user.is_active = True
             login_user(user, remember=True)
             SessionService.create_session(db_session)
-            return jsonify({"message": "Login successful", "user": user}), 200
-        return jsonify({"error": "Invalid username or password"}), 401
+
+            data = {"message": "Login successful", "user": user}
+            response = Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
+            return response
+
+        data = {"error": "Invalid username or password"}
+        response = Response(response=jsonify(data).get_data(), status=401, mimetype='application/json')
+        return response
 
     @staticmethod
     def logout_user():
@@ -70,12 +88,15 @@ class AuthService:
         Logs out the currently logged-in user.
 
         Returns:
-            A JSON response indicating the success of the logout operation.
+            A Response object indicating the success of the logout operation.
         """
         current_user.is_active = False
         logout_user()
         session.clear()
-        return jsonify({"message": "Logout successful"}), 200
+
+        data = {"message": "Logout successful"}
+        response = Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
+        return response
 
     @staticmethod
     def password_reset_request(email):
@@ -86,7 +107,7 @@ class AuthService:
             email: The email of the user requesting a password reset.
 
         Returns:
-            A JSON response indicating whether the request was successful.
+            A Response object indicating whether the request was successful.
         """
         return email
 
@@ -100,6 +121,6 @@ class AuthService:
             new_password: The new password to set for the user.
 
         Returns:
-            A JSON response indicating whether the password reset was successful.
+            A Response object indicating whether the password reset was successful.
         """
         return reset_token, new_password

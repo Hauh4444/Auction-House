@@ -71,7 +71,7 @@ const NewListings = () => {
                 range: 8, // Number of listings to fetch
             }
         })
-            .then(res => setNewListings(res.data)) // Update state with fetched data
+            .then(res => setNewListings(res.data.listings)) // Update state with fetched data
             .catch(err => console.log(err)); // Log errors if any
     }, [location.search]);// Call on update of URL filters
 

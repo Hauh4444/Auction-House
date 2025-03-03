@@ -71,7 +71,7 @@ const BestSellers = () => {
                 range: 8, // Limit to 8 items
             }
         })
-            .then(res => setBestSellers(res.data)) // Update state with fetched data
+            .then(res => setBestSellers(res.data.listings)) // Update state with fetched data
             .catch(err => console.log(err)); // Log errors if any
     }, [location.search]); // Re-run effect if the location.search changes
 

@@ -8,12 +8,12 @@ from .session_services import SessionService
 from .user_services import UserService
 
 __all__ = [
-    AuthService,
-    CategoryService,
-    HistoryService,
-    ListingService,
-    ProfileService,
-    ReviewService,
-    SessionService,
-    UserService
+    "AuthService",
+    "CategoryService",
+    "HistoryService",
+    "ListingService",
+    "ProfileService",
+    "ReviewService",
+    "SessionService",
+    "UserService"
 ]

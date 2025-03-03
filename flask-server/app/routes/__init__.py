@@ -7,11 +7,11 @@ from .profile_routes import profile_bp
 from .auth_routes import auth_bp
 
 __all__ = [
-    listings_bp,
-    category_bp,
-    review_bp,
-    user_bp,
-    history_bp,
-    profile_bp,
-    auth_bp
+    "listings_bp",
+    "category_bp",
+    "review_bp",
+    "user_bp",
+    "history_bp",
+    "profile_bp",
+    "auth_bp"
 ]
