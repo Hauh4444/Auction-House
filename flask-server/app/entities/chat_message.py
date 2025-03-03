@@ -14,7 +14,6 @@ class ChatMessage:
         message (str): The content of the message.
         sent_at (datetime, optional): The creation timestamp.
     """
-
     def __init__(
             self,
             sender_id: int,

@@ -35,9 +35,9 @@ const CategoryNav = () => {
 
     // Function to navigate to the selected category page
     const navigateToCategory = (id) => {
-        // Close the categories popup if on a page other than home
+        // Close the categories navigation if on a page other than home
         if (location.pathname !== "/") {
-            document.querySelector(".categoriesPopup").style.maxHeight = "0";
+            document.querySelector(".categoriesNav").style.maxHeight = "0";
         }
         navigate(`/category?category_id=${id}&page=1`); // Navigate to the category page with the category ID and page number
     }
@@ -46,7 +46,7 @@ const CategoryNav = () => {
         <>
             {/* Check if the current page is not the homepage */}
             {location.pathname !== "/" ? (
-                <div className="categoriesPopup">
+                <div className="categoriesNav">
                     {categories.map((category, index) => (
                         <div style={{ width: "25%", display: "inline-block", textAlign: "center" }} key={index}>
                             <Button className="categoryBtn" onClick={() => navigateToCategory(category.category_id)}
