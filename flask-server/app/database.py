@@ -15,13 +15,6 @@ def get_db():
     conn.row_factory = sqlite3.Row # Enables row access by column name
     return conn
 
-
-def init_db():
-    # TODO Check if all tables exist that we expect to and if not, call recover_backup(), function should have no return
-    db = get_db()
-    cursor = db.cursor()
-
-
 def backup_database():
     """
     Creates a backup of the SQLite database by exporting its contents.
