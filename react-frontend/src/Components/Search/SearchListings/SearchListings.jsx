@@ -56,7 +56,7 @@ const renderStars = (averageReview) => {
  */
 const SearchListings = () => {
     const [listings, setListings] = useState([]); // State to hold product listings
-    const navigate = useNavigate(); // Hook for navigation
+    const navigate = useNavigate(); // Navigate hook for routing
     const location = useLocation(); // Hook to access the current location (URL)
 
     useEffect(() => {

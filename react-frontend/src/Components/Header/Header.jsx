@@ -16,22 +16,22 @@ import "./Header.scss";
  *
  * Features:
  * - Navigation buttons for Home, Shop All, About, and Contact pages.
- * - A "Categories" button that toggles the display of a categories popup (except on the homepage).
+ * - A "Categories" button that toggles the display of a category navigation (except on the homepage).
  * - A search bar component (`Bar`).
  * - A category navigation bar (`CategoryNav`), displayed on all pages except the homepage.
  *
  * @returns {JSX.Element} The header section with navigation and search functionalities.
  */
 const Header = () => {
-    const navigate = useNavigate();
+    const navigate = useNavigate(); // Navigate hook for routing
     const location = useLocation(); // Hook to access the current location (URL)
 
     /**
-     * Toggles the visibility of the categories popup.
+     * Toggles the visibility of the category navigation.
      * Adjusts the `maxHeight` CSS property to show or hide the popup.
      */
     function toggleCategoriesDisplay() {
-        const element = document.querySelector(".categoriesPopup");
+        const element = document.querySelector(".categoryNav");
         if (element.style.maxHeight === "0px" || element.style.maxHeight === "") {
             element.style.maxHeight = "100%"; // Expands the popup
         } else {

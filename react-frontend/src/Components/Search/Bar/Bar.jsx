@@ -31,7 +31,7 @@ import { variables } from "@/assets/variables.modules.js";
 
 const Bar = () => {
     const [query, setQuery] = useState(""); // State to hold the search query input
-    const navigate = useNavigate(); // Hook to navigate between pages
+    const navigate = useNavigate(); // Navigate hook for routing
 
     // Function to navigate to the search results or home page based on query input
     function navigateSearch() {

@@ -49,7 +49,7 @@ const renderStars = (averageReview) => {
  * @returns {JSX.Element} A section displaying the best-selling listings.
  */
 const BestSellers = () => {
-    const navigate = useNavigate(); // Navigate function for routing
+    const navigate = useNavigate(); // Navigate hook for routing
     const location = useLocation(); // Hook to access the current location (URL)
     // Extract query parameters from the URL
     const filters = Object.fromEntries(new URLSearchParams(location.search).entries());

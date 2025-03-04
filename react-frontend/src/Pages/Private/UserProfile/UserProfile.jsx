@@ -87,9 +87,7 @@ const UserProfile = () => {
                     setNewProfilePicture(`data:image/jpg;base64,${image}`); // Temporarily display the new image
                     setProfile({ ...profile, profile_picture: image }); // Save the file object for upload
                 })
-                .catch((error) => {
-                    console.error('Error encoding image:', error);
-                });
+                .catch((error) => console.error('Error encoding image:', error)); // Log errors if any
         }
     };
 

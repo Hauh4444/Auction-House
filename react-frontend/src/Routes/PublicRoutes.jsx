@@ -83,6 +83,7 @@ const PublicRoutes = () => {
                     <Route path="/user/lists" element={<Lists />} />
                     <Route path="/user/messages" element={<Messages />} />
                     <Route path="/user/my-bids" element={<MyBids />} />
+                    <Route path="/user/upload-product" element={<ProductUpload />} />
                     <Route path="/user/report" element={<Report />} />
                     <Route path="/user/review" element={<Review />} />
                     <Route path="/user/security" element={<Security />} />
@@ -90,7 +91,6 @@ const PublicRoutes = () => {
                     <Route path="/user/account" element={<UserAccount />} />
                     <Route path="/user/profile" element={<UserProfile />} />
                 </Route>
-                    <Route path="/user/upload-product" element={<ProductUpload />} />
 
                 {/* Protected PublicRoutes for Staff Users */}
                 <Route element={<StaffRoute />}>

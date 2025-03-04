@@ -27,7 +27,7 @@ const Search = () => {
     // State to store the pagination buttons
     const [paginationButtons, setPaginationButtons] = useState(null);
 
-    const navigate = useNavigate(); // Navigate function for routing
+    const navigate = useNavigate(); // Navigate hook for routing
     const location = useLocation(); // Hook to access the current location (URL)
     // Extract query parameters from URL
     const filters = Object.fromEntries(new URLSearchParams(location.search).entries());

@@ -31,7 +31,7 @@ import "@/Components/Navigation/Navigation/Navigation.scss";
  *                        and a filter popup.
  */
 const SearchNav = () => {
-    const navigate = useNavigate(); // Navigate function for routing
+    const navigate = useNavigate(); // Navigate hook for routing
     const location = useLocation(); // Hook to access the current location (URL)
     const filters = Object.fromEntries(new URLSearchParams(location.search).entries()); // Parse query parameters
 

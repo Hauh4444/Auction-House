@@ -24,7 +24,7 @@ import "./UserAccount.scss";
  * @returns {JSX.Element} The rendered UserAccount page component.
  */
 const UserAccount = () => {
-    const navigate = useNavigate();
+    const navigate = useNavigate(); // Navigate hook for routing
 
     const cardInfo = {
         "orders": ["Your History", "View and manage your orders"],

@@ -1,6 +1,6 @@
 // External Libraries
 import { useEffect, useState } from  "react";
-import { createSearchParams, useLocation, useNavigate } from  "react-router-dom";
+import { useLocation, useNavigate } from  "react-router-dom";
 import { LiaStarHalfSolid, LiaStarSolid } from  "react-icons/lia";
 import { Button } from  "@mui/material";
 import axios from "axios";
@@ -49,7 +49,7 @@ const renderStars = (averageReview) => {
  * @returns {JSX.Element} A section displaying category-specific listings.
  */
 const CategoryListings = () => {
-    const navigate = useNavigate(); // Navigate function for routing
+    const navigate = useNavigate(); // Navigate hook for routing
     const location = useLocation(); // Hook to access the current location (URL)
     // Extract query parameters from the URL
     const filters = Object.fromEntries(new URLSearchParams(location.search).entries());
@@ -81,7 +81,7 @@ const CategoryListings = () => {
 
     // Navigate to a specific listing page when a listing is clicked
     const navigateToListing = (id) => {
-        navigate(`/listings?key=${id}`);
+        navigate(`/listing?key=${id}`);
     };
 
     return (

@@ -55,13 +55,13 @@ const Main = ({ listing }) => {
 
                 {/* Social media share buttons */}
                 <div className="shareButtons">
-                    <FacebookShareButton className="shareBtn" url={location.href}>
+                    <FacebookShareButton className="shareBtn" data-testid="facebookShareBtn" url={location.href}>
                         <FacebookIcon size={24} round={true} />
                     </FacebookShareButton>
-                    <TwitterShareButton className="shareBtn" url={location.href}>
+                    <TwitterShareButton className="shareBtn" data-testid="twitterShareBtn" url={location.href}>
                         <XIcon size={24} round={true} />
                     </TwitterShareButton>
-                    <PinterestShareButton className="shareBtn" url={location.href} media={listing.image_encoded}>
+                    <PinterestShareButton className="shareBtn" data-testid="pinterestShareBtn" url={location.href} media={listing.image_encoded}>
                         <PinterestIcon size={24} round={true} />
                     </PinterestShareButton>
                 </div>

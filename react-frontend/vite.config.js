@@ -14,4 +14,8 @@ export default defineConfig({
             '@': '/src', // Any import starting with '@' will be resolved to the 'src' directory
         },
     },
+    test: {
+        globals: true,
+        environment: "jsdom",
+    },
 });

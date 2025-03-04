@@ -33,7 +33,7 @@ const Category = () => {
     // State to store the category data
     const [category, setCategory] = useState({});
 
-    const navigate = useNavigate(); // Navigate function for routing
+    const navigate = useNavigate(); // Navigate hook for routing
     const location = useLocation(); // Hook to access the current location (URL)
     // Extract query parameters
     const filters = Object.fromEntries(new URLSearchParams(location.search).entries());
@@ -93,7 +93,7 @@ const Category = () => {
                     {/* Category Image */}
                     <div className="image">
                         {category.image_encoded ? (
-                            <img src={`data:image/jpg;base64,${category.image_encoded}`} alt={category.title} />
+                            <img src={`data:image/jpg;base64,${category.image_encoded}`} alt={category.name} />
                         ) : (
                             <div>No image available</div>
                         )}

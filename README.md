@@ -21,6 +21,9 @@
    4. Contact
 6. Documentation
 7. Testing
+   1. Pages
+   2. ContextAPI
+   3. Routes
 
 ### Flask Server
 1. Bidding Flow
@@ -41,7 +44,7 @@
 ### React Frontend
 1. In a terminal, change to the `react-frontend` directory.
 2. Run the `npm install` command to install node modules.
-3. Run the `npm install react react-router-dom react-icons react-share prop-types vite @mui/material @mui/styled-engine-sc styled-components axios sass` command to install the necessary dependencies.
+3. Run the `npm install react react-router-dom react-icons react-share prop-types vite @mui/material @mui/styled-engine-sc styled-components axios sass vitest @vitest/coverage-v8 @testing-library/react @testing-library/jest-dom jsdom` command to install the necessary dependencies.
 
 ### Flask Server
 1. In a terminal, change to the `flask-server` directory.
@@ -54,6 +57,10 @@
 ### React Frontend
 1. In a terminal, change to the `react-frontend` directory.
 2. Run the `npm run dev` command to launch the React app.
+
+### React Testing
+1. In a terminal, change to the `react-frontend` directory.
+2. Run the `npm test` command to run tests.
 
 ### Flask Backend
 1. In a terminal, change to the `flask-server` directory. 
