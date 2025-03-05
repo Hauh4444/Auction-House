@@ -43,6 +43,9 @@ CORS(app=app, supports_credentials=True, resources={r"/api/*": {"origins": "http
 # Initialize database
 init_db()
 
+# Register the bid_routes blueprint with the Flask app
+app.register_blueprint(bid_routes_bp)
+
 # Iterate through the modules in the routes package
 for _, module_name, _ in pkgutil.iter_modules(routes.__path__):
     # Dynamically import the module
