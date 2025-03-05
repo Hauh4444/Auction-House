@@ -3,6 +3,7 @@ from flask_cors import CORS
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from flask_session import Session
+from flask_socketio import SocketIO  # Import Flask-SocketIO
 
 from dotenv import load_dotenv
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -10,7 +11,7 @@ import os, pkgutil, importlib
 
 from .utils import login_manager
 from .database import init_db, backup_database
-from .routes import *
+from .routes import *  # Assuming routes are imported here
 
 load_dotenv()
 
@@ -25,13 +26,16 @@ app.config.from_object(config_class)
 limiter = Limiter(
     get_remote_address,
     app=app,
-    default_limits=["10000 per hour", "2000 per minute"], # Default limit for all routes
+    default_limits=["10000 per hour", "2000 per minute"],  # Default limit for all routes
     storage_uri="memory://",
 )
 
 # Initialize the login manager and session into the app
 login_manager.init_app(app)
 Session(app)
+
+# Initialize SocketIO
+socketio = SocketIO(app, cors_allowed_origins="http://localhost:5173")  # Add your frontend URL here
 
 # Enable Cross-Origin Resource Sharing (CORS) for frontend communication
 CORS(app=app, supports_credentials=True, resources={r"/api/*": {"origins": "http://localhost:5173"}})
@@ -47,7 +51,6 @@ for _, module_name, _ in pkgutil.iter_modules(routes.__path__):
     if hasattr(module, 'bp'):
         app.register_blueprint(module.bp)
 
-
 @app.route('/test', methods=['GET'])
 def test():
     """Health check endpoint to verify server status.
@@ -57,14 +60,14 @@ def test():
     """
     return 'Success'
 
-
 if __name__ == '__main__':
     # Schedule background job to backup database
     scheduler = BackgroundScheduler()
-    scheduler.add_job(backup_database, trigger='cron', hour=12, minute=0) # Runs every day at Noon
+    scheduler.add_job(backup_database, trigger='cron', hour=12, minute=0)  # Runs every day at Noon
     scheduler.start()
 
     try:
-        app.run(debug=True)
+        # Run the app with SocketIO
+        socketio.run(app, debug=True)
     except (KeyboardInterrupt, SystemExit):
         scheduler.shutdown()
