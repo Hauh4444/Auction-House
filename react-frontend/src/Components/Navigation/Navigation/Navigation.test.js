@@ -1,11 +1,16 @@
-import { describe, test, expect, beforeEach } from "vitest";
+// Testing Libraries
+import { describe, expect, beforeEach, test } from "vitest";
+import { screen } from "@testing-library/react";
+import "@testing-library/jest-dom";
+
+// Internal Modules
 import toggleNav from "./Navigation";
 
 // Set up a mock DOM environment for testing
 document.body.innerHTML = `
-  <button class="navBtn" id="btn1">Button 1</button>
-  <button class="navBtn" id="btn2">Button 2</button>
-  <button class="navBtn" id="btn3">Button 3</button>
+  <button class="navBtn" id="btn1" data-testid="navBtn">Button 1</button>
+  <button class="navBtn" id="btn2" data-testid="navBtn">Button 2</button>
+  <button class="navBtn" id="btn3" data-testid="navBtn">Button 3</button>
 `;
 
 describe("toggleNav function", () => {
@@ -13,7 +18,7 @@ describe("toggleNav function", () => {
 
     beforeEach(() => {
         // Reset button states before each test
-        buttons = document.querySelectorAll(".navBtn");
+        buttons = screen.queryAllByTestId("navBtn");
         buttons.forEach(btn => btn.classList.remove("selected"));
     });
 

@@ -18,7 +18,7 @@ import "./UserAccount.scss";
  *
  * Features:
  * - Displays a persistent header (`Header`).
- * - Shows the user's account navigation.
+ * - Shows the user"s account navigation.
  * - Includes a right-side navigation menu (`RightNav`) for additional options.
  *
  * @returns {JSX.Element} The rendered UserAccount page component.

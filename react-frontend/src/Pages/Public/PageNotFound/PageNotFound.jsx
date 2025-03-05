@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
  * This component renders a 404 error page when a user navigates to a non-existent route.
  *
  * Features:
- * - Displays a 'Page Not Found' image.
+ * - Displays a "Page Not Found" image.
  * - Provides a link to navigate back to the home page.
  *
  * @returns {JSX.Element} The rendered homepage containing the header, navigation, and conditionally rendered category navigation.

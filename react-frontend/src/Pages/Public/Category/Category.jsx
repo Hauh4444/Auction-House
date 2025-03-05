@@ -23,8 +23,8 @@ import "./Category.scss";
  * allowing users to navigate through different pages of listings.
  *
  * Features:
- * - Fetches category data from a backend API based on the 'category_id' query parameter.
- * - Displays the category's best sellers, new listings, and specific category listings.
+ * - Fetches category data from a backend API based on the "category_id" query parameter.
+ * - Displays the category"s best sellers, new listings, and specific category listings.
  * - Implements pagination using React Router, allowing users to navigate between pages of listings.
  *
  * @returns {JSX.Element} The rendered category page containing category information and listings.
@@ -39,7 +39,7 @@ const Category = () => {
     const filters = Object.fromEntries(new URLSearchParams(location.search).entries());
 
     /**
-     * Fetches category data based on the 'category_id' parameter.
+     * Fetches category data based on the "category_id" parameter.
      * The effect runs every time `location.search` changes.
      */
     useEffect(() => {
@@ -87,13 +87,13 @@ const Category = () => {
                 <div className="head">
                     {/* Category Description */}
                     <div className="info">
-                        <h1>{category.name}</h1>
-                        <p>{category.description}</p>
+                        <h1 data-testid="categoryName">{category.name}</h1>
+                        <p data-testid="categoryDescription">{category.description}</p>
                     </div>
                     {/* Category Image */}
                     <div className="image">
                         {category.image_encoded ? (
-                            <img src={`data:image/jpg;base64,${category.image_encoded}`} alt={category.name} />
+                            <img data-testid="categoryImage" src={`data:image/jpg;base64,${category.image_encoded}`} alt={category.name} />
                         ) : (
                             <div>No image available</div>
                         )}

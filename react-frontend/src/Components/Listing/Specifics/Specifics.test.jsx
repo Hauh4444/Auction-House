@@ -1,5 +1,5 @@
 // External Libraries
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from "react-router-dom";
 
 // Testing Libraries
 import { describe, it, expect } from "vitest";
@@ -7,10 +7,10 @@ import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 
 // Interal Modules
-import Specifics from './Specifics';
+import Specifics from "./Specifics";
 
-describe('Specifics Component', () => {
-    it('renders a table for object item specifics', () => {
+describe("Specifics Component", () => {
+    it("renders a table for object item specifics", () => {
         const mockListing = {
             item_specifics: '{"color": "red", "size": "M", "material": "cotton"}',
         };
@@ -22,19 +22,19 @@ describe('Specifics Component', () => {
         );
 
         // Check if the table is rendered
-        const table = screen.getByRole('table');
+        const table = screen.queryByRole("table");
         expect(table).toBeInTheDocument();
 
         // Check if table rows are correctly rendered
-        expect(screen.getByText('color')).toBeInTheDocument();
-        expect(screen.getByText('red')).toBeInTheDocument();
-        expect(screen.getByText('size')).toBeInTheDocument();
-        expect(screen.getByText('M')).toBeInTheDocument();
-        expect(screen.getByText('material')).toBeInTheDocument();
-        expect(screen.getByText('cotton')).toBeInTheDocument();
+        expect(screen.queryByText("color")).toBeInTheDocument();
+        expect(screen.queryByText("red")).toBeInTheDocument();
+        expect(screen.queryByText("size")).toBeInTheDocument();
+        expect(screen.queryByText("M")).toBeInTheDocument();
+        expect(screen.queryByText("material")).toBeInTheDocument();
+        expect(screen.queryByText("cotton")).toBeInTheDocument();
     });
 
-    it('renders a list for array item specifics', () => {
+    it("renders a list for array item specifics", () => {
         const mockListing = {
             item_specifics: '["red", "M", "cotton"]',
         };
@@ -46,16 +46,16 @@ describe('Specifics Component', () => {
         );
 
         // Check if the list is rendered
-        const list = screen.getByRole('list');
+        const list = screen.queryByRole("list");
         expect(list).toBeInTheDocument();
 
         // Check if list items are correctly rendered
-        expect(screen.getByText('red')).toBeInTheDocument();
-        expect(screen.getByText('M')).toBeInTheDocument();
-        expect(screen.getByText('cotton')).toBeInTheDocument();
+        expect(screen.queryByText("red")).toBeInTheDocument();
+        expect(screen.queryByText("M")).toBeInTheDocument();
+        expect(screen.queryByText("cotton")).toBeInTheDocument();
     });
 
-    it('renders a paragraph for plain string item specifics', () => {
+    it("renders a paragraph for plain string item specifics", () => {
         const mockListing = {
             item_specifics: "This is a plain string description of item specifics.",
         };
@@ -67,11 +67,11 @@ describe('Specifics Component', () => {
         );
 
         // Check if the paragraph is rendered
-        const paragraph = screen.getByText(/This is a plain string description/);
+        const paragraph = screen.queryByText(/This is a plain string description/);
         expect(paragraph).toBeInTheDocument();
     });
 
-    it('renders nothing when item_specifics is null or undefined', () => {
+    it("renders nothing when item_specifics is null or undefined", () => {
         const mockListing = {
             item_specifics: null,
         };
@@ -83,12 +83,12 @@ describe('Specifics Component', () => {
         );
 
         // Check if nothing is rendered
-        expect(screen.queryByText('Item Specifics')).not.toBeInTheDocument();
+        expect(screen.queryByText("Item Specifics")).not.toBeInTheDocument();
     });
 
-    it('renders nothing when item_specifics is an empty string', () => {
+    it("renders nothing when item_specifics is an empty string", () => {
         const mockListing = {
-            item_specifics: '',
+            item_specifics: "",
         };
 
         render(
@@ -98,6 +98,6 @@ describe('Specifics Component', () => {
         );
 
         // Check if nothing is rendered
-        expect(screen.queryByText('Item Specifics')).not.toBeInTheDocument();
+        expect(screen.queryByText("Item Specifics")).not.toBeInTheDocument();
     });
 });

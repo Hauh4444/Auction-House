@@ -9,7 +9,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 import os, pkgutil, importlib
 
 from .utils import login_manager
-from .database import backup_database
+from .database import backup_db, get_db
 from .routes import *
 
 load_dotenv()
@@ -57,5 +57,7 @@ def test():
 
 # Schedule background job to backup database
 scheduler = BackgroundScheduler()
-scheduler.add_job(backup_database, trigger='cron', hour=12, minute=0) # Runs every day at Noon
+scheduler.add_job(backup_db, trigger='cron', hour=12, minute=0) # Runs every day at Noon
 scheduler.start()
+
+get_db()

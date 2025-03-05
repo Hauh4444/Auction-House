@@ -18,14 +18,14 @@ def get_db():
     db_path = os.path.join(DB_DIRECTORY, DB_FILE)
 
     if not os.path.exists(db_path):  # Check if DB file is missing
-        recover_database()
+        recover_db()
 
     conn = sqlite3.connect(database=db_path)
     conn.row_factory = sqlite3.Row  # Enables row access by column name
     return conn
 
 
-def backup_database():
+def backup_db():
     """
     Creates a compressed backup of the SQLite database by exporting its contents
     into a `.sql.gz` file.
@@ -56,7 +56,7 @@ def backup_database():
         print(f"An unexpected error occurred during recovery: {e}")
 
 
-def recover_database():
+def recover_db():
     """
     Recovers the SQLite database from the most recent `.sql.gz` backup file.
     After successful recovery, the backup file is deleted.

@@ -38,7 +38,7 @@ const AuthPage = () => {
     const [isLogin, setIsLogin] = useState(true); // Boolean state to toggle between login and registration forms
 
     const navigate = useNavigate(); // Navigate hook for routing
-    const auth = useAuth(); // Access authentication functions from the AuthProvider context
+    const { login, createAccount } = useAuth(); // Access authentication functions from the AuthProvider context
 
     /**
      * Handles the login form submission.
@@ -51,7 +51,7 @@ const AuthPage = () => {
         e.preventDefault(); // Prevents default form submission behavior
 
         // Attempt login authorization
-        const success = await auth.login({
+        const success = await login({
             username,
             password,
         });
@@ -84,7 +84,7 @@ const AuthPage = () => {
         }
 
         // Attempt create account authorization
-        const success = await auth.createAccount({
+        const success = await createAccount({
             username,
             firstName,
             lastName,
@@ -106,7 +106,7 @@ const AuthPage = () => {
                 {/* Main container for authentication form */}
                 <Card className="card">
                     {/* Card header with dynamic title (Login or Create Account) */}
-                    <CardHeader title={isLogin ? "Login" : "Create Account"} />
+                    <CardHeader title={isLogin ? "Login" : "Create Account"} data-testid="title" />
 
                     <CardContent className="content">
                         {/* Authentication form */}
@@ -115,6 +115,7 @@ const AuthPage = () => {
                             {/* Username Input Field */}
                             <TextField
                                 className="input"
+                                data-testid="usernameInput"
                                 label="Username"
                                 type="text"
                                 variant="outlined"
@@ -130,6 +131,7 @@ const AuthPage = () => {
                                     {/* First Name Input */}
                                     <TextField
                                         className="nameInput"
+                                        data-testid="firstNameInput"
                                         style={{ float: "left" }}
                                         label="First Name"
                                         type="text"
@@ -142,6 +144,7 @@ const AuthPage = () => {
                                     {/* Last Name Input */}
                                     <TextField
                                         className="nameInput"
+                                        data-testid="lastNameInput"
                                         style={{ float: "right" }}
                                         label="Last Name"
                                         type="text"
@@ -154,6 +157,7 @@ const AuthPage = () => {
                                     {/* Email Input */}
                                     <TextField
                                         className="input"
+                                        data-testid="emailInput"
                                         label="Email"
                                         type="email"
                                         variant="outlined"
@@ -168,6 +172,7 @@ const AuthPage = () => {
                             {/* Password Input Field */}
                             <TextField
                                 className="input"
+                                data-testid="passwordInput"
                                 label="Password"
                                 type="password"
                                 variant="outlined"
@@ -181,6 +186,7 @@ const AuthPage = () => {
                             {!isLogin && (
                                 <TextField
                                     className="input"
+                                    data-testid="confirmPasswordInput"
                                     label="Confirm Password"
                                     type="password"
                                     variant="outlined"
@@ -192,10 +198,10 @@ const AuthPage = () => {
                             )}
 
                             {/* Error message display for password mismatch */}
-                            {loginError && <div className="errorMessage">{loginError}</div>}
+                            {loginError && <div className="errorMessage" data-testid="errorMessage">{loginError}</div>}
 
                             {/* Submit Button (Dynamically labeled based on form mode) */}
-                            <Button className="btn" type="submit" variant="contained" color="primary" fullWidth>
+                            <Button className="btn" data-testid="submit" type="submit" variant="contained" color="primary" fullWidth>
                                 {isLogin ? "Login" : "Create Account"}
                             </Button>
                         </form>

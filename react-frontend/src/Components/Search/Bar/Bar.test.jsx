@@ -31,8 +31,8 @@ describe("Bar Component", () => {
             </MemoryRouter>
         );
         // Check if the input and button are rendered
-        expect(screen.getByPlaceholderText("Search")).toBeInTheDocument();
-        expect(screen.getByRole("button")).toBeInTheDocument();
+        expect(screen.queryByPlaceholderText("Search")).toBeInTheDocument();
+        expect(screen.queryByRole("button")).toBeInTheDocument();
     });
 
     it("navigates to the home page when search input is empty", () => {
@@ -43,7 +43,7 @@ describe("Bar Component", () => {
         );
 
         // Set the input value to be empty (already default state)
-        fireEvent.click(screen.getByRole("button")); // Trigger the search button click
+        fireEvent.click(screen.queryByRole("button")); // Trigger the search button click
 
         // Expect navigate to have been called with the home page params
         expect(mockNavigate).toHaveBeenCalledWith({
@@ -60,11 +60,11 @@ describe("Bar Component", () => {
         );
 
         // Set the query to a non-empty value
-        fireEvent.change(screen.getByPlaceholderText("Search"), {
+        fireEvent.change(screen.queryByPlaceholderText("Search"), {
             target: { value: "category" },
         });
 
-        fireEvent.click(screen.getByRole("button")); // Trigger the search button click
+        fireEvent.click(screen.queryByRole("button")); // Trigger the search button click
 
         // Expect navigate to have been called with the search page params
         expect(mockNavigate).toHaveBeenCalledWith({
@@ -81,12 +81,12 @@ describe("Bar Component", () => {
         );
 
         // Set the query to a non-empty value
-        fireEvent.change(screen.getByPlaceholderText("Search"), {
+        fireEvent.change(screen.queryByPlaceholderText("Search"), {
             target: { value: "category" },
         });
 
         // Trigger the Enter keydown event
-        fireEvent.keyDown(screen.getByPlaceholderText("Search"), {
+        fireEvent.keyDown(screen.queryByPlaceholderText("Search"), {
             key: "Enter",
         });
 

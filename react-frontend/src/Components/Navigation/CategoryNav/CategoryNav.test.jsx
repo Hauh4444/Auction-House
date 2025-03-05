@@ -48,8 +48,8 @@ describe("CategoryNav Component", () => {
         });
 
         await waitFor(() => {
-            expect(screen.getByText("Category 1")).toBeInTheDocument();
-            expect(screen.getByText("Category 2")).toBeInTheDocument();
+            expect(screen.queryByText("Category 1")).toBeInTheDocument();
+            expect(screen.queryByText("Category 2")).toBeInTheDocument();
         });
     });
 
@@ -77,10 +77,10 @@ describe("CategoryNav Component", () => {
             );
         });
 
-        const categoryContainer = document.querySelector(".categoryNav");
+        const categoryContainer = screen.queryByTestId("categoryNav");
         expect(categoryContainer).not.toBeInTheDocument();
 
-        const categoryList = document.querySelector(".categoryList");
+        const categoryList = screen.queryByTestId("categoryList");
         expect(categoryList).toBeInTheDocument();
     });
 
@@ -93,10 +93,10 @@ describe("CategoryNav Component", () => {
             );
         });
 
-        const categoryContainer = document.querySelector(".categoryNav");
+        const categoryContainer = screen.queryByTestId("categoryNav");
         expect(categoryContainer).toBeInTheDocument();
 
-        const categoryList = document.querySelector(".categoryList");
+        const categoryList = screen.queryByTestId("categoryList");
         expect(categoryList).not.toBeInTheDocument();
     });
 
@@ -109,7 +109,7 @@ describe("CategoryNav Component", () => {
             );
         });
 
-        const image = screen.getByAltText("Category 1");
+        const image = screen.queryByAltText("Category 1");
         expect(image).toBeInTheDocument();
         expect(image).toHaveAttribute("src", expect.stringContaining("data:image/jpg;base64,mockBase64ImageData"));
     });
@@ -123,6 +123,6 @@ describe("CategoryNav Component", () => {
             );
         });
 
-        expect(screen.getByText("No image available")).toBeInTheDocument();
+        expect(screen.queryByText("No image available")).toBeInTheDocument();
     });
 });

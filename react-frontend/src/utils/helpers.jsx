@@ -1,0 +1,47 @@
+import { LiaStarHalfSolid, LiaStarSolid } from "react-icons/lia";
+
+/**
+ * Renders the star rating based on the average review score.
+ * It will display filled, empty, or half stars accordingly.
+ *
+ * @param {number} averageReview - The average review score of the product.
+ * @returns {JSX.Element} A span element with the appropriate number of stars.
+ */
+const renderStars = (averageReview) => {
+    const filledStars = Math.floor(averageReview); // Number of filled stars
+    const halfStar = averageReview > filledStars; // Check if there is a half star
+    return (
+        <span className="stars">
+            {/* Render empty stars */}
+            {Array.from({length: 5}, (_, index) => (
+                <LiaStarSolid className="blankStar" data-testid="blankStar" key={index} />
+            ))}
+            {/* Render filled stars */}
+            {Array.from({length: filledStars}, (_, index) => (
+                <LiaStarSolid className="filledStar" data-testid="filledStar" key={index} />
+            ))}
+            {/* Render half star if needed */}
+            {halfStar && <LiaStarHalfSolid className="halfStar" data-testid="halfStar" />}
+        </span>
+    );
+};
+
+const encodeImageToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onloadend = () => {
+            // The result is the base64 encoded string
+            const base64String = reader.result.split(",")[1]; // Remove data URL prefix
+            resolve(base64String);
+        };
+
+        reader.onerror = (error) => {
+            reject(error);
+        };
+
+        reader.readAsDataURL(file); // This converts the file into a base64 string
+    });
+};
+
+export { renderStars, encodeImageToBase64 };

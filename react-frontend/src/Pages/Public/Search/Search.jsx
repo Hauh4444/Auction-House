@@ -19,7 +19,7 @@ import SearchListings from "@/Components/Search/SearchListings/SearchListings";
  * Features:
  * - Retrieves query parameters from the URL.
  * - Displays search results using `SearchListings`.
- * - Provides pagination buttons when 'view-all' mode is enabled.
+ * - Provides pagination buttons when "view-all" mode is enabled.
  *
  * @returns {JSX.Element} The rendered homepage containing the header, navigation, and conditionally rendered category navigation.
  */

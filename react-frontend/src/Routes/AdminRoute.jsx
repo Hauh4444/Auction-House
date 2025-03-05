@@ -7,7 +7,7 @@ import { useAuth } from "@/ContextAPI/AuthProvider";
 /**
  * AdminRoute Component
  *
- * This component protects routes that require admin privileges. It checks the user's authentication
+ * This component protects routes that require admin privileges. It checks the user"s authentication
  * status and role, redirecting users as necessary:
  * - If the user is not authenticated, they are redirected to the login page.
  * - If the user is authenticated but does not have admin privileges, they are redirected to the home page.

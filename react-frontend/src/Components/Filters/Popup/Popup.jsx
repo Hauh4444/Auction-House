@@ -127,7 +127,7 @@ const Popup = () => {
     }
 
     return (
-        <div className="filtersPopup">
+        <div className="filtersPopup" data-testid="filtersPopup">
             <div style={{ height: "20px" }} /> {/* Spacer */}
             {/* Sort By Filter */}
             <FormControl size="small">

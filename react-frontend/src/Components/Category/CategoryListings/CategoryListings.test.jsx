@@ -1,6 +1,6 @@
 // External Libraries
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import axios from 'axios';
+import { MemoryRouter } from "react-router-dom";
+import axios from "axios";
 
 // Testing Libraries
 import { beforeEach, vi, describe, it, expect } from "vitest";
@@ -8,7 +8,7 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 
 // Internal Modules
-import CategoryListings from './CategoryListings';
+import CategoryListings from "./CategoryListings";
 
 // Mock axios request
 vi.mock("axios");
@@ -23,24 +23,24 @@ vi.mock("react-router-dom", async (importOriginal) => {
     };
 });
 
-describe('CategoryListings component', () => {
+describe("CategoryListings component", () => {
     // Mock Listings for different pages
-    const mockListingsPage1 = {
+    const mockListings = {
         data: {
             listings: [
                 {
                     listing_id: 1,
-                    title_short: 'Product 1',
+                    title_short: "Product 1",
                     buy_now_price: 29.99,
-                    image_encoded: 'fake_image_data',
+                    image_encoded: "fake_image_data",
                     average_review: 4.5,
                     total_reviews: 12,
                 },
                 {
                     listing_id: 2,
-                    title_short: 'Product 2',
+                    title_short: "Product 2",
                     buy_now_price: 19.99,
-                    image_encoded: 'fake_image_data_2',
+                    image_encoded: "fake_image_data_2",
                     average_review: 3.0,
                     total_reviews: 5,
                 },
@@ -48,123 +48,68 @@ describe('CategoryListings component', () => {
         }
     };
 
-    const mockListingsPage2 = {
-        data: {
-            listings: [
-                {
-                    listing_id: 3,
-                    title_short: 'Product 3',
-                    buy_now_price: 39.99,
-                    image_encoded: 'fake_image_data_3',
-                    average_review: 4.0,
-                    total_reviews: 8,
-                },
-                {
-                    listing_id: 4,
-                    title_short: 'Product 4',
-                    buy_now_price: 24.99,
-                    image_encoded: 'fake_image_data_4',
-                    average_review: 4.8,
-                    total_reviews: 15,
-                },
-            ],
-        }
-    };
-
     // Before each test, mock the axios request
     beforeEach(() => {
-        axios.get = vi.fn((url, { params }) => {
-            if (params.start === '12') {
-                return Promise.resolve(mockListingsPage2); // Page 2
-            }
-            return Promise.resolve(mockListingsPage1); // Page 1
+        axios.get = vi.fn(() => {
+            return Promise.resolve(mockListings); // Page 1
         });
     });
 
-    it('should render the listings correctly on page 1', async () => {
+    it("should render the listings correctly", async () => {
         // Test for Page 1
         render(
-            <MemoryRouter initialEntries={['/category?category_id=1&page=1']}>
-                <Routes>
-                    <Route path="/category" element={<CategoryListings />} />
-                </Routes>
+            <MemoryRouter initialEntries={["/category?category_id=1&page=1"]}>
+                <CategoryListings />
             </MemoryRouter>
         );
 
         // Wait for the listings to load
-        await waitFor(() => screen.getByText('Product 1'));
+        await waitFor(() => screen.queryByText("Product 1"));
 
         // Check that the first product is displayed correctly
-        expect(screen.getByText('Product 1')).toBeInTheDocument();
-        expect(screen.getByText('$29.99')).toBeInTheDocument();
+        expect(screen.queryByText("Product 1")).toBeInTheDocument();
+        expect(screen.queryByText("$29.99")).toBeInTheDocument();
 
         // Check that the second product is displayed correctly
-        expect(screen.getByText('Product 2')).toBeInTheDocument();
-        expect(screen.getByText('$19.99')).toBeInTheDocument();
+        expect(screen.queryByText("Product 2")).toBeInTheDocument();
+        expect(screen.queryByText("$19.99")).toBeInTheDocument();
     });
 
-    it('should render the listings correctly on page 2', async () => {
-        // Test for Page 2
+    it("should navigate to listing details page when a product is clicked", async () => {
         render(
-            <MemoryRouter initialEntries={['/category?category_id=1&page=2']}>
-                <Routes>
-                    <Route path="/category" element={<CategoryListings />} />
-                </Routes>
-            </MemoryRouter>
-        );
-
-        // Wait for the listings to load
-        await waitFor(() => screen.getByText('Product 3'));
-
-        // Check that the first product is displayed correctly
-        expect(screen.getByText('Product 3')).toBeInTheDocument();
-        expect(screen.getByText('$39.99')).toBeInTheDocument();
-
-        // Check that the second product is displayed correctly
-        expect(screen.getByText('Product 4')).toBeInTheDocument();
-        expect(screen.getByText('$24.99')).toBeInTheDocument();
-    });
-
-    it('should navigate to listing details page when a product is clicked', async () => {
-        render(
-            <MemoryRouter initialEntries={['/category?category_id=1']}>
-                <Routes>
-                    <Route path="/category" element={<CategoryListings />} />
-                    <Route path="/listing" element={<div>Listing Detail Page</div>} />
-                </Routes>
+            <MemoryRouter initialEntries={["/category?category_id=1"]}>
+                <CategoryListings />
             </MemoryRouter>
         );
 
         // Wait for listings to load
-        await waitFor(() => screen.getByText('Product 1'));
+        await waitFor(() => screen.queryByText("Product 1"));
 
         // Click on the first product
-        fireEvent.click(screen.getByText('Product 1'));
+        fireEvent.click(screen.queryByText("Product 1"));
 
         // Check that we navigate to the listing details page
-        expect(mockNavigate).toHaveBeenCalledWith('/listing?key=1');
+        expect(mockNavigate).toHaveBeenCalledWith("/listing?key=1");
     });
 
-    it('should display the correct number of stars and reviews', async () => {
+    it("should display the correct number of stars and reviews", async () => {
         render(
-            <MemoryRouter initialEntries={['/category?category_id=1']}>
-                <Routes>
-                    <Route path="/category" element={<CategoryListings />} />
-                </Routes>
+            <MemoryRouter initialEntries={["/category?category_id=1"]}>
+                <CategoryListings />
             </MemoryRouter>
         );
 
         // Wait for the listings to load
-        await waitFor(() => screen.getByText('Product 1'));
+        await waitFor(() => screen.queryByText("Product 1"));
 
-        const filledStars = document.querySelectorAll('.filledStar');
+        const filledStars = screen.queryAllByTestId("filledStar");
 
         expect(filledStars.length).toBe(7);
 
-        const halfStars = document.querySelectorAll('.halfStar');
+        const halfStars = screen.queryAllByTestId("halfStar");
         expect(halfStars.length).toBe(1);
 
         // Check if total reviews are displayed correctly
-        expect(screen.getByText('12')).toBeInTheDocument();
+        expect(screen.queryByText("12")).toBeInTheDocument();
     });
 });

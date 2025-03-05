@@ -1,39 +1,15 @@
 // External Libraries
 import { useEffect, useState } from "react";
 import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
-import { LiaStarHalfSolid, LiaStarSolid } from "react-icons/lia";
 import { Button } from "@mui/material";
 import PropTypes from "prop-types";
 import axios from "axios";
 
+// Internal Modules
+import { renderStars } from "@/utils/helpers"
+
 // Stylesheets
 import "./SearchListings.scss";
-
-/**
- * Renders the star rating based on the average review score.
- * It will display filled, empty, or half stars accordingly.
- *
- * @param {number} averageReview - The average review score of the product.
- * @returns {JSX.Element} A span element with the appropriate number of stars.
- */
-const renderStars = (averageReview) => {
-    const filledStars = Math.floor(averageReview); // Calculate number of filled stars
-    const halfStar = averageReview > filledStars; // Check if half star is needed
-    return (
-        <span className="stars">
-            {/* Render empty stars */}
-            {Array.from({length: 5}, (_, index) => (
-                <LiaStarSolid className="blankStar" key={index} />
-            ))}
-            {/* Render filled stars */}
-            {Array.from({length: filledStars}, (_, index) => (
-                <LiaStarSolid className="filledStar" key={index} />
-            ))}
-            {/* Render half star if needed */}
-            {halfStar && <LiaStarHalfSolid className="halfStar" />}
-        </span>
-    );
-};
 
 /**
  * SearchListings Component
@@ -55,9 +31,10 @@ const renderStars = (averageReview) => {
  *                        price, and an "Add to Cart" button.
  */
 const SearchListings = () => {
-    const [listings, setListings] = useState([]); // State to hold product listings
     const navigate = useNavigate(); // Navigate hook for routing
     const location = useLocation(); // Hook to access the current location (URL)
+
+    const [listings, setListings] = useState([]); // State to hold product listings
 
     useEffect(() => {
         const filters = Object.fromEntries(new URLSearchParams(location.search).entries()); // Extract filters from URL
@@ -85,7 +62,7 @@ const SearchListings = () => {
             params: createSearchParams(filters), // Convert filters to query parameters
         })
             .then(res => setListings(res.data.listings)) // Set the fetched listings into state
-            .catch(err => console.log(err)); // Handle errors
+            .catch(err => console.log(err)); // Log errors if any
     }, [location.search]); // Re-run the effect whenever search params change
 
     // Function to navigate to a detailed view of a listing

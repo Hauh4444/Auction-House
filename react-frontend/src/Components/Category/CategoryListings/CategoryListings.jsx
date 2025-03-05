@@ -1,40 +1,16 @@
 // External Libraries
 import { useEffect, useState } from  "react";
 import { useLocation, useNavigate } from  "react-router-dom";
-import { LiaStarHalfSolid, LiaStarSolid } from  "react-icons/lia";
 import { Button } from  "@mui/material";
 import axios from "axios";
 import PropTypes from "prop-types";
 
+// Internal Modules
+import { renderStars } from "@/utils/helpers"
+
 // Stylesheets
 import "./CategoryListings.scss";
 import "../Listings.scss";
-
-/**
- * Renders the star rating based on the average review score.
- * It will display filled, empty, or half stars accordingly.
- *
- * @param {number} averageReview - The average review score of the product.
- * @returns {JSX.Element} A span element with the appropriate number of stars.
- */
-const renderStars = (averageReview) => {
-    const filledStars = Math.floor(averageReview); // Number of filled stars
-    const halfStar = averageReview > filledStars; // Check if there is a half star
-    return (
-        <span className="stars">
-            {/* Render empty stars */}
-            {Array.from({length: 5}, (_, index) => (
-                <LiaStarSolid className="blankStar" key={index} />
-            ))}
-            {/* Render filled stars */}
-            {Array.from({length: filledStars}, (_, index) => (
-                <LiaStarSolid className="filledStar" key={index} />
-            ))}
-            {/* Render half star if needed */}
-            {halfStar && <LiaStarHalfSolid className="halfStar" />}
-        </span>
-    );
-};
 
 /**
  * CategoryListings component fetches and displays product listings for a selected category.
@@ -44,20 +20,20 @@ const renderStars = (averageReview) => {
  * Features:
  * - Fetches listings from "http://127.0.0.1:5000/api/listings" when mounted or when filters change.
  * - Uses URL query parameters to filter and paginate listings.
- * - Displays listings with images, ratings, and a button to navigate to the listing's details page.
+ * - Displays listings with images, ratings, and a button to navigate to the listing"s details page.
  *
  * @returns {JSX.Element} A section displaying category-specific listings.
  */
 const CategoryListings = () => {
     const navigate = useNavigate(); // Navigate hook for routing
     const location = useLocation(); // Hook to access the current location (URL)
-    // Extract query parameters from the URL
-    const filters = Object.fromEntries(new URLSearchParams(location.search).entries());
 
     const [listings, setListings] = useState([]); // State to hold listings data
 
     // Effect hook to fetch listings from the API on component mount and URL filter update
     useEffect(() => {
+        const filters = Object.fromEntries(new URLSearchParams(location.search).entries()); // Extract query parameters from the URL
+
         // Handle pagination by adjusting filters
         if (filters.page) {
             filters.start = ((filters.page - 1) * 12).toString(); // Start position for pagination

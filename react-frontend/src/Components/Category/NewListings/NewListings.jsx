@@ -1,40 +1,16 @@
 // External Libraries
 import { useEffect, useState } from  "react";
 import { useLocation, useNavigate } from  "react-router-dom";
-import { LiaStarHalfSolid, LiaStarSolid } from  "react-icons/lia";
 import { Button } from "@mui/material";
 import axios from "axios";
 import PropTypes from "prop-types";
 
+// Internal Modules
+import { renderStars } from "@/utils/helpers"
+
 // Stylesheets
 import "./NewListings.scss";
 import "../Listings.scss";
-
-/**
- * Renders the star rating based on the average review score.
- * It will display filled, empty, or half stars accordingly.
- *
- * @param {number} averageReview - The average review score of the product.
- * @returns {JSX.Element} A span element with the appropriate number of stars.
- */
-const renderStars = (averageReview) => {
-    const filledStars = Math.floor(averageReview); // Number of filled stars
-    const halfStar = averageReview > filledStars; // Check if there is a half star
-    return (
-        <span className="stars">
-            {/* Render empty stars */}
-            {Array.from({length: 5}, (_, index) => (
-                <LiaStarSolid className="blankStar" key={index} />
-            ))}
-            {/* Render filled stars */}
-            {Array.from({length: filledStars}, (_, index) => (
-                <LiaStarSolid className="filledStar" key={index} />
-            ))}
-            {/* Render half star if needed */}
-            {halfStar && <LiaStarHalfSolid className="halfStar" />}
-        </span>
-    );
-};
 
 /**
  * NewListings component fetches and displays the newest product listings from an API.
@@ -44,7 +20,7 @@ const renderStars = (averageReview) => {
  * Features:
  * - Fetches the latest listings from "http://127.0.0.1:5000/api/listings" when mounted or when filters change.
  * - Uses URL query parameters to filter listings by category.
- * - Displays listings with images, ratings, and a button to navigate to the listing's details page.
+ * - Displays listings with images, ratings, and a button to navigate to the listing"s details page.
  *
  * @returns {JSX.Element} A section displaying the newest listings.
  */

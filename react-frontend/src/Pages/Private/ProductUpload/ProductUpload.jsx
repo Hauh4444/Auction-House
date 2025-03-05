@@ -6,6 +6,7 @@ import axios from "axios";
 // Internal Modules
 import Header from "@/Components/Header/Header";
 import RightNav from "@/Components/Navigation/RightNav/RightNav";
+import { encodeImageToBase64 } from "@/utils/helpers"
 
 // Stylesheets
 import "./ProductUpload.scss"
@@ -25,33 +26,9 @@ const ProductUpload = () => {
                 "Content-Type": "application/json",
             }
         })
-            .then(res => {
-                // Update state with the fetched categories
-                setCategories(res.data.categories);
-            })
-            .catch(err => {
-                // Log any errors that occur during the request
-                console.log(err);
-            });
+            .then(res => setCategories(res.data.categories)) // Update state with fetched data
+            .catch(err => console.log(err)); // Log errors if any
     }, []); // Empty dependency array ensures this effect runs only once
-
-    const encodeImageToBase64 = (file) => {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-
-            reader.onloadend = () => {
-                // The result is the base64 encoded string
-                const base64String = reader.result.split(',')[1]; // Remove data URL prefix
-                resolve(base64String);
-            };
-
-            reader.onerror = (error) => {
-                reject(error);
-            };
-
-            reader.readAsDataURL(file); // This converts the file into a base64 string
-        });
-    };
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
@@ -61,13 +38,12 @@ const ProductUpload = () => {
                     const image_encoded = `data:image/jpg;base64,${base64String}`;
                     setListing({ ...listing, image_encoded: image_encoded }); // Save the file object for upload
                 })
-                .catch((error) => console.error('Error encoding image:', error)); // Log errors if any
+                .catch((error) => console.error("Error encoding image:", error)); // Log errors if any
         }
     };
 
     // On submit, post new listing to the backend API
     const handleSubmit = () => {
-        console.log(listing);
         axios.post("http://127.0.0.1:5000/api/listings/", {
             headers: {
                 "Content-Type": "application/json",

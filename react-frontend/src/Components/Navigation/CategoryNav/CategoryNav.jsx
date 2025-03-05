@@ -46,7 +46,7 @@ const CategoryNav = () => {
         <>
             {/* Check if the current page is not the homepage */}
             {location.pathname !== "/" ? (
-                <div className="categoryNav">
+                <div className="categoryNav" data-testid="categoryNav">
                     {categories.map((category, index) => (
                         <div style={{ width: "25%", display: "inline-block", textAlign: "center" }} key={index}>
                             <Button className="categoryBtn" onClick={() => navigateToCategory(category.category_id)}
@@ -57,7 +57,7 @@ const CategoryNav = () => {
                     ))}
                 </div>
             ) : (
-                <div className="categoryList">
+                <div className="categoryList" data-testid="categoryList">
                     {categories.map((category, index) => (
                         <div className="category" key={index}>
                             <div className="image">

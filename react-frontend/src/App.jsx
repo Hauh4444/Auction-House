@@ -28,23 +28,23 @@ const lightTheme = createTheme({
  * and rendering the public routes of the app.
  *
  * Features:
- * - Determines the user's system preference for dark mode and applies the appropriate theme.
- * - Listens for changes in the system's color scheme preference to update the theme dynamically.
+ * - Determines the user"s system preference for dark mode and applies the appropriate theme.
+ * - Listens for changes in the system"s color scheme preference to update the theme dynamically.
  *
  * @returns {JSX.Element}
  * - Renders the `ThemeProvider` with the selected theme (light theme currently).
- * - Contains the `PublicRoutes` component, which defines the application's routing for public pages.
+ * - Contains the `PublicRoutes` component, which defines the application"s routing for public pages.
  */
 function App() {
     // State to manage the theme mode (dark or light)
     const [isDarkMode, setIsDarkMode] = useState(false);
 
     useEffect(() => {
-        // Check the user's system preference for dark mode
+        // Check the user"s system preference for dark mode
         const prefersDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
         setIsDarkMode(prefersDarkMode);
 
-        // Media query listener to track changes in the system's color scheme preference
+        // Media query listener to track changes in the system"s color scheme preference
         const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
         const changeListener = (e) => setIsDarkMode(e.matches);
 

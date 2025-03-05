@@ -13,13 +13,13 @@ import Header from "./Header";
 // Mocking axios to return mock data for categories
 vi.mock("axios");
 
-describe('Header Component', () => {
+describe("Header Component", () => {
     // Mock categories response
     const mockCategories = {
         data: {
             categories: [
-                { category_id: 1, name: 'Category 1', image_encoded: '' },
-                { category_id: 2, name: 'Category 2', image_encoded: '' },
+                { category_id: 1, name: "Category 1", image_encoded: "" },
+                { category_id: 2, name: "Category 2", image_encoded: "" },
             ]
         }
     };
@@ -29,7 +29,7 @@ describe('Header Component', () => {
         axios.get = vi.fn().mockResolvedValue(mockCategories);
     });
 
-    it('renders the header component correctly', async () => {
+    it("renders the header component correctly", async () => {
         await act(async () => {
             render(
                 <MemoryRouter>
@@ -39,56 +39,56 @@ describe('Header Component', () => {
         })
 
         // Check if the navigation buttons are rendered
-        expect(screen.getByText(/Home/i)).toBeInTheDocument();
-        expect(screen.getByText(/Shop All/i)).toBeInTheDocument();
-        expect(screen.getByText(/About/i)).toBeInTheDocument();
-        expect(screen.getByText(/Contact/i)).toBeInTheDocument();
+        expect(screen.queryByText("Home")).toBeInTheDocument();
+        expect(screen.queryByText("Shop All")).toBeInTheDocument();
+        expect(screen.queryByText("About")).toBeInTheDocument();
+        expect(screen.queryByText("Contact")).toBeInTheDocument();
     });
 
-    it('renders the "Categories" button when not on the homepage', async () => {
+    it("renders the 'Categories' button when not on the homepage", async () => {
         await act(async () => {
             render(
-                <MemoryRouter initialEntries={['/some-page']}>
+                <MemoryRouter initialEntries={["/some-page"]}>
                     <Header/>
                 </MemoryRouter>
             );
         })
 
         // Ensure the Categories button is rendered when not on the homepage
-        expect(screen.getByText(/Categories/i)).toBeInTheDocument();
+        expect(screen.queryByText("Categories")).toBeInTheDocument();
     });
 
-    it('does not render the "Categories" button on the homepage', async () => {
+    it("does not render the 'Categories' button on the homepage", async () => {
         await act(async () => {
             render(
-                <MemoryRouter initialEntries={['/']}>
+                <MemoryRouter initialEntries={["/"]}>
                     <Header/>
                 </MemoryRouter>
             );
         })
 
         // Ensure the Categories button is not rendered when on the homepage
-        expect(screen.queryByText(/Categories/i)).not.toBeInTheDocument();
+        expect(screen.queryByText("Categories")).not.toBeInTheDocument();
     });
 
-    it('toggles categories popup when Categories button is clicked', async () => {
+    it("toggles categories popup when Categories button is clicked", async () => {
         await act(async () => {
             render(
-                <MemoryRouter initialEntries={['/some-page']}>
+                <MemoryRouter initialEntries={["/some-page"]}>
                     <Header/>
                 </MemoryRouter>
             );
         })
 
-        const categoriesButton = screen.getByText(/Categories/i);
+        const categoriesButton = screen.queryByText("Categories");
 
         // After clicking the Categories button, the popup should appear
         fireEvent.click(categoriesButton);
 
         // Wait for the state update (waiting for categories to be fetched)
         await waitFor(() => {
-            const categoryNav = document.querySelector('.categoryNav');
-            expect(categoryNav).toHaveStyle('maxHeight: 100%');
+            const categoryNav = screen.getByTestId("categoryNav");
+            expect(categoryNav).toHaveStyle("maxHeight: 100%");
         });
 
         // Toggle the popup again
@@ -96,8 +96,8 @@ describe('Header Component', () => {
 
         // After the second click, the popup should have maxHeight: 0
         await waitFor(() => {
-            const categoryNav = document.querySelector('.categoryNav');
-            expect(categoryNav).toHaveStyle('maxHeight: 0');
+            const categoryNav = screen.getByTestId("categoryNav");
+            expect(categoryNav).toHaveStyle("maxHeight: 0");
         });
     });
 

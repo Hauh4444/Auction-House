@@ -1,45 +1,20 @@
 // External Libraries
 import { useEffect, useState } from "react";
-import { LiaStarHalfSolid, LiaStarSolid } from "react-icons/lia";
 import axios from "axios";
 import PropTypes from "prop-types";
 
+// Internal Modules
+import { renderStars } from "@/utils/helpers"
+
 // Stylesheets
 import "./Reviews.scss";
-
-/**
- * Renders the star rating based on the average review score.
- * It will display filled, empty, or half stars accordingly.
- *
- * @param {number} averageReview - The average review score of the product.
- * @returns {JSX.Element} A span element with the appropriate number of stars.
- */
-const renderStars = (averageReview) => {
-    const filledStars = Math.floor(averageReview);
-    const halfStar = averageReview > filledStars;
-
-    return (
-        <span className="stars">
-            {/* Render empty stars */}
-            {Array.from({ length: 5 }, (_, index) => (
-                <LiaStarSolid className="blankStar" key={index} />
-            ))}
-            {/* Render filled stars */}
-            {Array.from({ length: filledStars }, (_, index) => (
-                <LiaStarSolid className="filledStar" key={index} />
-            ))}
-            {/* Render half star if needed */}
-            {halfStar && <LiaStarHalfSolid className="halfStar" />}
-        </span>
-    );
-};
 
 /**
  * Reviews component fetches and displays user reviews for a given product listing.
  *
  * Features:
  * - Fetches reviews from the API based on the provided listing ID.
- * - Displays each review with the reviewer's username, review title, description, and date.
+ * - Displays each review with the reviewer"s username, review title, description, and date.
  * - Uses a star rating system to visually represent the rating score.
  * - Limits the display to the top three highest-rated reviews.
  *

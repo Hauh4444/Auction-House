@@ -7,7 +7,7 @@ import {render, screen, fireEvent, waitFor, act} from "@testing-library/react";
 import "@testing-library/jest-dom";
 
 // Internal Modules
-import SearchNav from './SearchNav';
+import SearchNav from "./SearchNav";
 import axios from "axios"; // Adjust the import according to your file structure
 
 // Mock axios request
@@ -23,7 +23,7 @@ vi.mock("react-router-dom", async (importOriginal) => {
     };
 });
 
-describe('SearchNav Component', () => {
+describe("SearchNav Component", () => {
     // Before each test, mock the axios request
     beforeEach(() => {
         axios.get = vi.fn().mockResolvedValue({
@@ -33,7 +33,7 @@ describe('SearchNav Component', () => {
         });
     });
 
-    it('renders the navigation buttons correctly', async () => {
+    it("renders the navigation buttons correctly", async () => {
         await act(async () => {
             render(
                 <MemoryRouter>
@@ -43,28 +43,28 @@ describe('SearchNav Component', () => {
         })
 
         // Check if the navigation buttons are rendered
-        expect(screen.getByText('Best Results')).toBeInTheDocument();
-        expect(screen.getByText('Best Sellers')).toBeInTheDocument();
-        expect(screen.getByText('New')).toBeInTheDocument();
-        expect(screen.getByText('View All')).toBeInTheDocument();
-        expect(screen.getByText('Filters')).toBeInTheDocument();
+        expect(screen.queryByText("Best Results")).toBeInTheDocument();
+        expect(screen.queryByText("Best Sellers")).toBeInTheDocument();
+        expect(screen.queryByText("New")).toBeInTheDocument();
+        expect(screen.queryByText("View All")).toBeInTheDocument();
+        expect(screen.queryByText("Filters")).toBeInTheDocument();
     });
 
-    it('highlights the correct button based on query parameters', async () => {
+    it("highlights the correct button based on query parameters", async () => {
         await act(async () => {
             render(
-                <MemoryRouter initialEntries={['/search?nav=best-sellers']}>
+                <MemoryRouter initialEntries={["/search?nav=best-sellers"]}>
                     <SearchNav/>
                 </MemoryRouter>
             );
         })
 
         // Check if the "Best Sellers" button is highlighted by default (based on the query parameter `nav=best-sellers`)
-        const bestSellersBtn = screen.getByText('Best Sellers');
-        expect(bestSellersBtn).toHaveClass('selected');
+        const bestSellersBtn = screen.queryByTestId("bestSellersBtn");
+        expect(bestSellersBtn).toHaveClass("selected");
     });
 
-    it('navigates to the best results navigation and updates the URL query parameters when best results is clicked', async () => {
+    it("navigates to the best results navigation and updates the URL query parameters when best results is clicked", async () => {
         await act(async () => {
             render(
                 <MemoryRouter>
@@ -74,16 +74,16 @@ describe('SearchNav Component', () => {
         })
 
         // Simulate clicking the "Best Results" button
-        fireEvent.click(screen.getByText('Best Results'));
+        fireEvent.click(screen.queryByTestId("bestResultsBtn"));
 
         // Ensure navigate was called with the correct query parameters
         expect(mockNavigate).toHaveBeenCalledWith({
-            pathname: '/search',
-            search: 'start=0&range=10&nav=best-results',
+            pathname: "/search",
+            search: "start=0&range=10&nav=best-results",
         });
     });
 
-    it('navigates to the best sellers navigation and updates the URL query parameters when best sellers is clicked', async () => {
+    it("navigates to the best sellers navigation and updates the URL query parameters when best sellers is clicked", async () => {
         await act(async () => {
             render(
                 <MemoryRouter>
@@ -93,16 +93,16 @@ describe('SearchNav Component', () => {
         })
 
         // Simulate clicking the "Best Sellers" button
-        fireEvent.click(screen.getByText('Best Sellers'));
+        fireEvent.click(screen.queryByTestId("bestSellersBtn"));
 
         // Ensure navigate was called with the correct query parameters
         expect(mockNavigate).toHaveBeenCalledWith({
-            pathname: '/search',
-            search: 'nav=best-sellers',
+            pathname: "/search",
+            search: "start=0&range=10&nav=best-sellers",
         });
     });
 
-    it('navigates to the new navigation and updates the URL query parameters when new is clicked', async () => {
+    it("navigates to the new navigation and updates the URL query parameters when new is clicked", async () => {
         await act(async () => {
             render(
                 <MemoryRouter>
@@ -112,16 +112,16 @@ describe('SearchNav Component', () => {
         })
 
         // Simulate clicking the "New" button
-        fireEvent.click(screen.getByText('New'));
+        fireEvent.click(screen.queryByTestId("newBtn"));
 
         // Ensure navigate was called with the correct query parameters
         expect(mockNavigate).toHaveBeenCalledWith({
-            pathname: '/search',
-            search: 'nav=new',
+            pathname: "/search",
+            search: "start=0&range=10&nav=new",
         });
     });
 
-    it('navigates to the new navigation and updates the URL query parameters when new is clicked', async () => {
+    it("navigates to the view all navigation and updates the URL query parameters when view all is clicked", async () => {
         await act(async () => {
             render(
                 <MemoryRouter>
@@ -131,16 +131,16 @@ describe('SearchNav Component', () => {
         })
 
         // Simulate clicking the "View All" button
-        fireEvent.click(screen.getByText('View All'));
+        fireEvent.click(screen.queryByTestId("viewAllBtn"));
 
         // Ensure navigate was called with the correct query parameters
         expect(mockNavigate).toHaveBeenCalledWith({
-            pathname: '/search',
-            search: 'page=1&nav=view-all',
+            pathname: "/search",
+            search: "page=1&start=0&range=10&nav=view-all",
         });
     });
 
-    it('toggles the filter popup visibility when the Filters button is clicked', async () => {
+    it("toggles the filter popup visibility when the Filters button is clicked", async () => {
         await act(async () => {
             render(
                 <MemoryRouter>
@@ -149,14 +149,14 @@ describe('SearchNav Component', () => {
             );
         })
 
-        const filtersBtn = document.querySelector('.filtersBtn');
+        const filtersBtn = screen.queryByTestId("filtersBtn");
         // After clicking the Categories button, the popup should appear
         fireEvent.click(filtersBtn);
 
         // Wait for the state update (waiting for categories to be fetched)
         await waitFor(() => {
-            const categoryNav = document.querySelector('.filtersPopup');
-            expect(categoryNav).toHaveStyle('maxHeight: 100%');
+            const categoryNav = screen.queryByTestId("filtersPopup");
+            expect(categoryNav).toHaveStyle("maxHeight: 100%");
         });
 
         // Toggle the popup again
@@ -164,8 +164,8 @@ describe('SearchNav Component', () => {
 
         // After the second click, the popup should have maxHeight: 0
         await waitFor(() => {
-            const categoryNav = document.querySelector('.filtersPopup');
-            expect(categoryNav).toHaveStyle('maxHeight: 0');
+            const categoryNav = screen.queryByTestId("filtersPopup");
+            expect(categoryNav).toHaveStyle("maxHeight: 0");
         });
     });
 });

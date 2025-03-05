@@ -8,6 +8,7 @@ import PropTypes from "prop-types";
 import Header from "@/Components/Header/Header";
 import RightNav from "@/Components/Navigation/RightNav/RightNav";
 import { useAuth } from "@/ContextAPI/AuthProvider";
+import { encodeImageToBase64 } from "@/utils/helpers"
 
 // Stylesheets
 import "./UserProfile.scss";
@@ -60,24 +61,6 @@ const UserProfile = () => {
             .catch(err => console.log(err)); // Log errors if any
     }, []); // Empty dependency array to ensure it runs only once when the component is mounted
 
-    const encodeImageToBase64 = (file) => {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-
-            reader.onloadend = () => {
-                // The result is the base64 encoded string
-                const base64String = reader.result.split(',')[1]; // Remove data URL prefix
-                resolve(base64String);
-            };
-
-            reader.onerror = (error) => {
-                reject(error);
-            };
-
-            reader.readAsDataURL(file); // This converts the file into a base64 string
-        });
-    };
-
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -87,7 +70,7 @@ const UserProfile = () => {
                     setNewProfilePicture(`data:image/jpg;base64,${image}`); // Temporarily display the new image
                     setProfile({ ...profile, profile_picture: image }); // Save the file object for upload
                 })
-                .catch((error) => console.error('Error encoding image:', error)); // Log errors if any
+                .catch((error) => console.error("Error encoding image:", error)); // Log errors if any
         }
     };
 
@@ -159,7 +142,7 @@ const UserProfile = () => {
                                 {fields.map((field) => (
                                     <TextField
                                         key={field.name}
-                                        className={`input ${field.name === 'bio' ? 'bio' : 'shortField'}`}
+                                        className={`input ${field.name === "bio" ? "bio" : "shortField"}`}
                                         style={{ display: "flex", ...field.style }}
                                         label={field.label}
                                         name={field.name}

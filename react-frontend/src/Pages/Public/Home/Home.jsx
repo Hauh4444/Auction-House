@@ -11,7 +11,7 @@ import RightNav from "@/Components/Navigation/RightNav/RightNav";
  *
  * Features:
  * - Displays a header and main navigation for the application.
- * - Renders the 'CategoryNav' Component.
+ * - Renders the "CategoryNav" Component.
  * - Includes a right-side navigation panel for additional navigation options.
  *
  * @returns {JSX.Element} The rendered homepage containing the header, navigation, and conditionally rendered category navigation.

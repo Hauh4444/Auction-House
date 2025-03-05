@@ -22,8 +22,8 @@ vi.mock("react-router-dom", async (importOriginal) => {
     };
 });
 
-describe('RightNav Component', () => {
-    it('renders correctly', () => {
+describe("RightNav Component", () => {
+    it("renders correctly", () => {
         render(
             <MemoryRouter>
                 <RightNav />
@@ -31,15 +31,15 @@ describe('RightNav Component', () => {
         );
 
         // Check if the button elements are rendered
-        expect(screen.getByTestId('menuBtn')).toBeInTheDocument();
-        expect(screen.getByTestId('accountBtn')).toBeInTheDocument();
-        expect(screen.getByTestId('flagBtn')).toBeInTheDocument();
-        expect(screen.getByTestId('cartBtn')).toBeInTheDocument();
-        expect(screen.getByTestId('userBtn')).toBeInTheDocument();
-        expect(screen.getByTestId('truckBtn')).toBeInTheDocument();
+        expect(screen.queryByTestId("menuBtn")).toBeInTheDocument();
+        expect(screen.queryByTestId("accountBtn")).toBeInTheDocument();
+        expect(screen.queryByTestId("flagBtn")).toBeInTheDocument();
+        expect(screen.queryByTestId("cartBtn")).toBeInTheDocument();
+        expect(screen.queryByTestId("userBtn")).toBeInTheDocument();
+        expect(screen.queryByTestId("truckBtn")).toBeInTheDocument();
     });
 
-    it('navigates to the account page when account button is clicked', () => {
+    it("navigates to the account page when account button is clicked", () => {
         render(
             <MemoryRouter>
                 <RightNav />
@@ -47,9 +47,9 @@ describe('RightNav Component', () => {
         );
 
         // Simulate a click on the account button
-        fireEvent.click(screen.getByTestId('accountBtn'));
+        fireEvent.click(screen.queryByTestId("accountBtn"));
 
         // Ensure navigate was called with the correct URL
-        expect(mockNavigate).toHaveBeenCalledWith('/user/account');
+        expect(mockNavigate).toHaveBeenCalledWith("/user/account");
     });
 });
