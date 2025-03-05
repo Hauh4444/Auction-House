@@ -1,8 +1,7 @@
-from flask_socketio import SocketIO, emit
+from flask_socketio import emit
 from flask import jsonify, Response
-from ..data_mappers import BidMapper  # Assuming this mapper will interact with the DB
-
-socketio = SocketIO()
+from .data_mappers import BidMapper  # Assuming this mapper will interact with the DB
+from . import socketio  # Import socketio from the app context
 
 class BidService:
     @staticmethod
