@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from bid_services import BidService
+from .bid_services import BidService  # Import BidService from the correct path
 
 bid_routes = Blueprint('bid_routes', __name__)
 
