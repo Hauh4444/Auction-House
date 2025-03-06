@@ -18,9 +18,10 @@ import "./CategoryNav.scss";
  * @returns {JSX.Element} A section displaying categories with navigation buttons.
  */
 const CategoryNav = () => {
-    const [categories, setCategories] = useState([]); // State to store fetched categories
     const navigate = useNavigate(); // To navigate between pages
     const location = useLocation(); // Hook to access the current location (URL)
+
+    const [categories, setCategories] = useState([]); // State to store fetched categories
 
     // Fetch categories from API on component mount
     useEffect(() => {

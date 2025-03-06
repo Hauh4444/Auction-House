@@ -8,9 +8,7 @@ import axios from "axios";
 // Internal Modules
 import Header from "@/Components/Header/Header";
 import RightNav from "@/Components/Navigation/RightNav/RightNav";
-import CategoryListings from "@/Components/Category/CategoryListings/CategoryListings";
-import BestSellers from "@/Components/Category/BestSellers/BestSellers";
-import NewListings from "@/Components/Category/NewListings/NewListings";
+import { renderStars, navigateToListing } from "@/utils/helpers.jsx";
 
 // Stylesheets
 import "./Category.scss";
@@ -30,13 +28,32 @@ import "./Category.scss";
  * @returns {JSX.Element} The rendered category page containing category information and listings.
  */
 const Category = () => {
-    // State to store the category data
-    const [category, setCategory] = useState({});
-
     const navigate = useNavigate(); // Navigate hook for routing
     const location = useLocation(); // Hook to access the current location (URL)
     // Extract query parameters
     const filters = Object.fromEntries(new URLSearchParams(location.search).entries());
+
+    const [category, setCategory] = useState({}); // State to store the category data
+    const [bestSellers, setBestSellers] = useState([]); // State to hold best sellers data
+    const [newListings, setNewListings] = useState([]); // State to hold new listings data
+    const [listings, setListings] = useState([]); // State to hold listings data
+    const sections = [
+        {
+            title: "Best Sellers",
+            identifier: "BestSellers",
+            listings: bestSellers,
+        },
+        {
+            title: "New",
+            identifier: "NewListings",
+            listings: newListings,
+        },
+        {
+            title: "View All",
+            identifier: "Listings",
+            listings: listings,
+        },
+    ]
 
     /**
      * Fetches category data based on the "category_id" parameter.
@@ -50,6 +67,58 @@ const Category = () => {
             },
         })
             .then(res => setCategory(res.data.category)) // Update state with fetched data
+            .catch(err => console.log(err)); // Log errors if any
+
+        // Fetch best sellers from the backend API
+        axios.get("http://127.0.0.1:5000/api/listings", {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            params: {
+                category_id: filters.category_id, // Apply category filter
+                sort: "purchases", // Sort by number of purchases
+                order: "desc", // Order in descending order
+                start: 0, // Start from the first item
+                range: 8, // Limit to 8 items
+            }
+        })
+            .then(res => setBestSellers(res.data.listings)) // Update state with fetched data
+            .catch(err => console.log(err)); // Log errors if any
+
+        // Fetch new listings from the backend API
+        axios.get("http://127.0.0.1:5000/api/listings", {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            params: {
+                category_id: filters.category_id, // Filter by category ID
+                sort: "created_at", // Sort by creation date
+                order: "desc", // Order by descending (newest first)
+                start: 0, // Starting position
+                range: 8, // Number of listings to fetch
+            }
+        })
+            .then(res => setNewListings(res.data.listings)) // Update state with fetched data
+            .catch(err => console.log(err)); // Log errors if any
+
+        // Handle pagination by adjusting filters
+        if (filters.page) {
+            filters.start = ((filters.page - 1) * 12).toString(); // Start position for pagination
+            filters.range = "12"; // Set the range (number of items per page)
+        }
+
+        // Fetch listings from the backend API
+        axios.get("http://127.0.0.1:5000/api/listings", {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            params: {
+                category_id: filters.category_id, // Filter by category ID
+                start: filters.start, // Starting position
+                range: filters.range, // Number of listings to fetch
+            }
+        })
+            .then(res => setListings(res.data.listings)) // Update state with fetched data
             .catch(err => console.log(err)); // Log errors if any
     }, [location.search]); // Call on update of URL filters
 
@@ -100,9 +169,36 @@ const Category = () => {
                     </div>
                 </div>
                 {/* Category Sections */}
-                <BestSellers />
-                <NewListings />
-                <CategoryListings />
+                {sections.map((section, index) => (
+                    <div key={index}>
+                        <h1 className={`category${section.identifier}Head`}>{section.title}</h1>
+                        <div className={`category${section.identifier}`}>
+                            {/* Map through the best sellers and display them */}
+                            {section.listings.map((listing, index) => (
+                                <div className={`listing ${section.identifier !== "Listings" && index === 0 ? "first" : 
+                                    (section.identifier === "Listings" && index % 4 === 0 ? "first" : "")}`} key={index}>
+                                    <div className="image">
+                                        <img src={`data:image/jpg;base64,${listing.image_encoded}`} alt="" />
+                                    </div>
+                                    <div className="info">
+                                        <div className="review">
+                                            {renderStars(listing.average_review)} {/* Render the star ratings */}
+                                            <span className="totalReviews"
+                                                  style={{left: -16 * Math.ceil(listing.average_review) + "px"}}>
+                                                &emsp;{listing.total_reviews} {/* Display the total reviews */}
+                                            </span>
+                                        </div>
+                                        <Button className="title" onClick={() => navigateToListing(listing.listing_id, navigate)}>
+                                            {listing.title_short} {/* Display the listing title */}
+                                        </Button>
+                                        <h2 className="price">${listing.buy_now_price}</h2> {/* Display the price */}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                ))}
+
                 {/* Pagination Controls */}
                 <div className="pagination">
                     <Button onClick={() => pagination(-1)}><MdArrowBackIosNew className="icon" />&ensp;Previous</Button>

@@ -27,6 +27,9 @@ import "./AuthPage.scss"
  * @returns {JSX.Element} The rendered authentication page component.
  */
 const AuthPage = () => {
+    const navigate = useNavigate(); // Navigate hook for routing
+    const { login, createAccount } = useAuth(); // Access authentication functions from the AuthProvider context
+
     // State variables for user input fields
     const [username, setUsername] = useState(""); // Stores username input
     const [password, setPassword] = useState(""); // Stores password input
@@ -36,9 +39,6 @@ const AuthPage = () => {
     const [confirmPassword, setConfirmPassword] = useState(""); // Stores password confirmation input
     const [loginError, setLoginError] = useState(""); // Stores error message if passwords do not match
     const [isLogin, setIsLogin] = useState(true); // Boolean state to toggle between login and registration forms
-
-    const navigate = useNavigate(); // Navigate hook for routing
-    const { login, createAccount } = useAuth(); // Access authentication functions from the AuthProvider context
 
     /**
      * Handles the login form submission.
@@ -111,7 +111,6 @@ const AuthPage = () => {
                     <CardContent className="content">
                         {/* Authentication form */}
                         <form onSubmit={isLogin ? handleSubmitLogin : handleSubmitCreateAccount} className="form">
-
                             {/* Username Input Field */}
                             <TextField
                                 className="input"
@@ -141,6 +140,7 @@ const AuthPage = () => {
                                         onChange={(e) => setFirstName(e.target.value)}
                                         required
                                     />
+
                                     {/* Last Name Input */}
                                     <TextField
                                         className="nameInput"
@@ -154,6 +154,7 @@ const AuthPage = () => {
                                         onChange={(e) => setLastName(e.target.value)}
                                         required
                                     />
+
                                     {/* Email Input */}
                                     <TextField
                                         className="input"

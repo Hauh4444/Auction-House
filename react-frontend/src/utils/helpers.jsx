@@ -1,3 +1,4 @@
+// External Libraries
 import { LiaStarHalfSolid, LiaStarSolid } from "react-icons/lia";
 
 /**
@@ -44,4 +45,9 @@ const encodeImageToBase64 = (file) => {
     });
 };
 
-export { renderStars, encodeImageToBase64 };
+// Navigate to a specific listing page when a listing is clicked
+const navigateToListing = (id, navigate) => {
+    navigate(`/listing?key=${id}`);
+};
+
+export { renderStars, encodeImageToBase64, navigateToListing };

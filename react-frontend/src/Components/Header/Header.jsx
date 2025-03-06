@@ -4,7 +4,7 @@ import { BsGrid3X3GapFill } from "react-icons/bs";
 import { Button } from "@mui/material";
 
 // Internal Modules
-import Bar from "@/Components/Search/Bar/Bar";
+import SearchBar from "@/Components/Navigation/SearchBar/SearchBar.jsx";
 import CategoryNav from "@/Components/Navigation/CategoryNav/CategoryNav";
 
 // Stylesheets
@@ -17,7 +17,7 @@ import "./Header.scss";
  * Features:
  * - Navigation buttons for Home, Shop All, About, and Contact pages.
  * - A "Categories" button that toggles the display of a category navigation (except on the homepage).
- * - A search bar component (`Bar`).
+ * - A search bar component (`SearchBar`).
  * - A category navigation bar (`CategoryNav`), displayed on all pages except the homepage.
  *
  * @returns {JSX.Element} The header section with navigation and search functionalities.
@@ -65,8 +65,8 @@ const Header = () => {
                     )}
                 </div>
 
-                {/* Search Bar Component */}
-                <Bar />
+                {/* Search SearchBar Component */}
+                <SearchBar />
             </div>
 
             {/* Category Navigation (Hidden on Homepage) */}

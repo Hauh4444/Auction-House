@@ -54,12 +54,12 @@ const Popup = () => {
 
     /**
      * Updates the URL search parameters and state when a filter is changed.
-     * @param {string} filter The name of the filter being updated.
+     * @param {string} key The name of the filter being updated.
      * @param {string} value The value of the filter.
      */
-    function updateFilter(filter, value) {
+    function updateFilter(key, value) {
         // Handle sorting filter separately, as it involves both "sort" and "order" parameters
-        if (filter === "sort") {
+        if (key === "sort") {
             setSortBy(value); // Update the sort criteria
             if (value === "relevance") {
                 delete filters.sort; // Remove sort and order if "relevance" is selected
@@ -94,11 +94,11 @@ const Popup = () => {
             } else {
                 valueToSet = undefined; // Set filter value to undefined for "All" or empty
             }
-            setFilterState(filter, valueToSet); // Update the corresponding filter state
+            setFilterState(key, valueToSet); // Update the corresponding filter state
             if (valueToSet) {
-                filters[filter] = valueToSet; // Add to filters if value is set
+                filters[key] = valueToSet; // Add to filters if value is set
             } else {
-                delete filters[filter]; // Remove from filters if value is empty
+                delete filters[key]; // Remove from filters if value is empty
             }
         }
 

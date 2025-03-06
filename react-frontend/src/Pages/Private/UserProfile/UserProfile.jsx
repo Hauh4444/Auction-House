@@ -30,11 +30,11 @@ import "./UserProfile.scss";
  * @returns {JSX.Element} The rendered UserProfile page component.
  */
 const UserProfile = () => {
+    const auth = useAuth(); // Access authentication functions from the AuthProvider context
+
     const [edit, setEdit] = useState(false); // State to toggle between view and edit modes
     const [profile, setProfile] = useState({}) // State to hold profile data
     const [newProfilePicture, setNewProfilePicture] = useState(""); // For storing the new image
-
-    const auth = useAuth(); // Access authentication functions from the AuthProvider context
 
     // Fields to be displayed in the profile
     const fields = [

@@ -1,5 +1,6 @@
 // External Libraries
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button, Card, CardContent, CardHeader, FormControl, InputLabel, Select, MenuItem, TextField } from "@mui/material";
 import axios from "axios";
 
@@ -10,14 +11,14 @@ import { encodeImageToBase64 } from "@/utils/helpers"
 
 // Stylesheets
 import "./ProductUpload.scss"
-import {useNavigate} from "react-router-dom";
 
 const ProductUpload = () => {
+    const navigate = useNavigate(); // Navigate hook for routing
+
     const [listing, setListing] = useState({}) // State to hold listing data
     const [categories, setCategories] = useState([]); // State to hold category data
     const [listingCategory, setListingCategory] = useState("") // State to hold currently selected category data
     const tempImage = useState("") // State to hold blank encoded image
-    const navigate = useNavigate(); // Navigate hook for routing
 
     useEffect(() => {
         // Fetch categories from the backend API when the component mounts
