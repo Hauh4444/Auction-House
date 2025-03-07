@@ -23,11 +23,11 @@ class HistoryService:
         """
         orders = OrderMapper.get_all_orders(user_id=user_id, db_session=db_session)
 
-        if orders:
-            data = {"message": "Orders found", "orders": orders}
-            response = Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
-            return response
+        if not orders:
+            data = {"error": "Orders not found"}
+            return Response(response=jsonify(data).get_data(), status=404, mimetype="application/json")
 
-        data = {"error": "Orders not found"}
-        response = Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
-        return response
+        data = {"message": "Orders found", "orders": orders}
+        return Response(response=jsonify(data).get_data(), status=200, mimetype="application/json")
+
+        

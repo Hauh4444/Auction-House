@@ -4,10 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { TextField, Button, Card, CardContent, CardHeader } from "@mui/material";
 
 // Internal Modules
-import { useAuth } from "@/ContextAPI/AuthProvider";
+import { useAuth } from "@/ContextAPI/AuthContext";
 
 // Stylesheets
-import "./AuthPage.scss"
+import "./AuthPage.scss";
 
 /**
  * AuthPage Component
@@ -33,8 +33,8 @@ const AuthPage = () => {
     // State variables for user input fields
     const [username, setUsername] = useState(""); // Stores username input
     const [password, setPassword] = useState(""); // Stores password input
-    const [firstName, setFirstName] = useState(""); // Stores first name input (for registration)
-    const [lastName, setLastName] = useState(""); // Stores last name input (for registration)
+    const [first_name, set_first_name] = useState(""); // Stores first name input (for registration)
+    const [last_name, set_last_name] = useState(""); // Stores last name input (for registration)
     const [email, setEmail] = useState(""); // Stores email input (for registration)
     const [confirmPassword, setConfirmPassword] = useState(""); // Stores password confirmation input
     const [loginError, setLoginError] = useState(""); // Stores error message if passwords do not match
@@ -86,8 +86,8 @@ const AuthPage = () => {
         // Attempt create account authorization
         const success = await createAccount({
             username,
-            firstName,
-            lastName,
+            first_name,
+            last_name,
             email,
             password,
         });
@@ -101,7 +101,7 @@ const AuthPage = () => {
     };
 
     return (
-        <div className="authPage page">
+        <div className="authPage page" data-testid="authPage">
             <div className="authForm">
                 {/* Main container for authentication form */}
                 <Card className="card">
@@ -136,8 +136,8 @@ const AuthPage = () => {
                                         type="text"
                                         variant="outlined"
                                         fullWidth
-                                        value={firstName}
-                                        onChange={(e) => setFirstName(e.target.value)}
+                                        value={first_name}
+                                        onChange={(e) => set_first_name(e.target.value)}
                                         required
                                     />
 
@@ -150,9 +150,8 @@ const AuthPage = () => {
                                         type="text"
                                         variant="outlined"
                                         fullWidth
-                                        value={lastName}
-                                        onChange={(e) => setLastName(e.target.value)}
-                                        required
+                                        value={last_name}
+                                        onChange={(e) => set_last_name(e.target.value)}
                                     />
 
                                     {/* Email Input */}

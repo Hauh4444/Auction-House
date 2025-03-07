@@ -19,14 +19,13 @@ class UserService:
         """
         user = UserMapper.get_user(user_id=user_id, db_session=db_session)
 
-        if user:
-            data = {"message": "User found", "user": user}
-            response = Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
-            return response
+        if not user:
+            data = {"error": "User not found"}
+            return Response(response=jsonify(data).get_data(), status=404, mimetype="application/json")
 
-        data = {"error": "User not found"}
-        response = Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
-        return response
+        data = {"message": "User found", "user": user}
+        return Response(response=jsonify(data).get_data(), status=200, mimetype="application/json")
+
 
 
     @staticmethod
@@ -44,14 +43,13 @@ class UserService:
         """
         updated_rows = UserMapper.update_user(user_id=user_id, data=data, db_session=db_session)
 
-        if updated_rows:
-            data = {"message": "User updated", "updated_rows": updated_rows}
-            response = Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
-            return response
+        if not updated_rows:
+            data = {"error": "User not found"}
+            return Response(response=jsonify(data).get_data(), status=404, mimetype="application/json")
 
-        data = {"error": "User not found"}
-        response = Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
-        return response
+        data = {"message": "User updated", "updated_rows": updated_rows}
+        return Response(response=jsonify(data).get_data(), status=200, mimetype="application/json")
+
 
 
     @staticmethod
@@ -67,13 +65,13 @@ class UserService:
             A Response object with a success message if the user was deleted, or a 404 error if the user was not found.
         """
         ProfileService.delete_profile(user_id=user_id, db_session=db_session)
+
         deleted_rows = UserMapper.delete_user(user_id=user_id, db_session=db_session)
 
-        if deleted_rows:
-            data = {"message": "User deleted", "deleted_rows": deleted_rows}
-            response = Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
-            return response
+        if not deleted_rows:
+            data = {"error": "User not found"}
+            return Response(response=jsonify(data).get_data(), status=404, mimetype="application/json")
 
-        data = {"error": "User not found"}
-        response = Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
-        return response
+        data = {"message": "User deleted", "deleted_rows": deleted_rows}
+        return Response(response=jsonify(data).get_data(), status=200, mimetype="application/json")
+

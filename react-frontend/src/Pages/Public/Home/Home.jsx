@@ -19,7 +19,7 @@ import RightNav from "@/Components/Navigation/RightNav/RightNav";
 const Home = () => {
 
     return (
-        <div className="homePage page">
+        <div className="homePage page" data-testid="homePage">
             <div className="mainPage">
                 {/* Page Header */}
                 <Header />

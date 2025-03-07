@@ -17,10 +17,13 @@ class ProfileService:
         """
         profiles = ProfileMapper.get_all_profiles(db_session=db_session)
 
-        data = {"message": "Profiles found", "profiles": profiles}
-        response = Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
-        return response
+        if not profiles:
+            data = {"message": "No profiles found"}
+            return Response(response=jsonify(data).get_data(), status=404, mimetype="application/json")
 
+        data = {"message": "Profiles found", "profiles": profiles}
+        return Response(response=jsonify(data).get_data(), status=200, mimetype="application/json")
+        
 
     @staticmethod
     def get_profile(user_id, db_session=None):
@@ -36,14 +39,13 @@ class ProfileService:
         """
         profile = ProfileMapper.get_profile(user_id=user_id, db_session=db_session)
 
-        if profile:
-            data = {"message": "Profile found", "profile": profile}
-            response = Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
-            return response
+        if not profile:
+            data = {"error": "Profile not found"}
+            return Response(response=jsonify(data).get_data(), status=404, mimetype="application/json")
 
-        data = {"error": "Profile not found"}
-        response = Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
-        return response
+        data = {"message": "Profile found", "profile": profile}
+        return Response(response=jsonify(data).get_data(), status=200, mimetype="application/json")
+
 
 
     @staticmethod
@@ -58,17 +60,15 @@ class ProfileService:
         Returns:
             A Response object with the success message and newly created listing ID, or a 400 error if the title is missing.
         """
-        if not data.get("user_id") or not data.get("first_name") or not data.get("last_name"):
-            data = {"error": "Required fields are missing"}
-            response = Response(response=jsonify(data).get_data(), status=400, mimetype='application/json')
-            return response
-
         profile_id = ProfileMapper.create_profile(data=data, db_session=db_session)
 
-        data = {"message": "Profile created", "profile_id": profile_id}
-        response = Response(response=jsonify(data).get_data(), status=201, mimetype='application/json')
-        return response
+        if not profile_id:
+            data = {"message": "Error creating profile"}
+            return Response(response=jsonify(data).get_data(), status=400, mimetype="application/json")
 
+        data = {"message": "Profile created", "profile_id": profile_id}
+        return Response(response=jsonify(data).get_data(), status=201, mimetype="application/json")
+        
 
     @staticmethod
     def update_profile(profile_id, data, db_session=None):
@@ -85,14 +85,13 @@ class ProfileService:
         """
         updated_rows = ProfileMapper.update_profile(profile_id=profile_id, data=data, db_session=db_session)
 
-        if updated_rows:
-            data = {"message": "Profile updated", "updated_rows": updated_rows}
-            response = Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
-            return response
+        if not updated_rows:
+            data = {"error": "Profile not found"}
+            return Response(response=jsonify(data).get_data(), status=404, mimetype="application/json")
 
-        data = {"error": "Profile not found"}
-        response = Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
-        return response
+        data = {"message": "Profile updated", "updated_rows": updated_rows}
+        return Response(response=jsonify(data).get_data(), status=200, mimetype="application/json")
+
 
 
     @staticmethod
@@ -109,11 +108,10 @@ class ProfileService:
         """
         deleted_rows = ProfileMapper.delete_profile(user_id=user_id, db_session=db_session)
 
-        if deleted_rows:
-            data = {"message": "Profile deleted", "deleted_rows": deleted_rows}
-            response = Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
-            return response
+        if not deleted_rows:
+            data = {"error": "Profile not found"}
+            return Response(response=jsonify(data).get_data(), status=404, mimetype="application/json")
 
-        data = {"error": "Profile not found"}
-        response = Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
-        return response
+        data = {"message": "Profile deleted", "deleted_rows": deleted_rows}
+        return Response(response=jsonify(data).get_data(), status=200, mimetype="application/json")
+

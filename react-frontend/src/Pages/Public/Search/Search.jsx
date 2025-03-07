@@ -3,14 +3,15 @@ import { useEffect, useState } from "react";
 import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
 import { MdArrowBackIosNew, MdArrowForwardIos } from "react-icons/md";
 import { Button } from "@mui/material";
-import PropTypes from "prop-types";
 import axios from "axios";
+import PropTypes from "prop-types";
 
 // Internal Modules
 import Header from "@/Components/Header/Header";
 import SearchNav from "@/Components/Navigation/SearchNav/SearchNav";
 import RightNav from "@/Components/Navigation/RightNav/RightNav";
-import { renderStars, navigateToListing } from "@/utils/helpers.jsx";
+import { renderStars, navigateToListing } from "@/utils/helpers";
+import { useCart } from "@/ContextAPI/CartContext";
 
 // Stylesheets
 import "./Search.scss"
@@ -32,6 +33,8 @@ const Search = () => {
     const navigate = useNavigate(); // Navigate hook for routing
     const location = useLocation(); // Hook to access the current location (URL)
     const filters = Object.fromEntries(new URLSearchParams(location.search).entries()); // Extract query parameters from URL
+
+    const { addToCart } = useCart(); // Access authentication functions from the AuthProvider context
 
     const [listings, setListings] = useState([]); // State to hold product listings
     const [paginationButtons, setPaginationButtons] = useState(null); // State to store the pagination buttons
@@ -118,19 +121,16 @@ const Search = () => {
                                     {/* Render the star rating based on the average review */}
                                     {renderStars(listing.average_review)}
                                     {/* Display the total number of reviews */}
-                                    <span className="totalReviews"
-                                          style={{left: -16 * Math.ceil(listing.average_review) + "px"}}>
-                                &emsp;{listing.total_reviews}
-                            </span>
+                                    <span className="totalReviews" style={{left: -16 * Math.ceil(listing.average_review) + "px"}}>
+                                        &emsp;{listing.total_reviews}
+                                    </span>
                                 </div>
                                 <h2 className="price">
                                     ${listing.buy_now_price} {/* Display the product price */}
                                 </h2>
                                 <div className="bottomDetails">
                                     {/* Button to add the product to the cart */}
-                                    <Button className="addCartBtn">
-                                        Add to Cart
-                                    </Button>
+                                    <Button className="addCartBtn" onClick={() => addToCart(listing)}>Add to Cart</Button>
                                 </div>
                             </div>
                         </div>
@@ -146,7 +146,7 @@ const Search = () => {
 }
 
 // Define the expected shape of the listings prop
-SearchListings.propTypes = {
+Search.propTypes = {
     listing: PropTypes.shape({
         listing_id: PropTypes.number,
         title_short: PropTypes.string,

@@ -19,6 +19,7 @@ import StaffRoute from "@/Routes/StaffRoute";
 import AdminRoute from "@/Routes/AdminRoute";
 
 // Private Internal Modules
+import Cart from "@/Pages/Private/Cart/Cart";
 import History from "@/Pages/Private/History/History";
 import ListingDetails from "@/Pages/Private/ListingDetails/ListingDetails";
 import Lists from "@/Pages/Private/Lists/Lists";
@@ -78,6 +79,7 @@ const PublicRoutes = () => {
 
                 {/* Protected PublicRoutes for Authenticated Users */}
                 <Route element={<PrivateRoute />}>
+                    <Route path="/user/cart" element={<Cart />} />
                     <Route path="/user/history" element={<History />} />
                     <Route path="/user/listings/:id" element={<ListingDetails />} />
                     <Route path="/user/lists" element={<Lists />} />

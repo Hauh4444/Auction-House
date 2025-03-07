@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
 // Internal Modules
 import Header from "@/Components/Header/Header";
 import RightNav from "@/Components/Navigation/RightNav/RightNav";
-import { useAuth } from "@/ContextAPI/AuthProvider";
+import { useAuth } from "@/ContextAPI/AuthContext";
 import { encodeImageToBase64 } from "@/utils/helpers"
 
 // Stylesheets
@@ -92,7 +92,8 @@ const UserProfile = () => {
             <div className="mainPage">
                 {/* Page Header */}
                 <Header />
-                {/* profile Card */}
+
+                {/* Profile Card */}
                 <Card className="userProfileCard">
                     <CardHeader title="Your Profile" sx={{width: "fit-content", margin: "0 auto"}}></CardHeader>
                     <CardContent className="content">

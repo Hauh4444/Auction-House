@@ -6,16 +6,16 @@ import axios from "axios";
 // Internal Modules
 import Header from "@/Components/Header/Header";
 import RightNav from "@/Components/Navigation/RightNav/RightNav";
-import { useAuth } from "@/ContextAPI/AuthProvider"
+import { useAuth } from "@/ContextAPI/AuthContext"
 
 // Stylesheets
 import "./Security.scss"
 
 
 const Security = () => {
-    const [user, setUser] = useState({});
+    const auth = useAuth(); // Access authentication functions from the AuthProvider context
 
-    const auth = useAuth();
+    const [user, setUser] = useState({});
 
     // Fetch user data from the backend API
     useEffect(() => {

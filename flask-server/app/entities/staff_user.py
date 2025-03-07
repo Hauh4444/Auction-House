@@ -26,7 +26,6 @@ class StaffUser(UserMixin):
     """
     def __init__(
             self,
-            staff_id: int,
             username: str,
             password_hash: str,
             name: str,
@@ -37,6 +36,7 @@ class StaffUser(UserMixin):
             created_at: datetime | None = None,
             updated_at: datetime | None = None,
             last_login: datetime | None = None,
+            staff_id: int | None = None,
     ):
         self.staff_id = staff_id
         self.username = username

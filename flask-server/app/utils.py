@@ -38,4 +38,4 @@ def hash_password(password):
     Returns:
         A hashed version of the password.
     """
-    return hashlib.sha256(password.encode('utf-8')).hexdigest()
+    return hashlib.sha256(password.encode("utf-8")).hexdigest()

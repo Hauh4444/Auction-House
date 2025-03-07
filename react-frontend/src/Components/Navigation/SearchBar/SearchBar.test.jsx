@@ -7,7 +7,7 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom"
 
 // Internal Modules
-import SearchBar from "./SearchBar.jsx";
+import SearchBar from "./SearchBar";
 
 // Mock useNavigate before the tests
 const mockNavigate = vi.fn();

@@ -36,7 +36,7 @@ const RightNav = () => {
     const navigate = useNavigate(); // Navigate hook for routing
 
     return (
-        <nav className="rightNav" style={{flexBasis: "15%"}}> {/* Navigation container */}
+        <nav className="rightNav"> {/* Navigation container */}
             <div className="navBar"> {/* Navigation bar container */}
                 <Button className="btn" data-testid="menuBtn"> {/* Button for menu */}
                     <BsThreeDots className="menuBtn" style={{
@@ -52,7 +52,7 @@ const RightNav = () => {
                     <IoFlag className="fill" /> {/* Filled flag icon */}
                     <IoFlagOutline className="outline" /> {/* Outlined flag icon */}
                 </Button>
-                <Button className="btn" data-testid="cartBtn" style={{marginBottom: "15px"}}> {/* Button for cart */}
+                <Button className="btn" data-testid="cartBtn" style={{marginBottom: "15px"}} onClick={() => navigate("/user/cart")}> {/* Button for cart */}
                     <IoCart className="fill" /> {/* Filled cart icon */}
                     <IoCartOutline className="outline" /> {/* Outlined cart icon */}
                 </Button>

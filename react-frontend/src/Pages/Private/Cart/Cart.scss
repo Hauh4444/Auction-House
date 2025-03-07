@@ -1,0 +1,127 @@
+// Built-In Modules
+@use "sass:map";
+
+// Custom Variables
+@use "@/assets/variables.modules.scss" as *;
+
+.cartPage {
+    .mainPage {
+        .cartListings {
+            width: 50%;
+            margin: 50px 35% 50px 15%;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+
+            .cartItem {
+                height: 200px;
+                margin: 15px 0;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 2px 4px map.get($theme-colors, mainColor4);
+                background-color: white;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+
+                .itemImage {
+                    width: 200px;
+                    height: 200px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin-right: 20px;
+
+                    img {
+                        max-width: 100%;
+                        max-height: 100%;
+                        object-fit: contain;
+                    }
+                }
+
+                .itemContent {
+                    height: 100%;
+                    margin-top: 15px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-around;
+
+                    .itemHead,
+                    .itemPrice {
+                        font-size: 18px;
+                        color: map.get($theme-colors, mainColor3);
+                    }
+
+                    .itemHead {
+                        width: fit-content;
+                        padding: 0;
+                        display: flex;
+                        overflow: hidden;
+                        align-items: flex-start;
+                        text-align: left;
+                        text-transform: none;
+
+                        &:hover {
+                            background-color: map.get($theme-colors, mainColor1);
+                        }
+                    }
+
+                    .itemPrice {
+                        width: fit-content;
+                        margin: 0;
+                    }
+
+                    .itemQuantity {
+                        width: fit-content;
+                        border-radius: 20px;
+                        box-shadow: 0 2px 4px map.get($theme-colors, mainColor4);
+
+                        .quantityDown,
+                        .quantity,
+                        .quantityUp {
+                            background-color: map.get($theme-colors, mainColor1);
+                            border: none;
+                            display: inline-block;
+                            vertical-align: middle;
+                            color: map.get($theme-colors, mainColor3);
+                        }
+
+                        .quantityDown,
+                        .quantityUp {
+                            min-width: 40px;
+                            min-height: 40px;
+                            padding: 0;
+
+                            svg {
+                                display: block;
+                                margin: auto;
+                            }
+
+                            .icon {
+                                vertical-align: middle;
+                                fill: map.get($theme-colors, mainColor3);
+                            }
+                        }
+
+                        .quantityDown {
+                            border-radius: 20px 0 0 20px;
+                        }
+
+                        .quantity {
+                            width: 40px;
+                            height: 40px;
+                            line-height: 40px;
+                            border-radius: 0;
+                            display: inline-flex;
+                            justify-content: center;
+                        }
+
+                        .quantityUp {
+                            border-radius: 0 20px 20px 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

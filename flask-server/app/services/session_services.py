@@ -25,6 +25,9 @@ class SessionService:
         }
         session_id = SessionMapper.create_session(data=data, db_session=db_session)
 
+        if not session_id:
+            data = {"message": "Error creating session"}
+            return Response(response=jsonify(data).get_data(), status=400, mimetype="application/json")
+
         data = {"message": "Session created", "session_id": session_id}
-        response = Response(response=jsonify(data).get_data(), status=201, mimetype='application/json')
-        return response
+        return Response(response=jsonify(data).get_data(), status=201, mimetype="application/json")

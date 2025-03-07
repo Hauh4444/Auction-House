@@ -80,7 +80,7 @@ const SearchNav = () => {
 
     return (
         <>
-            <div className="searchNav">
+            <nav className="searchNav">
                 {/* Button for Best Results */}
                 <Button className="navBtn best-results" data-testid="bestResultsBtn" onClick={(e) => {
                     handleNavClick(e, {page: null, start: 0, range: 10, nav: "best-results"});
@@ -113,8 +113,9 @@ const SearchNav = () => {
                 <Button className="navBtn filtersBtn" data-testid="filtersBtn" onClick={toggleFiltersDisplay}>
                     Filters&ensp;<MdFilterAlt className="icon" />
                 </Button>
-            </div>
-            <Popup /> {/* The filter popup component */}
+            </nav>
+            {/* Filter Popup */}
+            <Popup />
         </>
     );
 }

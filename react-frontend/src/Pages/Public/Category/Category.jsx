@@ -8,7 +8,7 @@ import axios from "axios";
 // Internal Modules
 import Header from "@/Components/Header/Header";
 import RightNav from "@/Components/Navigation/RightNav/RightNav";
-import { renderStars, navigateToListing } from "@/utils/helpers.jsx";
+import { renderStars, navigateToListing } from "@/utils/helpers";
 
 // Stylesheets
 import "./Category.scss";

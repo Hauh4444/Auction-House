@@ -2,7 +2,7 @@
 import { Navigate, Outlet } from "react-router-dom";
 
 // Internal Modules
-import { useAuth } from "@/ContextAPI/AuthProvider";
+import { useAuth } from "@/ContextAPI/AuthContext";
 
 /**
  * AdminRoute Component

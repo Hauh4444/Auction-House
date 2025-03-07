@@ -1,7 +1,7 @@
 // Built In Modules
 @use "sass:map";
 // Custom Variables
-@use "@/assets/variables.modules" as *;
+@use "@/assets/variables.modules.scss" as *;
 
 .authPage {
     .authForm {

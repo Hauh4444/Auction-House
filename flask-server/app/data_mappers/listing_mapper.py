@@ -37,7 +37,7 @@ class ListingMapper:
         if "query" in args:
             query = args["query"]
             conditions.append("(title LIKE ? OR description LIKE ?)")
-            values.extend([f'%{query}%', f'%{query}%'])
+            values.extend([f"%{query}%", f"%{query}%"])
 
         if conditions:
             statement += " WHERE " + " AND ".join(conditions)

@@ -40,7 +40,7 @@ const HistoryNav = () => {
 
     return (
         <>
-            <div className="searchNav">
+            <nav className="searchNav">
                 {["orders", "transactions", "listings", "reviews"].map((item, index) => (
                     <Button className={`navBtn ${item}`} data-testid={`${item}Btn`} key={index} onClick={(e) => {
                         handleNavClick(e, item);
@@ -48,7 +48,7 @@ const HistoryNav = () => {
                         {String(item).charAt(0).toUpperCase() + String(item).slice(1)}
                     </Button>
                 ))}
-            </div>
+            </nav>
         </>
     );
 }

@@ -38,7 +38,7 @@ const UserAccount = () => {
     };
 
     return (
-        <div className="userAccountPage page">
+        <div className="userAccountPage page" data-testid="userAccountPage">
             <div className="mainPage">
                 {/* Page Header */}
                 <Header />

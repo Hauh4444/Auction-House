@@ -4,7 +4,7 @@ import { BsGrid3X3GapFill } from "react-icons/bs";
 import { Button } from "@mui/material";
 
 // Internal Modules
-import SearchBar from "@/Components/Navigation/SearchBar/SearchBar.jsx";
+import SearchBar from "@/Components/Navigation/SearchBar/SearchBar";
 import CategoryNav from "@/Components/Navigation/CategoryNav/CategoryNav";
 
 // Stylesheets

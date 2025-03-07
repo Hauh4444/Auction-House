@@ -1,25 +1,19 @@
 // External Libraries
 import { useEffect, useState } from  "react";
 import { useLocation } from "react-router-dom";
+import { FacebookIcon, FacebookShareButton, PinterestIcon, PinterestShareButton, TwitterShareButton, XIcon } from "react-share";
+import { Button } from "@mui/material";
 import axios from "axios";
+import PropTypes from "prop-types";
 
 // Internal Modules
 import Header from "@/Components/Header/Header";
 import RightNav from "@/Components/Navigation/RightNav/RightNav";
+import { renderStars } from "@/utils/helpers";
+import { useCart } from "@/ContextAPI/CartContext";
 
 // Stylesheets
 import "./Listing.scss";
-import {Button} from "@mui/material";
-import {
-    FacebookIcon,
-    FacebookShareButton,
-    PinterestIcon,
-    PinterestShareButton,
-    TwitterShareButton,
-    XIcon
-} from "react-share";
-import {renderStars} from "@/utils/helpers.jsx";
-import PropTypes from "prop-types";
 
 /**
  * Listing Component
@@ -38,6 +32,8 @@ const Listing = () => {
     const location = useLocation(); // Hook to access the current location (URL)
     // Extract query parameters from the URL
     const filters = Object.fromEntries(new URLSearchParams(location.search).entries());
+
+    const { addToCart } = useCart(); // Access authentication functions from the AuthProvider context
 
     const [listing, setListing] = useState({}); // State to store the listing data
     const [reviews, setReviews] = useState([]);
@@ -97,7 +93,7 @@ const Listing = () => {
 
                             {/* Display buy-now price */}
                             <div className="price">${listing.buy_now_price}</div>
-                            <Button className="addCartBtn">Add to Cart</Button>
+                            <Button className="addCartBtn" onClick={() => addToCart(listing)}>Add to Cart</Button>
 
                             {/* Social media share buttons */}
                             <div className="shareButtons">

@@ -17,14 +17,12 @@ class AuthService:
             A Response object with the authentication status and user ID if authenticated, otherwise a 401 error.
         """
 
-        if current_user.is_authenticated:
-            data = {"authenticated": True, "user": current_user.id}
-            response = Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
-            return response
+        if not current_user.is_authenticated:
+            data = {"authenticated": False}
+            return Response(response=jsonify(data).get_data(), status=401, mimetype="application/json")
 
-        data = {"authenticated": False}
-        response = Response(response=jsonify(data).get_data(), status=401, mimetype="application/json")
-        return response
+        data = {"authenticated": True, "user": current_user.id}
+        return Response(response=jsonify(data).get_data(), status=200, mimetype="application/json")
 
 
     @staticmethod
@@ -39,50 +37,63 @@ class AuthService:
         Returns:
             A Response object indicating success with the user ID or an error message.
         """
-        data["password_hash"] = hash_password(password=data["password"])
-
-        if not data.get("username") or not data.get("password_hash") or not data.get("email"):
+        if not data.get("username") or not data.get("password") or not data.get("email"):
             data = {"error": "Username, password, and email are required"}
-            response = Response(response=jsonify(data).get_data(), status=400, mimetype='application/json')
-            return response
+            return Response(response=jsonify(data).get_data(), status=400, mimetype="application/json")
 
-        ProfileService.create_profile(data=data, db_session=db_session)
-        user_id = AuthMapper.create_user(data=data, db_session=db_session)
+        user_data = {"username": data["username"], "password_hash": hash_password(password=data["password"]), "email": data["email"]}
+        user_id = AuthMapper.create_user(data=user_data, db_session=db_session)
 
-        data = {"message": "User registered successfully", "user_id": user_id}
-        response = Response(response=jsonify(data).get_data(), status=201, mimetype='application/json')
-        return response
+        if not user_id:
+            data = {"error": "Error creating user"}
+            return Response(response=jsonify(data).get_data(), status=400, mimetype="application/json")
+
+        profile_data = {"user_id": user_id, "first_name": data["first_name"], "last_name": data["last_name"]}
+        profile_id = ProfileService.create_profile(data=profile_data, db_session=db_session).get_json().get("profile_id")
+
+        if not profile_id:
+            data = {"error": "Error creating profile"}
+            return Response(response=jsonify(data).get_data(), status=400, mimetype="application/json")
+
+        data = {"message": "User registered successfully", "user_id": user_id, "profile_id": profile_id}
+        return Response(response=jsonify(data).get_data(), status=201, mimetype="application/json")
 
 
     @staticmethod
-    def login_user(username, password, db_session=None):
+    def login_user(data, db_session=None):
         """
         Logs in a user by verifying their username and password.
 
         Args:
-            username: The username of the user.
-            password: The password provided by the user.
+            data: A dictionary containing the request arguments.
             db_session: Optional database session to be used in tests.
 
         Returns:
             A Response object containing a success message and the user details if login is successful,
             or a 401 error if the username or password is incorrect.
         """
-        user = AuthMapper.get_user_by_username(username, db_session)
-        if user and user.password_hash == hash_password(password):
-            session["user_id"], session["role"] = (user.user_id, "user") if user.__class__.__name__ == "User" else (user.staff_id, user.role)
-            AuthMapper.update_last_login(user_id=session["user_id"], role=session["role"] if "role" in session else "user", db_session=db_session)
-            user.is_active = True
-            login_user(user, remember=True)
-            SessionService.create_session(db_session)
+        if not data.get("username") or not data.get("password"):
+            return jsonify({"error": "Username and password are required"}), 400
 
-            data = {"message": "Login successful", "user": user}
-            response = Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
-            return response
+        user = AuthMapper.get_user_by_username(data.get("username"), db_session)
 
-        data = {"error": "Invalid username or password"}
-        response = Response(response=jsonify(data).get_data(), status=401, mimetype='application/json')
-        return response
+        if not user or not user.password_hash == hash_password(data.get("password")):
+            data = {"error": "Invalid username or password"}
+            return Response(response=jsonify(data).get_data(), status=401, mimetype="application/json")
+
+        if user.__class__.__name__ == "User":
+            session["user_id"], session["role"] = (user.user_id, "user")
+        else:
+            session["user_id"], session["role"] = (user.staff_id, user.role)
+
+        login_user(user, remember=True)
+        user.is_active = True
+
+        AuthMapper.update_last_login(user_id=session["user_id"], role=session["role"], db_session=db_session)
+        SessionService.create_session(db_session)
+
+        data = {"message": "Login successful", "user": user}
+        return Response(response=jsonify(data).get_data(), status=200, mimetype="application/json")
 
 
     @staticmethod
@@ -93,39 +104,47 @@ class AuthService:
         Returns:
             A Response object indicating the success of the logout operation.
         """
-        current_user.is_active = False
         logout_user()
         session.clear()
+        current_user.is_active = False
 
         data = {"message": "Logout successful"}
-        response = Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
-        return response
+        return Response(response=jsonify(data).get_data(), status=200, mimetype="application/json")
 
 
     @staticmethod
-    def password_reset_request(email):
+    def password_reset_request(data):
         """
         Handles a password reset request.
 
         Args:
-            email: The email of the user requesting a password reset.
+            data: A dictionary containing the request arguments.
 
         Returns:
             A Response object indicating whether the request was successful.
         """
-        return email
+        if not data.get("email"):
+            data = {"error": "Email is required"}
+            return Response(response=jsonify(data).get_data(), status=400, mimetype="application/json")
+
+        data = {"message": "Password reset request sent"}
+        return Response(response=jsonify(data).get_data(), status=200, mimetype="application/json")
 
 
     @staticmethod
-    def reset_user_password(reset_token, new_password):
+    def reset_user_password(data, db_session=None):
         """
         Resets a user's password using a reset token.
 
         Args:
-            reset_token: The token used to verify the password reset request.
-            new_password: The new password to set for the user.
+            data: A dictionary containing the request arguments.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             A Response object indicating whether the password reset was successful.
         """
-        return reset_token, new_password
+        if not data.get("reset_token") or not data.get("new_password"):
+            return jsonify({"error": "Reset token and new password are required"}), 400
+
+        data = {"message": "Password successfully reset"}
+        return Response(response=jsonify(data).get_data(), status=200, mimetype="application/json")

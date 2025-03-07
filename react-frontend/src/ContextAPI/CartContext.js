@@ -1,5 +1,8 @@
-import { createContext } from "react";
+// External Libraries
+import { createContext, useContext } from "react";
 
-const CartContext = createContext(null);
+// Create the cart context
+export const CartContext = createContext(null);
 
-export default CartContext;
+// Custom hook to access cart context
+export const useCart = () => useContext(CartContext);

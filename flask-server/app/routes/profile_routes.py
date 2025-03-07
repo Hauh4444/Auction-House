@@ -4,11 +4,11 @@ from flask_login import login_required
 from ..services import ProfileService
 
 # Blueprint for profile-related routes
-bp = Blueprint('profile_bp', __name__, url_prefix="/api/profile")
+bp = Blueprint("profile_bp", __name__, url_prefix="/api/profile")
 
 
 # GET /api/profile
-@bp.route('/', methods=['GET'])
+@bp.route("/", methods=["GET"])
 @login_required
 def get_all_profiles(db_session=None):
     """Retrieve all profiles.
@@ -23,7 +23,7 @@ def get_all_profiles(db_session=None):
 
 
 # GET /api/profile/{id}
-@bp.route('/<int:user_id>', methods=['GET'])
+@bp.route("/<int:user_id>", methods=["GET"])
 @login_required
 def get_profile(user_id, db_session=None):
     """Retrieve profile information by user ID.
@@ -39,7 +39,7 @@ def get_profile(user_id, db_session=None):
 
 
 # PUT /api/profile/{id}
-@bp.route('/<int:profile_id>', methods=['PUT'])
+@bp.route("/<int:profile_id>", methods=["PUT"])
 @login_required
 def update_profile(profile_id, db_session=None):
     """Update an existing profile.

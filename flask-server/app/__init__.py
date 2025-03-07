@@ -12,6 +12,7 @@ from .utils import login_manager
 from .database import backup_db, get_db
 from .routes import *
 
+# Load environment variables
 load_dotenv()
 
 # Initialize Flask application
@@ -25,7 +26,7 @@ app.config.from_object(config_class)
 limiter = Limiter(
     get_remote_address,
     app=app,
-    default_limits=["10000 per hour", "2000 per minute"], # Default limit for all routes
+    default_limits=["10000 per hour", "2000 per minute"],
     storage_uri="memory://",
 )
 
@@ -41,23 +42,21 @@ for _, module_name, _ in pkgutil.iter_modules(routes.__path__):
     # Dynamically import the module
     module = importlib.import_module(name=f".{module_name}", package="app.routes")
     # Register the module blueprint
-    if hasattr(module, 'bp'):
+    if hasattr(module, "bp"):
         app.register_blueprint(module.bp)
 
+# Schedule background job to backup database
+scheduler = BackgroundScheduler()
+scheduler.add_job(backup_db, trigger="cron", hour=12, minute=0)  # Runs every day at Noon
+scheduler.start()
 
-@app.route('/test', methods=['GET'])
+
+# Health check route
+@app.route("/test", methods=["GET"])
 def test():
     """Health check endpoint to verify server status.
 
     Returns:
         str: "Success" message if the server is running.
     """
-    return 'Success'
-
-
-# Schedule background job to backup database
-scheduler = BackgroundScheduler()
-scheduler.add_job(backup_db, trigger='cron', hour=12, minute=0) # Runs every day at Noon
-scheduler.start()
-
-get_db()
+    return "Success"
