@@ -21,7 +21,6 @@ const Cart = () => {
 
     const [cartItems, setCartItems] = useState([]);
 
-    // Fetch cart items from localStorage when component mounts
     useEffect(() => {
         getCartItems();
     }, []);

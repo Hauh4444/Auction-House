@@ -13,6 +13,16 @@ import Header from "./Header";
 // Mocking axios to return mock data for categories
 vi.mock("axios");
 
+// Mock useNavigate before the tests
+const mockNavigate = vi.fn();
+vi.mock("react-router-dom", async (importOriginal) => {
+    const actual = await importOriginal();
+    return {
+        ...actual,
+        useNavigate: () => mockNavigate,
+    };
+});
+
 describe("Header Component", () => {
     // Mock categories response
     const mockCategories = {
@@ -43,6 +53,8 @@ describe("Header Component", () => {
         expect(screen.queryByText("Shop All")).toBeInTheDocument();
         expect(screen.queryByText("About")).toBeInTheDocument();
         expect(screen.queryByText("Contact")).toBeInTheDocument();
+        expect(screen.queryByPlaceholderText("Search")).toBeInTheDocument();
+        expect(screen.queryByTestId("searchBtn")).toBeInTheDocument();
     });
 
     it("renders the 'Categories' button when not on the homepage", async () => {
@@ -101,4 +113,65 @@ describe("Header Component", () => {
         });
     });
 
+    it("navigates to the home page when search input is empty", () => {
+        render(
+            <MemoryRouter>
+                <Header />
+            </MemoryRouter>
+        );
+
+        // Set the input value to be empty (already default state)
+        fireEvent.click(screen.queryByTestId("searchBtn")); // Trigger the search button click
+
+        // Expect navigate to have been called with the home page params
+        expect(mockNavigate).toHaveBeenCalledWith({
+            pathname: "/",
+            search: "nav=view-all", // Default view on home page
+        });
+    });
+
+    it("navigates to the search results page with the query when search input is not empty", () => {
+        render(
+            <MemoryRouter>
+                <Header />
+            </MemoryRouter>
+        );
+
+        // Set the query to a non-empty value
+        fireEvent.change(screen.queryByPlaceholderText("Search"), {
+            target: { value: "category" },
+        });
+
+        fireEvent.click(screen.queryByTestId("searchBtn")); // Trigger the search button click
+
+        // Expect navigate to have been called with the search page params
+        expect(mockNavigate).toHaveBeenCalledWith({
+            pathname: "/search",
+            search: "query=category&start=0&range=10&nav=best-results",
+        });
+    });
+
+    it("navigates to the search results page when Enter key is pressed", () => {
+        render(
+            <MemoryRouter>
+                <Header />
+            </MemoryRouter>
+        );
+
+        // Set the query to a non-empty value
+        fireEvent.change(screen.queryByPlaceholderText("Search"), {
+            target: { value: "category" },
+        });
+
+        // Trigger the Enter keydown event
+        fireEvent.keyDown(screen.queryByPlaceholderText("Search"), {
+            key: "Enter",
+        });
+
+        // Expect navigate to have been called with the correct search page params, including the "?"
+        expect(mockNavigate).toHaveBeenCalledWith({
+            pathname: "/search",
+            search: "query=category&start=0&range=10&nav=best-results", // Ensure the "?" is included here
+        });
+    });
 });

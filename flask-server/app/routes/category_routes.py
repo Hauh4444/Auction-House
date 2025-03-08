@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify, Response, session
-from flask_login import login_required
+from flask_login import login_required, current_user
 
 from ..services import CategoryService
 

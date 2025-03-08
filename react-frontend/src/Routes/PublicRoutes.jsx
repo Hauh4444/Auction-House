@@ -21,8 +21,8 @@ import AdminRoute from "@/Routes/AdminRoute";
 // Private Internal Modules
 import Cart from "@/Pages/Private/Cart/Cart";
 import History from "@/Pages/Private/History/History";
-import ListingDetails from "@/Pages/Private/ListingDetails/ListingDetails";
 import Lists from "@/Pages/Private/Lists/Lists";
+import ManageListing from "@/Pages/Private/ManageListing/ManageListing.jsx";
 import Messages from "@/Pages/Private/Messages/Messages";
 import MyBids from "@/Pages/Private/MyBids/MyBids";
 import ProductUpload from "@/Pages/Private/ProductUpload/ProductUpload";
@@ -81,8 +81,8 @@ const PublicRoutes = () => {
                 <Route element={<PrivateRoute />}>
                     <Route path="/user/cart" element={<Cart />} />
                     <Route path="/user/history" element={<History />} />
-                    <Route path="/user/listings/:id" element={<ListingDetails />} />
                     <Route path="/user/lists" element={<Lists />} />
+                    <Route path="/user/listings/:id" element={<ManageListing />} />
                     <Route path="/user/messages" element={<Messages />} />
                     <Route path="/user/my-bids" element={<MyBids />} />
                     <Route path="/user/upload-product" element={<ProductUpload />} />

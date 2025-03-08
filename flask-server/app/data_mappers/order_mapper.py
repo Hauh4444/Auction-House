@@ -5,10 +5,11 @@ from ..entities import Order
 class OrderMapper:
     """Handles database operations related to orders."""
     @staticmethod
-    def get_all_orders(db_session=None):
+    def get_all_orders(user_id, db_session=None):
         """Retrieve all orders from the database.
 
         Args:
+            user_id (int): The unique identifier of the user.
             db_session: Optional database session to be used in tests.
 
         Returns:
@@ -16,7 +17,7 @@ class OrderMapper:
         """
         db = db_session or get_db()
         cursor = db.cursor()
-        cursor.execute("SELECT * FROM orders")
+        cursor.execute("SELECT * FROM orders WHERE user_id = ?", (user_id,))
         orders = cursor.fetchall()
         return [Order(**order).to_dict() for order in orders]
 
