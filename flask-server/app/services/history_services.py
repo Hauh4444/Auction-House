@@ -1,5 +1,5 @@
 from flask import jsonify, Response
-from ..data_mappers import OrderMapper
+from ..data_mappers import OrderMapper, ListingMapper, TransactionMapper, DeliveryMapper, SupportTicketMapper, ReviewMapper
 
 
 class HistoryService:
@@ -29,60 +29,73 @@ class HistoryService:
 
         data = {"error": "Orders not found"}
         response = Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
-        return response
-    
+
     @staticmethod
-    def get_order_by_id(order_id, db_session=None):
+    def get_user_listings(user_id, db_session=None):
         """
-        Retrieves an order by its ID
+        Retrieves a user's listings
         """
-        order = OrderMapper.get_order_by_id(order_id, db_session=db_session)
-        
-        if order:
-            data = {"message": "Order found", "order": order}
+        listings = ListingMapper.get_all_listings(user_id=user_id, db_session=db_session)
+
+        if listings:
+            data = {"message": "Listings found", "listings": listings}
             return Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
-        
-        data = {"error": "Order not found"}
+
+        data = {"error": "Listings not found"}
         return Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
 
     @staticmethod
-    def create_order(data, db_session=None):
+    def get_user_transactions(user_id, db_session=None):
         """
-        Creates a new order
+        Retrieves a user's transactions
         """
-        order_id = OrderMapper.create_order(data, db_session=db_session)
-        
-        if order_id:
-            data = {"message": "Order created successfully", "order_id": order_id}
-            return Response(response=jsonify(data).get_data(), status=201, mimetype='application/json')
-        
-        data = {"error": "Failed to create order"}
-        return Response(response=jsonify(data).get_data(), status=400, mimetype='application/json')
+        transactions = TransactionMapper.get_all_transactions(user_id=user_id, db_session=db_session)
+
+        if transactions:
+            data = {"message": "Transactions found", "transactions": transactions}
+            return Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
+
+        data = {"error": "Transactions not found"}
+        return Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
 
     @staticmethod
-    def update_order(order_id, data, db_session=None):
+    def get_user_deliveries(user_id, db_session=None):
         """
-        Updates an existing order
+        Retrieves a user's deliveries
         """
-        rows_updated = OrderMapper.update_order(order_id, data, db_session=db_session)
-        
-        if rows_updated:
-            data = {"message": "Order updated successfully"}
+        deliveries = DeliveryMapper.get_all_deliveries(user_id=user_id, db_session=db_session)
+
+        if deliveries:
+            data = {"message": "Deliveries found", "deliveries": deliveries}
             return Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
-        
-        data = {"error": "Order not found or no changes made"}
-        return Response(response=jsonify(data).get_data(), status=400, mimetype='application/json')
+
+        data = {"error": "Deliveries not found"}
+        return Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
 
     @staticmethod
-    def delete_order(order_id, db_session=None):
+    def get_user_support_tickets(user_id, db_session=None):
         """
-        Deletes an order by ID
+        Retrieves a user's support tickets
         """
-        rows_deleted = OrderMapper.delete_order(order_id, db_session=db_session)
-        
-        if rows_deleted:
-            data = {"message": "Order deleted successfully"}
+        tickets = SupportTicketMapper.get_all_support_tickets(user_id=user_id, db_session=db_session)
+
+        if tickets:
+            data = {"message": "Support tickets found", "support_tickets": tickets}
             return Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
-        
-        data = {"error": "Order not found"}
+
+        data = {"error": "Support tickets not found"}
+        return Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
+
+    @staticmethod
+    def get_user_reviews(user_id, db_session=None):
+        """
+        Retrieves a user's reviews
+        """
+        reviews = ReviewMapper.get_all_reviews(user_id=user_id, db_session=db_session)
+
+        if reviews:
+            data = {"message": "Reviews found", "reviews": reviews}
+            return Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
+
+        data = {"error": "Reviews not found"}
         return Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
