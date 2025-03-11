@@ -10,7 +10,8 @@ bp = Blueprint("category_bp", __name__, url_prefix="/api/categories")
 # GET /api/categories
 @bp.route("/", methods=["GET"])
 def get_all_categories(db_session=None):
-    """Retrieve all categories.
+    """
+    Retrieve all categories.
 
     Args:
         db_session: Optional database session to be used in tests.
@@ -25,7 +26,8 @@ def get_all_categories(db_session=None):
 # GET /api/categories/{id}
 @bp.route("/<int:category_id>", methods=["GET"])
 def get_category(category_id, db_session=None):
-    """Retrieve a single category by its ID.
+    """
+    Retrieve a single category by its ID.
 
     Args:
         category_id (int): The ID of the category to retrieve.

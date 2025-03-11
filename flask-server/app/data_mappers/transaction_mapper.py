@@ -5,8 +5,9 @@ from ..entities import Transaction
 class TransactionMapper:
     """Handles database operations related to transactions."""
     @staticmethod
-    def get_all_transactions(db_session=None):
-        """Retrieve all transactions from the database.
+    def get_all_transactions(buyer_id, db_session=None):
+        """
+        Retrieve all transactions from the database.
 
         Args:
             db_session: Optional database session to be used in tests.
@@ -16,14 +17,15 @@ class TransactionMapper:
         """
         db = db_session or get_db()
         cursor = db.cursor()
-        cursor.execute("SELECT * FROM transactions")
+        cursor.execute("SELECT * FROM transactions WHERE buyer_id = ?", (buyer_id,))
         transactions = cursor.fetchall()
         return [Transaction(**transaction).to_dict() for transaction in transactions]
 
 
     @staticmethod
     def get_transaction_by_id(transaction_id, db_session=None):
-        """Retrieve a transaction by its ID.
+        """
+        Retrieve a transaction by its ID.
 
         Args:
             transaction_id (int): The ID of the transaction to retrieve.

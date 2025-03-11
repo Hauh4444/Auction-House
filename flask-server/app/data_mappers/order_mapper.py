@@ -6,7 +6,8 @@ class OrderMapper:
     """Handles database operations related to orders."""
     @staticmethod
     def get_all_orders(user_id, db_session=None):
-        """Retrieve all orders from the database.
+        """
+        Retrieve all orders from the database.
 
         Args:
             user_id (int): The unique identifier of the user.
@@ -24,7 +25,8 @@ class OrderMapper:
 
     @staticmethod
     def get_order_by_id(order_id, db_session=None):
-        """Retrieve an order by its ID.
+        """
+        Retrieve an order by its ID.
 
         Args:
             order_id (int): The ID of the order to retrieve.
@@ -100,7 +102,7 @@ class OrderMapper:
         """
         db = db_session or get_db()
         cursor = db.cursor()
-        cursor.execute("DELETE FROM orders WHERE order_id=?", (order_id,))
+        cursor.execute("DELETE FROM orders WHERE order_id = ?", (order_id,))
         db.commit()
         return cursor.rowcount
 

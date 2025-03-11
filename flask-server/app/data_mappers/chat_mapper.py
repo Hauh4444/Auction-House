@@ -6,7 +6,8 @@ class ChatMapper:
     """Handles database operations related to chats."""
     @staticmethod
     def get_all_chats(db_session=None):
-        """Retrieve all chats from the database.
+        """
+        Retrieve all chats from the database.
 
         Args:
             db_session: Optional database session to be used in tests.
@@ -23,7 +24,8 @@ class ChatMapper:
 
     @staticmethod
     def get_chat_by_id(chat_id, db_session=None):
-        """Retrieve a chat by its ID.
+        """
+        Retrieve a chat by its ID.
 
         Args:
             chat_id (int): The ID of the chat to retrieve.

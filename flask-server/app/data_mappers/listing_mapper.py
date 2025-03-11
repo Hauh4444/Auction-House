@@ -6,7 +6,8 @@ class ListingMapper:
     """Handles database operations related to listings."""
     @staticmethod
     def get_all_listings(args, db_session=None):
-        """Retrieve all listings with optional filtering, sorting, and pagination.
+        """
+        Retrieve all listings with optional filtering, sorting, and pagination.
 
         Args:
             args (dict): Dictionary of query parameters.
@@ -23,10 +24,10 @@ class ListingMapper:
 
         # Add conditions
         if "category_id" in args:
-            conditions.append("category_id=?")
+            conditions.append("category_id = ?")
             values.append(args["category_id"])
         if "listing_type" in args:
-            conditions.append("listing_type=?")
+            conditions.append("listing_type = ?")
             values.append(args["listing_type"])
         if "min_price" in args:
             conditions.append("buy_now_price > ?")
@@ -58,7 +59,8 @@ class ListingMapper:
 
     @staticmethod
     def get_listing_by_id(listing_id, db_session=None):
-        """Retrieve a single listing by its ID.
+        """
+        Retrieve a single listing by its ID.
 
         Args:
             listing_id (int): The ID of the listing to retrieve.
@@ -69,7 +71,7 @@ class ListingMapper:
         """
         db = db_session or get_db()
         cursor = db.cursor()
-        cursor.execute("SELECT * FROM listings WHERE listing_id=?", (listing_id,))
+        cursor.execute("SELECT * FROM listings WHERE listing_id = ?", (listing_id,))
         listing = cursor.fetchone()
         return Listing(**listing).to_dict() if listing else None
 
@@ -113,10 +115,10 @@ class ListingMapper:
         """
         db = db_session or get_db()
         cursor = db.cursor()
-        set_clause = ", ".join([f"{key}=?" for key in data if key not in ["listing_id", "created_at"]])
+        set_clause = ", ".join([f"{key} = ?" for key in data if key not in ["listing_id", "created_at"]])
         values = [data[key] for key in data if key not in ["listing_id", "created_at"]]
         values.append(listing_id)
-        statement = f"UPDATE listings SET {set_clause} WHERE listing_id=?"
+        statement = f"UPDATE listings SET {set_clause} WHERE listing_id = ?"
         cursor.execute(statement, values)
         db.commit()
         return cursor.rowcount
@@ -135,7 +137,7 @@ class ListingMapper:
         """
         db = db_session or get_db()
         cursor = db.cursor()
-        cursor.execute("DELETE FROM listings WHERE listing_id=?", (listing_id,))
+        cursor.execute("DELETE FROM listings WHERE listing_id = ?", (listing_id,))
         db.commit()
         return cursor.rowcount
 

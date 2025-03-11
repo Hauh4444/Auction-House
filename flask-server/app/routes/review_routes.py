@@ -10,7 +10,8 @@ bp = Blueprint("review_bp", __name__, url_prefix="/api/reviews")
 # GET /api/reviews
 @bp.route("/", methods=["GET"])
 def get_all_reviews(db_session=None):
-    """Retrieve all reviews.
+    """
+    Retrieve all reviews.
 
     Args:
         db_session: Optional database session to be used in tests.
@@ -25,7 +26,7 @@ def get_all_reviews(db_session=None):
 # GET /api/reviews/{id}
 @bp.route("/<int:review_id>", methods=["GET"])
 def get_review(review_id, db_session=None):
-    """Retrieve a single review by its ID.
+    """etrieve a single review by its ID.
 
     Args:
         review_id (int): The ID of the review to retrieve.

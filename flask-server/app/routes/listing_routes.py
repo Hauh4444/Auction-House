@@ -10,7 +10,8 @@ bp = Blueprint("listings_bp", __name__, url_prefix="/api/listings")
 # GET /api/listings
 @bp.route("/", methods=["GET"])
 def get_all_listings(db_session=None):
-    """Retrieve all listings with optional filters.
+    """
+    Retrieve all listings with optional filters.
 
     Args:
         db_session: Optional database session to be used in tests.
@@ -25,7 +26,8 @@ def get_all_listings(db_session=None):
 # GET /api/listings/{id}
 @bp.route("/<int:listing_id>", methods=["GET"])
 def get_listing(listing_id, db_session=None):
-    """Retrieve a single listing by its ID.
+    """
+    Retrieve a single listing by its ID.
 
     Args:
         listing_id (int): The ID of the listing to retrieve.

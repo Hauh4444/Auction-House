@@ -6,7 +6,8 @@ class DeliveryMapper:
     """Handles database operations related to deliveries."""
     @staticmethod
     def get_all_deliveries(db_session=None):
-        """Retrieve all deliveries from the database.
+        """
+        Retrieve all deliveries from the database.
 
         Args:
             db_session: Optional database session to be used in tests.
@@ -23,7 +24,8 @@ class DeliveryMapper:
 
     @staticmethod
     def get_delivery_by_id(delivery_id, db_session=None):
-        """Retrieve a delivery by its ID.
+        """
+        Retrieve a delivery by its ID.
 
         Args:
             delivery_id (int): The ID of the delivery to retrieve.

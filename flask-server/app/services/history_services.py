@@ -1,7 +1,6 @@
 from flask import jsonify, Response
-from ..data_mappers import OrderMapper, ListingMapper, TransactionMapper, DeliveryMapper, SupportTicketMapper, ReviewMapper
 
-from ..data_mappers import OrderMapper
+from ..data_mappers import OrderMapper, ListingMapper, TransactionMapper, DeliveryMapper, SupportTicketMapper, ReviewMapper
 
 
 class HistoryService:
@@ -11,16 +10,7 @@ class HistoryService:
         Retrieves a user's orders
 
         Args:
-        user_id (int): The ID of the user to retrieve history of.
-            db_session: Optional database session to be used in tests.
-
-    @staticmethod
-    def get_user_orders(user_id, db_session=None):
-        """
-        Retrieves a user's orders
-
-        Args:
-        user_id (int): The ID of the user to retrieve history of.
+            user_id (int): The ID of the user to retrieve history of.
             db_session: Optional database session to be used in tests.
 
         Returns:
@@ -30,11 +20,11 @@ class HistoryService:
 
         if orders:
             data = {"message": "Orders found", "orders": orders}
-            response = Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
-            return response
+            return Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
 
         data = {"error": "Orders not found"}
-        response = Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
+        return Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
+
 
     @staticmethod
     def get_user_listings(user_id, db_session=None):
@@ -50,12 +40,13 @@ class HistoryService:
         data = {"error": "Listings not found"}
         return Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
 
+
     @staticmethod
     def get_user_transactions(user_id, db_session=None):
         """
         Retrieves a user's transactions
         """
-        transactions = TransactionMapper.get_all_transactions(user_id=user_id, db_session=db_session)
+        transactions = TransactionMapper.get_all_transactions(buyer_id=user_id, db_session=db_session)
 
         if transactions:
             data = {"message": "Transactions found", "transactions": transactions}
@@ -63,6 +54,7 @@ class HistoryService:
 
         data = {"error": "Transactions not found"}
         return Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
+
 
     @staticmethod
     def get_user_deliveries(user_id, db_session=None):
@@ -78,6 +70,7 @@ class HistoryService:
         data = {"error": "Deliveries not found"}
         return Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
 
+
     @staticmethod
     def get_user_support_tickets(user_id, db_session=None):
         """
@@ -92,12 +85,14 @@ class HistoryService:
         data = {"error": "Support tickets not found"}
         return Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
 
+
     @staticmethod
     def get_user_reviews(user_id, db_session=None):
         """
         Retrieves a user's reviews
         """
-        reviews = ReviewMapper.get_all_reviews(user_id=user_id, db_session=db_session)
+        args = {"user_id": user_id}
+        reviews = ReviewMapper.get_all_reviews(args=args, db_session=db_session)
 
         if reviews:
             data = {"message": "Reviews found", "reviews": reviews}

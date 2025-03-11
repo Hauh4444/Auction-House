@@ -41,7 +41,7 @@ const HistoryNav = () => {
     return (
         <>
             <nav className="searchNav">
-                {["orders", "transactions", "listings", "reviews"].map((item, index) => (
+                {["orders", "transactions", "reviews"].map((item, index) => (
                     <Button className={`navBtn ${item}`} data-testid={`${item}Btn`} key={index} onClick={(e) => {
                         handleNavClick(e, item);
                     }}>

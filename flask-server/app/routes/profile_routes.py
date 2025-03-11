@@ -11,7 +11,8 @@ bp = Blueprint("profile_bp", __name__, url_prefix="/api/profile")
 @bp.route("/", methods=["GET"])
 @login_required
 def get_all_profiles(db_session=None):
-    """Retrieve all profiles.
+    """
+    Retrieve all profiles.
 
     Args:
         db_session: Optional database session to be used in tests.
@@ -26,7 +27,8 @@ def get_all_profiles(db_session=None):
 @bp.route("/<int:user_id>", methods=["GET"])
 @login_required
 def get_profile(user_id, db_session=None):
-    """Retrieve profile information by user ID.
+    """
+    Retrieve profile information by user ID.
 
     Args:
         user_id (int): The unique identifier of the user.

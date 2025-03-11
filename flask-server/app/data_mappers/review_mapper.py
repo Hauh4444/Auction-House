@@ -6,7 +6,8 @@ class ReviewMapper:
     """Handles database operations related to reviews."""
     @staticmethod
     def get_all_reviews(args, db_session=None):
-        """Retrieve all reviews with optional filtering
+        """
+        Retrieve all reviews with optional filtering
 
         Args:
             args (dict): Dictionary of query parameters.
@@ -22,8 +23,11 @@ class ReviewMapper:
 
         # Add conditions
         if "listing_id" in args:
-            statement += " WHERE listing_id=?"
+            statement += " WHERE listing_id = ?"
             values.append(args["listing_id"])
+        if "user_id" in args:
+            statement += " WHERE user_id = ?"
+            values.append(args["user_id"])
 
         # Add sorting
         if "sort" in args and "order" in args:
@@ -41,7 +45,8 @@ class ReviewMapper:
 
     @staticmethod
     def get_review_by_id(review_id, db_session=None):
-        """Retrieve a review by its ID.
+        """
+        Retrieve a review by its ID.
 
         Args:
             review_id (int): The ID of the review to retrieve.
@@ -52,7 +57,7 @@ class ReviewMapper:
         """
         db = db_session or get_db()
         cursor = db.cursor()
-        cursor.execute("SELECT * FROM reviews WHERE review_id=?", (review_id,))
+        cursor.execute("SELECT * FROM reviews WHERE review_id = ?", (review_id,))
         review = cursor.fetchone()
         return Review(**review).to_dict() if review else None
 
@@ -104,10 +109,10 @@ class ReviewMapper:
         """
         db = db_session or get_db()
         cursor = db.cursor()
-        conditions = [f"{key}=?" for key in data if key != "review_id"]
+        conditions = [f"{key} = ?" for key in data if key != "review_id"]
         values = list(data.values())
         values.append(review_id)
-        statement = "UPDATE reviews SET " + ", ".join(conditions) + " WHERE review_id=?"
+        statement = "UPDATE reviews SET " + ", ".join(conditions) + " WHERE review_id = ?"
         cursor.execute(statement, values)
         db.commit()
         return cursor.rowcount
@@ -126,6 +131,6 @@ class ReviewMapper:
         """
         db = db_session or get_db()
         cursor = db.cursor()
-        cursor.execute("DELETE FROM reviews WHERE review_id=?", (review_id,))
+        cursor.execute("DELETE FROM reviews WHERE review_id = ?", (review_id,))
         db.commit()
         return cursor.rowcount

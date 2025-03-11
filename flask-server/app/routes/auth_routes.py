@@ -22,7 +22,8 @@ def check_auth_status():
 # POST /api/auth/register - Register a new user
 @bp.route("/register", methods=["POST"])
 def create_user(db_session=None):
-    """Register a new user.
+    """
+    Register a new user.
 
     Args:
         db_session: Optional database session to be used in tests.
@@ -73,7 +74,8 @@ def logout_user():
 @bp.route("/password_reset_request", methods=["POST"])
 @login_required
 def password_reset_request():
-    """Request a password reset email.
+    """
+    Request a password reset email.
 
     Expects:
         JSON payload with "email" key.
@@ -89,7 +91,8 @@ def password_reset_request():
 @bp.route("/password_reset", methods=["POST"])
 @login_required
 def password_reset(db_session=None):
-    """Reset the user password.
+    """
+    Reset the user password.
 
     Expects:
         JSON payload with "reset_token" and "new_password" keys.

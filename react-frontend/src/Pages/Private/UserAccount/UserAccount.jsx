@@ -27,7 +27,7 @@ const UserAccount = () => {
     const navigate = useNavigate(); // Navigate hook for routing
 
     const cardInfo = {
-        "history": ["Your History", "View and manage your history"],
+        "history?nav=reviews": ["Your History", "View and manage your history"],
         "security": ["Login & Security", "Edit login information: username, password, etc"],
         "profile": ["Your Profile", "Edit profile information: name, address, etc "],
         "payment-info": ["Your Payments", "View transactions, manage payment methods and settings"],

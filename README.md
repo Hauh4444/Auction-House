@@ -4,8 +4,6 @@
 1. Private Pages
    1. Lists
    2. My Bids
-   3. History
-   4. Product Upload
    5. Report
    6. Review
    7. Security

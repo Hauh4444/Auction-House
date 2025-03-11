@@ -9,7 +9,8 @@ class AuthMapper:
     """Handles database operations related to authorization."""
     @staticmethod
     def get_user_by_id(user_id, db_session=None):
-        """Retrieve a user by their ID.
+        """
+        Retrieve a user by their ID.
 
         Args:
             user_id (int): The ID of the user to retrieve.
@@ -37,7 +38,8 @@ class AuthMapper:
 
     @staticmethod
     def get_user_by_username(username, db_session=None):
-        """Retrieve a user by their username.
+        """
+        Retrieve a user by their username.
 
         Args:
             username (str): The username of the user to retrieve.
