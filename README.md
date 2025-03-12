@@ -2,39 +2,26 @@
 
 ### React Frontend
 1. Private Pages
-   1. Lists
-   2. My Bids
-   5. Report
-   6. Review
-   7. Security
-   8. Seller Profile
-   9. Live Bid
-2. Cart Context
-3. Live Bidding Context
-4. Localization of Currency/Language
-5. Public Pages
-   1. Browse
-   2. Page Not Found
-   3. About
-   4. Contact
-6. Documentation
-7. Testing
-   1. Pages
-   2. ContextAPI
-   3. Routes
-
-### Flask Server
-1. Bidding Flow
-2. Purchasing Flow
-3. Payment Functionality
-4. Password Recovery with Email Connection
-5. User History
-6. Recovery System for Database
-7. Verify Authentication for Routes
-8. Notifications
-9. Documentation
-10. Unit Testing
-11. Integration Testing
+   1. Lists Page
+   2. My Bids Page 
+   3. Seller Profile Page
+2. System Functions
+   1. Purchasing Functionality 
+   2. Live Bidding UI/Functionality
+   3. Finalize Security Functionality 
+3. Styling
+   1. History Page 
+   2. Product Upload
+4. Other Minor Necessitites
+   1. Private Pages
+      1. Manage Listing UI
+      2. Review UI 
+   2. Localization of Currency/Language 
+   3. Public Pages
+      1. Browse
+      2. Page Not Found
+      3. About
+      4. Contact
 
 ## Setup
 1. Ensure you have [Node.js](https://nodejs.org/en/download) installed on your machine.

@@ -57,9 +57,8 @@ class OrderMapper:
         cursor = db.cursor()
         statement = """
             INSERT INTO orders 
-            (user_id, order_date, status, total_amount, payment_status, payment_method, 
-            shipping_address, shipping_method, tracking_number, shipping_cost, created_at, updated_at) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            (transaction_id, user_id, order_date, status, total_amount, created_at, updated_at) 
+            VALUES (?, ?, ?, ?, ?, ?, ?)
         """
         cursor.execute(statement, tuple(Order(**data).to_dict().values())[1:]) # Exclude order_id (auto-incremented)
         db.commit()

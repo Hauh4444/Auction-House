@@ -10,10 +10,10 @@ bp = Blueprint("list_bp", __name__, url_prefix="/api/user/lists")
 # GET /api/user/lists/{id}
 @bp.route('/<int:list_id>', methods=['GET'])
 @login_required
-def get_user_lists(list_id, db_session=None):
+def get_user_list_items(list_id, db_session=None):
     """
     Retrieve a user's list items."""
-    return ListService.get_user_lists(list_id=list_id, db_session=db_session)
+    return ListService.get_user_list_items(list_id=list_id, db_session=db_session)
 
 
 # GET /api/user/lists

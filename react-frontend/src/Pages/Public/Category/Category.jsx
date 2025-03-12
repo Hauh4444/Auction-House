@@ -136,6 +136,18 @@ const Category = () => {
             pathname: "/category",
             search: createSearchParams(filters).toString(),
         });
+
+        let btn = document.querySelector(".previousPagination");
+        if (filters.page === "1") {
+            btn.disabled = true;
+            btn.style.opacity = "0.5";
+            btn.style.cursor = "default";
+        } else {
+            btn.disabled = false;
+            btn.style.opacity = "1";
+            btn.style.cursor = "pointer";
+        }
+
         // Calculate scroll position of top of pagination section
         let obj = document.querySelector(".categoryListingsHead");
         let objTop = 0;
@@ -162,48 +174,76 @@ const Category = () => {
                     {/* Category Image */}
                     <div className="image">
                         {category.image_encoded ? (
-                            <img data-testid="categoryImage" src={`data:image/jpg;base64,${category.image_encoded}`} alt={category.name} />
+                            <img
+                                data-testid="categoryImage"
+                                src={`data:image/jpg;base64,${category.image_encoded}`}
+                                alt={category.name}
+                            />
                         ) : (
                             <div>No image available</div>
                         )}
                     </div>
                 </div>
-                {/* Category Sections */}
-                {sections.map((section, index) => (
-                    <div key={index}>
-                        <h1 className={`category${section.identifier}Head`}>{section.title}</h1>
-                        <div className={`category${section.identifier}`}>
-                            {/* Map through the best sellers and display them */}
-                            {section.listings.map((listing, index) => (
-                                <div className={`listing ${section.identifier !== "Listings" && index === 0 ? "first" : 
-                                    (section.identifier === "Listings" && index % 4 === 0 ? "first" : "")}`} key={index}>
-                                    <div className="image">
-                                        <img src={`data:image/jpg;base64,${listing.image_encoded}`} alt="" />
-                                    </div>
-                                    <div className="info">
-                                        <div className="review">
-                                            {renderStars(listing.average_review)} {/* Render the star ratings */}
-                                            <span className="totalReviews"
-                                                  style={{left: -16 * Math.ceil(listing.average_review) + "px"}}>
+                <div className="content">
+                    {/* Category Sections */}
+                    {sections.map((section, index) => (
+                        <div key={index}>
+                            <h1 className={`category${section.identifier}Head`}>{section.title}</h1>
+                            <div className={`category${section.identifier}`}>
+                                {/* Map through the best sellers and display them */}
+                                {section.listings.map((listing, index) => (
+                                    <div className={`listing ${section.identifier !== "Listings" && index === 0 ? "first" :
+                                        (section.identifier === "Listings" && index % 4 === 0 ? "first" : "")}`} key={index}>
+                                        <div className="image">
+                                            <img src={`data:image/jpg;base64,${listing.image_encoded}`} alt="" />
+                                        </div>
+                                        <div className="info">
+                                            <div className="review">
+                                                {renderStars(listing.average_review)} {/* Render the star ratings */}
+                                                <span className="totalReviews"
+                                                      style={{left: -16 * Math.ceil(listing.average_review) + "px"}}>
                                                 &emsp;{listing.total_reviews} {/* Display the total reviews */}
                                             </span>
+                                            </div>
+                                            <Button
+                                                className="title"
+                                                onClick={() => navigateToListing(listing.listing_id, navigate)}
+                                                sx={{
+                                                    opacity: 0.5,
+                                                    cursor: "default",
+                                                }}
+                                                disabled={true}
+                                            >
+                                                {listing.title_short} {/* Display the listing title */}
+                                            </Button>
+                                            <h2 className="price">${listing.buy_now_price}</h2> {/* Display the price */}
                                         </div>
-                                        <Button className="title" onClick={() => navigateToListing(listing.listing_id, navigate)}>
-                                            {listing.title_short} {/* Display the listing title */}
-                                        </Button>
-                                        <h2 className="price">${listing.buy_now_price}</h2> {/* Display the price */}
                                     </div>
-                                </div>
-                            ))}
+                                ))}
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    ))}
 
-                {/* Pagination Controls */}
-                <div className="pagination">
-                    <Button onClick={() => pagination(-1)}><MdArrowBackIosNew className="icon" />&ensp;Previous</Button>
-                    <Button style={{marginLeft: "25px"}} onClick={() => pagination(1)}>Next&ensp;<MdArrowForwardIos
-                        className="icon" /></Button>
+                    {/* Pagination Controls */}
+                    <div className="pagination">
+                        <Button
+                            className="previousPagination"
+                            sx={{
+                                opacity: 0.5,
+                                cursor: "default",
+                            }}
+                            disabled={true}
+                            onClick={() => pagination(-1)}
+                        >
+                            <MdArrowBackIosNew className="icon" />&ensp;Previous
+                        </Button>
+                        <Button
+                            style={{marginLeft: "25px"}}
+                            onClick={() => pagination(1)}
+                        >
+                            Next&ensp;<MdArrowForwardIos className="icon" />
+                        </Button>
+                    </div>
                 </div>
             </div>
             {/* Right-side Navigation */}

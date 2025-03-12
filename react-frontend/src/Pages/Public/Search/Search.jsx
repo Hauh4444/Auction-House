@@ -61,9 +61,23 @@ const Search = () => {
             setPaginationButtons(
                 // Pagination buttons
                 <div className="pagination">
-                    <Button onClick={() => pagination(-1)}><MdArrowBackIosNew className="icon" />&ensp;Previous</Button>
-                    <Button style={{marginLeft: "25px"}} onClick={() => pagination(1)}>Next&ensp;<MdArrowForwardIos
-                        className="icon" /></Button>
+                    <Button
+                        className="previousPagination"
+                        sx={{
+                            opacity: 0.5,
+                            cursor: "default",
+                        }}
+                        disabled={true}
+                        onClick={() => pagination(-1)}
+                    >
+                        <MdArrowBackIosNew className="icon" />&ensp;Previous
+                    </Button>
+                    <Button
+                        style={{marginLeft: "25px"}}
+                        onClick={() => pagination(1)}
+                    >
+                        Next&ensp;<MdArrowForwardIos className="icon" />
+                    </Button>
                 </div>
             );
         }
@@ -93,6 +107,20 @@ const Search = () => {
             pathname: "/search",
             search: createSearchParams(filters).toString(),
         });
+
+        if (filters.nav === "view-all") {
+            let btn = document.querySelector(".previousPagination");
+            if (filters.page === "1") {
+                btn.disabled = true;
+                btn.style.opacity = "0.5";
+                btn.style.cursor = "default";
+            } else {
+                btn.disabled = false;
+                btn.style.opacity = "1";
+                btn.style.cursor = "pointer";
+            }
+        }
+
         // Scroll to top of page
         window.scrollTo(0, 0);
     }
@@ -107,7 +135,10 @@ const Search = () => {
                 {/* Search Listings */}
                 <div className="searchListings">
                     {listings.map((listing, index) => (
-                        <div className="listing" key={index}>
+                        <div
+                            className={`listing ${index % 9 === 0 && index !== 0 && filters.nav !== "view-all" ? "last" : ""}`}
+                            key={index}
+                        >
                             <div className="image">
                                 {/* Display the product image */}
                                 <img src={`data:image/jpg;base64,${listing.image_encoded}`} alt="" />
@@ -135,9 +166,9 @@ const Search = () => {
                             </div>
                         </div>
                     ))}
+                    {/* Pagination Controls */}
+                    {paginationButtons}
                 </div>
-                {/* Pagination Controls */}
-                {paginationButtons}
             </div>
             {/* Right-side Navigation */}
             <RightNav />

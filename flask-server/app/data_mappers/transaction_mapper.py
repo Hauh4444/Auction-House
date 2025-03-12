@@ -57,8 +57,8 @@ class TransactionMapper:
         statement = """
             INSERT INTO transactions 
             (listing_id, buyer_id, seller_id, transaction_date, transaction_type, amount, 
-            payment_method, status, shipping_address, tracking_number, created_at, updated_at) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            shipping_cost, payment_method, payment_status, created_at, updated_at) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """
         cursor.execute(statement, tuple(Transaction(**data).to_dict().values())[1:]) # Exclude transaction_id (auto-incremented)
         db.commit()

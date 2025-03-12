@@ -1,7 +1,7 @@
 // External Libraries
 import { useEffect, useState } from "react";
-import {createSearchParams, useLocation, useNavigate} from "react-router-dom";
-import {Button, Card, CardContent} from "@mui/material"
+import { useLocation, useNavigate } from "react-router-dom";
+import { Card, CardContent } from "@mui/material"
 import axios from "axios";
 
 // Internal Modules
@@ -9,13 +9,12 @@ import Header from "@/Components/Header/Header";
 import HistoryNav from "@/Components/Navigation/HistoryNav/HistoryNav";
 import RightNav from "@/Components/Navigation/RightNav/RightNav";
 import { useAuth } from "@/ContextAPI/AuthContext"
-import { renderStars, navigateToListing } from "@/utils/helpers.jsx";
+import { renderStars } from "@/utils/helpers.jsx";
 
 // Stylesheets
 import "./History.scss"
 
 const History = () => {
-    const navigate = useNavigate(); // Navigate hook for routing
     const location = useLocation(); // Hook to access the current location (URL)
     const filters = Object.fromEntries(new URLSearchParams(location.search).entries()); // Extract query parameters from URL
     const auth = useAuth(); // Access authentication functions from the AuthProvider context
@@ -48,14 +47,8 @@ const History = () => {
                         {filters.nav === "orders" && (
                             <Card className="historyCard">
                                 <CardContent className="cardContent">
-                                    <p><strong>Date:</strong> {item.orderDate}</p>
+                                    <p><strong>Date:</strong> {item.order_date}</p>
                                     <p><strong>Status:</strong> {item.status}</p>
-                                    <p><strong>Total Amount:</strong> ${item.totalAmount}</p>
-                                    <p><strong>Payment Status:</strong> {item.paymentStatus}</p>
-                                    <p><strong>Shipping Address:</strong> {item.shippingAddress}</p>
-                                    <p><strong>Shipping Method:</strong> {item.shippingMethod}</p>
-                                    <p><strong>Tracking Number:</strong> {item.trackingNumber || 'N/A'}</p>
-                                    <p><strong>Shipping Cost:</strong> ${item.shippingCost}</p>
                                 </CardContent>
                             </Card>
                         )}
@@ -64,8 +57,9 @@ const History = () => {
                                 <CardContent className="cardContent">
                                     <p><strong>Date:</strong> {item.transaction_date}</p>
                                     <p><strong>Type:</strong> {item.transaction_type}</p>
-                                    <p><strong>Total Amount:</strong> {item.amount}</p>
-                                    <p><strong>Payment Method:</strong> ${item.payment_method}</p>
+                                    <p><strong>Total Amount:</strong> ${item.amount}</p>
+                                    <p><strong>Payment Method:</strong> {item.payment_method}</p>
+                                    <p><strong>Payment Status:</strong> {item.payment_status}</p>
                                 </CardContent>
                             </Card>
                         )}
