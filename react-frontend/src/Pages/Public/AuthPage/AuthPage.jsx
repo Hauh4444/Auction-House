@@ -1,6 +1,6 @@
 // External Libraries
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { TextField, Button, Card, CardContent, CardHeader } from "@mui/material";
 
 // Internal Modules
@@ -28,6 +28,8 @@ import "./AuthPage.scss";
  */
 const AuthPage = () => {
     const navigate = useNavigate(); // Navigate hook for routing
+    const location = useLocation(); // Get current attempted location
+    const from = location.state?.from?.pathname || "/"; // Default to home if no previous route
     const { login, createAccount } = useAuth(); // Access authentication functions from the AuthProvider context
 
     // State variables for user input fields
@@ -39,6 +41,7 @@ const AuthPage = () => {
     const [confirmPassword, setConfirmPassword] = useState(""); // Stores password confirmation input
     const [loginError, setLoginError] = useState(""); // Stores error message if passwords do not match
     const [isLogin, setIsLogin] = useState(true); // Boolean state to toggle between login and registration forms
+
 
     /**
      * Handles the login form submission.
@@ -56,9 +59,8 @@ const AuthPage = () => {
             password,
         });
 
-        // Navigate to home page on successful login
         if (success) {
-            navigate("/"); // Navigate only if login is successful
+            navigate(from, { replace: true }); // Redirect back after successful login
         } else {
             setLoginError("Incorrect username or password");
         }
@@ -92,9 +94,8 @@ const AuthPage = () => {
             password,
         });
 
-        // Navigate to home page on successful registration
         if (success) {
-            navigate("/"); // Navigate only if account creation is successful
+            navigate(from, { replace: true }); // Redirect back after successful account creation
         } else {
             setLoginError("Error creating account");
         }

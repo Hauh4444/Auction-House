@@ -41,14 +41,14 @@ class AuthService:
             data = {"error": "Username, password, and email are required"}
             return Response(response=jsonify(data).get_data(), status=400, mimetype="application/json")
 
-        user_data = {"username": data["username"], "password_hash": hash_password(password=data["password"]), "email": data["email"]}
+        user_data = {"username": data.get("username"), "password_hash": hash_password(password=data.get("password")), "email": data.get("email")}
         user_id = AuthMapper.create_user(data=user_data, db_session=db_session)
 
         if not user_id:
             data = {"error": "Error creating user"}
             return Response(response=jsonify(data).get_data(), status=400, mimetype="application/json")
 
-        profile_data = {"user_id": user_id, "first_name": data["first_name"], "last_name": data["last_name"]}
+        profile_data = {"user_id": user_id, "first_name": data.get("first_name"), "last_name": data.get("last_name")}
         profile_id = ProfileService.create_profile(data=profile_data, db_session=db_session).get_json().get("profile_id")
 
         if not profile_id:

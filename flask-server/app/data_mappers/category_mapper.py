@@ -79,7 +79,7 @@ class CategoryMapper:
         db = db_session or get_db()
         cursor = db.cursor()
         set_clause = ", ".join([f"{key} = ?" for key in data if key not in ["category_id", "created_at"]])
-        values = [data[key] for key in data if key not in ["category_id", "created_at"]]
+        values = [data.get(key) for key in data if key not in ["category_id", "created_at"]]
         values.append(category_id)
         statement = f"UPDATE categories SET {set_clause} WHERE category_id = ?"
         cursor.execute(statement, values)

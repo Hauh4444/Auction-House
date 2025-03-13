@@ -116,7 +116,7 @@ class ListingMapper:
         db = db_session or get_db()
         cursor = db.cursor()
         set_clause = ", ".join([f"{key} = ?" for key in data if key not in ["listing_id", "created_at"]])
-        values = [data[key] for key in data if key not in ["listing_id", "created_at"]]
+        values = [data.get(key) for key in data if key not in ["listing_id", "created_at"]]
         values.append(listing_id)
         statement = f"UPDATE listings SET {set_clause} WHERE listing_id = ?"
         cursor.execute(statement, values)

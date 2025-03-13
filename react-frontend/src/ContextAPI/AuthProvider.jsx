@@ -25,7 +25,7 @@ const AuthProvider = ({ children }) => {
 
     const login = async (credentials) => {
         try {
-            const response = await axios.post("http://127.0.0.1:5000/api/auth/login", credentials);
+            await axios.post("http://127.0.0.1:5000/api/auth/login", credentials);
             await checkAuthStatus();
             return true;
         } catch (err) {
@@ -37,7 +37,7 @@ const AuthProvider = ({ children }) => {
 
     const createAccount = async (credentials) => {
         try {
-            const response = await axios.post("http://127.0.0.1:5000/api/auth/register", credentials);
+            await axios.post("http://127.0.0.1:5000/api/auth/register", credentials);
             await login(credentials);
             return true;
         } catch (err) {

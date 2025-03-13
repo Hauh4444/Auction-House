@@ -40,6 +40,7 @@
                         margin: 20px 0 0 20px;
                         padding: 0 20px;
                         border-radius: 5px;
+                        box-shadow: 0 2px 4px map.get($theme-colors, mainColor4);
                         background-image: linear-gradient(to right, map.get($theme-colors, accentColor1), map.get($theme-colors, accentColor2));
                         display: inline-block;
                         vertical-align: top;

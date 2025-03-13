@@ -64,8 +64,11 @@
                     justify-content: space-around;
 
                     .basicInfo {
+                        display: flex;
+                        flex-direction: column;
                         flex-basis: 40%;
-                        align-content: center;
+                        gap: 10px;
+                        justify-content: center;
 
                         .itemHead {
                             font-size: 18px;

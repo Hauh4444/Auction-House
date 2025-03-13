@@ -11,7 +11,7 @@ import { Button } from "@mui/material";
 import "./RightNav.scss";
 
 // Custom Variables
-import { variables } from "@/assets/variables.modules.js";
+import { variables } from "@/assets/variables.modules";
 
 /**
  * RightNav Component

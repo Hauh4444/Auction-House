@@ -7,7 +7,7 @@ import axios from "axios";
 // Internal Modules
 import Header from "@/Components/Header/Header";
 import RightNav from "@/Components/Navigation/RightNav/RightNav";
-import { encodeImageToBase64 } from "@/utils/helpers"
+import { encodeImageToBase64 } from "@/utils/helpers";
 
 // Stylesheets
 import "./ProductUpload.scss"
@@ -45,13 +45,16 @@ const ProductUpload = () => {
 
     // On submit, post new listing to the backend API
     const handleSubmit = () => {
-        axios.post("http://127.0.0.1:5000/api/listings/", {
-            headers: {
-                "Content-Type": "application/json",
+        axios.post("http://127.0.0.1:5000/api/listings/",
+            {
+                listing: listing,
             },
-            withCredentials: true, // Ensure cookies are sent
-            data: listing,
-        })
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                withCredentials: true, // Ensure cookies are sent
+            })
             .then(() => navigate("/"))
             .catch(err => console.log(err)); // Log errors if any
     }
@@ -67,21 +70,21 @@ const ProductUpload = () => {
                     <CardContent className="content">
                         <div className="imageUpload">
                             <img
-                                src={`data:image/jpg;base64,${listing.image_encoded || `data:image/jpg;base64,${tempImage}`}`}
-                                alt="Profile"
-                                className="profile-image"
+                                src={ `data:image/jpg;base64,${listing.image_encoded || `data:image/jpg;base64,${tempImage}`}` }
+                                alt="Product Image"
+                                className="product-image"
                             />
                             <input
                                 type="file"
                                 accept="image/*"
-                                className="profile-picture"
+                                className="product-picture"
                                 style={{ display: "none" }}
-                                onChange={handleImageChange}
+                                onChange={ handleImageChange }
                             />
                             <Button
                                 className="btn"
                                 component="label"
-                                htmlFor="profile-picture"
+                                htmlFor="product-picture"
                             >
                                 Choose File
                             </Button>

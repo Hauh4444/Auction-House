@@ -80,7 +80,7 @@ class TransactionMapper:
         db = db_session or get_db()
         cursor = db.cursor()
         conditions = [f"{key} = ?" for key in data if key not in ["transaction_id", "created_at"]]
-        values = [data[key] for key in data if key not in ["transaction_id", "created_at"]]
+        values = [data.get(key) for key in data if key not in ["transaction_id", "created_at"]]
         values.append(transaction_id)
         statement = f"UPDATE transactions SET {', '.join(conditions)}, updated_at = CURRENT_TIMESTAMP WHERE transaction_id = ?"
         cursor.execute(statement, values)

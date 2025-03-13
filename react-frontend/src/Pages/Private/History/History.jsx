@@ -9,7 +9,7 @@ import Header from "@/Components/Header/Header";
 import HistoryNav from "@/Components/Navigation/HistoryNav/HistoryNav";
 import RightNav from "@/Components/Navigation/RightNav/RightNav";
 import { useAuth } from "@/ContextAPI/AuthContext"
-import { renderStars } from "@/utils/helpers.jsx";
+import { renderStars } from "@/utils/helpers";
 
 // Stylesheets
 import "./History.scss"

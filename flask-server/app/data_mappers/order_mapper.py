@@ -80,7 +80,7 @@ class OrderMapper:
         db = db_session or get_db()
         cursor = db.cursor()
         conditions = [f"{key} = ?" for key in data if key not in ["order_id", "created_at"]]
-        values = [data[key] for key in data if key not in ["order_id", "created_at"]]
+        values = [data.get(key) for key in data if key not in ["order_id", "created_at"]]
         values.append(order_id)
         statement = f"UPDATE orders SET {', '.join(conditions)}, updated_at = CURRENT_TIMESTAMP WHERE order_id = ?"
         cursor.execute(statement, values)

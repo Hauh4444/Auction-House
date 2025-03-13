@@ -82,13 +82,13 @@ class ReviewMapper:
         """
         # Explicitly extract the values from the data dictionary, excluding review_id if it exists
         values = [
-            data["listing_id"],
-            data["user_id"],
-            data["username"],
-            data["title"],
-            data["description"],
-            data["stars"],
-            data["created_at"]
+            data.get("listing_id"),
+            data.get("user_id"),
+            data.get("username"),
+            data.get("title"),
+            data.get("description"),
+            data.get("stars"),
+            data.get("created_at")
         ]
         cursor.execute(statement, values)
         db.commit()

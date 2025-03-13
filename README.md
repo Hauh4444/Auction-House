@@ -2,21 +2,20 @@
 
 ### React Frontend
 1. Private Pages
-   1. Lists Page
-   2. My Bids Page 
-   3. Seller Profile Page
+   1. Seller Profile
+   2. My Bids
 2. System Functions
-   1. Purchasing Functionality 
-   2. Live Bidding UI/Functionality
-   3. Finalize Security Functionality 
+   1. Purchasing
+   2. Live Bidding
+   3. Security
 3. Styling
-   1. History Page 
-   2. Product Upload
+   1. Product Upload
+   2. History
 4. Other Minor Necessitites
-   1. Private Pages
-      1. Manage Listing UI
-      2. Review UI 
-   2. Localization of Currency/Language 
+   1. Private Page UI
+      1. Manage Listing
+      2. Review
+   2. Localization of Currency/Language
    3. Public Pages
       1. Browse
       2. Page Not Found

@@ -1,6 +1,6 @@
 // External Libraries
 import { useEffect, useState } from "react";
-import { Card, CardHeader, CardContent, TextField, Button } from "@mui/material";
+import { Button, Card, CardContent, CardHeader, TextField } from "@mui/material";
 import axios from "axios";
 import PropTypes from "prop-types";
 
@@ -34,7 +34,6 @@ const UserProfile = () => {
 
     const [edit, setEdit] = useState(false); // State to toggle between view and edit modes
     const [profile, setProfile] = useState({}) // State to hold profile data
-    const [newProfilePicture, setNewProfilePicture] = useState(""); // For storing the new image
 
     // Fields to be displayed in the profile
     const fields = [
@@ -66,9 +65,7 @@ const UserProfile = () => {
         if (file) {
             encodeImageToBase64(file)
                 .then((base64String) => {
-                    const image = base64String;
-                    setNewProfilePicture(`data:image/jpg;base64,${image}`); // Temporarily display the new image
-                    setProfile({ ...profile, profile_picture: image }); // Save the file object for upload
+                    setProfile({ ...profile, profile_picture: base64String }); // Save the file object for upload
                 })
                 .catch((error) => console.error("Error encoding image:", error)); // Log errors if any
         }
@@ -102,7 +99,7 @@ const UserProfile = () => {
                             <>
                                 <div className="profileInfo">
                                     <img
-                                        src={newProfilePicture || `data:image/jpg;base64,${profile.profile_picture}`}
+                                        src={ profile.profile_picture ? `data:image/jpg;base64,${profile.profile_picture}` : "" }
                                         alt="Profile"
                                         className="profile-image"
                                     />
@@ -121,7 +118,7 @@ const UserProfile = () => {
                                 {/* Profile Picture Replace Button */}
                                 <div className="imageUpload">
                                     <img
-                                        src={newProfilePicture || `data:image/jpg;base64,${profile.profile_picture}`}
+                                        src={ profile.profile_picture ? `data:image/jpg;base64,${profile.profile_picture}` : "" }
                                         alt="Profile"
                                         className="profile-image"
                                     />
@@ -130,7 +127,7 @@ const UserProfile = () => {
                                         accept="image/*"
                                         id="profile-picture"
                                         style={{ display: "none" }}
-                                        onChange={handleImageChange}
+                                        onChange={ handleImageChange }
                                     />
                                     <Button
                                         className="btn"

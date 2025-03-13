@@ -12,7 +12,7 @@ import CategoryNav from "@/Components/Navigation/CategoryNav/CategoryNav";
 import "./Header.scss";
 
 // Custom Variables
-import { variables } from "@/assets/variables.modules.js";
+import { variables } from "@/assets/variables.modules";
 
 /**
  * Header component renders the top navigation bar of the application.

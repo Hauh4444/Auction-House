@@ -30,8 +30,7 @@ import "./Popup.scss";
 const Popup = () => {
     const navigate = useNavigate(); // Navigate hook for routing
     const location = useLocation(); // Hook to access the current location (URL)
-    // Extract query parameters from the URL
-    const filters = Object.fromEntries(new URLSearchParams(location.search).entries());
+    const filters = Object.fromEntries(new URLSearchParams(location.search).entries()); // Extract query parameters from the URL
 
     // State variables for managing filter options
     const [sortBy, setSortBy] = useState(filters.sort || "relevance"); // Default to "relevance" if no sort filter is provided

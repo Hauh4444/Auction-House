@@ -10,7 +10,7 @@ import PropTypes from "prop-types";
 import Header from "@/Components/Header/Header";
 import SearchNav from "@/Components/Navigation/SearchNav/SearchNav";
 import RightNav from "@/Components/Navigation/RightNav/RightNav";
-import { renderStars, navigateToListing } from "@/utils/helpers";
+import { renderStars, navigateToListing, addToList } from "@/utils/helpers";
 import { useCart } from "@/ContextAPI/CartContext";
 
 // Stylesheets
@@ -63,11 +63,8 @@ const Search = () => {
                 <div className="pagination">
                     <Button
                         className="previousPagination"
-                        sx={{
-                            opacity: 0.5,
-                            cursor: "default",
-                        }}
-                        disabled={true}
+                        style={filters.page === "1" ? {opacity: 0.5, cursor: "default"} : {opacity: 1, cursor: "pointer"}}
+                        disabled={filters.page === "1"}
                         onClick={() => pagination(-1)}
                     >
                         <MdArrowBackIosNew className="icon" />&ensp;Previous
@@ -90,7 +87,7 @@ const Search = () => {
             params: createSearchParams(filters), // Convert filters to query parameters
         })
             .then(res => setListings(res.data.listings)) // Set the fetched listings into state
-            .catch(err => console.log(err)); // Log errors if any
+            .catch(() => setListings([])); // Log errors if any
     }, [location.search]);
 
     /**
@@ -108,21 +105,10 @@ const Search = () => {
             search: createSearchParams(filters).toString(),
         });
 
-        if (filters.nav === "view-all") {
-            let btn = document.querySelector(".previousPagination");
-            if (filters.page === "1") {
-                btn.disabled = true;
-                btn.style.opacity = "0.5";
-                btn.style.cursor = "default";
-            } else {
-                btn.disabled = false;
-                btn.style.opacity = "1";
-                btn.style.cursor = "pointer";
-            }
-        }
-
         // Scroll to top of page
-        window.scrollTo(0, 0);
+        setTimeout(() => {
+            window.scrollTo(0, 0);
+        }, 100);
     }
 
     return (
@@ -136,7 +122,7 @@ const Search = () => {
                 <div className="searchListings">
                     {listings.map((listing, index) => (
                         <div
-                            className={`listing ${index % 9 === 0 && index !== 0 && filters.nav !== "view-all" ? "last" : ""}`}
+                            className={`listing ${index === listings.length - 1 && filters.nav !== "view-all" ? "last" : ""}`}
                             key={index}
                         >
                             <div className="image">
@@ -159,10 +145,11 @@ const Search = () => {
                                 <h2 className="price">
                                     ${listing.buy_now_price} {/* Display the product price */}
                                 </h2>
-                                <div className="bottomDetails">
-                                    {/* Button to add the product to the cart */}
-                                    <Button className="addCartBtn" onClick={() => addToCart(listing)}>Add to Cart</Button>
-                                </div>
+                            </div>
+                            <div className="btns">
+                                <Button className="addToListBtn" onClick={() => addToList(1, listing.listing_id)}>Add To List</Button>
+                                {/* Button to add the product to the cart */}
+                                <Button className="addCartBtn" onClick={() => addToCart(listing)}>Add to Cart</Button>
                             </div>
                         </div>
                     ))}

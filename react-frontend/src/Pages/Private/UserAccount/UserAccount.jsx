@@ -42,6 +42,7 @@ const UserAccount = () => {
             <div className="mainPage">
                 {/* Page Header */}
                 <Header />
+
                 <h1>Your Account</h1>
                 {/* Account Navigation Cards */}
                 <div className="accountNav">

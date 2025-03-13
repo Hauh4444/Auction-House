@@ -30,8 +30,7 @@ import "./Listing.scss";
  */
 const Listing = () => {
     const location = useLocation(); // Hook to access the current location (URL)
-    // Extract query parameters from the URL
-    const filters = Object.fromEntries(new URLSearchParams(location.search).entries());
+    const filters = Object.fromEntries(new URLSearchParams(location.search).entries()); // Extract query parameters from the URL
 
     const { addToCart } = useCart(); // Access authentication functions from the AuthProvider context
 

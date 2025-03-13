@@ -30,8 +30,7 @@ import "./Category.scss";
 const Category = () => {
     const navigate = useNavigate(); // Navigate hook for routing
     const location = useLocation(); // Hook to access the current location (URL)
-    // Extract query parameters
-    const filters = Object.fromEntries(new URLSearchParams(location.search).entries());
+    const filters = Object.fromEntries(new URLSearchParams(location.search).entries()); // Extract query parameters
 
     const [category, setCategory] = useState({}); // State to store the category data
     const [bestSellers, setBestSellers] = useState([]); // State to hold best sellers data
@@ -83,7 +82,7 @@ const Category = () => {
             }
         })
             .then(res => setBestSellers(res.data.listings)) // Update state with fetched data
-            .catch(err => console.log(err)); // Log errors if any
+            .catch(() => setBestSellers([]));
 
         // Fetch new listings from the backend API
         axios.get("http://127.0.0.1:5000/api/listings", {
@@ -99,7 +98,7 @@ const Category = () => {
             }
         })
             .then(res => setNewListings(res.data.listings)) // Update state with fetched data
-            .catch(err => console.log(err)); // Log errors if any
+            .catch(() => setNewListings([]));
 
         // Handle pagination by adjusting filters
         if (filters.page) {
@@ -119,7 +118,7 @@ const Category = () => {
             }
         })
             .then(res => setListings(res.data.listings)) // Update state with fetched data
-            .catch(err => console.log(err)); // Log errors if any
+            .catch(() => setListings([]));
     }, [location.search]); // Call on update of URL filters
 
     /**
@@ -137,27 +136,14 @@ const Category = () => {
             search: createSearchParams(filters).toString(),
         });
 
-        let btn = document.querySelector(".previousPagination");
-        if (filters.page === "1") {
-            btn.disabled = true;
-            btn.style.opacity = "0.5";
-            btn.style.cursor = "default";
-        } else {
-            btn.disabled = false;
-            btn.style.opacity = "1";
-            btn.style.cursor = "pointer";
-        }
-
-        // Calculate scroll position of top of pagination section
-        let obj = document.querySelector(".categoryListingsHead");
-        let objTop = 0;
-        if (obj.offsetParent) {
-            do {
-                objTop += obj.offsetTop;
-            } while ((obj = obj.offsetParent));
-        }
-        // Scroll page to top of pagination section
-        window.scrollTo(0, objTop - 50);
+        // Calculate scroll position of top of pagination section and scroll
+        setTimeout(() => {
+            let obj = document.querySelector(".categoryListingsHead");
+            if (obj) {
+                let objTop = obj.getBoundingClientRect().top + window.scrollY;
+                window.scrollTo({ top: objTop - 50, behavior: "smooth" });
+            }
+        }, 100);
     }
 
     return (
@@ -208,11 +194,6 @@ const Category = () => {
                                             <Button
                                                 className="title"
                                                 onClick={() => navigateToListing(listing.listing_id, navigate)}
-                                                sx={{
-                                                    opacity: 0.5,
-                                                    cursor: "default",
-                                                }}
-                                                disabled={true}
                                             >
                                                 {listing.title_short} {/* Display the listing title */}
                                             </Button>
@@ -228,11 +209,8 @@ const Category = () => {
                     <div className="pagination">
                         <Button
                             className="previousPagination"
-                            sx={{
-                                opacity: 0.5,
-                                cursor: "default",
-                            }}
-                            disabled={true}
+                            style={filters.page === "1" ? {opacity: 0.5, cursor: "default"} : {opacity: 1, cursor: "pointer"}}
+                            disabled={filters.page === "1"}
                             onClick={() => pagination(-1)}
                         >
                             <MdArrowBackIosNew className="icon" />&ensp;Previous

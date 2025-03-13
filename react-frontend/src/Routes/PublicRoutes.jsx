@@ -22,7 +22,7 @@ import AdminRoute from "@/Routes/AdminRoute";
 import Cart from "@/Pages/Private/Cart/Cart";
 import History from "@/Pages/Private/History/History";
 import Lists from "@/Pages/Private/Lists/Lists";
-import ManageListing from "@/Pages/Private/ManageListing/ManageListing.jsx";
+import ManageListing from "@/Pages/Private/ManageListing/ManageListing";
 import Messages from "@/Pages/Private/Messages/Messages";
 import MyBids from "@/Pages/Private/MyBids/MyBids";
 import ProductUpload from "@/Pages/Private/ProductUpload/ProductUpload";

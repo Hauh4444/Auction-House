@@ -80,7 +80,7 @@ class DeliveryMapper:
         db = db_session or get_db()
         cursor = db.cursor()
         conditions = [f"{key} = ?" for key in data if key not in ["delivery_id", "created_at"]]
-        values = [data[key] for key in data if key not in ["delivery_id", "created_at"]]
+        values = [data.get(key) for key in data if key not in ["delivery_id", "created_at"]]
         values.append(delivery_id)
         statement = f"UPDATE deliveries SET {', '.join(conditions)}, updated_at = CURRENT_TIMESTAMP WHERE delivery_id = ?"
         cursor.execute(statement, values)

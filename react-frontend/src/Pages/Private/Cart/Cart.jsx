@@ -74,7 +74,7 @@ const Cart = () => {
                                     <div className="basicInfo">
                                         {/* Button to navigate to the detailed listing view */}
                                         <Button className="itemHead" onClick={() => navigateToListing(item.listing_id, navigate)}>
-                                            {item.title}
+                                            {item.title_short}
                                         </Button>
                                         <div className="review">
                                             {/* Render the star rating based on the average review */}

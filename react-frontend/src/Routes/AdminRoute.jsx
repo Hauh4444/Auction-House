@@ -1,5 +1,5 @@
 // External Libraries
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 
 // Internal Modules
 import { useAuth } from "@/ContextAPI/AuthContext";
@@ -18,9 +18,10 @@ import { useAuth } from "@/ContextAPI/AuthContext";
 const AdminRoute = () => {
     // Fetch the authentication context
     const auth = useAuth();
+    const location = useLocation(); // Get current attempted location
 
     // If the user is not authenticated, redirect to the authentication page
-    if (!auth.user) return <Navigate to="/auth-page" />;
+    if (!auth.user) return <Navigate to="/auth-page" state={{ from: location }} />;
 
     // If user does not have admin privelages, redirect to the home page
     if (auth.user.role !== "admin") return <Navigate to="/" />

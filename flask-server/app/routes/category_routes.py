@@ -43,7 +43,8 @@ def get_category(category_id, db_session=None):
 @bp.route("/", methods=["POST"])
 @login_required
 def create_category(db_session=None):
-    """Create a new category.
+    """
+    Create a new category.
 
     Args:
         db_session: Optional database session to be used in tests.
@@ -66,7 +67,8 @@ def create_category(db_session=None):
 @bp.route("/<int:category_id>", methods=["PUT"])
 @login_required
 def update_category(category_id, db_session=None):
-    """Update an existing category by its ID.
+    """
+    Update an existing category by its ID.
 
     Args:
         category_id (int): The ID of the category to update.
@@ -90,7 +92,8 @@ def update_category(category_id, db_session=None):
 @bp.route("/<int:category_id>", methods=["DELETE"])
 @login_required
 def delete_category(category_id, db_session=None):
-    """Delete a category by its ID.
+    """
+    Delete a category by its ID.
 
     Args:
         category_id (int): The ID of the category to delete.

@@ -1,5 +1,6 @@
 // External Libraries
 import { LiaStarHalfSolid, LiaStarSolid } from "react-icons/lia";
+import axios from "axios";
 
 /**
  * Renders the star rating based on the average review score.
@@ -50,4 +51,32 @@ const navigateToListing = (id, navigate) => {
     navigate(`/listing?key=${id}`);
 };
 
-export { renderStars, encodeImageToBase64, navigateToListing };
+const addToList = (list_id, listing_id) => {
+    axios.post(`http://127.0.0.1:5000/api/user/lists/${list_id}`,
+        {
+            listing_id: listing_id,
+        },
+        {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            withCredentials: true, // Ensure cookies are sent
+        })
+        .catch(err => console.log(err)); // Log errors if any
+}
+
+const updateList = (list_id, list_items) => {
+    axios.put(`http://127.0.0.1:5000/api/user/lists/${list_id}`,
+        {
+            list_items: list_items,
+        },
+        {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            withCredentials: true, // Ensure cookies are sent
+        })
+        .catch(err => console.log(err)); // Log errors if any
+}
+
+export { renderStars, encodeImageToBase64, navigateToListing, addToList, updateList };
