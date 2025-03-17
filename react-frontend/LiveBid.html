@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Auction Bids</title>
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+</head>
+<body>
+    <h1>Live Auction</h1>
+    <ul id="bids-list"></ul>
+
+    <script>
+        const socket = io("http://localhost:5000");  // Adjust to your server URL
+
+        socket.on('new_bid', function(bid) {
+            console.log('New bid received:', bid);
+            const bidList = document.getElementById('bids-list');
+            const listItem = document.createElement('li');
+            listItem.innerText = `User: ${bid.user}, Amount: ${bid.amount}`;
+            bidList.appendChild(listItem);
+        });
+    </script>
+</body>
+</html>
