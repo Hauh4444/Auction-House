@@ -4,7 +4,6 @@
     <meta charset="UTF-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>Auction House and Marketing System</title>
-    <!-- Add your custom CSS here if needed -->
 </head>
 <body>
     <!-- React Mount Point -->
@@ -42,14 +41,14 @@
         function submitBid(itemId) {
             var bidAmount = document.getElementById('bid-input-' + itemId).value;
 
-            fetch('/post_bid', {
+            fetch('/api/bids/post_bid', {  // Correct API URL
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    item_id: itemId,
-                    bid_amount: bidAmount
+                    user: "user1",  // Assuming user info is static or fetched dynamically
+                    amount: bidAmount,
                 })
             })
             .then(response => response.json())
