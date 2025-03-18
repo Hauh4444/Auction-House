@@ -13,6 +13,9 @@ from .utils import login_manager
 from .database import init_db, backup_database
 from .routes import *  # Assuming routes are imported here
 
+# Import bid routes and register them
+from .bid_routes import bp as bid_routes_bp
+
 load_dotenv()
 
 # Initialize Flask application
@@ -20,9 +23,6 @@ app = Flask(__name__)
 
 # Initialize Flask-SocketIO
 socketio = SocketIO(app)
-
-# Import bid routes and register them
-from . import bid_routes
 
 # Load configuration from config.py based on environment
 config_class = os.getenv("FLASK_CONFIG", "app.config.DevelopmentConfig")
