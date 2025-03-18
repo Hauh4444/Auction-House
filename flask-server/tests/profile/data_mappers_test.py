@@ -86,3 +86,62 @@ def test_delete_profile(mock_db_session):
     rows_deleted = ProfileMapper.delete_profile(user_id=1, db_session=mock_db_session)
 
     assert rows_deleted == 1
+
+
+def test_create_profile_missing_fields(mock_db_session):
+    mock_cursor = mock_db_session.cursor.return_value
+    mock_cursor.lastrowid = 3
+    data = {
+        "user_id": 30, "first_name": "Alice", "last_name": "Johnson", "date_of_birth": datetime(1992, 3, 15),
+        "phone_number": "123456789", "address": "789 Boulevard", "city": "Metropolis", "state": "State", "country": "Country",
+        "profile_picture": "profile_pic_url", "bio": "Welcome!", "social_links": "https://social3.com", 
+        "created_at": datetime(2024, 3, 15), "updated_at": datetime(2024, 3, 15)
+    }
+
+    del data["address"]
+
+    with pytest.raises(expected_exception=TypeError):
+        ProfileMapper.create_profile(data=data, db_session=mock_db_session)
+
+
+def test_get_profile_db_failure(mock_db_session):
+    mock_cursor = mock_db_session.cursor.return_value
+    mock_cursor.fetchone.side_effect = Exception("Database error")
+
+    with pytest.raises(expected_exception=Exception, match="Database error"):
+        ProfileMapper.get_profile(user_id=10, db_session=mock_db_session)
+
+
+def test_create_profile_db_failure(mock_db_session):
+    mock_cursor = mock_db_session.cursor.return_value
+    mock_cursor.execute.side_effect = Exception("Database error")
+    data = {
+        "user_id": 30, "first_name": "Alice", "last_name": "Johnson", "date_of_birth": datetime(1992, 3, 15),
+        "phone_number": "123456789", "address": "789 Boulevard", "city": "Metropolis", "state": "State", "country": "Country",
+        "profile_picture": "profile_pic_url", "bio": "Welcome!", "social_links": "https://social3.com", 
+        "created_at": datetime(2024, 3, 15), "updated_at": datetime(2024, 3, 15)
+    }
+
+    with pytest.raises(expected_exception=Exception, match="Database error"):
+        ProfileMapper.create_profile(data=data, db_session=mock_db_session)
+
+
+def test_update_profile_invalid_id(mock_db_session):
+    mock_cursor = mock_db_session.cursor.return_value
+    mock_cursor.rowcount = 0  # Simulate no rows were updated
+
+    data = {
+        "phone_number": "111222333", "address": "New Address"
+    }
+
+    rows_updated = ProfileMapper.update_profile(profile_id=999, data=data, db_session=mock_db_session)  # Invalid ID
+
+    assert rows_updated == 0  # Expecting no rows to be updated
+
+
+def test_delete_profile_db_failure(mock_db_session):
+    mock_cursor = mock_db_session.cursor.return_value
+    mock_cursor.execute.side_effect = Exception("Database error")
+
+    with pytest.raises(expected_exception=Exception, match="Database error"):
+        ProfileMapper.delete_profile(user_id=10, db_session=mock_db_session)

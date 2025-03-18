@@ -82,3 +82,59 @@ def test_delete_ticket(mock_db_session):
     rows_deleted = SupportTicketMapper.delete_ticket(ticket_id=1, db_session=mock_db_session)
 
     assert rows_deleted == 1
+
+def test_create_ticket_missing_fields(mock_db_session):
+    mock_cursor = mock_db_session.cursor.return_value
+    mock_cursor.lastrowid = 3
+    data = {
+        "user_id": 10, "order_id": 1003, "subject": "New issue", 
+        "status": "open", "priority": "medium", "assigned_to": "support_agent", 
+        "created_at": datetime(2024, 3, 1), "updated_at": datetime(2024, 3, 1)
+    }
+
+    del data["status"]
+
+    with pytest.raises(expected_exception=TypeError):
+        SupportTicketMapper.create_ticket(data=data, db_session=mock_db_session)
+
+
+def test_get_ticket_db_failure(mock_db_session):
+    mock_cursor = mock_db_session.cursor.return_value
+    mock_cursor.fetchone.side_effect = Exception("Database error")
+
+    with pytest.raises(expected_exception=Exception, match="Database error"):
+        SupportTicketMapper.get_ticket_by_id(ticket_id=1, db_session=mock_db_session)
+
+
+def test_create_ticket_db_failure(mock_db_session):
+    mock_cursor = mock_db_session.cursor.return_value
+    mock_cursor.execute.side_effect = Exception("Database error")
+    data = {
+        "user_id": 10, "order_id": 1003, "subject": "New issue", 
+        "status": "open", "priority": "medium", "assigned_to": "support_agent", 
+        "created_at": datetime(2024, 3, 1), "updated_at": datetime(2024, 3, 1)
+    }
+
+    with pytest.raises(expected_exception=Exception, match="Database error"):
+        SupportTicketMapper.create_ticket(data=data, db_session=mock_db_session)
+
+
+def test_update_ticket_invalid_id(mock_db_session):
+    mock_cursor = mock_db_session.cursor.return_value
+    mock_cursor.rowcount = 0  # Simulate no rows were updated
+
+    updates = {
+        "status": "closed", "priority": "high", "assigned_to": "senior_support_agent"
+    }
+
+    rows_updated = SupportTicketMapper.update_ticket(ticket_id=999, updates=updates, db_session=mock_db_session)  # Invalid ID
+
+    assert rows_updated == 0  # Expecting no rows to be updated
+
+
+def test_delete_ticket_db_failure(mock_db_session):
+    mock_cursor = mock_db_session.cursor.return_value
+    mock_cursor.execute.side_effect = Exception("Database error")
+
+    with pytest.raises(expected_exception=Exception, match="Database error"):
+        SupportTicketMapper.delete_ticket(ticket_id=1, db_session=mock_db_session)

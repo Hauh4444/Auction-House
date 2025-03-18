@@ -84,3 +84,62 @@ def test_delete_order(mock_db_session):
 
     assert rows_deleted == 1
 
+
+def test_create_order_missing_fields(mock_db_session):
+    mock_cursor = mock_db_session.cursor.return_value
+    mock_cursor.lastrowid = 3
+    data = {
+        "user_id": 10, "order_date": datetime(2024, 1, 1), "status": "shipped", "total_amount": 150.0,
+        "payment_status": "paid", "payment_method": "credit_card", "shipping_address": "123 Street",
+        "shipping_method": "ground", "tracking_number": "XYZ123", "shipping_cost": 5.0, 
+        "created_at": datetime(2024, 1, 1), "updated_at": datetime(2024, 1, 2)
+    }
+
+    del data["total_amount"]
+
+    with pytest.raises(expected_exception=TypeError):
+        OrderMapper.create_order(data=data, db_session=mock_db_session)
+
+
+def test_get_order_by_id_db_failure(mock_db_session):
+    mock_cursor = mock_db_session.cursor.return_value
+    mock_cursor.fetchone.side_effect = Exception("Database error")
+
+    with pytest.raises(expected_exception=Exception, match="Database error"):
+        OrderMapper.get_order_by_id(order_id=1, db_session=mock_db_session)
+
+
+def test_create_order_db_failure(mock_db_session):
+    mock_cursor = mock_db_session.cursor.return_value
+    mock_cursor.execute.side_effect = Exception("Database error")
+    data = {
+        "user_id": 10, "order_date": datetime(2024, 1, 1), "status": "shipped", "total_amount": 150.0,
+        "payment_status": "pending", "payment_method": "credit_card", "shipping_address": "123 Street",
+        "shipping_method": "ground", "tracking_number": "XYZ123", "shipping_cost": 5.0, 
+        "created_at": datetime(2024, 1, 1), "updated_at": datetime(2024, 1, 2)
+    }
+
+    with pytest.raises(expected_exception=Exception, match="Database error"):
+        OrderMapper.create_order(data=data, db_session=mock_db_session)
+
+
+def test_update_order_invalid_id(mock_db_session):
+    mock_cursor = mock_db_session.cursor.return_value
+    mock_cursor.rowcount = 0  # Simulate no rows were updated
+
+    data = {
+        "status": "delivered",
+        "shipping_address": "789 Boulevard"
+    }
+
+    rows_updated = OrderMapper.update_order(order_id=999, data=data, db_session=mock_db_session)  # Invalid ID
+
+    assert rows_updated == 0  # Expecting no rows to be updated
+
+
+def test_delete_order_db_failure(mock_db_session):
+    mock_cursor = mock_db_session.cursor.return_value
+    mock_cursor.execute.side_effect = Exception("Database error")
+
+    with pytest.raises(expected_exception=Exception, match="Database error"):
+        OrderMapper.delete_order(order_id=1, db_session=mock_db_session)

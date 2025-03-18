@@ -87,3 +87,61 @@ def test_delete_transaction(mock_db_session):
     rows_deleted = TransactionMapper.delete_transaction(transaction_id=1, db_session=mock_db_session)
 
     assert rows_deleted == 1
+
+def test_create_transaction_missing_fields(mock_db_session):
+    mock_cursor = mock_db_session.cursor.return_value
+    mock_cursor.lastrowid = 3
+    data = {
+        "listing_id": 103, "buyer_id": 1003, "seller_id": 2003, "transaction_date": datetime(2024, 3, 1), 
+        "transaction_type": "purchase", "amount": 350.00, "payment_method": "credit_card", 
+        "status": "completed", "shipping_address": "789 Road", "tracking_number": "IJKL9101", 
+        "created_at": datetime(2024, 3, 1), "updated_at": datetime(2024, 3, 1)
+    }
+
+    del data["amount"]
+
+    with pytest.raises(expected_exception=TypeError):
+        TransactionMapper.create_transaction(data=data, db_session=mock_db_session)
+
+
+def test_get_transaction_db_failure(mock_db_session):
+    mock_cursor = mock_db_session.cursor.return_value
+    mock_cursor.fetchone.side_effect = Exception("Database error")
+
+    with pytest.raises(expected_exception=Exception, match="Database error"):
+        TransactionMapper.get_transaction_by_id(transaction_id=1, db_session=mock_db_session)
+
+
+def test_create_transaction_db_failure(mock_db_session):
+    mock_cursor = mock_db_session.cursor.return_value
+    mock_cursor.execute.side_effect = Exception("Database error")
+    data = {
+        "listing_id": 103, "buyer_id": 1003, "seller_id": 2003, "transaction_date": datetime(2024, 3, 1), 
+        "transaction_type": "buy_now", "amount": 350.00, "payment_method": "credit_card", 
+        "status": "completed", "shipping_address": "789 Road", "tracking_number": "IJKL9101", 
+        "created_at": datetime(2024, 3, 1), "updated_at": datetime(2024, 3, 1)
+    }
+
+    with pytest.raises(expected_exception=Exception, match="Database error"):
+        TransactionMapper.create_transaction(data=data, db_session=mock_db_session)
+
+
+def test_update_transaction_invalid_id(mock_db_session):
+    mock_cursor = mock_db_session.cursor.return_value
+    mock_cursor.rowcount = 0  # Simulate no rows were updated
+
+    updates = {
+        "status": "shipped", "amount": 300.00, "tracking_number": "XYZ12345"
+    }
+
+    rows_updated = TransactionMapper.update_transaction(transaction_id=999, data=updates, db_session=mock_db_session)  # Invalid ID
+
+    assert rows_updated == 0  # Expecting no rows to be updated
+
+
+def test_delete_transaction_db_failure(mock_db_session):
+    mock_cursor = mock_db_session.cursor.return_value
+    mock_cursor.execute.side_effect = Exception("Database error")
+
+    with pytest.raises(expected_exception=Exception, match="Database error"):
+        TransactionMapper.delete_transaction(transaction_id=1, db_session=mock_db_session)
