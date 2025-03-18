@@ -27,7 +27,7 @@ const Security = () => {
         })
             .then(res => setUser(res.data.user)) // Set the user state
             .catch(err => console.log(err)); // Log errors if any
-    }, []); // Empty dependency array to ensure it runs only once when the component is mounted
+    }, []); 
 
     return (
         <div className="securityPage page">

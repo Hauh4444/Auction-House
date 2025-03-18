@@ -37,7 +37,7 @@ const Lists = () => {
                 goToList(res.data.lists[0]);
             }) // Set the lists state
             .catch(() => setLists([]));
-    }, []); // Empty dependency array to ensure it runs only once when the component is mounted
+    }, []);
 
     const goToList = (list) => {
         setList(list);
@@ -50,14 +50,6 @@ const Lists = () => {
         })
             .then(res => setListItems(res.data.list_items))
             .catch(() => setListItems([]));
-
-        filters.nav = list.title;
-
-        // Navigate to the same page with updated search parameters
-        navigate({
-            pathname: location.pathname,
-            search: createSearchParams(filters).toString(),
-        });
     }
 
     const removeFromList = (index) => {
@@ -80,7 +72,7 @@ const Lists = () => {
                                 className="listsInput"
                                 value={list.list_id}
                                 label="List"
-                                onChange={(e) => setList(e.target.value)}
+                                onChange={(e) => goToList(lists.find(l => l.list_id === e.target.value))}
                                 sx={{
                                     backgroundColor: "transparent",
                                     "& .MuiSelect-select": {

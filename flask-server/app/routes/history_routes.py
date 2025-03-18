@@ -6,8 +6,6 @@ from ..services import HistoryService
 # Blueprint for history-related routes
 bp = Blueprint("history_bp", __name__, url_prefix="/api/user/<int:user_id>")
 
-# TODO: GET /api/user/<int:id>/history for full user history
-
 
 # GET /api/user/{id}/orders
 @bp.route('/orders', methods=['GET'])
@@ -35,7 +33,7 @@ def get_user_listings(user_id, db_session=None):
     return HistoryService.get_user_listings(user_id=user_id, db_session=db_session)
 
 
-# GET /api/user/{user_id}/transactions
+# GET /api/user/{id}/transactions
 @bp.route('/transactions', methods=['GET'])
 @login_required
 def get_user_transactions(user_id, db_session=None):
@@ -44,7 +42,7 @@ def get_user_transactions(user_id, db_session=None):
     return HistoryService.get_user_transactions(user_id, db_session=db_session)
 
 
-# GET /api/user/{user_id}/deliveries
+# GET /api/user/{id}/deliveries
 @bp.route('/deliveries', methods=['GET'])
 @login_required
 def get_user_deliveries(user_id, db_session=None):
@@ -53,7 +51,7 @@ def get_user_deliveries(user_id, db_session=None):
     return HistoryService.get_user_deliveries(user_id, db_session=db_session)
 
 
-# GET /api/user/{user_id}/support-tickets
+# GET /api/user/{id}/support-tickets
 @bp.route('/support-tickets', methods=['GET'])
 @login_required
 def get_user_support_tickets(user_id, db_session=None):
@@ -62,7 +60,7 @@ def get_user_support_tickets(user_id, db_session=None):
     return HistoryService.get_user_support_tickets(user_id, db_session=db_session)
 
 
-# GET /api/user/{user_id}/reviews
+# GET /api/user/{id}/reviews
 @bp.route('/reviews', methods=['GET'])
 @login_required
 def get_user_reviews(user_id, db_session=None):

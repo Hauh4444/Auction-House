@@ -5,11 +5,12 @@ from ..entities import Delivery
 class DeliveryMapper:
     """Handles database operations related to deliveries."""
     @staticmethod
-    def get_all_deliveries(db_session=None):
+    def get_all_deliveries(user_id, db_session=None):
         """
         Retrieve all deliveries from the database.
 
         Args:
+            user_id (int): The ID of the user whos deliveries to get
             db_session: Optional database session to be used in tests.
 
         Returns:
@@ -17,7 +18,7 @@ class DeliveryMapper:
         """
         db = db_session or get_db()
         cursor = db.cursor()
-        cursor.execute("SELECT * FROM deliveries")
+        cursor.execute("SELECT * FROM deliveries WHERE user_id = ?", (user_id,))
         deliveries = cursor.fetchall()
         return [Delivery(**delivery).to_dict() for delivery in deliveries]
 

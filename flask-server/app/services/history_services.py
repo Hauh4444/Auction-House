@@ -64,10 +64,10 @@ class HistoryService:
         deliveries = DeliveryMapper.get_all_deliveries(user_id=user_id, db_session=db_session)
 
         if deliveries:
-            data = {"message": "Deliveries found", "deliveries": deliveries}
+            data = {"message": "PaymentInfo found", "deliveries": deliveries}
             return Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
 
-        data = {"error": "Deliveries not found"}
+        data = {"error": "PaymentInfo not found"}
         return Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
 
 

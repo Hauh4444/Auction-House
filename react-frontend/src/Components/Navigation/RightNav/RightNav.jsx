@@ -44,7 +44,7 @@ const RightNav = () => {
                         color: variables.mainColor3, // Custom color from variables
                     }} />
                 </Button>
-                <Button className="btn" data-testid="accountBtn" style={{marginBottom: "15px"}} onClick={() => navigate("/user/account")}> {/* Button for account */}
+                <Button className="btn" data-testid="accountBtn" style={{marginBottom: "15px"}} onClick={() => navigate("/user/account")}>
                     <RiAccountCircle2Fill className="fill" /> {/* Filled account icon */}
                     <RiAccountCircle2Line className="outline" /> {/* Outlined account icon */}
                 </Button>
@@ -52,7 +52,7 @@ const RightNav = () => {
                     <IoFlag className="fill" /> {/* Filled flag icon */}
                     <IoFlagOutline className="outline" /> {/* Outlined flag icon */}
                 </Button>
-                <Button className="btn" data-testid="cartBtn" style={{marginBottom: "15px"}} onClick={() => navigate("/user/cart")}> {/* Button for cart */}
+                <Button className="btn" data-testid="cartBtn" style={{marginBottom: "15px"}} onClick={() => navigate("/user/cart")}>
                     <IoCart className="fill" /> {/* Filled cart icon */}
                     <IoCartOutline className="outline" /> {/* Outlined cart icon */}
                 </Button>
@@ -60,7 +60,7 @@ const RightNav = () => {
                     <HiUserGroup className="fill" /> {/* Filled user group icon */}
                     <HiOutlineUserGroup className="outline" /> {/* Outlined user group icon */}
                 </Button>
-                <Button className="btn" data-testid="truckBtn" style={{marginBottom: "15px"}}> {/* Button for truck */}
+                <Button className="btn" data-testid="truckBtn" style={{marginBottom: "15px"}} onClick={() => navigate("/user/deliveries")}>
                     <PiTruckFill className="fill" /> {/* Filled truck icon */}
                     <PiTruckLight className="outline" /> {/* Outlined truck icon */}
                 </Button>

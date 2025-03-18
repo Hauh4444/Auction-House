@@ -1,6 +1,6 @@
 // External Libraries
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { Card, CardContent } from "@mui/material"
 import axios from "axios";
 
@@ -27,56 +27,46 @@ const History = () => {
             headers: {
                 "Content-Type": "application/json",
             },
+            withCredentials: true,
         })
-            .then(res => {
-                setHistory(res.data[filters.nav]); // Set the fetched items into state
-            })
+            .then(res => setHistory(res.data[filters.nav]))
             .catch(err => console.log(err)); // Log errors if any
     }, [location.search]);
 
     return (
-        <div className="userAccountPage page">
+        <div className="userHistoryPage page">
             <div className="mainPage">
                 {/* Page Header */}
                 <Header />
 
                 <HistoryNav />
 
-                {history.map((item, index) => (
-                    <div className="historyItem" key={index}>
-                        {filters.nav === "orders" && (
-                            <Card className="historyCard">
-                                <CardContent className="cardContent">
-                                    <p><strong>Date:</strong> {item.order_date}</p>
-                                    <p><strong>Status:</strong> {item.status}</p>
-                                </CardContent>
-                            </Card>
-                        )}
-                        {filters.nav === "transactions" && (
-                            <Card className="historyCard">
-                                <CardContent className="cardContent">
-                                    <p><strong>Date:</strong> {item.transaction_date}</p>
-                                    <p><strong>Type:</strong> {item.transaction_type}</p>
-                                    <p><strong>Total Amount:</strong> ${item.amount}</p>
-                                    <p><strong>Payment Method:</strong> {item.payment_method}</p>
-                                    <p><strong>Payment Status:</strong> {item.payment_status}</p>
-                                </CardContent>
-                            </Card>
-                        )}
-                        {filters.nav === "reviews" && (
-                            <Card className="historyCard">
-                                <CardContent className="cardContent">
-                                    <p><strong>Title:</strong> {item.title}</p>
-                                    <p><strong>Description:</strong> {item.description}</p>
-                                    <div className="review">
-                                        {/* Render the star rating based on the average review */}
-                                        {renderStars(item.stars)}
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        )}
-                    </div>
-                ))}
+                <div className="historyItems">
+                    {history.map((item, index) => (
+                        <>
+                            {filters.nav === "orders" && (
+                                <Card className="historyCard" key={index}>
+                                    <CardContent className="cardContent">
+                                        <p><strong>Date:</strong> {item.order_date}</p>
+                                        <p><strong>Status:</strong> {item.status}</p>
+                                    </CardContent>
+                                </Card>
+                            )}
+                            {filters.nav === "reviews" && (
+                                <Card className="historyCard" key={index}>
+                                    <CardContent className="cardContent">
+                                        <p><strong>Title:</strong> {item.title}</p>
+                                        <p><strong>Description:</strong> {item.description}</p>
+                                        <div className="review">
+                                            {/* Render the star rating based on the average review */}
+                                            {renderStars(item.stars)}
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            )}
+                        < />
+                    ))}
+                </div>
             </div>
             {/* Right-side Navigation */}
             <RightNav />

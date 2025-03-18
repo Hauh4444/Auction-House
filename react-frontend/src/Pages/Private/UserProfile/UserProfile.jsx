@@ -58,7 +58,7 @@ const UserProfile = () => {
         })
             .then(res => setProfile(res.data.profile)) // Set the user state
             .catch(err => console.log(err)); // Log errors if any
-    }, []); // Empty dependency array to ensure it runs only once when the component is mounted
+    }, []); 
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
@@ -91,8 +91,8 @@ const UserProfile = () => {
                 <Header />
 
                 {/* Profile Card */}
+                <h1>Your Profile</h1>
                 <Card className="userProfileCard">
-                    <CardHeader title="Your Profile" sx={{width: "fit-content", margin: "0 auto"}}></CardHeader>
                     <CardContent className="content">
                         {!edit ? (
                             /* If edit mode is off, display the data */

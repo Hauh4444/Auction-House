@@ -30,7 +30,7 @@ const UserAccount = () => {
         "history?nav=orders": ["Your History", "View and manage your history"],
         "security": ["Login & Security", "Edit login information: username, password, etc"],
         "profile": ["Your Profile", "Edit profile information: name, address, etc "],
-        "payment-info": ["Your Payments", "View transactions, manage payment methods and settings"],
+        "payment-info?nav=transactions": ["Your Payments", "View transactions, manage payment methods and settings"],
         "lists": ["Your Lists", "View, modify, and share your lists, or create new ones"],
         "seller-profile": ["Seller Profile", "View and manage your seller profile"],
         "report": ["Customer Service", "Browse self service options or speak with a staff member"],

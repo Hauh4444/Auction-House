@@ -3,14 +3,11 @@
 ### React Frontend
 1. Private Pages
    1. Seller Profile
-   2. My Bids
+   2. Product Upload
+   3. My Bids
 2. System Functions
-   1. Purchasing
-   2. Live Bidding
-   3. Security
-3. Styling
-   1. Product Upload
-   2. History
+   1. Live Bidding
+   2. Password Reset
 4. Other Minor Necessitites
    1. Private Page UI
       1. Manage Listing

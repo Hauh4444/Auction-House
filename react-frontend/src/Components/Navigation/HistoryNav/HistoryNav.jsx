@@ -21,7 +21,7 @@ const HistoryNav = () => {
             if (filters.nav) {
                 condition = btn.classList.contains(filters.nav); // Check if button matches the current filter
             } else {
-                condition = btn.classList.contains("orders"); // Default to "best-sellers" if no filter is set
+                condition = btn.classList.contains("orders");
             }
             btn.classList.toggle("selected", condition); // Toggle "selected" class based on condition
         });
@@ -41,7 +41,7 @@ const HistoryNav = () => {
     return (
         <>
             <nav className="searchNav">
-                {["orders", "transactions", "reviews"].map((item, index) => (
+                {["orders", "reviews"].map((item, index) => (
                     <Button className={`navBtn ${item}`} data-testid={`${item}Btn`} key={index} onClick={(e) => {
                         handleNavClick(e, item);
                     }}>
