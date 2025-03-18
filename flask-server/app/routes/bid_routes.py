@@ -1,8 +1,9 @@
 from flask import Blueprint, request, jsonify
-from .bid_services import BidService  # Import BidService from the correct path
+from .bid_services import BidService  # Import the BidService class for business logic
+from . import socketio
 
-# Define Blueprint with a URL prefix
-bp = Blueprint('bid_routes', __name__, url_prefix='/api/bids')  # URL prefix set here
+# Define the Blueprint with the URL prefix '/api/bids'
+bp = Blueprint('bid_routes', __name__, url_prefix='/api/bids')
 
 @bp.route('/post_bid', methods=['POST'])
 def post_bid():
@@ -14,18 +15,34 @@ def post_bid():
     if not data:
         return jsonify({"error": "No data provided"}), 400
 
-    return BidService.post_bid(data)
+    # Use BidService to handle business logic (e.g., save the bid)
+    result = BidService.post_bid(data)
+
+    if result['status'] == 'success':
+        # Emit a 'new_bid' event via SocketIO to notify all connected clients
+        socketio.emit('new_bid', {
+            'item_id': result['item_id'],
+            'new_bid': result['new_bid']
+        })
+        return jsonify(result), 200
+    else:
+        return jsonify(result), 400
 
 @bp.route('/get_bid/<int:bid_id>', methods=['GET'])
 def get_bid(bid_id):
     """
     Endpoint to retrieve a specific bid by its ID.
     """
-    return BidService.get_bid_by_id(bid_id)
+    bid = BidService.get_bid_by_id(bid_id)
+    if bid:
+        return jsonify(bid), 200
+    else:
+        return jsonify({"error": "Bid not found"}), 404
 
 @bp.route('/get_all_bids', methods=['GET'])
 def get_all_bids():
     """
     Endpoint to retrieve all bids.
     """
-    return BidService.get_all_bids()
+    bids = BidService.get_all_bids()
+    return jsonify(bids), 200
