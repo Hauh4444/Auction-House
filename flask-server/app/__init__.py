@@ -16,6 +16,9 @@ from .routes import *  # Assuming routes are imported here
 # Import bid routes and register them
 from .bid_routes import bp as bid_routes_bp
 
+# Register the Blueprint for bid-related routes
+app.register_blueprint(bid_routes_bp)
+
 load_dotenv()
 
 # Initialize Flask application
