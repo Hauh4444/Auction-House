@@ -1,6 +1,7 @@
-from . import db 
+from . import db
 
 class BidMapper:
+    
     @staticmethod
     def create_bid(data, db_session=None):
         """
@@ -16,7 +17,7 @@ class BidMapper:
         else:
             db.session.add(bid)
             db.session.commit()
-
+        
         return bid.id
 
     @staticmethod
