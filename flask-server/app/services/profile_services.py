@@ -47,7 +47,6 @@ class ProfileService:
         return Response(response=jsonify(data).get_data(), status=200, mimetype="application/json")
 
 
-
     @staticmethod
     def create_profile(data, db_session=None):
         """

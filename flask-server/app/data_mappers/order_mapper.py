@@ -1,5 +1,5 @@
 from ..database import get_db
-from ..entities import Order
+from ..entities import Order, OrderItem
 
 
 class OrderMapper:
@@ -57,10 +57,33 @@ class OrderMapper:
         cursor = db.cursor()
         statement = """
             INSERT INTO orders 
-            (transaction_id, user_id, order_date, status, total_amount, created_at, updated_at) 
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+            (user_id, order_date, status, created_at, updated_at) 
+            VALUES (?, ?, ?, ?, ?)
         """
         cursor.execute(statement, tuple(Order(**data).to_dict().values())[1:]) # Exclude order_id (auto-incremented)
+        db.commit()
+        return cursor.lastrowid
+
+
+    @staticmethod
+    def create_order_item(data, db_session=None):
+        """Create a new order item in the database.
+
+        Args:
+            data (dict): Dictionary containing order item details.
+            db_session: Optional database session to be used in tests.
+
+        Returns:
+            int: The ID of the newly created order item.
+        """
+        db = db_session or get_db()
+        cursor = db.cursor()
+        statement = """
+            INSERT INTO order_items 
+            (order_id, listing_id, quantity, price, total_price, created_at, updated_at) 
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        """
+        cursor.execute(statement, tuple(OrderItem(**data).to_dict().values())[1:]) # Exclude order_item_id (auto-incremented)
         db.commit()
         return cursor.lastrowid
 

@@ -45,7 +45,7 @@ export const CartProvider = ({ children }) => {
     };
 
     const getCartTotal = () => {
-        return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+        return cartItems.reduce((total, item) => total + item.buy_now_price * item.quantity, 0).toFixed(2);
     };
 
     useEffect(() => {

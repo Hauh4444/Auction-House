@@ -9,7 +9,6 @@ class Order:
 
     Attributes:
         order_id (int, optional): The unique identifier for the order.
-        transaction_id (int): The ID of the transaction associated with the order.
         user_id (int): The ID of the user who placed the order.
         order_date (datetime): The date and time when the order was placed.
         status (str): The current status of the order (e.g., pending, processing, shipped, delivered, cancelled, returned).
@@ -18,7 +17,6 @@ class Order:
     """
     def __init__(
             self,
-            transaction_id: int,
             user_id: int,
             order_date: datetime,
             status: str,
@@ -35,7 +33,6 @@ class Order:
             raise ValueError(f"Listing type must be one of {self.VALID_STATUSES}, got '{status}' instead")
 
         self.order_id = order_id
-        self.transaction_id = transaction_id
         self.user_id = user_id
         self.order_date = order_date
         self.status = status
@@ -46,7 +43,6 @@ class Order:
         """Converts the order object to a dictionary representation."""
         return {
             "order_id": self.order_id,
-            "transaction_id": self.transaction_id,
             "user_id": self.user_id,
             "order_date": self.order_date,
             "status": self.status,

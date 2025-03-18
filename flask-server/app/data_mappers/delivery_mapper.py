@@ -56,9 +56,9 @@ class DeliveryMapper:
         cursor = db.cursor()
         statement = """
             INSERT INTO deliveries 
-            (order_id, user_id, address, city, state, postal_code, country, delivery_status, 
+            (order_item_id, user_id, address, city, state, country, delivery_status, 
             tracking_number, courier, estimated_delivery_date, delivered_at, created_at, updated_at) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """
         cursor.execute(statement, tuple(Delivery(**data).to_dict().values())[1:]) # Exclude delivery_id (auto-incremented)
         db.commit()

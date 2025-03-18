@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { FiPlus, FiMinus } from "react-icons/fi";
 import { BsTrash3Fill } from "react-icons/bs";
 import { Button } from "@mui/material";
+import axios from "axios";
 
 // Internal Modules
 import Header from "@/Components/Header/Header";
@@ -17,7 +18,7 @@ import "./Cart.scss";
 const Cart = () => {
     const navigate = useNavigate(); // Navigate hook for routing
 
-    const { addToCart, removeFromCart } = useCart(); // Access authentication functions from the AuthProvider context
+    const { addToCart, removeFromCart, clearCart, getCartTotal } = useCart(); // Access authentication functions from the AuthProvider context
 
     const [cartItems, setCartItems] = useState([]);
 
@@ -30,23 +31,30 @@ const Cart = () => {
         setCartItems(items);
     }
 
-    const getTotalCartItems = () => {
+    const getTotalItems = () => {
         return cartItems.reduce((total, item) => total + item.quantity, 0);
-
     }
 
-    const getTotalPrice = () => {
-        return cartItems.reduce((total, item) => total + item.buy_now_price * item.quantity, 0).toFixed(2);
-    }
-
-    const removeItem = async (item) => {
-        await removeFromCart(item);
-        getCartItems();
-    }
-
-    const addItem = async (item) => {
-        await addToCart(item);
-        getCartItems();
+    const purchaseCart = async () => {
+        if (!cartItems.length) {
+            return;
+        }
+        axios.post("http://127.0.0.1:5000/api/purchase/",
+            {
+                listings: cartItems,
+                total_amount: getCartTotal(),
+            },
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                withCredentials: true, // Ensure cookies are sent
+            })
+            .then(async () => {
+                await clearCart();
+                setCartItems([]);
+            })
+            .catch(err => console.log(err)); // Log errors if any
     }
 
     return (
@@ -90,7 +98,10 @@ const Cart = () => {
                                     </h2>
                                     <div className="itemQuantity">
                                         <div className="btns">
-                                            <Button className="quantityDown" onClick={() => removeItem(item)}>
+                                            <Button className="quantityDown" onClick={async () => {
+                                                await removeFromCart(item);
+                                                getCartItems();
+                                            }}>
                                                 {item.quantity > 1 ? (
                                                     <FiMinus className="icon" />
                                                 ) : (
@@ -100,7 +111,10 @@ const Cart = () => {
                                             <div className="quantity">
                                                 {item.quantity}
                                             </div>
-                                            <Button className="quantityUp" onClick={() => addItem(item)}>
+                                            <Button className="quantityUp" onClick={async () => {
+                                                await addToCart(item);
+                                                getCartItems();
+                                            }}>
                                                 <FiPlus className="icon" />
                                             </Button>
                                         </div>
@@ -115,8 +129,8 @@ const Cart = () => {
                         <p>Your cart is empty</p>
                     )}
                     <div className="checkout">
-                        <h2 className="subtotal">Subtotal {getTotalCartItems()} {getTotalCartItems() > 1 ? "Items" : "Item"}: <b>${getTotalPrice()}</b></h2>
-                        <Button className="btn">
+                        <h2 className="subtotal">Subtotal {getTotalItems()} {getTotalItems() > 1 ? "Items" : "Item"}: <b>${getCartTotal()}</b></h2>
+                        <Button className="btn" onClick={() => purchaseCart()}>
                             Proceed To Checkout
                         </Button>
                     </div>

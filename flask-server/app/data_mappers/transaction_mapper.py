@@ -5,11 +5,12 @@ from ..entities import Transaction
 class TransactionMapper:
     """Handles database operations related to transactions."""
     @staticmethod
-    def get_all_transactions(buyer_id, db_session=None):
+    def get_all_transactions(user_id, db_session=None):
         """
         Retrieve all transactions from the database.
 
         Args:
+            user_id: Id of the user to retrieve transactions of
             db_session: Optional database session to be used in tests.
 
         Returns:
@@ -17,7 +18,7 @@ class TransactionMapper:
         """
         db = db_session or get_db()
         cursor = db.cursor()
-        cursor.execute("SELECT * FROM transactions WHERE buyer_id = ?", (buyer_id,))
+        cursor.execute("SELECT * FROM transactions WHERE user_id = ?", (user_id,))
         transactions = cursor.fetchall()
         return [Transaction(**transaction).to_dict() for transaction in transactions]
 
@@ -56,9 +57,9 @@ class TransactionMapper:
         cursor = db.cursor()
         statement = """
             INSERT INTO transactions 
-            (listing_id, buyer_id, seller_id, transaction_date, transaction_type, amount, 
+            (order_id, user_id, transaction_date, transaction_type, amount, 
             shipping_cost, payment_method, payment_status, created_at, updated_at) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """
         cursor.execute(statement, tuple(Transaction(**data).to_dict().values())[1:]) # Exclude transaction_id (auto-incremented)
         db.commit()

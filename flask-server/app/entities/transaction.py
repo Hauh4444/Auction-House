@@ -9,9 +9,7 @@ class Transaction:
 
     Attributes:
         transaction_id (int, optional): The unique identifier for the transaction.
-        listing_id (int): The ID of the listing involved in the transaction.
-        buyer_id (int): The ID of the buyer in the transaction.
-        seller_id (int): The ID of the seller in the transaction.
+        order_id (int): The ID of the order involved in the transaction.
         transaction_date (datetime): The date and time when the transaction occurred.
         transaction_type (str): The type of transaction ("auction" or "buy_now").
         amount (float): The amount of money involved in the transaction (excluding shipping).
@@ -23,9 +21,8 @@ class Transaction:
     """
     def __init__(
             self,
-            listing_id: int,
-            buyer_id: int,
-            seller_id: int,
+            order_id: int,
+            user_id: int,
             transaction_date: datetime,
             transaction_type: str, # "auction", "buy_now"
             amount: float,
@@ -48,9 +45,8 @@ class Transaction:
             raise ValueError(f"Listing type must be one of {self.VALID_PAYMENT_STATUSES}, got '{payment_status}' instead")
 
         self.transaction_id = transaction_id
-        self.listing_id = listing_id
-        self.buyer_id = buyer_id
-        self.seller_id = seller_id
+        self.order_id = order_id
+        self.user_id = user_id
         self.transaction_date = transaction_date
         self.transaction_type = transaction_type
         self.amount = amount
@@ -64,9 +60,8 @@ class Transaction:
         """Converts the transaction object to a dictionary representation."""
         return {
             "transaction_id": self.transaction_id,
-            "listing_id": self.listing_id,
-            "buyer_id": self.buyer_id,
-            "seller_id": self.seller_id,
+            "order_id": self.order_id,
+            "user_id": self.user_id,
             "transaction_date": self.transaction_date,
             "transaction_type": self.transaction_type,
             "amount": self.amount,

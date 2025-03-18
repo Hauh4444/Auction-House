@@ -22,7 +22,6 @@ def get_all_categories(db_session=None):
     return CategoryService.get_all_categories(db_session=db_session)
 
 
-
 # GET /api/categories/{id}
 @bp.route("/<int:category_id>", methods=["GET"])
 def get_category(category_id, db_session=None):

@@ -46,7 +46,7 @@ class HistoryService:
         """
         Retrieves a user's transactions
         """
-        transactions = TransactionMapper.get_all_transactions(buyer_id=user_id, db_session=db_session)
+        transactions = TransactionMapper.get_all_transactions(user_id=user_id, db_session=db_session)
 
         if transactions:
             data = {"message": "Transactions found", "transactions": transactions}
