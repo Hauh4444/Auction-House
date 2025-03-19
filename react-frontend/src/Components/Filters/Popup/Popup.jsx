@@ -1,7 +1,7 @@
 // External Libraries
 import { useEffect, useState } from "react";
 import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
-import { FormControl, Input, InputLabel, MenuItem, Select } from "@mui/material";
+import { FormControl, TextField, InputLabel, MenuItem, Select } from "@mui/material";
 import axios from "axios";
 
 // Stylesheets
@@ -20,7 +20,7 @@ import "./Popup.scss";
  * - A dropdown to select sorting criteria (e.g., relevance, date, price).
  * - A dropdown to select categories fetched from an API.
  * - A dropdown to select the type of listing (e.g., auction, buy now).
- * - Input fields for minimum and maximum price ranges.
+ * - TextField fields for minimum and maximum price ranges.
  *
  * The filters update the URL query parameters and reflect the current
  * state of the filters applied.
@@ -28,18 +28,17 @@ import "./Popup.scss";
  * @returns {JSX.Element} A filter popup component with various filtering options.
  */
 const Popup = () => {
-    const navigate = useNavigate(); // Navigate function for routing
+    const navigate = useNavigate(); // Navigate hook for routing
     const location = useLocation(); // Hook to access the current location (URL)
-    // Extract query parameters from the URL
-    const filters = Object.fromEntries(new URLSearchParams(location.search).entries());
+    const filters = Object.fromEntries(new URLSearchParams(location.search).entries()); // Extract query parameters from the URL
 
     // State variables for managing filter options
     const [sortBy, setSortBy] = useState(filters.sort || "relevance"); // Default to "relevance" if no sort filter is provided
     const [categories, setCategories] = useState([]); // Stores category list fetched from API
     const [category, setCategory] = useState(filters.category_id || "All"); // Default to "All" if no category filter is provided
     const [listingType, setListingType] = useState(filters.listing_type || "All"); // Default to "All" if no listing type filter is provided
-    const [minPrice, setMinPrice] = useState(); // State for minimum price
-    const [maxPrice, setMaxPrice] = useState(); // State for maximum price
+    const [minPrice, setMinPrice] = useState(""); // State for minimum price
+    const [maxPrice, setMaxPrice] = useState(""); // State for maximum price
 
     // Effect hook to fetch categories from the API on component mount
     useEffect(() => {
@@ -50,16 +49,16 @@ const Popup = () => {
         })
             .then(res => setCategories(res.data.categories)) // Update state with fetched data
             .catch(err => console.log(err)); // Log errors if any
-    }, []); // Empty dependency array to ensure it runs only once when the component is mounted
+    }, []); 
 
     /**
      * Updates the URL search parameters and state when a filter is changed.
-     * @param {string} filter The name of the filter being updated.
+     * @param {string} key The name of the filter being updated.
      * @param {string} value The value of the filter.
      */
-    function updateFilter(filter, value) {
+    function updateFilter(key, value) {
         // Handle sorting filter separately, as it involves both "sort" and "order" parameters
-        if (filter === "sort") {
+        if (key === "sort") {
             setSortBy(value); // Update the sort criteria
             if (value === "relevance") {
                 delete filters.sort; // Remove sort and order if "relevance" is selected
@@ -94,11 +93,11 @@ const Popup = () => {
             } else {
                 valueToSet = undefined; // Set filter value to undefined for "All" or empty
             }
-            setFilterState(filter, valueToSet); // Update the corresponding filter state
+            setFilterState(key, valueToSet); // Update the corresponding filter state
             if (valueToSet) {
-                filters[filter] = valueToSet; // Add to filters if value is set
+                filters[key] = valueToSet; // Add to filters if value is set
             } else {
-                delete filters[filter]; // Remove from filters if value is empty
+                delete filters[key]; // Remove from filters if value is empty
             }
         }
 
@@ -127,13 +126,15 @@ const Popup = () => {
     }
 
     return (
-        <div className="filtersPopup">
+        <div className="filtersPopup" data-testid="filtersPopup">
             <div style={{ height: "20px" }} /> {/* Spacer */}
             {/* Sort By Filter */}
             <FormControl size="small">
                 <InputLabel id="sortByLabel">Sort By</InputLabel>
                 <Select
+                    id="sortByInput"
                     labelid="sortByLabel"
+                    aria-labelledby="sortByLabel"
                     className="sortBy"
                     value={sortBy}
                     label="Sort By"
@@ -159,7 +160,9 @@ const Popup = () => {
             <FormControl size="small">
                 <InputLabel id="categoryLabel">Category</InputLabel>
                 <Select
+                    id="categoryInput"
                     labelid="categoryLabel"
+                    aria-labelledby="categoryLabel"
                     className="category"
                     value={category}
                     label="Category"
@@ -179,7 +182,9 @@ const Popup = () => {
             <FormControl size="small">
                 <InputLabel id="listingTypeLabel">Listing Type</InputLabel>
                 <Select
+                    id="listingTypeInput"
                     labelid="listingTypeLabel"
+                    aria-labelledby="listingTypeLabel"
                     className="listingType"
                     value={listingType}
                     label="Listing Type"
@@ -195,36 +200,28 @@ const Popup = () => {
             </FormControl>
 
             {/* Minimum Price Filter */}
-            <FormControl size="small">
-                <InputLabel id="minPriceLabel">Min Price</InputLabel>
-                <Input
-                    labelid="minPriceLabel"
-                    className="minPrice"
-                    value={minPrice}
-                    label="Min Price"
-                    type="number"
-                    onChange={(e) => {
-                        updateFilter("min_price", e.target.value)
-                    }}
-                    variant="outlined"
-                />
-            </FormControl>
+            <TextField
+                className="minPrice"
+                value={minPrice}
+                label="Min Price"
+                type="number"
+                onChange={(e) => {
+                    updateFilter("min_price", e.target.value)
+                }}
+                variant="outlined"
+            />
 
             {/* Maximum Price Filter */}
-            <FormControl size="small">
-                <InputLabel id="maxPriceLabel">Max Price</InputLabel>
-                <Input
-                    labelid="maxPriceLabel"
-                    className="maxPrice"
-                    value={maxPrice}
-                    label="Max Price"
-                    type="number"
-                    onChange={(e) => {
-                        updateFilter("max_price", e.target.value)
-                    }}
-                    variant="outlined"
-                />
-            </FormControl>
+            <TextField
+                className="maxPrice"
+                value={maxPrice}
+                label="Max Price"
+                type="number"
+                onChange={(e) => {
+                    updateFilter("max_price", e.target.value)
+                }}
+                variant="outlined"
+            />
         </div>
     )
 }

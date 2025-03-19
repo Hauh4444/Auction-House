@@ -6,7 +6,8 @@ class ProfileMapper:
     """Handles database operations related to profiles."""
     @staticmethod
     def get_all_profiles(db_session=None):
-        """Retrieve all profiles from the database.
+        """
+        Retrieve all profiles from the database.
 
         Args:
             db_session: Optional database session to be used in tests.
@@ -23,7 +24,8 @@ class ProfileMapper:
 
     @staticmethod
     def get_profile(user_id, db_session=None):
-        """Retrieve a profile by its associated user ID.
+        """
+        Retrieve a profile by its associated user ID.
 
         Args:
             user_id (int): The ID of the user to retrieve.

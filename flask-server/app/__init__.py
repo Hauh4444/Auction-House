@@ -9,9 +9,10 @@ from apscheduler.schedulers.background import BackgroundScheduler
 import os, pkgutil, importlib
 
 from .utils import login_manager
-from .database import init_db, backup_database
+from .database import backup_db, get_db
 from .routes import *
 
+# Load environment variables
 load_dotenv()
 
 # Initialize Flask application
@@ -25,7 +26,7 @@ app.config.from_object(config_class)
 limiter = Limiter(
     get_remote_address,
     app=app,
-    default_limits=["10000 per hour", "2000 per minute"], # Default limit for all routes
+    default_limits=["10000 per hour", "2000 per minute"],
     storage_uri="memory://",
 )
 
@@ -36,35 +37,26 @@ Session(app)
 # Enable Cross-Origin Resource Sharing (CORS) for frontend communication
 CORS(app=app, supports_credentials=True, resources={r"/api/*": {"origins": "http://localhost:5173"}})
 
-# Initialize database
-init_db()
-
 # Iterate through the modules in the routes package
 for _, module_name, _ in pkgutil.iter_modules(routes.__path__):
     # Dynamically import the module
     module = importlib.import_module(name=f".{module_name}", package="app.routes")
     # Register the module blueprint
-    if hasattr(module, 'bp'):
+    if hasattr(module, "bp"):
         app.register_blueprint(module.bp)
 
+# Schedule background job to backup database
+scheduler = BackgroundScheduler()
+scheduler.add_job(backup_db, trigger="cron", hour=12, minute=0)  # Runs every day at Noon
+scheduler.start()
 
-@app.route('/test', methods=['GET'])
+
+# Health check route
+@app.route("/test", methods=["GET"])
 def test():
     """Health check endpoint to verify server status.
 
     Returns:
         str: "Success" message if the server is running.
     """
-    return 'Success'
-
-
-if __name__ == '__main__':
-    # Schedule background job to backup database
-    scheduler = BackgroundScheduler()
-    scheduler.add_job(backup_database, trigger='cron', hour=12, minute=0) # Runs every day at Noon
-    scheduler.start()
-
-    try:
-        app.run(debug=True)
-    except (KeyboardInterrupt, SystemExit):
-        scheduler.shutdown()
+    return "Success"

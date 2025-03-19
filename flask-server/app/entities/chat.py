@@ -13,7 +13,6 @@ class Chat:
         user2_id (int): The ID of the second user in the chat.
         created_at (datetime, optional): The creation timestamp.
     """
-
     def __init__(
             self,
             user1_id: int,

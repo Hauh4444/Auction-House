@@ -5,10 +5,12 @@ from ..entities import Delivery
 class DeliveryMapper:
     """Handles database operations related to deliveries."""
     @staticmethod
-    def get_all_deliveries(db_session=None):
-        """Retrieve all deliveries from the database.
+    def get_all_deliveries(user_id, db_session=None):
+        """
+        Retrieve all deliveries from the database.
 
         Args:
+            user_id (int): The ID of the user whos deliveries to get
             db_session: Optional database session to be used in tests.
 
         Returns:
@@ -16,14 +18,15 @@ class DeliveryMapper:
         """
         db = db_session or get_db()
         cursor = db.cursor()
-        cursor.execute("SELECT * FROM deliveries")
+        cursor.execute("SELECT * FROM deliveries WHERE user_id = ?", (user_id,))
         deliveries = cursor.fetchall()
         return [Delivery(**delivery).to_dict() for delivery in deliveries]
 
 
     @staticmethod
     def get_delivery_by_id(delivery_id, db_session=None):
-        """Retrieve a delivery by its ID.
+        """
+        Retrieve a delivery by its ID.
 
         Args:
             delivery_id (int): The ID of the delivery to retrieve.
@@ -54,9 +57,9 @@ class DeliveryMapper:
         cursor = db.cursor()
         statement = """
             INSERT INTO deliveries 
-            (order_id, user_id, address, city, state, postal_code, country, delivery_status, 
+            (order_item_id, user_id, address, city, state, country, delivery_status, 
             tracking_number, courier, estimated_delivery_date, delivered_at, created_at, updated_at) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """
         cursor.execute(statement, tuple(Delivery(**data).to_dict().values())[1:]) # Exclude delivery_id (auto-incremented)
         db.commit()
@@ -78,7 +81,7 @@ class DeliveryMapper:
         db = db_session or get_db()
         cursor = db.cursor()
         conditions = [f"{key} = ?" for key in data if key not in ["delivery_id", "created_at"]]
-        values = [data[key] for key in data if key not in ["delivery_id", "created_at"]]
+        values = [data.get(key) for key in data if key not in ["delivery_id", "created_at"]]
         values.append(delivery_id)
         statement = f"UPDATE deliveries SET {', '.join(conditions)}, updated_at = CURRENT_TIMESTAMP WHERE delivery_id = ?"
         cursor.execute(statement, values)

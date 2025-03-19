@@ -1,0 +1,194 @@
+// Built-In Modules
+@use "sass:map";
+
+// Custom Variables
+@use "@/assets/variables.modules.scss" as *;
+
+.cartPage {
+    .mainPage {
+        .cart {
+            width: 70%;
+            margin: 50px 15%;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+
+            .cartHead {
+                width: calc(100% - 40px);
+                height: 50px;
+                padding: 0 20px;
+                display: flex;
+                flex-direction: row;
+                box-shadow: inset 0 4px 4px -4px map.get($theme-colors, mainColor4),
+                            inset 0 -4px 4px -4px map.get($theme-colors, mainColor4);
+
+                h3 {
+                    height: fit-content;
+                    margin: auto;
+                    text-align: center;
+                    vertical-align: middle;
+                    font-weight: lighter;
+                }
+            }
+
+            .cartItem {
+                height: 200px;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 2px 4px map.get($theme-colors, mainColor4);
+                background-color: map.get($theme-colors, mainColor1);
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+
+                .itemImage {
+                    height: 200px;
+                    display: flex;
+                    flex-basis: 200px;
+                    align-items: center;
+                    justify-content: center;
+
+                    img {
+                        max-width: 100%;
+                        max-height: 100%;
+                        object-fit: contain;
+                    }
+                }
+
+                .itemContent {
+                    height: calc(100% - 20px);
+                    display: flex;
+                    margin-left: 20px;
+                    flex-basis: calc(100% - 220px);
+                    flex-direction: row;
+                    justify-content: space-around;
+
+                    .basicInfo {
+                        display: flex;
+                        flex-direction: column;
+                        flex-basis: 40%;
+                        gap: 10px;
+                        justify-content: center;
+
+                        .itemHead {
+                            font-size: 18px;
+                            color: map.get($theme-colors, mainColor3);
+                        }
+
+                        .itemHead {
+                            width: fit-content;
+                            padding: 0;
+                            display: flex;
+                            overflow: hidden;
+                            align-items: flex-start;
+                            text-align: left;
+                            text-transform: none;
+
+                            &:hover {
+                                background-color: map.get($theme-colors, mainColor1);
+                            }
+                        }
+                    }
+
+                    .itemPrice,
+                    .totalItemPrice {
+                        width: fit-content;
+                        margin: auto;
+                        flex-basis: 20%;
+                        font-size: 18px;
+                        text-align: center;
+                        color: map.get($theme-colors, mainColor3);
+                    }
+
+                    .itemQuantity {
+                        margin: auto;
+                        flex-basis: 20%;
+
+                        .btns {
+                            width: 120px;
+                            margin: auto;
+                            border-radius: 20px;
+                            box-shadow: 0 2px 4px map.get($theme-colors, mainColor4);
+                            background-color: map.get($theme-colors, mainColor1);
+
+                            .quantityDown,
+                            .quantity,
+                            .quantityUp {
+                                background-color: map.get($theme-colors, mainColor1);
+                                border: none;
+                                display: inline-block;
+                                vertical-align: middle;
+                                color: map.get($theme-colors, mainColor3);
+                            }
+
+                            .quantityDown,
+                            .quantityUp {
+                                min-width: 40px;
+                                min-height: 40px;
+                                padding: 0;
+
+                                svg {
+                                    display: block;
+                                    margin: auto;
+                                }
+
+                                .icon {
+                                    vertical-align: middle;
+                                    fill: map.get($theme-colors, mainColor3);
+                                }
+                            }
+
+                            .quantityDown {
+                                border-radius: 20px 0 0 20px;
+                            }
+
+                            .quantity {
+                                width: 40px;
+                                height: 40px;
+                                line-height: 40px;
+                                border-radius: 0;
+                                display: inline-flex;
+                                justify-content: center;
+                            }
+
+                            .quantityUp {
+                                border-radius: 0 20px 20px 0;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .checkout {
+                width: 30%;
+                height: 125px;
+                margin-left: auto;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 2px 4px map.get($theme-colors, mainColor4);
+                background-color: map.get($theme-colors, mainColor1);
+                display: flex;
+                flex-direction: column;
+                align-content: center;
+                justify-content: center;
+
+                .subtotal {
+                    width: fit-content;
+                    margin: 0 auto 25px auto;
+                    font-size: 18px;
+                    font-weight: normal;
+                }
+
+                .btn {
+                    width: fit-content;
+                    height: 35px;
+                    margin: 0 auto;
+                    padding: 0 20px;
+                    border-radius: 20px;
+                    background-image: linear-gradient(to right, map.get($theme-colors, accentColor1), map.get($theme-colors, accentColor2));
+                    color: map.get($theme-colors, mainColor1);
+                }
+            }
+        }
+    }
+}

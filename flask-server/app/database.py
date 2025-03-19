@@ -1,51 +1,100 @@
-import sqlite3, os
+from datetime import datetime
+import sqlite3, os, gzip
 
-DB_FILE = "database/auctionhouse.db"
-BACKUP_FILE = "./database/auctionhouse_backup.sql"
+today = datetime.now().strftime("%Y-%m-%d")
+DB_DIRECTORY = "database"
+DB_FILE = "auctionhouse.db"
+BACKUP_FILE = f"auctionhouse_backup_{today}.sql"
 
 
 def get_db():
-    """Establish a connection to the SQLite database.
+    """
+    Establishes a connection to the SQLite database. If the database file is missing,
+    it attempts to recover it from the latest backup.
 
     Returns:
-        sqlite3.Connection: A database connection object.
+        sqlite3.Connection: A database connection object if successful.
     """
-    # TODO If we fail to connect to database, call recover_backup() and attempt to connect again
-    conn = sqlite3.connect(database=DB_FILE)
-    conn.row_factory = sqlite3.Row # Enables row access by column name
+    db_path = os.path.join(DB_DIRECTORY, DB_FILE)
+
+    if not os.path.exists(db_path):  # Check if DB file is missing
+        recover_db()
+
+    conn = sqlite3.connect(database=db_path)
+    conn.row_factory = sqlite3.Row  # Enables row access by column name
     return conn
 
 
-def init_db():
-    # TODO Check if all tables exist that we expect to and if not, call recover_backup(), function should have no return
-    db = get_db()
-    cursor = db.cursor()
-
-
-def backup_database():
+def backup_db():
     """
-    Creates a backup of the SQLite database by exporting its contents.
-
-    Returns:
-        str: A success message if the backup is created successfully.
-        tuple: An error message and HTTP status code if the database file is not found.
+    Creates a compressed backup of the SQLite database by exporting its contents
+    into a `.sql.gz` file.
     """
-    # TODO Backup files need to be timestamped and not overridden upon new backups
     try:
-        if not os.path.exists(path=DB_FILE):
-            return "Database file not found!", 404
+        os.makedirs(DB_DIRECTORY, exist_ok=True)
 
-        conn = sqlite3.connect(database=DB_FILE)
-        with open(BACKUP_FILE, "w") as f:
+        db_path = os.path.join(DB_DIRECTORY, DB_FILE)
+        backup_path = os.path.join(DB_DIRECTORY, BACKUP_FILE + ".gz")
+
+        if not os.path.exists(db_path):
+            return
+
+        conn = sqlite3.connect(db_path)
+
+        with gzip.open(backup_path, "wt", encoding="utf-8") as f:  # Compress output
             for line in conn.iterdump():
                 f.write(f"{line}\n")
         conn.close()
 
-        return "Database backup created successfully."
+    except FileNotFoundError as e:
+        print(f"File error during recovery: {e}")
+    except sqlite3.Error as e:
+        print(f"SQLite error during recovery: {e}")
+    except gzip.GzipFile as e:
+        print(f"Gzip decompression error: {e}")
     except Exception as e:
-        return f"Error: {str(e)}"
+        print(f"An unexpected error occurred during recovery: {e}")
 
 
-def recover_backup():
-    # TODO this function will recover the database from the latest backup file, then delete that latest backup file
-    return
+def recover_db():
+    """
+    Recovers the SQLite database from the most recent `.sql.gz` backup file.
+    After successful recovery, the backup file is deleted.
+    """
+    try:
+        db_path = os.path.join(DB_DIRECTORY, DB_FILE)
+
+        # Get full paths of backup files
+        backup_files = [
+            os.path.join(DB_DIRECTORY, f)
+            for f in os.listdir(DB_DIRECTORY)
+            if f.startswith("auctionhouse_backup_") and f.endswith(".sql.gz")
+        ]
+
+        backup_files = sorted(backup_files, key=os.path.getmtime, reverse=True)
+
+        if not backup_files:
+            return
+
+        latest_backup = backup_files[0]
+
+        # Restore database from gzip file
+        with gzip.open(latest_backup, "rt", encoding="utf-8") as f:
+            sql_script = f.read()
+
+        with sqlite3.connect(db_path) as conn:
+            cursor = conn.cursor()
+            cursor.executescript(sql_script)
+            conn.commit()
+
+        # Delete the backup after successful recovery
+        os.remove(latest_backup)
+
+    except FileNotFoundError as e:
+        print(f"File error during recovery: {e}")
+    except sqlite3.Error as e:
+        print(f"SQLite error during recovery: {e}")
+    except gzip.GzipFile as e:
+        print(f"Gzip decompression error: {e}")
+    except Exception as e:
+        print(f"An unexpected error occurred during recovery: {e}")

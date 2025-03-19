@@ -1,8 +1,8 @@
 // External Libraries
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 
 // Internal Modules
-import { useAuth } from "@/ContextAPI/AuthProvider";
+import { useAuth } from "@/ContextAPI/AuthContext";
 
 /**
  * PrivateRoute Component
@@ -16,9 +16,10 @@ import { useAuth } from "@/ContextAPI/AuthProvider";
 const PrivateRoute = () => {
     // Fetch the authentication context
     const auth = useAuth();
+    const location = useLocation(); // Get current attempted location
 
     // If the user is not authenticated, redirect to the authentication page
-    if (!auth.user) return <Navigate to="/auth-page" />;
+    if (!auth.user) return <Navigate to="/auth-page" state={{ from: location }} />;
 
     // If the user is authenticated, render the child routes
     return <Outlet />;

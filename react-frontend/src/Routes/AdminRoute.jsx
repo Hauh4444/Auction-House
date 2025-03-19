@@ -1,13 +1,13 @@
 // External Libraries
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 
 // Internal Modules
-import { useAuth } from "@/ContextAPI/AuthProvider";
+import { useAuth } from "@/ContextAPI/AuthContext";
 
 /**
  * AdminRoute Component
  *
- * This component protects routes that require admin privileges. It checks the user's authentication
+ * This component protects routes that require admin privileges. It checks the user"s authentication
  * status and role, redirecting users as necessary:
  * - If the user is not authenticated, they are redirected to the login page.
  * - If the user is authenticated but does not have admin privileges, they are redirected to the home page.
@@ -18,9 +18,10 @@ import { useAuth } from "@/ContextAPI/AuthProvider";
 const AdminRoute = () => {
     // Fetch the authentication context
     const auth = useAuth();
+    const location = useLocation(); // Get current attempted location
 
     // If the user is not authenticated, redirect to the authentication page
-    if (!auth.user) return <Navigate to="/auth-page" />;
+    if (!auth.user) return <Navigate to="/auth-page" state={{ from: location }} />;
 
     // If user does not have admin privelages, redirect to the home page
     if (auth.user.role !== "admin") return <Navigate to="/" />

@@ -6,7 +6,8 @@ class UserMapper:
     """Handles database operations related to users."""
     @staticmethod
     def get_user(user_id, db_session=None):
-        """Retrieve a user by their ID.
+        """
+        Retrieve a user by their ID.
 
         Args:
             user_id (int): The ID of the user to retrieve.

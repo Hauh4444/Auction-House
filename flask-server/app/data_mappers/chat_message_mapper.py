@@ -6,7 +6,8 @@ class ChatMessagesMapper:
     """Handles database operations related to chat messages."""
     @staticmethod
     def get_messages_by_chat_id(chat_id, db_session=None):
-        """Retrieve all messages for a given chat.
+        """
+        Retrieve all messages for a given chat.
 
         Args:
             chat_id (int): The ID of the chat.
@@ -24,7 +25,8 @@ class ChatMessagesMapper:
 
     @staticmethod
     def get_message_by_id(message_id, db_session=None):
-        """Retrieve a specific message by its ID.
+        """
+        Retrieve a specific message by its ID.
 
         Args:
             message_id (int): The ID of the message.

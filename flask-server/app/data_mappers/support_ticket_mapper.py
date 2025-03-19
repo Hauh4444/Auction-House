@@ -8,7 +8,8 @@ class SupportTicketMapper:
     """Handles database operations related to support tickets."""
     @staticmethod
     def get_ticket_by_id(ticket_id, db_session=None):
-        """Retrieve a support ticket by its ID.
+        """
+        Retrieve a support ticket by its ID.
 
         Args:
             ticket_id (int): The ID of the support ticket.
@@ -26,7 +27,8 @@ class SupportTicketMapper:
 
     @staticmethod
     def get_tickets_by_user_id(user_id, db_session=None):
-        """Retrieve all support tickets for a given user.
+        """
+        Retrieve all support tickets for a given user.
 
         Args:
             user_id (int): The ID of the user.

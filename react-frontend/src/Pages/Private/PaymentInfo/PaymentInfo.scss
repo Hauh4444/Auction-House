@@ -1,0 +1,37 @@
+// Built In Modules
+@use "sass:map";
+// Custom Variables
+@use "@/assets/variables.modules.scss" as *;
+
+.paymentInfoPage {
+    .mainPage {
+        .transactionItems {
+            width: 70%;
+            margin: 0 auto 50px auto;
+            display: flex;
+            flex-direction: row;
+            gap: 30px;
+            flex-wrap: wrap;
+
+            .transactionCard {
+                max-width: calc(33% - 57.5px);
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 2px 4px map.get($theme-colors, mainColor4);
+                background-color: map.get($theme-colors, mainColor1);
+                display: flex;
+                flex-grow: 1;
+                flex-basis: calc(33% - 70px);
+                align-items: center;
+
+                .cardContent {
+                    padding: 0;
+
+                    p {
+                        margin: 10px 0;
+                    }
+                }
+            }
+        }
+    }
+}

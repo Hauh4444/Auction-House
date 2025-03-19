@@ -5,6 +5,12 @@
 
 .userProfilePage {
     .mainPage {
+        h1 {
+            text-align: center;
+            font-weight: lighter;
+            margin-bottom: 45px;
+        }
+
         .userProfileCard {
             width: 600px;
             margin: 50px auto;

@@ -17,10 +17,13 @@ class CategoryService:
         """
         categories = CategoryMapper.get_all_categories(db_session=db_session)
 
-        data = {"message": "Categories found", "categories": categories}
-        response = Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
-        return response
+        if not categories:
+            data = {"message": "No categories found"}
+            return Response(response=jsonify(data).get_data(), status=404, mimetype="application/json")
 
+        data = {"message": "Categories found", "categories": categories}
+        return Response(response=jsonify(data).get_data(), status=200, mimetype="application/json")
+        
 
     @staticmethod
     def get_category_by_id(category_id, db_session=None):
@@ -36,15 +39,14 @@ class CategoryService:
         """
         category = CategoryMapper.get_category_by_id(category_id=category_id, db_session=db_session)
 
-        if category:
-            data = {"message": "Category found", "category": category}
-            response = Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
-            return response
+        if not category:
+            data = {"error": "Category not found"}
+            return Response(response=jsonify(data).get_data(), status=404, mimetype="application/json")
 
-        data = {"error": "Category not found"}
-        response = Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
-        return response
+        data = {"message": "Category found", "category": category}
+        return Response(response=jsonify(data).get_data(), status=200, mimetype="application/json")
 
+        
 
     @staticmethod
     def create_category(data, db_session=None):
@@ -58,16 +60,15 @@ class CategoryService:
         Returns:
             A Response object with the success message and newly created category ID, or a 400 error if the name is missing.
         """
-        if not data.get("name"):
-            data = {"error": "Category name is required"}
-            response = Response(response=jsonify(data).get_data(), status=400, mimetype='application/json')
-            return response
-
         category_id = CategoryMapper.create_category(data=data, db_session=db_session)
-        data = {"message": "Category created", "category_id": category_id}
-        response = Response(response=jsonify(data).get_data(), status=201, mimetype='application/json')
-        return response
 
+        if not category_id:
+            data = {"message": "Error creating category"}
+            return Response(response=jsonify(data).get_data(), status=400, mimetype="application/json")
+
+        data = {"message": "Category created", "category_id": category_id}
+        return Response(response=jsonify(data).get_data(), status=201, mimetype="application/json")
+        
 
     @staticmethod
     def update_category(category_id, data, db_session=None):
@@ -84,15 +85,14 @@ class CategoryService:
         """
         updated_rows = CategoryMapper.update_category(category_id=category_id, data=data, db_session=db_session)
 
-        if updated_rows:
-            data = {"message": "Category updated", "updated_rows": updated_rows}
-            response = Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
-            return response
+        if not updated_rows:
+            data = {"error": "Category not found"}
+            return Response(response=jsonify(data).get_data(), status=404, mimetype="application/json")
 
-        data = {"error": "Category not found"}
-        response = Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
-        return response
+        data = {"message": "Category updated", "updated_rows": updated_rows}
+        return Response(response=jsonify(data).get_data(), status=200, mimetype="application/json")
 
+        
 
     @staticmethod
     def delete_category(category_id, db_session=None):
@@ -108,11 +108,11 @@ class CategoryService:
         """
         deleted_rows = CategoryMapper.delete_category(category_id=category_id, db_session=db_session)
 
-        if deleted_rows:
-            data = {"message": "Category deleted", "deleted_rows": deleted_rows}
-            response = Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
-            return response
+        if not deleted_rows:
+            data = {"error": "Category not found"}
+            return Response(response=jsonify(data).get_data(), status=404, mimetype="application/json")
 
-        data = {"error": "Category not found"}
-        response = Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
-        return response
+        data = {"message": "Category deleted", "deleted_rows": deleted_rows}
+        return Response(response=jsonify(data).get_data(), status=200, mimetype="application/json")
+
+        

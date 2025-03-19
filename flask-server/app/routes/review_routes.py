@@ -4,13 +4,14 @@ from flask_login import login_required
 from ..services import ReviewService
 
 # Blueprint for review-related routes
-bp = Blueprint('review_bp', __name__, url_prefix="/api/reviews")
+bp = Blueprint("review_bp", __name__, url_prefix="/api/reviews")
 
 
 # GET /api/reviews
-@bp.route('/', methods=['GET'])
+@bp.route("/", methods=["GET"])
 def get_all_reviews(db_session=None):
-    """Retrieve all reviews.
+    """
+    Retrieve all reviews.
 
     Args:
         db_session: Optional database session to be used in tests.
@@ -23,9 +24,9 @@ def get_all_reviews(db_session=None):
 
 
 # GET /api/reviews/{id}
-@bp.route('/<int:review_id>', methods=['GET'])
+@bp.route("/<int:review_id>", methods=["GET"])
 def get_review(review_id, db_session=None):
-    """Retrieve a single review by its ID.
+    """etrieve a single review by its ID.
 
     Args:
         review_id (int): The ID of the review to retrieve.
@@ -38,7 +39,7 @@ def get_review(review_id, db_session=None):
 
 
 # POST /api/reviews
-@bp.route('/', methods=['POST'])
+@bp.route("/", methods=["POST"])
 @login_required
 def create_review(db_session=None):
     """Create a new review.
@@ -57,7 +58,7 @@ def create_review(db_session=None):
 
 
 # PUT /api/reviews/{id}
-@bp.route('/<int:review_id>', methods=['PUT'])
+@bp.route("/<int:review_id>", methods=["PUT"])
 @login_required
 def update_review(review_id, db_session=None):
     """Update an existing review by its ID.
@@ -77,7 +78,7 @@ def update_review(review_id, db_session=None):
 
 
 # DELETE /api/reviews/{id}
-@bp.route('/<int:review_id>', methods=['DELETE'])
+@bp.route("/<int:review_id>", methods=["DELETE"])
 @login_required
 def delete_review(review_id, db_session=None):
     """Delete a review by its ID.

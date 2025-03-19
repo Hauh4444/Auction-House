@@ -1,14 +1,14 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request
 from flask_login import login_required
 
 from ..services import AuthService
 
 # Blueprint for user login-related routes
-bp = Blueprint('auth_bp', __name__, url_prefix="/api/auth")
+bp = Blueprint("auth_bp", __name__, url_prefix="/api/auth")
 
 
 # GET /api/auth/auth_status - Check authentication status
-@bp.route('/auth_status', methods=['GET'])
+@bp.route("/auth_status", methods=["GET"])
 @login_required
 def check_auth_status():
     """Check the authentication status of the current user.
@@ -20,9 +20,10 @@ def check_auth_status():
 
 
 # POST /api/auth/register - Register a new user
-@bp.route('/register', methods=['POST'])
+@bp.route("/register", methods=["POST"])
 def create_user(db_session=None):
-    """Register a new user.
+    """
+    Register a new user.
 
     Args:
         db_session: Optional database session to be used in tests.
@@ -38,7 +39,7 @@ def create_user(db_session=None):
 
 
 # POST /api/auth/login - Login with username and password
-@bp.route('/login', methods=['POST'])
+@bp.route("/login", methods=["POST"])
 def login_user(db_session=None):
     """Login a user by verifying their username and password.
 
@@ -52,13 +53,11 @@ def login_user(db_session=None):
         JSON response indicating the login status.
     """
     data = request.json
-    if not data.get("username") or not data.get("password"):
-        return jsonify({"error": "Username and password are required"}), 400
-    return AuthService.login_user(username=data.get("username"), password=data.get("password"), db_session=db_session)
+    return AuthService.login_user(data=data, db_session=db_session)
 
 
 # POST /api/auth/logout - Logout of current user
-@bp.route('/logout', methods=['POST'])
+@bp.route("/logout", methods=["POST"])
 @login_required
 def logout_user():
     """Log out the current user.
@@ -72,10 +71,11 @@ def logout_user():
 
 
 # POST /api/auth/password_reset_request - Request a password reset email
-@bp.route('/password_reset_request', methods=['POST'])
+@bp.route("/password_reset_request", methods=["POST"])
 @login_required
 def password_reset_request():
-    """Request a password reset email.
+    """
+    Request a password reset email.
 
     Expects:
         JSON payload with "email" key.
@@ -84,16 +84,15 @@ def password_reset_request():
         JSON response indicating the status of the reset request.
     """
     data = request.json
-    if not data.get("email"):
-        return jsonify({"error": "Email is required"}), 400
-    return AuthService.password_reset_request(email=data.get("email"))
+    return AuthService.password_reset_request(data=data)
 
 
 # POST /api/auth/password_reset - Reset user password
-@bp.route('/password_reset', methods=['POST'])
+@bp.route("/password_reset", methods=["POST"])
 @login_required
-def password_reset():
-    """Reset the user password.
+def password_reset(db_session=None):
+    """
+    Reset the user password.
 
     Expects:
         JSON payload with "reset_token" and "new_password" keys.
@@ -102,8 +101,4 @@ def password_reset():
         JSON response indicating the status of the password reset.
     """
     data = request.json
-    reset_token = data.get("reset_token")
-    new_password = data.get("new_password")
-    if not reset_token or not new_password:
-        return jsonify({"error": "Reset token and new password are required"}), 400
-    return AuthService.reset_user_password(reset_token=reset_token, new_password=new_password)
+    return AuthService.reset_user_password(data=data, db_session=db_session)

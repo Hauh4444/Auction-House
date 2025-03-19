@@ -6,7 +6,8 @@ class CategoryMapper:
     """Handles database operations related to categories."""
     @staticmethod
     def get_all_categories(db_session=None):
-        """Retrieve all categories from the database.
+        """
+        Retrieve all categories from the database.
 
         Args:
             db_session: Optional database session to be used in tests.
@@ -23,7 +24,8 @@ class CategoryMapper:
 
     @staticmethod
     def get_category_by_id(category_id, db_session=None):
-        """Retrieve a category by its ID.
+        """
+        Retrieve a category by its ID.
 
         Args:
             category_id (int): The ID of the category to retrieve.
@@ -34,7 +36,7 @@ class CategoryMapper:
         """
         db = db_session or get_db()
         cursor = db.cursor()
-        cursor.execute("SELECT * FROM categories WHERE category_id=?", (category_id,))
+        cursor.execute("SELECT * FROM categories WHERE category_id = ?", (category_id,))
         category = cursor.fetchone()
         return Category(**category).to_dict() if category else None
 
@@ -76,10 +78,10 @@ class CategoryMapper:
         """
         db = db_session or get_db()
         cursor = db.cursor()
-        set_clause = ", ".join([f"{key}=?" for key in data if key not in ["category_id", "created_at"]])
-        values = [data[key] for key in data if key not in ["category_id", "created_at"]]
+        set_clause = ", ".join([f"{key} = ?" for key in data if key not in ["category_id", "created_at"]])
+        values = [data.get(key) for key in data if key not in ["category_id", "created_at"]]
         values.append(category_id)
-        statement = f"UPDATE categories SET {set_clause} WHERE category_id=?"
+        statement = f"UPDATE categories SET {set_clause} WHERE category_id = ?"
         cursor.execute(statement, values)
         db.commit()
         return cursor.rowcount
@@ -98,6 +100,6 @@ class CategoryMapper:
         """
         db = db_session or get_db()
         cursor = db.cursor()
-        cursor.execute("DELETE FROM categories WHERE category_id=?", (category_id,))
+        cursor.execute("DELETE FROM categories WHERE category_id = ?", (category_id,))
         db.commit()
         return cursor.rowcount

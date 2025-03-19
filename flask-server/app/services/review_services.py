@@ -17,10 +17,14 @@ class ReviewService:
             A Response object containing the list of reviews with a 200 status code.
         """
         reviews = ReviewMapper.get_all_reviews(args=args, db_session=db_session)
+
+        if not reviews:
+            data = {"message": "No reviews found"}
+            return Response(response=jsonify(data).get_data(), status=404, mimetype="application/json")
+
         data = {"message": "Reviews found", "reviews": reviews}
-        response = Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
-        return response
-    
+        return Response(response=jsonify(data).get_data(), status=200, mimetype="application/json")
+            
 
     @staticmethod
     def get_review_by_id(review_id, db_session=None):
@@ -36,15 +40,14 @@ class ReviewService:
         """
         review = ReviewMapper.get_review_by_id(review_id=review_id, db_session=db_session)
 
-        if review:
-            data = {"message": "Review found", "review": review}
-            response = Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
-            return response
+        if not review:
+            data = {"message": "Review not found"}
+            return Response(response=jsonify(data).get_data(), status=404, mimetype="application/json")
 
-        data = {"message": "Review not found"}
-        response = Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
-        return response
-    
+        data = {"message": "Review found", "review": review}
+        return Response(response=jsonify(data).get_data(), status=200, mimetype="application/json")
+
+
 
     @staticmethod
     def create_review(data, db_session=None):
@@ -59,19 +62,15 @@ class ReviewService:
             A Response object with the success message and newly created reviewID,
             or a 400 error if required fields are missing.
         """
-        required_fields = ["listing_id", "user_id", "username", "title", "description", "stars", "created_at"]
-
-        if not all(field in data for field in required_fields):
-            data = {"error": "Required fields are missing"}
-            response = Response(response=jsonify(data).get_data(), status=400, mimetype='application/json')
-            return response
-        
         review_id = ReviewMapper.create_review(data=data, db_session=db_session)
 
+        if not review_id:
+            data = {"message": "Error creating review"}
+            return Response(response=jsonify(data).get_data(), status=400, mimetype="application/json")
+
         data = {"message": "Review created", "review_id": review_id}
-        response = Response(response=jsonify(data).get_data(), status=201, mimetype='application/json')
-        return response
-    
+        return Response(response=jsonify(data).get_data(), status=201, mimetype="application/json")
+            
 
     @staticmethod
     def update_review(review_id, data, db_session=None):
@@ -89,15 +88,14 @@ class ReviewService:
         """
         updated_rows = ReviewMapper.update_review(review_id=review_id, data=data, db_session=db_session)
 
-        if updated_rows:
-            data = {"message": "Review updated", "updated_rows": updated_rows}
-            response = Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
-            return response
+        if not updated_rows:
+            data = {"error": "Review not found"}
+            return Response(response=jsonify(data).get_data(), status=404, mimetype="application/json")
 
-        data = {"error": "Review not found"}
-        response = Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
-        return response
-    
+        data = {"message": "Review updated", "updated_rows": updated_rows}
+        return Response(response=jsonify(data).get_data(), status=200, mimetype="application/json")
+
+
 
     @staticmethod
     def delete_review(review_id, db_session=None):
@@ -114,11 +112,10 @@ class ReviewService:
             """
         deleted_rows = ReviewMapper.delete_review(review_id=review_id, db_session=db_session)
 
-        if deleted_rows:
-            data = {"message": "Review deleted", "deleted_rows": deleted_rows}
-            response = Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
-            return response
+        if not deleted_rows:
+            data = {"error": "Review not found"}
+            return Response(response=jsonify(data).get_data(), status=404, mimetype="application/json")
 
-        data = {"error": "Review not found"}
-        response = Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
-        return response
+        data = {"message": "Review deleted", "deleted_rows": deleted_rows}
+        return Response(response=jsonify(data).get_data(), status=200, mimetype="application/json")
+
