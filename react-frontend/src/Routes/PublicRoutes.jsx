@@ -27,7 +27,6 @@ import ManageListing from "@/Pages/Private/ManageListing/ManageListing";
 import Messages from "@/Pages/Private/Messages/Messages";
 import MyBids from "@/Pages/Private/MyBids/MyBids";
 import PaymentInfo from "@/Pages/Private/PaymentInfo/PaymentInfo";
-import ProductUpload from "@/Pages/Private/ProductUpload/ProductUpload";
 import Report from "@/Pages/Private/Report/Report";
 import Review from "@/Pages/Private/Review/Review";
 import Security from "@/Pages/Private/Security/Security";
@@ -89,7 +88,6 @@ const PublicRoutes = () => {
                     <Route path="/user/messages" element={<Messages />} />
                     <Route path="/user/my-bids" element={<MyBids />} />
                     <Route path="/user/payment-info" element={<PaymentInfo />} />
-                    <Route path="/user/upload-product" element={<ProductUpload />} />
                     <Route path="/user/report" element={<Report />} />
                     <Route path="/user/review" element={<Review />} />
                     <Route path="/user/security" element={<Security />} />

@@ -9,7 +9,7 @@ import toggleNav from "@/Components/Navigation/Navigation/Navigation";
 // Stylesheets
 import "@/Components/Navigation/Navigation/Navigation.scss";
 
-const HistoryNav = () => {
+const SellerProfileNav = () => {
     const navigate = useNavigate(); // Navigate hook for routing
     const location = useLocation(); // Hook to access the current location (URL)
     const filters = Object.fromEntries(new URLSearchParams(location.search).entries()); // Parse query parameters
@@ -21,7 +21,7 @@ const HistoryNav = () => {
             if (filters.nav) {
                 condition = btn.classList.contains(filters.nav); // Check if button matches the current filter
             } else {
-                condition = btn.classList.contains("orders");
+                condition = btn.classList.contains("manage");
             }
             btn.classList.toggle("selected", condition); // Toggle "selected" class based on condition
         });
@@ -33,15 +33,15 @@ const HistoryNav = () => {
         filters.nav = nav;
         // Navigate with updated query parameters
         navigate({
-            pathname: "/user/history",
+            pathname: "/user/seller-profile",
             search: createSearchParams(filters).toString(),
         });
     }
 
     return (
         <>
-            <nav className="historyNav">
-                {["orders", "reviews"].map((item, index) => (
+            <nav className="sellerProfileNav">
+                {["manage", "upload"].map((item, index) => (
                     <Button className={`navBtn ${item}`} data-testid={`${item}Btn`} key={index} onClick={(e) => {
                         handleNavClick(e, item);
                     }}>
@@ -53,4 +53,4 @@ const HistoryNav = () => {
     );
 }
 
-export default HistoryNav;
+export default SellerProfileNav;

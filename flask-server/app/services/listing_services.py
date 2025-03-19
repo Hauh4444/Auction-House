@@ -1,4 +1,4 @@
-from flask import jsonify, Response
+from flask import jsonify, Response, session
 
 from ..data_mappers import ListingMapper
 
@@ -61,7 +61,10 @@ class ListingService:
         Returns:
             A Response object with the success message and newly created listing ID, or a 400 error if the title is missing.
         """
-        listing_id = ListingMapper.create_listing(data=data, db_session=db_session)
+        listing_data = data.get("listing", {})
+        listing_data.update(user_id=session["user_id"], status="active")
+
+        listing_id = ListingMapper.create_listing(data=listing_data, db_session=db_session)
 
         if not listing_id:
             data = {"message": "Error creating listing"}

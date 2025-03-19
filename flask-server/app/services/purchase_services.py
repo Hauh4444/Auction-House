@@ -3,10 +3,11 @@ from flask import Response, jsonify, session
 from datetime import date, datetime, timedelta
 
 from ..services import ListingService, ProfileService
-from ..data_mappers import OrderMapper, TransactionMapper, DeliveryMapper
+from ..data_mappers import OrderMapper, TransactionMapper, DeliveryMapper, ListingMapper
 
 
 class PurchaseService:
+    """ For now we mock most of the external data due to integration unavailability. """
     @staticmethod
     def process_purchase(data, db_session=None):
         user_id, listings, total_amount = session["user_id"], data.get('listings'), data.get("total_amount")
@@ -69,10 +70,19 @@ class PurchaseService:
     @staticmethod
     def handle_items(data, db_session=None):
         for listing in data.get("listings"):
+            print(listing.get("status"))
             if listing.get("status") != 'active':
                 response_data = {"error": "Listing is not available for purchase"}
                 return Response(response=jsonify(response_data).get_data(), status=400, mimetype="application/json")
-            listing["status"] = 'sold'
+            # TODO sold functionality requires new data/logic of total items available for purchase
+            # listing["status"] = "sold"
+            listing["purchases"] += listing.get("quantity")
+
+            listing_data = {key: val for key, val in listing.items() if key != "quantity"}
+            updated_rows = ListingMapper.update_listing(listing_id=listing.get("listing_id"), data=listing_data, db_session=db_session)
+            if not updated_rows:
+                data = {"error": "Error updating listing"}
+                return Response(response=jsonify(data).get_data(), status=404, mimetype="application/json")
 
             # Create order item
             order_item_data = {

@@ -1,24 +1,5 @@
 # Dinkleberg's Auction House
 
-### React Frontend
-1. Private Pages
-   1. Seller Profile
-   2. Product Upload
-   3. My Bids
-2. System Functions
-   1. Live Bidding
-   2. Password Reset
-4. Other Minor Necessitites
-   1. Private Page UI
-      1. Manage Listing
-      2. Review
-   2. Localization of Currency/Language
-   3. Public Pages
-      1. Browse
-      2. Page Not Found
-      3. About
-      4. Contact
-
 ## Setup
 1. Ensure you have [Node.js](https://nodejs.org/en/download) installed on your machine.
 

@@ -31,7 +31,7 @@ class HistoryService:
         """
         Retrieves a user's listings
         """
-        listings = ListingMapper.get_all_listings(user_id=user_id, db_session=db_session)
+        listings = ListingMapper.get_all_user_listings(user_id=user_id, db_session=db_session)
 
         if listings:
             data = {"message": "Listings found", "listings": listings}

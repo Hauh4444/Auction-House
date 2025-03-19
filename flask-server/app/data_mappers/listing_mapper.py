@@ -5,6 +5,25 @@ from ..entities import Listing
 class ListingMapper:
     """Handles database operations related to listings."""
     @staticmethod
+    def get_all_user_listings(user_id, db_session=None):
+        """
+        Retrieve all listings by user id.
+
+        Args:
+            user_id (int): ID of the user whos listings to retrieve
+            db_session: Optional database session to be used in tests.
+
+        Returns:
+            list: A list of listing dictionaries matching the query conditions.
+        """
+        db = db_session or get_db()
+        cursor = db.cursor()
+        cursor.execute("SELECT * FROM listings WHERE user_id = ?", (user_id,))
+        listings = cursor.fetchall()
+        return [Listing(**listing).to_dict() for listing in listings]
+
+
+    @staticmethod
     def get_all_listings(args, db_session=None):
         """
         Retrieve all listings with optional filtering, sorting, and pagination.

@@ -52,12 +52,7 @@ const Header = () => {
     function navigateSearch() {
         // If the search input is empty, navigate to home page with default view
         if (query === "") {
-            navigate({
-                pathname: "/",
-                search: createSearchParams({
-                    nav: "view-all", // Default view "view-all"
-                }).toString(),
-            });
+            navigate("/");
         } else {
             // Otherwise, navigate to the search results page with the query and other filters
             navigate({

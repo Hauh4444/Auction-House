@@ -32,9 +32,10 @@ const UserAccount = () => {
         "profile": ["Your Profile", "Edit profile information: name, address, etc "],
         "payment-info?nav=transactions": ["Your Payments", "View transactions, manage payment methods and settings"],
         "lists": ["Your Lists", "View, modify, and share your lists, or create new ones"],
-        "seller-profile": ["Seller Profile", "View and manage your seller profile"],
+        "seller-profile?nav=manage": ["Seller Profile", "View and manage your seller profile"],
         "report": ["Customer Service", "Browse self service options or speak with a staff member"],
-        "messages": ["Your Messages", "View or respond to messages from other Sellers and Buyers"]
+        "messages": ["Your Messages", "View or respond to messages from other Sellers and Buyers"],
+        "deliveries": ["Your Deliveries", "View and track your deliveries with status updates."],
     };
 
     return (
