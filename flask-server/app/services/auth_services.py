@@ -4,7 +4,7 @@ from flask_login import login_user, logout_user, current_user
 from .profile_services import ProfileService
 from .session_services import SessionService
 from ..data_mappers import AuthMapper
-from ..utils import hash_password
+from ..utils.password import hash_password
 
 
 class AuthService:
@@ -18,11 +18,11 @@ class AuthService:
         """
 
         if not current_user.is_authenticated:
-            data = {"authenticated": False}
-            return Response(response=jsonify(data).get_data(), status=401, mimetype="application/json")
+            response_data = {"error": "Error user is not authenticated", "authenticated": False}
+            return Response(response=jsonify(response_data).get_data(), status=401, mimetype="application/json")
 
-        data = {"authenticated": True, "user": current_user.id}
-        return Response(response=jsonify(data).get_data(), status=200, mimetype="application/json")
+        response_data = {"message": "User is authenticated", "authenticated": True, "user": current_user.id}
+        return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
 
     @staticmethod
@@ -38,25 +38,25 @@ class AuthService:
             A Response object indicating success with the user ID or an error message.
         """
         if not data.get("username") or not data.get("password") or not data.get("email"):
-            data = {"error": "Username, password, and email are required"}
-            return Response(response=jsonify(data).get_data(), status=400, mimetype="application/json")
+            response_data = {"error": "Username, password, and email are required"}
+            return Response(response=jsonify(response_data).get_data(), status=400, mimetype="application/json")
 
         user_data = {"username": data.get("username"), "password_hash": hash_password(password=data.get("password")), "email": data.get("email")}
         user_id = AuthMapper.create_user(data=user_data, db_session=db_session)
 
         if not user_id:
-            data = {"error": "Error creating user"}
-            return Response(response=jsonify(data).get_data(), status=400, mimetype="application/json")
+            response_data = {"error": "Error creating user"}
+            return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
 
         profile_data = {"user_id": user_id, "first_name": data.get("first_name"), "last_name": data.get("last_name")}
         profile_id = ProfileService.create_profile(data=profile_data, db_session=db_session).get_json().get("profile_id")
 
         if not profile_id:
-            data = {"error": "Error creating profile"}
-            return Response(response=jsonify(data).get_data(), status=400, mimetype="application/json")
+            response_data = {"error": "Error creating profile"}
+            return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
 
-        data = {"message": "User registered successfully", "user_id": user_id, "profile_id": profile_id}
-        return Response(response=jsonify(data).get_data(), status=201, mimetype="application/json")
+        response_data = {"message": "User registered successfully", "user_id": user_id, "profile_id": profile_id}
+        return Response(response=jsonify(response_data).get_data(), status=201, mimetype="application/json")
 
 
     @staticmethod
@@ -78,22 +78,22 @@ class AuthService:
         user = AuthMapper.get_user_by_username(data.get("username"), db_session)
 
         if not user or not user.password_hash == hash_password(data.get("password")):
-            data = {"error": "Invalid username or password"}
-            return Response(response=jsonify(data).get_data(), status=401, mimetype="application/json")
+            response_data = {"error": "Invalid username or password"}
+            return Response(response=jsonify(response_data).get_data(), status=422, mimetype="application/json")
 
         if user.__class__.__name__ == "User":
-            session["user_id"], session["role"] = (user.user_id, "user")
+            session.update(user_id=user.user_id, role="user")
         else:
-            session["user_id"], session["role"] = (user.staff_id, user.role)
+            session.update(user_id=user.staff_id, role=user.role)
 
         login_user(user, remember=True)
         user.is_active = True
 
-        AuthMapper.update_last_login(user_id=session["user_id"], role=session["role"], db_session=db_session)
+        AuthMapper.update_last_login(user_id=session.get("user_id"), role=session.get("role"), db_session=db_session)
         SessionService.create_session(db_session)
 
-        data = {"message": "Login successful", "user": user}
-        return Response(response=jsonify(data).get_data(), status=200, mimetype="application/json")
+        response_data = {"message": "Login successful", "user": user}
+        return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
 
     @staticmethod
@@ -108,8 +108,8 @@ class AuthService:
         session.clear()
         current_user.is_active = False
 
-        data = {"message": "Logout successful"}
-        return Response(response=jsonify(data).get_data(), status=200, mimetype="application/json")
+        response_data = {"message": "Logout successful"}
+        return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
 
     @staticmethod
@@ -124,11 +124,11 @@ class AuthService:
             A Response object indicating whether the request was successful.
         """
         if not data.get("email"):
-            data = {"error": "Email is required"}
-            return Response(response=jsonify(data).get_data(), status=400, mimetype="application/json")
+            response_data = {"error": "Email is required"}
+            return Response(response=jsonify(response_data).get_data(), status=400, mimetype="application/json")
 
-        data = {"message": "Password reset request sent"}
-        return Response(response=jsonify(data).get_data(), status=200, mimetype="application/json")
+        response_data = {"message": "Password reset request sent"}
+        return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
 
     @staticmethod
@@ -144,7 +144,8 @@ class AuthService:
             A Response object indicating whether the password reset was successful.
         """
         if not data.get("reset_token") or not data.get("new_password"):
-            return jsonify({"error": "Reset token and new password are required"}), 400
+            response_data = {"error": "Reset token and new password are required"}
+            return Response(response=jsonify(response_data).get_data(), status=400, mimetype="application/json")
 
-        data = {"message": "Password successfully reset"}
-        return Response(response=jsonify(data).get_data(), status=200, mimetype="application/json")
+        response_data = {"message": "Password successfully reset"}
+        return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")

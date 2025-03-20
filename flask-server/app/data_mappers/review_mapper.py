@@ -1,9 +1,8 @@
-from ..database import get_db
+from ..database.connection import get_db
 from ..entities import Review
 
 
 class ReviewMapper:
-    """Handles database operations related to reviews."""
     @staticmethod
     def get_all_reviews(args, db_session=None):
         """
@@ -24,10 +23,10 @@ class ReviewMapper:
         # Add conditions
         if "listing_id" in args:
             statement += " WHERE listing_id = ?"
-            values.append(args["listing_id"])
+            values.append(args.get("listing_id"))
         if "user_id" in args:
             statement += " WHERE user_id = ?"
-            values.append(args["user_id"])
+            values.append(args.get("user_id"))
 
         # Add sorting
         if "sort" in args and "order" in args:
@@ -36,7 +35,7 @@ class ReviewMapper:
         # Add start and range
         if "start" in args and "range" in args:
             statement += " LIMIT ? OFFSET ?"
-            values.extend([args["range"], args["start"]])
+            values.extend([args.get("range"), args.get("start")])
 
         cursor.execute(statement, values)
         reviews = cursor.fetchall()
@@ -64,7 +63,8 @@ class ReviewMapper:
 
     @staticmethod
     def create_review(data, db_session=None):
-        """Create a new review in the database.
+        """
+        Create a new review in the database.
 
         Args:
             data (dict): Dictionary containing review details.
@@ -97,7 +97,8 @@ class ReviewMapper:
 
     @staticmethod
     def update_review(review_id, data, db_session=None):
-        """Update an existing review.
+        """
+        Update an existing review.
 
         Args:
             review_id (int): The ID of the review to update.
@@ -120,7 +121,8 @@ class ReviewMapper:
 
     @staticmethod
     def delete_review(review_id, db_session=None):
-        """Delete a review by its ID.
+        """
+        Delete a review by its ID.
 
         Args:
             review_id (int): The ID of the review to delete.

@@ -60,7 +60,7 @@ const Category = () => {
      */
     useEffect(() => {
         // API call to access the category data
-        axios.get(`http://127.0.0.1:5000/api/categories/${filters.category_id}`, {
+        axios.get(`http://127.0.0.1:5000/api/categories/${filters.category_id}/`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -69,7 +69,7 @@ const Category = () => {
             .catch(err => console.log(err)); // Log errors if any
 
         // Fetch best sellers from the backend API
-        axios.get("http://127.0.0.1:5000/api/listings", {
+        axios.get("http://127.0.0.1:5000/api/listings/", {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -85,7 +85,7 @@ const Category = () => {
             .catch(() => setBestSellers([]));
 
         // Fetch new listings from the backend API
-        axios.get("http://127.0.0.1:5000/api/listings", {
+        axios.get("http://127.0.0.1:5000/api/listings/", {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -107,7 +107,7 @@ const Category = () => {
         }
 
         // Fetch listings from the backend API
-        axios.get("http://127.0.0.1:5000/api/listings", {
+        axios.get("http://127.0.0.1:5000/api/listings/", {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -174,7 +174,7 @@ const Category = () => {
                     {/* Category Sections */}
                     {sections.map((section, index) => (
                         <div key={index}>
-                            <h1 className={`category${section.identifier}Head`}>{section.title}</h1>
+                            <h1 className={`categoryHead`}>{section.title}</h1>
                             <div className={`category${section.identifier}`}>
                                 {/* Map through the best sellers and display them */}
                                 {section.listings.map((listing, index) => (

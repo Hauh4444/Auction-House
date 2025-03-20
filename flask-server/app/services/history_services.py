@@ -1,102 +1,131 @@
-from flask import jsonify, Response
+from flask import jsonify, Response, session
 
 from ..data_mappers import OrderMapper, ListingMapper, TransactionMapper, DeliveryMapper, SupportTicketMapper, ReviewMapper
 
 
 class HistoryService:
     @staticmethod
-    def get_user_orders(user_id, db_session=None):
+    def get_user_orders(db_session=None):
         """
-        Retrieves a user's orders
+        Retrieve a user's order history.
 
         Args:
-            user_id (int): The ID of the user to retrieve history of.
-            db_session: Optional database session to be used in tests.
+            db_session (optional): A database session for testing or direct queries.
 
         Returns:
-            A response object with the orders data if found, otherwise a 404 error with a message.
+            Response: A JSON response containing the user's orders if found, otherwise a 404 error.
         """
-        orders = OrderMapper.get_all_orders(user_id=user_id, db_session=db_session)
+        orders = OrderMapper.get_all_orders(user_id=session.get("user_id"), db_session=db_session)
 
-        if orders:
-            data = {"message": "Orders found", "orders": orders}
-            return Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
+        if not orders:
+            response_data = {"error": "Orders not found"}
+            return Response(response=jsonify(response_data).get_data(), status=404, mimetype='application/json')
 
-        data = {"error": "Orders not found"}
-        return Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
+        response_data = {"message": "Orders found", "orders": orders}
+        return Response(response=jsonify(response_data).get_data(), status=200, mimetype='application/json')
 
 
     @staticmethod
-    def get_user_listings(user_id, db_session=None):
+    def get_user_listings(db_session=None):
         """
-        Retrieves a user's listings
+        Retrieve a user's listing history.
+
+        Args:
+            db_session (optional): A database session for testing or direct queries.
+
+        Returns:
+            Response: A JSON response containing the user's listings if found, otherwise a 404 error.
         """
-        listings = ListingMapper.get_all_user_listings(user_id=user_id, db_session=db_session)
+        listings = ListingMapper.get_all_user_listings(user_id=session.get("user_id"), db_session=db_session)
 
-        if listings:
-            data = {"message": "Listings found", "listings": listings}
-            return Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
+        if not listings:
+            response_data = {"error": "Listings not found"}
+            return Response(response=jsonify(response_data).get_data(), status=404, mimetype='application/json')
 
-        data = {"error": "Listings not found"}
-        return Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
+        response_data = {"message": "Listings found", "listings": listings}
+        return Response(response=jsonify(response_data).get_data(), status=200, mimetype='application/json')
 
 
     @staticmethod
-    def get_user_transactions(user_id, db_session=None):
+    def get_user_transactions(db_session=None):
         """
-        Retrieves a user's transactions
+        Retrieve a user's transaction history.
+
+        Args:
+            db_session (optional): A database session for testing or direct queries.
+
+        Returns:
+            Response: A JSON response containing the user's transactions if found, otherwise a 404 error.
         """
-        transactions = TransactionMapper.get_all_transactions(user_id=user_id, db_session=db_session)
+        transactions = TransactionMapper.get_all_transactions(user_id=session.get("user_id"), db_session=db_session)
 
-        if transactions:
-            data = {"message": "Transactions found", "transactions": transactions}
-            return Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
+        if not transactions:
+            response_data = {"error": "Transactions not found"}
+            return Response(response=jsonify(response_data).get_data(), status=404, mimetype='application/json')
 
-        data = {"error": "Transactions not found"}
-        return Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
+        response_data = {"message": "Transactions found", "transactions": transactions}
+        return Response(response=jsonify(response_data).get_data(), status=200, mimetype='application/json')
 
 
     @staticmethod
-    def get_user_deliveries(user_id, db_session=None):
+    def get_user_deliveries(db_session=None):
         """
-        Retrieves a user's deliveries
+        Retrieve a user's delivery history.
+
+        Args:
+            db_session (optional): A database session for testing or direct queries.
+
+        Returns:
+            Response: A JSON response containing the user's deliveries if found, otherwise a 404 error.
         """
-        deliveries = DeliveryMapper.get_all_deliveries(user_id=user_id, db_session=db_session)
+        deliveries = DeliveryMapper.get_all_deliveries(user_id=session.get("user_id"), db_session=db_session)
 
-        if deliveries:
-            data = {"message": "PaymentInfo found", "deliveries": deliveries}
-            return Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
+        if not deliveries:
+            response_data = {"error": "Deliveries not found"}
+            return Response(response=jsonify(response_data).get_data(), status=404, mimetype='application/json')
 
-        data = {"error": "PaymentInfo not found"}
-        return Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
+        response_data = {"message": "Deliveries found", "deliveries": deliveries}
+        return Response(response=jsonify(response_data).get_data(), status=200, mimetype='application/json')
 
 
     @staticmethod
-    def get_user_support_tickets(user_id, db_session=None):
+    def get_user_support_tickets(db_session=None):
         """
-        Retrieves a user's support tickets
+        Retrieve a user's support ticket history.
+
+        Args:
+            db_session (optional): A database session for testing or direct queries.
+
+        Returns:
+            Response: A JSON response containing the user's support tickets if found, otherwise a 404 error.
         """
-        tickets = SupportTicketMapper.get_all_support_tickets(user_id=user_id, db_session=db_session)
+        tickets = SupportTicketMapper.get_all_support_tickets(user_id=session.get("user_id"), db_session=db_session)
 
-        if tickets:
-            data = {"message": "Support tickets found", "support_tickets": tickets}
-            return Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
+        if not tickets:
+            response_data = {"error": "Support tickets not found"}
+            return Response(response=jsonify(response_data).get_data(), status=404, mimetype='application/json')
 
-        data = {"error": "Support tickets not found"}
-        return Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
+        response_data = {"message": "Support tickets found", "support_tickets": tickets}
+        return Response(response=jsonify(response_data).get_data(), status=200, mimetype='application/json')
 
 
     @staticmethod
-    def get_user_reviews(user_id, db_session=None):
+    def get_user_reviews(db_session=None):
         """
-        Retrieves a user's reviews
+        Retrieve a user's review history.
+
+        Args:
+            db_session (optional): A database session for testing or direct queries.
+
+        Returns:
+            Response: A JSON response containing the user's reviews if found, otherwise a 404 error.
         """
-        args = {"user_id": user_id}
-        reviews = ReviewMapper.get_all_reviews(args=args, db_session=db_session)
+        reviews = ReviewMapper.get_all_reviews(args={"user_id": session.get("user_id")}, db_session=db_session)
 
-        if reviews:
-            data = {"message": "Reviews found", "reviews": reviews}
-            return Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
+        if not reviews:
+            response_data = {"error": "Reviews not found"}
+            return Response(response=jsonify(response_data).get_data(), status=404, mimetype='application/json')
 
-        data = {"error": "Reviews not found"}
-        return Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
+        response_data = {"message": "Reviews found", "reviews": reviews}
+        return Response(response=jsonify(response_data).get_data(), status=200, mimetype='application/json')
+

@@ -1,9 +1,8 @@
-from ..database import get_db
+from ..database.connection import get_db
 from ..entities import Listing
 
 
 class ListingMapper:
-    """Handles database operations related to listings."""
     @staticmethod
     def get_all_user_listings(user_id, db_session=None):
         """
@@ -44,18 +43,18 @@ class ListingMapper:
         # Add conditions
         if "category_id" in args:
             conditions.append("category_id = ?")
-            values.append(args["category_id"])
+            values.append(args.get("category_id"))
         if "listing_type" in args:
             conditions.append("listing_type = ?")
-            values.append(args["listing_type"])
+            values.append(args.get("listing_type"))
         if "min_price" in args:
             conditions.append("buy_now_price > ?")
-            values.append(args["min_price"])
+            values.append(args.get("min_price"))
         if "max_price" in args:
             conditions.append("buy_now_price < ?")
-            values.append(args["max_price"])
+            values.append(args.get("max_price"))
         if "query" in args:
-            query = args["query"]
+            query = args.get("query")
             conditions.append("(title LIKE ? OR description LIKE ?)")
             values.extend([f"%{query}%", f"%{query}%"])
 
@@ -69,7 +68,7 @@ class ListingMapper:
         # Add pagination
         if "start" in args and "range" in args:
             statement += " LIMIT ? OFFSET ?"
-            values.extend([args["range"], args["start"]])
+            values.extend([args.get("range"), args.get("start")])
 
         cursor.execute(statement, values)
         listings = cursor.fetchall()
@@ -97,7 +96,8 @@ class ListingMapper:
 
     @staticmethod
     def create_listing(data, db_session=None):
-        """Create a new listing in the database.
+        """
+        Create a new listing in the database.
 
         Args:
             data (dict): Dictionary containing listing details.
@@ -122,7 +122,8 @@ class ListingMapper:
 
     @staticmethod
     def update_listing(listing_id, data, db_session=None):
-        """Update an existing listing.
+        """
+        Update an existing listing.
 
         Args:
             listing_id (int): The ID of the listing to update.
@@ -145,7 +146,8 @@ class ListingMapper:
 
     @staticmethod
     def delete_listing(listing_id, db_session=None):
-        """Delete a listing by its ID.
+        """
+        Delete a listing by its ID.
 
         Args:
             listing_id (int): The ID of the listing to delete.

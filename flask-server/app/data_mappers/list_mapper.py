@@ -1,25 +1,37 @@
-from ..database import get_db
+from ..database.connection import get_db
 from ..entities import List, ListItem
 
 
 class ListMapper:
-    """Handles database operations related to lists."""
     @staticmethod
     def get_lists(user_id, db_session=None):
         """
-        Retrieve all user's lists from the database.
+        Retrieve all lists associated with a user.
+
+        Args:
+            user_id (int): The ID of the user whose lists are being retrieved.
+            db_session (optional): A database session for testing or direct queries.
+
+        Returns:
+            list[dict]: A list of dictionaries representing the user's lists.
         """
         db = db_session or get_db()
         cursor = db.cursor()
         cursor.execute("SELECT * FROM lists WHERE user_id = ?", (user_id,))
         lists = cursor.fetchall()
-        return [List(**list).to_dict() for list in lists]
-
+        return [List(**list_row).to_dict() for list_row in lists]
 
     @staticmethod
     def get_list_items(list_id, db_session=None):
         """
-        Retrieve all items in a user's list from the database
+        Retrieve all items in a specific list.
+
+        Args:
+            list_id (int): The ID of the list whose items are being retrieved.
+            db_session (optional): A database session for testing or direct queries.
+
+        Returns:
+            list[dict]: A list of dictionaries representing the list's items.
         """
         db = db_session or get_db()
         cursor = db.cursor()
@@ -27,23 +39,35 @@ class ListMapper:
         list_items = cursor.fetchall()
         return [ListItem(**list_item).to_dict() for list_item in list_items]
 
-
     @staticmethod
     def get_list_by_id(list_id, db_session=None):
         """
-        Retrieve a list by its ID.
+        Retrieve a specific list by its ID.
+
+        Args:
+            list_id (int): The ID of the list to retrieve.
+            db_session (optional): A database session for testing or direct queries.
+
+        Returns:
+            dict | None: A dictionary representing the list if found, otherwise None.
         """
         db = db_session or get_db()
         cursor = db.cursor()
         cursor.execute("SELECT * FROM lists WHERE list_id = ?", (list_id,))
-        list = cursor.fetchone()
-        return List(**list).to_dict() if list else None
-
+        list_row = cursor.fetchone()
+        return List(**list_row).to_dict() if list_row else None
 
     @staticmethod
     def create_list(data, db_session=None):
         """
         Create a new list record in the database.
+
+        Args:
+            data (dict): A dictionary containing list details.
+            db_session (optional): A database session for testing or direct queries.
+
+        Returns:
+            int: The ID of the newly created list.
         """
         db = db_session or get_db()
         cursor = db.cursor()
@@ -52,15 +76,22 @@ class ListMapper:
             (user_id, title, created_at) 
             VALUES (?, ?, ?)
         """
-        cursor.execute(statement, tuple(List(**data).to_dict().values())[1:]) # Exclude list_id (auto-incremented)
+        cursor.execute(statement, tuple(List(**data).to_dict().values())[1:])  # Exclude list_id (auto-incremented)
         db.commit()
         return cursor.lastrowid
-
 
     @staticmethod
     def create_list_item(list_id, listing_id, db_session=None):
         """
-        Create a new list item record in the database
+        Create a new list item record in the database.
+
+        Args:
+            list_id (int): The ID of the list to which the item belongs.
+            listing_id (int): The ID of the item being added to the list.
+            db_session (optional): A database session for testing or direct queries.
+
+        Returns:
+            int: The ID of the newly created list item.
         """
         db = db_session or get_db()
         cursor = db.cursor()
@@ -74,24 +105,37 @@ class ListMapper:
         db.commit()
         return cursor.lastrowid
 
-
     @staticmethod
     def update_list(list_id, title, db_session=None):
         """
-        Update an existing list.
+        Update the title of an existing list.
+
+        Args:
+            list_id (int): The ID of the list to update.
+            title (str): The new title for the list.
+            db_session (optional): A database session for testing or direct queries.
+
+        Returns:
+            int: The number of rows updated (should be 1 if successful).
         """
         db = db_session or get_db()
         cursor = db.cursor()
-        statement = f"UPDATE lists SET title = ?, updated_at = CURRENT_TIMESTAMP WHERE list_id = ?"
+        statement = "UPDATE lists SET title = ?, updated_at = CURRENT_TIMESTAMP WHERE list_id = ?"
         cursor.execute(statement, (title, list_id))
         db.commit()
         return cursor.rowcount
-
 
     @staticmethod
     def delete_list(list_id, db_session=None):
         """
         Delete a list by its ID.
+
+        Args:
+            list_id (int): The ID of the list to delete.
+            db_session (optional): A database session for testing or direct queries.
+
+        Returns:
+            int: The number of rows deleted (should be 1 if successful).
         """
         db = db_session or get_db()
         cursor = db.cursor()
@@ -99,11 +143,18 @@ class ListMapper:
         db.commit()
         return cursor.rowcount
 
-
     @staticmethod
     def delete_list_item(list_id, listing_id, db_session=None):
         """
-        Delete a list item by its list ID and listing ID
+        Delete a specific list item by its list ID and listing ID.
+
+        Args:
+            list_id (int): The ID of the list containing the item.
+            listing_id (int): The ID of the item to be removed from the list.
+            db_session (optional): A database session for testing or direct queries.
+
+        Returns:
+            int: The number of rows deleted (should be 1 if successful).
         """
         db = db_session or get_db()
         cursor = db.cursor()

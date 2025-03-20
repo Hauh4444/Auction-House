@@ -8,7 +8,6 @@ import axios from "axios";
 import Header from "@/Components/Header/Header";
 import HistoryNav from "@/Components/Navigation/HistoryNav/HistoryNav";
 import RightNav from "@/Components/Navigation/RightNav/RightNav";
-import { useAuth } from "@/ContextAPI/AuthContext"
 import { renderStars } from "@/utils/helpers";
 
 // Stylesheets
@@ -17,13 +16,12 @@ import "./History.scss"
 const History = () => {
     const location = useLocation(); // Hook to access the current location (URL)
     const filters = Object.fromEntries(new URLSearchParams(location.search).entries()); // Extract query parameters from URL
-    const auth = useAuth(); // Access authentication functions from the AuthProvider context
 
     const [history, setHistory] = useState([]);
 
     useEffect(() => {
         // Fetch listings from the API with the specified filters
-        axios.get(`http://127.0.0.1:5000/api/user/${auth.user}/${filters.nav}`, {
+        axios.get(`http://127.0.0.1:5000/api/user/${filters.nav}/`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -42,28 +40,26 @@ const History = () => {
                 <HistoryNav />
 
                 <div className="historyItems">
-                    {history.map((item, index) => (
+                    {history && history.map((item, index) => (
                         <>
-                            {filters.nav === "orders" && (
-                                <Card className="historyCard" key={index}>
-                                    <CardContent className="cardContent">
-                                        <p><strong>Date:</strong> {item.order_date}</p>
-                                        <p><strong>Status:</strong> {item.status}</p>
-                                    </CardContent>
-                                </Card>
-                            )}
-                            {filters.nav === "reviews" && (
-                                <Card className="historyCard" key={index}>
-                                    <CardContent className="cardContent">
-                                        <p><strong>Title:</strong> {item.title}</p>
-                                        <p><strong>Description:</strong> {item.description}</p>
-                                        <div className="review">
-                                            {/* Render the star rating based on the average review */}
-                                            {renderStars(item.stars)}
-                                        </div>
-                                    </CardContent>
-                                </Card>
-                            )}
+                            <Card className="historyCard" key={index}>
+                                <CardContent className="cardContent">
+                                    {filters.nav === "orders" ? (
+                                        <>
+                                            <p><strong>Date:</strong> {item.order_date}</p>
+                                            <p><strong>Status:</strong> {item.status}</p>
+                                        </>
+                                    ) : filters.nav === "reviews" && (
+                                        <>
+                                            <p><strong>Title:</strong> {item.title}</p>
+                                            <p><strong>Description:</strong> {item.description}</p>
+                                            <div className="review">
+                                                {renderStars(item.stars)}
+                                            </div>
+                                        </>
+                                    )}
+                                </CardContent>
+                            </Card>
                         < />
                     ))}
                 </div>

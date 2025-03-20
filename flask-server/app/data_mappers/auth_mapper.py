@@ -1,12 +1,11 @@
 from pymysql import DatabaseError
 from datetime import datetime
 
-from ..database import get_db
+from ..database.connection import get_db
 from ..entities import User, StaffUser
 
 
 class AuthMapper:
-    """Handles database operations related to authorization."""
     @staticmethod
     def get_user_by_id(user_id, db_session=None):
         """
@@ -67,7 +66,8 @@ class AuthMapper:
 
     @staticmethod
     def create_user(data, db_session=None):
-        """Create a new user in the database.
+        """
+        Create a new user in the database.
 
         Args:
             data (dict): Dictionary containing user details.
@@ -98,7 +98,8 @@ class AuthMapper:
 
     @staticmethod
     def update_last_login(user_id, role, db_session=None):
-        """Update the last login timestamp for a user.
+        """
+        Update the last login timestamp for a user.
 
         Args:
             user_id (int): The ID of the user to update.

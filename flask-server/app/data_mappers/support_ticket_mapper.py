@@ -1,11 +1,10 @@
 from datetime import datetime
 
-from ..database import get_db
+from ..database.connection import get_db
 from ..entities import SupportTicket
 
 
 class SupportTicketMapper:
-    """Handles database operations related to support tickets."""
     @staticmethod
     def get_ticket_by_id(ticket_id, db_session=None):
         """
@@ -46,7 +45,8 @@ class SupportTicketMapper:
 
     @staticmethod
     def create_ticket(data, db_session=None):
-        """Create a new support ticket.
+        """
+        Create a new support ticket.
 
         Args:
             data (dict): Dictionary containing support ticket details.
@@ -68,7 +68,8 @@ class SupportTicketMapper:
 
     @staticmethod
     def update_ticket(ticket_id, updates, db_session=None):
-        """Update a support ticket's details.
+        """
+        Update a support ticket's details.
 
         Args:
             ticket_id (int): The ID of the ticket to update.
@@ -89,7 +90,8 @@ class SupportTicketMapper:
 
     @staticmethod
     def delete_ticket(ticket_id, db_session=None):
-        """Delete a support ticket by its ID.
+        """
+        Delete a support ticket by its ID.
 
         Args:
             ticket_id (int): The ID of the ticket to delete.

@@ -1,5 +1,24 @@
 # Dinkleberg's Auction House
 
+## TODO
+
+### React Frontend
+
+1. Password Reset Functionality 
+2. Live Auction UI 
+3. View Bids UI 
+4. Support Ticket Functionality 
+5. Chat UI 
+6. Customer Service Management
+
+### Flask Server
+
+1. Password Recovery with Email Connection
+2. Bidding Flow
+3. Support Ticket API
+4. Chat API
+5. Staff Controll
+
 ## Setup
 1. Ensure you have [Node.js](https://nodejs.org/en/download) installed on your machine.
 

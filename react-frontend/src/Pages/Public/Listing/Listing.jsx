@@ -43,7 +43,7 @@ const Listing = () => {
      */
     useEffect(() => {
         // API call to fetch the listing data
-        axios.get("http://127.0.0.1:5000/api/listings/" + filters.key, {
+        axios.get(`http://127.0.0.1:5000/api/listings/${filters.key}/`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -53,7 +53,7 @@ const Listing = () => {
             }) // Update state with fetched data
             .catch(err => console.log(err)); // Log errors if any
 
-        axios.get("http://127.0.0.1:5000/api/reviews", {
+        axios.get("http://127.0.0.1:5000/api/reviews/", {
             headers: {
                 "Content-Type": "application/json",
             },

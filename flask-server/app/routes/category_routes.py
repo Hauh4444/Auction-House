@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify, Response, session
-from flask_login import login_required, current_user
+from flask_login import login_required
 
 from ..services import CategoryService
 
@@ -7,7 +7,7 @@ from ..services import CategoryService
 bp = Blueprint("category_bp", __name__, url_prefix="/api/categories")
 
 
-# GET /api/categories
+# GET /api/categories/
 @bp.route("/", methods=["GET"])
 def get_all_categories(db_session=None):
     """
@@ -22,8 +22,8 @@ def get_all_categories(db_session=None):
     return CategoryService.get_all_categories(db_session=db_session)
 
 
-# GET /api/categories/{id}
-@bp.route("/<int:category_id>", methods=["GET"])
+# GET /api/categories/{id}/
+@bp.route("/<int:category_id>/", methods=["GET"])
 def get_category(category_id, db_session=None):
     """
     Retrieve a single category by its ID.
@@ -38,7 +38,7 @@ def get_category(category_id, db_session=None):
     return CategoryService.get_category_by_id(category_id=category_id, db_session=db_session)
 
 
-# POST /api/categories
+# POST /api/categories/
 @bp.route("/", methods=["POST"])
 @login_required
 def create_category(db_session=None):
@@ -54,16 +54,16 @@ def create_category(db_session=None):
     Returns:
         JSON response containing the created category.
     """
-    if session["role"] not in ["staff", "admin"]:
-        data = {"error": "Unauthorized access"}
-        return Response(response=jsonify(data).get_data(), status=404, mimetype="application/json")
+    if session.get("role") not in ["staff", "admin"]:
+        response_data = {"error": "Unauthorized access"}
+        return Response(response=jsonify(response_data).get_data(), status=401, mimetype="application/json")
 
     data = request.json
     return CategoryService.create_category(data=data, db_session=db_session)
 
 
-# PUT /api/categories/{id}
-@bp.route("/<int:category_id>", methods=["PUT"])
+# PUT /api/categories/{id}/
+@bp.route("/<int:category_id>/", methods=["PUT"])
 @login_required
 def update_category(category_id, db_session=None):
     """
@@ -79,16 +79,16 @@ def update_category(category_id, db_session=None):
     Returns:
         JSON response containing the updated category.
     """
-    if session["role"] not in ["staff", "admin"]:
-        data = {"error": "Unauthorized access"}
-        return Response(response=jsonify(data).get_data(), status=404, mimetype="application/json")
+    if session.get("role") not in ["staff", "admin"]:
+        response_data = {"error": "Unauthorized access"}
+        return Response(response=jsonify(response_data).get_data(), status=401, mimetype="application/json")
 
     data = request.json
     return CategoryService.update_category(category_id=category_id, data=data, db_session=db_session)
 
 
-# DELETE /api/categories/{id}
-@bp.route("/<int:category_id>", methods=["DELETE"])
+# DELETE /api/categories/{id}/
+@bp.route("/<int:category_id>/", methods=["DELETE"])
 @login_required
 def delete_category(category_id, db_session=None):
     """
@@ -101,8 +101,8 @@ def delete_category(category_id, db_session=None):
     Returns:
         JSON response indicating the deletion status.
     """
-    if session["role"] not in ["staff", "admin"]:
-        data = {"error": "Unauthorized access"}
-        return Response(response=jsonify(data).get_data(), status=404, mimetype="application/json")
+    if session.get("role") not in ["staff", "admin"]:
+        response_data = {"error": "Unauthorized access"}
+        return Response(response=jsonify(response_data).get_data(), status=401, mimetype="application/json")
     
     return CategoryService.delete_category(category_id=category_id, db_session=db_session)

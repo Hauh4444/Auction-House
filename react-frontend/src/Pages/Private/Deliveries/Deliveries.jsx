@@ -1,23 +1,20 @@
 // External Libraries
 import { useEffect, useState } from "react";
-import { Button, Card, CardContent, CardHeader, FormControl, InputLabel, Select, MenuItem, TextField } from "@mui/material";
+import { Card, CardContent } from "@mui/material";
 import axios from "axios";
 
 // Internal Modules
 import Header from "@/Components/Header/Header";
 import RightNav from "@/Components/Navigation/RightNav/RightNav";
-import { useAuth } from "@/ContextAPI/AuthContext";
 
 // Stylesheets
 import "./Deliveries.scss";
 
 const Deliveries = () => {
-    const auth = useAuth(); // Access authentication functions from the AuthProvider context
-
     const [deliveries, setDeliveries] = useState([]);
 
     useEffect(() => {
-        axios.get("http://127.0.0.1:5000/api/user/" + auth.user + "/deliveries" , {
+        axios.get("http://127.0.0.1:5000/api/user/deliveries/" , {
             headers: {
                 "Content-Type": "application/json",
             },

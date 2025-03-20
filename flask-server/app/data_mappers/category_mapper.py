@@ -1,9 +1,8 @@
-from ..database import get_db
+from ..database.connection import get_db
 from ..entities import Category
 
 
 class CategoryMapper:
-    """Handles database operations related to categories."""
     @staticmethod
     def get_all_categories(db_session=None):
         """
@@ -43,7 +42,8 @@ class CategoryMapper:
 
     @staticmethod
     def create_category(data, db_session=None):
-        """Create a new category in the database.
+        """
+        Create a new category in the database.
 
         Args:
             data (dict): Dictionary containing category details.
@@ -66,7 +66,8 @@ class CategoryMapper:
 
     @staticmethod
     def update_category(category_id, data, db_session=None):
-        """Update an existing category.
+        """
+        Update an existing category.
 
         Args:
             category_id (int): The ID of the category to update.
@@ -89,7 +90,8 @@ class CategoryMapper:
 
     @staticmethod
     def delete_category(category_id, db_session=None):
-        """Delete a category by its ID.
+        """
+        Delete a category by its ID.
 
         Args:
             category_id (int): The ID of the category to delete.

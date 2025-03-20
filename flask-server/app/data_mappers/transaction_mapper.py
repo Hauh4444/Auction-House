@@ -1,9 +1,8 @@
-from ..database import get_db
+from ..database.connection import get_db
 from ..entities import Transaction
 
 
 class TransactionMapper:
-    """Handles database operations related to transactions."""
     @staticmethod
     def get_all_transactions(user_id, db_session=None):
         """
@@ -44,7 +43,8 @@ class TransactionMapper:
 
     @staticmethod
     def create_transaction(data, db_session=None):
-        """Create a new transaction in the database.
+        """
+        Create a new transaction in the database.
 
         Args:
             data (dict): Dictionary containing transaction details.
@@ -68,7 +68,8 @@ class TransactionMapper:
 
     @staticmethod
     def update_transaction(transaction_id, data, db_session=None):
-        """Update an existing transaction.
+        """
+        Update an existing transaction.
 
         Args:
             transaction_id (int): The ID of the transaction to update.
@@ -91,7 +92,8 @@ class TransactionMapper:
 
     @staticmethod
     def delete_transaction(transaction_id, db_session=None):
-        """Delete a transaction by its ID.
+        """
+        Delete a transaction by its ID.
 
         Args:
             transaction_id (int): The ID of the transaction to delete.

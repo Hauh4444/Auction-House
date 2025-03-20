@@ -15,7 +15,7 @@ const AuthProvider = ({ children }) => {
 
     const checkAuthStatus = async () => {
         try {
-            const res = await axios.get("http://127.0.0.1:5000/api/auth/auth_status");
+            const res = await axios.get("http://127.0.0.1:5000/api/auth/auth_status/");
             setUser(res.data.authenticated ? res.data.user : null);
         } catch (err) {
             console.log(err);
@@ -25,7 +25,7 @@ const AuthProvider = ({ children }) => {
 
     const login = async (credentials) => {
         try {
-            await axios.post("http://127.0.0.1:5000/api/auth/login", credentials);
+            await axios.post("http://127.0.0.1:5000/api/auth/login/", credentials);
             await checkAuthStatus();
             return true;
         } catch (err) {
@@ -37,7 +37,7 @@ const AuthProvider = ({ children }) => {
 
     const createAccount = async (credentials) => {
         try {
-            await axios.post("http://127.0.0.1:5000/api/auth/register", credentials);
+            await axios.post("http://127.0.0.1:5000/api/auth/register/", credentials);
             await login(credentials);
             return true;
         } catch (err) {
@@ -49,7 +49,7 @@ const AuthProvider = ({ children }) => {
 
     const logout = async () => {
         try {
-            await axios.post("http://127.0.0.1:5000/api/auth/logout");
+            await axios.post("http://127.0.0.1:5000/api/auth/logout/");
             setUser(null);
         } catch (err) {
             console.log(err);

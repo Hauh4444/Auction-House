@@ -1,6 +1,6 @@
 // External Libraries
 import { useEffect, useState } from "react";
-import {useLocation, useNavigate} from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Button, Card, CardContent, FormControl, InputLabel, Select, MenuItem, TextField } from "@mui/material";
 import axios from "axios";
 
@@ -8,7 +8,6 @@ import axios from "axios";
 import Header from "@/Components/Header/Header";
 import RightNav from "@/Components/Navigation/RightNav/RightNav";
 import SellerProfileNav from "@/Components/Navigation/SellerProfileNav/SellerProfileNav";
-import { useAuth } from "@/ContextAPI/AuthContext";
 import { renderStars, navigateToListing, encodeImageToBase64 } from "@/utils/helpers";
 
 // Stylesheets
@@ -18,7 +17,6 @@ const SellerProfile = () => {
     const navigate = useNavigate(); // Navigate hook for routing
     const location = useLocation(); // Hook to access the current location (URL)
     const filters = Object.fromEntries(new URLSearchParams(location.search).entries()); // Extract query parameters from the URL
-    const auth = useAuth(); // Access authentication functions from the AuthProvider context
 
     const [listings, setListings] = useState([]);
 
@@ -40,7 +38,7 @@ const SellerProfile = () => {
     const tempImage = useState("") // State to hold blank encoded image
 
     useEffect(() => {
-        axios.get("http://127.0.0.1:5000/api/user/" + auth.user + "/listings", {
+        axios.get("http://127.0.0.1:5000/api/user/listings/", {
             headers: {
                 "Content-Type": "application/json",
             }
@@ -51,7 +49,7 @@ const SellerProfile = () => {
 
     useEffect(() => {
         // Fetch categories from the backend API when the component mounts
-        axios.get("http://127.0.0.1:5000/api/categories", {
+        axios.get("http://127.0.0.1:5000/api/categories/", {
             headers: {
                 "Content-Type": "application/json",
             }
@@ -85,7 +83,7 @@ const SellerProfile = () => {
                 },
                 withCredentials: true, // Ensure cookies are sent
             })
-            .then(() => navigate("/"))
+            .then(() => navigate("/seller-profile?nav=manage"))
             .catch(err => console.log(err)); // Log errors if any
     }
 

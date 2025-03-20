@@ -68,13 +68,13 @@ describe("Category component", () => {
     // Before each test, mock the axios request
     beforeEach(() => {
         axios.get = vi.fn((url) => {
-            if (url === "http://127.0.0.1:5000/api/categories/1") {
+            if (url === "http://127.0.0.1:5000/api/categories/1/") {
                 return Promise.resolve(mockCategory);
             }
-            else if (url === "http://127.0.0.1:5000/api/categories") {
+            else if (url === "http://127.0.0.1:5000/api/categories/") {
                 return Promise.resolve(mockCategories);
             }
-            else if (url === "http://127.0.0.1:5000/api/listings") {
+            else if (url === "http://127.0.0.1:5000/api/listings/") {
                 return Promise.resolve(mockListings);
             }
         });

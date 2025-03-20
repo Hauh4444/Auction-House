@@ -80,7 +80,7 @@ const Search = () => {
         }
 
         // Fetch listings from the API with the specified filters
-        axios.get("http://127.0.0.1:5000/api/listings", {
+        axios.get("http://127.0.0.1:5000/api/listings/", {
             headers: {
                 "Content-Type": "application/json",
             },

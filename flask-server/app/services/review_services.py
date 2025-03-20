@@ -19,11 +19,11 @@ class ReviewService:
         reviews = ReviewMapper.get_all_reviews(args=args, db_session=db_session)
 
         if not reviews:
-            data = {"message": "No reviews found"}
-            return Response(response=jsonify(data).get_data(), status=404, mimetype="application/json")
+            response_data = {"error": "No reviews found"}
+            return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
-        data = {"message": "Reviews found", "reviews": reviews}
-        return Response(response=jsonify(data).get_data(), status=200, mimetype="application/json")
+        response_data = {"message": "Reviews found", "reviews": reviews}
+        return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
             
 
     @staticmethod
@@ -41,11 +41,11 @@ class ReviewService:
         review = ReviewMapper.get_review_by_id(review_id=review_id, db_session=db_session)
 
         if not review:
-            data = {"message": "Review not found"}
-            return Response(response=jsonify(data).get_data(), status=404, mimetype="application/json")
+            response_data = {"error": "Review not found"}
+            return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
-        data = {"message": "Review found", "review": review}
-        return Response(response=jsonify(data).get_data(), status=200, mimetype="application/json")
+        response_data = {"message": "Review found", "review": review}
+        return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
 
 
@@ -65,11 +65,11 @@ class ReviewService:
         review_id = ReviewMapper.create_review(data=data, db_session=db_session)
 
         if not review_id:
-            data = {"message": "Error creating review"}
-            return Response(response=jsonify(data).get_data(), status=400, mimetype="application/json")
+            response_data = {"error": "Error creating review"}
+            return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
 
-        data = {"message": "Review created", "review_id": review_id}
-        return Response(response=jsonify(data).get_data(), status=201, mimetype="application/json")
+        response_data = {"message": "Review created", "review_id": review_id}
+        return Response(response=jsonify(response_data).get_data(), status=201, mimetype="application/json")
             
 
     @staticmethod
@@ -89,11 +89,11 @@ class ReviewService:
         updated_rows = ReviewMapper.update_review(review_id=review_id, data=data, db_session=db_session)
 
         if not updated_rows:
-            data = {"error": "Review not found"}
-            return Response(response=jsonify(data).get_data(), status=404, mimetype="application/json")
+            response_data = {"error": "Review not found"}
+            return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
-        data = {"message": "Review updated", "updated_rows": updated_rows}
-        return Response(response=jsonify(data).get_data(), status=200, mimetype="application/json")
+        response_data = {"message": "Review updated", "updated_rows": updated_rows}
+        return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
 
 
@@ -109,13 +109,13 @@ class ReviewService:
         Returns:
             A Response object with a success message if the review was deleted,
             or a 404 error if the review was not found.
-            """
+        """
         deleted_rows = ReviewMapper.delete_review(review_id=review_id, db_session=db_session)
 
         if not deleted_rows:
-            data = {"error": "Review not found"}
-            return Response(response=jsonify(data).get_data(), status=404, mimetype="application/json")
+            response_data = {"error": "Review not found"}
+            return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
-        data = {"message": "Review deleted", "deleted_rows": deleted_rows}
-        return Response(response=jsonify(data).get_data(), status=200, mimetype="application/json")
+        response_data = {"message": "Review deleted", "deleted_rows": deleted_rows}
+        return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 

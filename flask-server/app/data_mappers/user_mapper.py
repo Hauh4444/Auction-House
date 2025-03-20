@@ -1,9 +1,8 @@
-from ..database import get_db
+from ..database.connection import get_db
 from ..entities import User
 
 
 class UserMapper:
-    """Handles database operations related to users."""
     @staticmethod
     def get_user(user_id, db_session=None):
         """
@@ -25,7 +24,8 @@ class UserMapper:
 
     @staticmethod
     def update_user(user_id, data, db_session=None):
-        """Update an existing user.
+        """
+        Update an existing user.
 
         Args:
             user_id (int): The ID of the user to update.
@@ -46,7 +46,8 @@ class UserMapper:
 
     @staticmethod
     def delete_user(user_id, db_session=None):
-        """Delete a user by their ID.
+        """
+        Delete a user by their ID.
 
         Args:
             user_id (int): The ID of the user to delete.

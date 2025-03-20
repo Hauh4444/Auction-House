@@ -7,11 +7,12 @@ from ..services import AuthService
 bp = Blueprint("auth_bp", __name__, url_prefix="/api/auth")
 
 
-# GET /api/auth/auth_status - Check authentication status
-@bp.route("/auth_status", methods=["GET"])
+# GET /api/auth/auth_status/
+@bp.route("/auth_status/", methods=["GET"])
 @login_required
 def check_auth_status():
-    """Check the authentication status of the current user.
+    """
+    Check the authentication status of the current user.
 
     Returns:
         JSON response indicating whether the user is logged in or not.
@@ -19,8 +20,8 @@ def check_auth_status():
     return AuthService.check_auth_status()
 
 
-# POST /api/auth/register - Register a new user
-@bp.route("/register", methods=["POST"])
+# POST /api/auth/register/
+@bp.route("/register/", methods=["POST"])
 def create_user(db_session=None):
     """
     Register a new user.
@@ -38,10 +39,11 @@ def create_user(db_session=None):
     return AuthService.create_user(data=data, db_session=db_session)
 
 
-# POST /api/auth/login - Login with username and password
-@bp.route("/login", methods=["POST"])
+# POST /api/auth/login/
+@bp.route("/login/", methods=["POST"])
 def login_user(db_session=None):
-    """Login a user by verifying their username and password.
+    """
+    Login a user by verifying their username and password.
 
     Args:
         db_session: Optional database session to be used in tests.
@@ -56,11 +58,12 @@ def login_user(db_session=None):
     return AuthService.login_user(data=data, db_session=db_session)
 
 
-# POST /api/auth/logout - Logout of current user
-@bp.route("/logout", methods=["POST"])
+# POST /api/auth/logout/
+@bp.route("/logout/", methods=["POST"])
 @login_required
 def logout_user():
-    """Log out the current user.
+    """
+    Log out the current user.
 
     This will invalidate the session or token.
 
@@ -70,8 +73,8 @@ def logout_user():
     return AuthService.logout_user()
 
 
-# POST /api/auth/password_reset_request - Request a password reset email
-@bp.route("/password_reset_request", methods=["POST"])
+# POST /api/auth/password_reset_request/
+@bp.route("/password_reset_request/", methods=["POST"])
 @login_required
 def password_reset_request():
     """
@@ -87,8 +90,8 @@ def password_reset_request():
     return AuthService.password_reset_request(data=data)
 
 
-# POST /api/auth/password_reset - Reset user password
-@bp.route("/password_reset", methods=["POST"])
+# POST /api/auth/password_reset/
+@bp.route("/password_reset/", methods=["POST"])
 @login_required
 def password_reset(db_session=None):
     """

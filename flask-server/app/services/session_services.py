@@ -18,16 +18,16 @@ class SessionService:
             A Response object confirming session creation along with the session ID.
         """
         data = {
-            "user_id": session["user_id"],
-            "token": session["_id"],
-            "role": session["role"],
+            "user_id": session.get("user_id"),
+            "token": session.get("_id"),
+            "role": session.get("role"),
             "expires_at": datetime.now() + timedelta(days=1),
         }
         session_id = SessionMapper.create_session(data=data, db_session=db_session)
 
         if not session_id:
-            data = {"message": "Error creating session"}
-            return Response(response=jsonify(data).get_data(), status=400, mimetype="application/json")
+            response_data = {"error": "Error creating session"}
+            return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
 
-        data = {"message": "Session created", "session_id": session_id}
-        return Response(response=jsonify(data).get_data(), status=201, mimetype="application/json")
+        response_data = {"message": "Session created", "session_id": session_id}
+        return Response(response=jsonify(response_data).get_data(), status=201, mimetype="application/json")

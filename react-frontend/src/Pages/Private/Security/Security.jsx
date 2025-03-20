@@ -6,20 +6,17 @@ import axios from "axios";
 // Internal Modules
 import Header from "@/Components/Header/Header";
 import RightNav from "@/Components/Navigation/RightNav/RightNav";
-import { useAuth } from "@/ContextAPI/AuthContext"
 
 // Stylesheets
 import "./Security.scss"
 
 
 const Security = () => {
-    const auth = useAuth(); // Access authentication functions from the AuthProvider context
-
     const [user, setUser] = useState({});
 
     // Fetch user data from the backend API
     useEffect(() => {
-        axios.get("http://127.0.0.1:5000/api/user/" + auth.user, {
+        axios.get("http://127.0.0.1:5000/api/user/", {
             headers: {
                 "Content-Type": "application/json",
             },

@@ -8,7 +8,6 @@ import axios from "axios";
 import Header from "@/Components/Header/Header";
 import PaymentNav from "@/Components/Navigation/PaymentNav/PaymentNav";
 import RightNav from "@/Components/Navigation/RightNav/RightNav";
-import { useAuth } from "@/ContextAPI/AuthContext"
 
 // Stylesheets
 import "./PaymentInfo.scss"
@@ -16,13 +15,12 @@ import "./PaymentInfo.scss"
 const PaymentInfo = () => {
     const location = useLocation(); // Hook to access the current location (URL)
     const filters = Object.fromEntries(new URLSearchParams(location.search).entries()); // Extract query parameters from URL
-    const auth = useAuth(); // Access authentication functions from the AuthProvider context
 
     const [transactions, setTransactions] = useState([]);
 
     useEffect(() => {
         // Fetch listings from the API with the specified filters
-        axios.get(`http://127.0.0.1:5000/api/user/${auth.user}/${filters.nav}`, {
+        axios.get(`http://127.0.0.1:5000/api/user/${filters.nav}/`, {
             headers: {
                 "Content-Type": "application/json",
             },

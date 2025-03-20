@@ -1,9 +1,8 @@
-from ..database import get_db
+from ..database.connection import get_db
 from ..entities import Order, OrderItem
 
 
 class OrderMapper:
-    """Handles database operations related to orders."""
     @staticmethod
     def get_all_orders(user_id, db_session=None):
         """
@@ -44,7 +43,8 @@ class OrderMapper:
 
     @staticmethod
     def create_order(data, db_session=None):
-        """Create a new order in the database.
+        """
+        Create a new order in the database.
 
         Args:
             data (dict): Dictionary containing order details.
@@ -67,7 +67,8 @@ class OrderMapper:
 
     @staticmethod
     def create_order_item(data, db_session=None):
-        """Create a new order item in the database.
+        """
+        Create a new order item in the database.
 
         Args:
             data (dict): Dictionary containing order item details.
@@ -90,7 +91,8 @@ class OrderMapper:
 
     @staticmethod
     def update_order(order_id, data, db_session=None):
-        """Update an existing order.
+        """
+        Update an existing order.
 
         Args:
             order_id (int): The ID of the order to update.
@@ -113,7 +115,8 @@ class OrderMapper:
 
     @staticmethod
     def delete_order(order_id, db_session=None):
-        """Delete an order by its ID.
+        """
+        Delete an order by its ID.
 
         Args:
             order_id (int): The ID of the order to delete.

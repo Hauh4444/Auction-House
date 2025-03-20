@@ -1,7 +1,7 @@
 // External Libraries
 import { useEffect, useState } from "react";
-import {createSearchParams, useLocation, useNavigate} from "react-router-dom";
-import {Button, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { Button, MenuItem, Select } from "@mui/material";
 import axios from "axios";
 
 // Internal Modules
@@ -15,8 +15,6 @@ import "./Lists.scss";
 
 const Lists = () => {
     const navigate = useNavigate(); // Navigate hook for routing
-    const location = useLocation(); // Hook to access the current location (URL)
-    const filters = Object.fromEntries(new URLSearchParams(location.search).entries()); // Extract query parameters from the URL
 
     const { addToCart } = useCart(); // Access authentication functions from the AuthProvider context
 
@@ -26,7 +24,7 @@ const Lists = () => {
 
     // Fetch user list data from the backend API
     useEffect(() => {
-        axios.get("http://127.0.0.1:5000/api/user/lists", {
+        axios.get("http://127.0.0.1:5000/api/user/lists/", {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -42,7 +40,7 @@ const Lists = () => {
     const goToList = (list) => {
         setList(list);
 
-        axios.get(`http://127.0.0.1:5000/api/user/lists/${list.list_id}`, {
+        axios.get(`http://127.0.0.1:5000/api/user/lists/${list.list_id}/`, {
             headers: {
                 "Content-Type": "application/json",
             },

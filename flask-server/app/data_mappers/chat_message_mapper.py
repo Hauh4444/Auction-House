@@ -1,9 +1,8 @@
-from ..database import get_db
+from ..database.connection import get_db
 from ..entities import ChatMessage
 
 
 class ChatMessagesMapper:
-    """Handles database operations related to chat messages."""
     @staticmethod
     def get_messages_by_chat_id(chat_id, db_session=None):
         """
@@ -44,7 +43,8 @@ class ChatMessagesMapper:
 
     @staticmethod
     def create_message(data, db_session=None):
-        """Create a new chat message.
+        """
+        Create a new chat message.
 
         Args:
             data (dict): Dictionary containing message details.
@@ -66,7 +66,8 @@ class ChatMessagesMapper:
 
     @staticmethod
     def delete_message(message_id, db_session=None):
-        """Delete a message by its ID.
+        """
+        Delete a message by its ID.
 
         Args:
             message_id (int): The ID of the message to delete.

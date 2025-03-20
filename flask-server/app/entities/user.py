@@ -3,7 +3,7 @@ from flask_login import UserMixin
 from dataclasses import dataclass
 from datetime import datetime
 
-from ..database import get_db
+from ..database.connection import get_db
 
 
 @dataclass

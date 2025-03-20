@@ -1,13 +1,12 @@
 // External Libraries
 import { useEffect, useState } from "react";
-import { Button, Card, CardContent, CardHeader, TextField } from "@mui/material";
+import { Button, Card, CardContent, TextField } from "@mui/material";
 import axios from "axios";
 import PropTypes from "prop-types";
 
 // Internal Modules
 import Header from "@/Components/Header/Header";
 import RightNav from "@/Components/Navigation/RightNav/RightNav";
-import { useAuth } from "@/ContextAPI/AuthContext";
 import { encodeImageToBase64 } from "@/utils/helpers"
 
 // Stylesheets
@@ -30,8 +29,6 @@ import "./UserProfile.scss";
  * @returns {JSX.Element} The rendered UserProfile page component.
  */
 const UserProfile = () => {
-    const auth = useAuth(); // Access authentication functions from the AuthProvider context
-
     const [edit, setEdit] = useState(false); // State to toggle between view and edit modes
     const [profile, setProfile] = useState({}) // State to hold profile data
 
@@ -50,7 +47,7 @@ const UserProfile = () => {
 
     // Fetch profile data from the backend API
     useEffect(() => {
-        axios.get("http://127.0.0.1:5000/api/profile/" + auth.user, {
+        axios.get("http://127.0.0.1:5000/api/user/profile/", {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -73,13 +70,16 @@ const UserProfile = () => {
 
     // On submit, post updated profile data to the backend API
     const handleSubmit = () => {
-        axios.put("http://127.0.0.1:5000/api/profile/" + profile.profile_id, {
-            headers: {
-                "Content-Type": "application/json",
+        axios.put("http://127.0.0.1:5000/api/user/profile/",
+            {
+                profile: profile,
             },
-            withCredentials: true, // Ensure cookies are sent if needed
-            data: profile,
-        })
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                withCredentials: true, // Ensure cookies are sent if needed
+            })
             .then(() => {setEdit(false)}) // Turn edit mode off if no errors
             .catch(err => console.log(err)); // Log errors if any
     }

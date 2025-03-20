@@ -1,62 +1,36 @@
 from flask import Flask
 from flask_cors import CORS
-from flask_limiter import Limiter
-from flask_limiter.util import get_remote_address
-from flask_session import Session
-
 from dotenv import load_dotenv
-from apscheduler.schedulers.background import BackgroundScheduler
 import os, pkgutil, importlib
 
-from .utils import login_manager
-from .database import backup_db, get_db
-from .routes import *
-
-# Load environment variables
-load_dotenv()
-
-# Initialize Flask application
-app = Flask(__name__)
-
-# Load configuration from config.py based on environment
-config_class = os.getenv("FLASK_CONFIG", "app.config.DevelopmentConfig")
-app.config.from_object(config_class)
-
-# Initialize Limiter
-limiter = Limiter(
-    get_remote_address,
-    app=app,
-    default_limits=["10000 per hour", "2000 per minute"],
-    storage_uri="memory://",
-)
-
-# Initialize the login manager and session into the app
-login_manager.init_app(app)
-Session(app)
-
-# Enable Cross-Origin Resource Sharing (CORS) for frontend communication
-CORS(app=app, supports_credentials=True, resources={r"/api/*": {"origins": "http://localhost:5173"}})
-
-# Iterate through the modules in the routes package
-for _, module_name, _ in pkgutil.iter_modules(routes.__path__):
-    # Dynamically import the module
-    module = importlib.import_module(name=f".{module_name}", package="app.routes")
-    # Register the module blueprint
-    if hasattr(module, "bp"):
-        app.register_blueprint(module.bp)
-
-# Schedule background job to backup database
-scheduler = BackgroundScheduler()
-scheduler.add_job(backup_db, trigger="cron", hour=12, minute=0)  # Runs every day at Noon
-scheduler.start()
+from .utils.limiter import limiter
+from .utils.session import session
+from .utils.login_manager import login_manager
+from .utils.scheduler import scheduler
+from . import routes
 
 
-# Health check route
-@app.route("/test", methods=["GET"])
-def test():
-    """Health check endpoint to verify server status.
+def create_app():
+    """Initialize and configure the Flask application."""
+    load_dotenv()
 
-    Returns:
-        str: "Success" message if the server is running.
-    """
-    return "Success"
+    app = Flask(__name__)
+    config_class = os.getenv("FLASK_CONFIG", "app.config.DevelopmentConfig")
+    app.config.from_object(config_class)
+
+    # Initialize extensions
+    limiter.init_app(app)
+    login_manager.init_app(app)
+    session.init_app(app)
+    CORS(app, supports_credentials=True, resources={r"/api/*": {"origins": "http://localhost:5173"}})
+
+    # Start the cron job for backups
+    scheduler.start()
+
+    # Register routes
+    for _, module_name, _ in pkgutil.iter_modules(routes.__path__):
+        module = importlib.import_module(f".{module_name}", package="app.routes")
+        if hasattr(module, "bp"):
+            app.register_blueprint(module.bp)
+
+    return app

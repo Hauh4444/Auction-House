@@ -4,66 +4,100 @@ from flask_login import login_required
 from ..services import HistoryService
 
 # Blueprint for history-related routes
-bp = Blueprint("history_bp", __name__, url_prefix="/api/user/<int:user_id>")
+bp = Blueprint("history_bp", __name__, url_prefix="/api/user")
 
 
-# GET /api/user/{id}/orders
-@bp.route('/orders', methods=['GET'])
+# GET /api/user/orders/
+@bp.route('/orders/', methods=['GET'])
 @login_required
-def get_user_orders(user_id, db_session=None):
+def get_user_orders(db_session=None):
     """
-    Retrieve a single category by its ID.
+    Retrieve a user's order history.
 
     Args:
-        user_id (int): The ID of the user to retrieve history of.
-        db_session: Optional database session to be used in tests.
+        db_session (optional): A database session for testing or direct queries.
 
     Returns:
-        JSON response containing category details.
+        JSON response containing a list of the user's past orders.
     """
-    return HistoryService.get_user_orders(user_id=user_id, db_session=db_session)
+    return HistoryService.get_user_orders(db_session=db_session)
 
 
-# GET /api/user/{id}/listings
-@bp.route('/listings', methods=['GET'])
+# GET /api/user/listings/
+@bp.route('/listings/', methods=['GET'])
 @login_required
-def get_user_listings(user_id, db_session=None):
+def get_user_listings(db_session=None):
     """
-    Retrieve a user's previous listings."""
-    return HistoryService.get_user_listings(user_id=user_id, db_session=db_session)
+    Retrieve a user's listing history.
+
+    Args:
+        db_session (optional): A database session for testing or direct queries.
+
+    Returns:
+        JSON response containing a list of the user's past listings.
+    """
+    return HistoryService.get_user_listings(db_session=db_session)
 
 
-# GET /api/user/{id}/transactions
-@bp.route('/transactions', methods=['GET'])
+# GET /api/user/transactions/
+@bp.route('/transactions/', methods=['GET'])
 @login_required
-def get_user_transactions(user_id, db_session=None):
+def get_user_transactions(db_session=None):
     """
-    Retrieve a user's previous transactions."""
-    return HistoryService.get_user_transactions(user_id, db_session=db_session)
+    Retrieve a user's transaction history.
+
+    Args:
+        db_session (optional): A database session for testing or direct queries.
+
+    Returns:
+        JSON response containing a list of the user's past transactions.
+    """
+    return HistoryService.get_user_transactions(db_session=db_session)
 
 
-# GET /api/user/{id}/deliveries
-@bp.route('/deliveries', methods=['GET'])
+# GET /api/user/deliveries/
+@bp.route('/deliveries/', methods=['GET'])
 @login_required
-def get_user_deliveries(user_id, db_session=None):
+def get_user_deliveries(db_session=None):
     """
-    Retrieve a user's previous deliveries."""
-    return HistoryService.get_user_deliveries(user_id, db_session=db_session)
+    Retrieve a user's delivery history.
+
+    Args:
+        db_session (optional): A database session for testing or direct queries.
+
+    Returns:
+        JSON response containing a list of the user's past deliveries.
+    """
+    return HistoryService.get_user_deliveries(db_session=db_session)
 
 
-# GET /api/user/{id}/support-tickets
-@bp.route('/support-tickets', methods=['GET'])
+# GET /api/user/support-tickets/
+@bp.route('/support-tickets/', methods=['GET'])
 @login_required
-def get_user_support_tickets(user_id, db_session=None):
+def get_user_support_tickets(db_session=None):
     """
-    Retrieve a user's previous support tickets."""
-    return HistoryService.get_user_support_tickets(user_id, db_session=db_session)
+    Retrieve a user's support ticket history.
+
+    Args:
+        db_session (optional): A database session for testing or direct queries.
+
+    Returns:
+        JSON response containing a list of the user's past support tickets.
+    """
+    return HistoryService.get_user_support_tickets(db_session=db_session)
 
 
-# GET /api/user/{id}/reviews
-@bp.route('/reviews', methods=['GET'])
+# GET /api/user/reviews/
+@bp.route('/reviews/', methods=['GET'])
 @login_required
-def get_user_reviews(user_id, db_session=None):
+def get_user_reviews(db_session=None):
     """
-    Retrieve a user's previous reviews."""
-    return HistoryService.get_user_reviews(user_id, db_session=db_session)
+    Retrieve a user's review history.
+
+    Args:
+        db_session (optional): A database session for testing or direct queries.
+
+    Returns:
+        JSON response containing a list of the user's past reviews.
+    """
+    return HistoryService.get_user_reviews(db_session=db_session)

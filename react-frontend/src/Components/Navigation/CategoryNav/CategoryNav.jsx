@@ -25,7 +25,7 @@ const CategoryNav = () => {
 
     // Fetch categories from API on component mount
     useEffect(() => {
-        axios.get("http://127.0.0.1:5000/api/categories", {
+        axios.get("http://127.0.0.1:5000/api/categories/", {
             headers: {
                 "Content-Type": "application/json",
             }

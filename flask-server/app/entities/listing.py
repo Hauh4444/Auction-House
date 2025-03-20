@@ -40,7 +40,7 @@ class Listing:
             description: str,
             item_specifics: str,
             listing_type: str, # "auction", "buy_now"
-            buy_now_price: float,
+            buy_now_price: int | float,
             status: str, # "active", "sold", "cancelled", "ended", "draft"
             image_encoded: str,
             starting_price: float | None = None,
