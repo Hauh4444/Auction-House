@@ -17,7 +17,7 @@
 2. Bidding Flow
 3. Support Ticket API
 4. Chat API
-5. Staff Controll
+5. Staff Control
 
 ## Setup
 1. Ensure you have [Node.js](https://nodejs.org/en/download) installed on your machine.
@@ -31,7 +31,7 @@
 1. In a terminal, change to the `flask-server` directory.
 2. Run the `python -m venv .venv` command to install a virtual environment.
 3. Run the `.venv/Scripts/activate` command to activate the virtual environment.
-4. Run the `pip install flask flask-cors flask-login flask-session flask-limiter python-dotenv APScheduler sendgrid pytest` command to install the necessary dependencies.
+4. Run the `pip install flask flask-cors flask-login flask-session flask-limiter flask-socketio python-dotenv APScheduler sendgrid pyjwt pytest` command to install the necessary dependencies.
 
 ## Usage
 

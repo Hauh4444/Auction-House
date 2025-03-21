@@ -1,9 +1,12 @@
 from flask import Blueprint, request, jsonify
-from .bid_services import BidService  # Import the BidService class for business logic
-from . import socketio
+
+import socketio
+
+from ..services import BidService  # Import the BidService class for business logic
 
 # Define the Blueprint with the URL prefix '/api/bids'
 bp = Blueprint('bid_routes', __name__, url_prefix='/api/bids')
+
 
 @bp.route('/post_bid', methods=['POST'])
 def post_bid():
@@ -19,8 +22,10 @@ def post_bid():
     result = BidService.post_bid(data)
 
     if result['status'] == 'success':
+        socket = socketio.AsyncServer()
+
         # Emit a 'new_bid' event via SocketIO to notify all connected clients
-        socketio.emit('new_bid', {
+        socket.emit('new_bid', {
             'item_id': result['item_id'],
             'new_bid': result['new_bid']
         })
