@@ -8,6 +8,7 @@ from .profile_services import ProfileService
 from .session_services import SessionService
 from ..data_mappers import AuthMapper
 from ..utils import hash_password
+from app.services.email_services import EmailService
 
 
 class AuthService:
@@ -129,8 +130,8 @@ class AuthService:
         subject = "Password Reset Request"
         body = f"Your password reset link is: {reset_link}"
 
-        ###TODO: Implement email functionality
-        send_email(email, subject, body)
+        # Use EmailService to send the email
+        EmailService.send_email(subject, [email], body)
 
         return {"message": "Password reset email sent"}, 200
 

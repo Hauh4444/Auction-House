@@ -83,10 +83,11 @@ def password_reset_request():
     Returns:
         JSON response indicating the status of the reset request.
     """
-    data = request.json
-    if not data.get("email"):
+    data = request.get_json()
+    email = data.get('email')
+    if not email:
         return jsonify({"error": "Email is required"}), 400
-    return AuthService.password_reset_request(email=data.get("email"))
+    return AuthService.password_reset_request(email)
 
 
 # POST /api/auth/password_reset - Reset user password
@@ -101,9 +102,9 @@ def password_reset():
     Returns:
         JSON response indicating the status of the password reset.
     """
-    data = request.json
-    reset_token = data.get("reset_token")
-    new_password = data.get("new_password")
+    data = request.get_json()
+    reset_token = data.get('token')
+    new_password = data.get('new_password')
     if not reset_token or not new_password:
-        return jsonify({"error": "Reset token and new password are required"}), 400
-    return AuthService.reset_user_password(reset_token=reset_token, new_password=new_password)
+        return jsonify({"error": "Token and new password are required"}), 400
+    return AuthService.reset_user_password(reset_token, new_password)
