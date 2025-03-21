@@ -16,30 +16,27 @@ def mock_db_session():
 
 def test_delivery_creation():
     delivery = Delivery(
-        order_id=1,
+        order_item_id=1,
         user_id=1,
         address="123 Street",
         city="Indiana",
         state="Pennsylvania",
-        postal_code="15701",
         country="United States",
         delivery_status="delivered"
     )
 
-    assert delivery.order_id == 1
+    assert delivery.order_item_id == 1
     assert delivery.user_id == 1
     assert delivery.address == "123 Street"
     assert delivery.city == "Indiana"
     assert delivery.state == "Pennsylvania"
-    assert delivery.postal_code == "15701"
     assert delivery.country == "United States"
     assert delivery.delivery_status == "delivered"
-    assert isinstance(delivery.order_id, int)
+    assert isinstance(delivery.order_item_id, int)
     assert isinstance(delivery.user_id, int)
     assert isinstance(delivery.address, str)
     assert isinstance(delivery.city, str)
     assert isinstance(delivery.state, str)
-    assert isinstance(delivery.postal_code, str)
     assert isinstance(delivery.country, str)
     assert isinstance(delivery.delivery_status, str)
     assert isinstance(delivery.created_at, datetime)
@@ -49,12 +46,11 @@ def test_delivery_creation():
 def test_delivery_with_optional_fields():
     delivery = Delivery(
         delivery_id=1,
-        order_id=1,
+        order_item_id=1,
         user_id=1,
         address="123 Street",
         city="Indiana",
         state="Pennsylvania",
-        postal_code="15701",
         country="United States",
         delivery_status="delivered",
         tracking_number="1",
@@ -84,12 +80,11 @@ def test_delivery_with_optional_fields():
 def test_delivery_to_dict():
     delivery = Delivery(
         delivery_id=1,
-        order_id=1,
+        order_item_id=1,
         user_id=1,
         address="123 Street",
         city="Indiana",
         state="Pennsylvania",
-        postal_code="15701",
         country="United States",
         delivery_status="delivered",
         tracking_number="1",
@@ -102,12 +97,11 @@ def test_delivery_to_dict():
 
     delivery_dict = delivery.to_dict()
 
-    assert delivery_dict["order_id"] == 1
+    assert delivery_dict["order_item_id"] == 1
     assert delivery_dict["user_id"] == 1
     assert delivery_dict["address"] == "123 Street"
     assert delivery_dict["city"] == "Indiana"
     assert delivery_dict["state"] == "Pennsylvania"
-    assert delivery_dict["postal_code"] == "15701"
     assert delivery_dict["country"] == "United States"
     assert delivery_dict["delivery_status"] == "delivered"
     assert delivery_dict["tracking_number"] == "1"
@@ -117,12 +111,11 @@ def test_delivery_to_dict():
     assert delivery_dict["created_at"] == datetime(2024, 1, 1, 10, 0, 0)
     assert delivery_dict["updated_at"] == datetime(2024, 1, 1, 10, 0, 0)
     assert isinstance(delivery.delivery_id, int)
-    assert isinstance(delivery.order_id, int)
+    assert isinstance(delivery.order_item_id, int)
     assert isinstance(delivery.user_id, int)
     assert isinstance(delivery.address, str)
     assert isinstance(delivery.city, str)
     assert isinstance(delivery.state, str)
-    assert isinstance(delivery.postal_code, str)
     assert isinstance(delivery.country, str)
     assert isinstance(delivery.delivery_status, str)
     assert isinstance(delivery.tracking_number, str)
@@ -144,12 +137,11 @@ def test_delivery_invalid_types():
     with pytest.raises(expected_exception=TypeError):
         Delivery(
             delivery_id="1",
-            order_id="1",
+            order_item_id="1",
             user_id="1",
             address=1,
             city=1,
             state=1,
-            postal_code=1,
             country=1,
             delivery_status=1,
             tracking_number=1,
@@ -162,12 +154,11 @@ def test_delivery_invalid_types():
 
     with pytest.raises(expected_exception=ValueError):
         Delivery(
-            order_id=1,
+            order_item_id=1,
             user_id=1,
             address="123 Street",
             city="Indiana",
             state="Pennsylvania",
-            postal_code="15701",
             country="United States",
             delivery_status="invalid_type"
         )
