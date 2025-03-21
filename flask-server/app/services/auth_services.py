@@ -4,8 +4,6 @@ from flask_login import login_user, logout_user, current_user
 from datetime import datetime, timedelta
 import os, jwt
 
-from pygments.lexers.jsonnet import jsonnet_function_token
-
 from .profile_services import ProfileService
 from .session_services import SessionService
 from .email_services import EmailService
