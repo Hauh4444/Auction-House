@@ -1,7 +1,9 @@
-from flask_socketio import emit
 from flask import jsonify, Response
-from . import socketio  # Import socketio from the app context
-from .bid_mapper import BidMapper  # Assuming you have a BidMapper for DB interactions
+
+import socketio
+
+from ..data_mappers import BidMapper  # Assuming you have a BidMapper for DB interactions
+
 
 class BidService:
     @staticmethod
@@ -24,8 +26,10 @@ class BidService:
         # Save the bid using the BidMapper to interact with the DB
         bid_id = BidMapper.create_bid(data=data, db_session=db_session)
 
+        socket = socketio.AsyncServer()
+
         # Broadcast the new bid in real-time to all connected clients
-        socketio.emit('new_bid', data)  # Emit event to all connected clients
+        socket.emit('new_bid', data)  # Emit event to all connected clients
 
         # Return the success message with the bid ID and data
         data = {"message": "Bid posted", "bid_id": bid_id, "bid": data}

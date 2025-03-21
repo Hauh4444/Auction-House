@@ -16,48 +16,53 @@ def test_get_all_orders(mock_db_session):
     mock_cursor = mock_db_session.cursor.return_value
     mock_cursor.fetchall.return_value = [
         {
-            "order_id": 1, "user_id": 1, "order_date": datetime(2024, 1, 1), "status": "shipped",
-            "total_amount": 25.99, "payment_status": "pending", "payment_method": "VISA", "shipping_address": "123 Main St Indiana PA 15701",
-            "shipping_method": "USPS", "tracking_number": "94009340434321239384", "shipping_cost": 5.39, "created_at": datetime(2024, 1, 1),
-            "updated_at": datetime(2024, 1, 3)
+            "order_id": 1,
+            "user_id": 1,
+            "order_date": datetime(2025, 1, 1),
+            "status": "delivered",
+            "created_at": datetime(2025, 1, 1),
+            "updated_at": datetime(2025, 1, 1),
         },
         {
-            "order_id": 2, "user_id": 1, "order_date": datetime(2025, 1, 1), "status": "shipped",
-            "total_amount": 205.99, "payment_status": "completed", "payment_method": "MASTERCARD", "shipping_address": "69 Nice St Intercourse PA 17534",
-            "shipping_method": "FEDEX", "tracking_number": "9610 1385 2890", "shipping_cost": 15.39, "created_at": datetime(2025, 1, 1),
-            "updated_at": datetime(2025, 1, 3)  
+            "order_id": 2,
+            "user_id": 1,
+            "order_date": datetime(2025, 1, 1),
+            "status": "delivered",
+            "created_at": datetime(2025, 1, 1),
+            "updated_at": datetime(2025, 1, 1),
         }
     ]
     orders = OrderMapper.get_all_orders(db_session=mock_db_session)
 
     assert len(orders) == 2
-    assert orders[0]["shipping_address"] == "123 Main St Indiana PA 15701"
-    assert orders[1]["shipping_address"] == "69 Nice St Intercourse PA 17534"
+    assert orders[0]["status"] == "delivered"
+    assert orders[1]["status"] == "delivered"
     assert isinstance(orders[0]["created_at"], datetime)
     assert isinstance(orders[1]["created_at"], datetime)
 
 def test_get_order_by_id(mock_db_session):
     mock_cursor = mock_db_session.cursor.return_value
     mock_cursor.fetchone.return_value = {
-            "order_id": 2, "user_id": 1, "order_date": datetime(2025, 1, 1), "status": "shipped",
-            "total_amount": 205.99, "payment_status": "pending", "payment_method": "MASTERCARD", "shipping_address": "69 Nice St Intercourse PA 17534",
-            "shipping_method": "FEDEX", "tracking_number": "9610 1385 2890", "shipping_cost": 15.39, "created_at": datetime(2025, 1, 1),
-            "updated_at": datetime(2025, 1, 3) 
+        "order_id": 2,
+        "user_id": 1,
+        "order_date": datetime(2025, 1, 1),
+        "status": "delivered",
+        "created_at": datetime(2025, 1, 1),
+        "updated_at": datetime(2025, 1, 1),
     }
 
     order_num = OrderMapper.get_order_by_id(order_id=2, db_session=mock_db_session)
 
     assert order_num["order_id"] == 2
-    assert order_num["shipping_method"] == "FEDEX"
+    assert order_num["status"] == "delivered"
 
 def test_create_order(mock_db_session):
     mock_cursor = mock_db_session.cursor.return_value
     mock_cursor.lastrowid = 3
     data = {
-            "order_id": 4, "user_id": 1, "order_date": datetime(2025, 1, 1), "status": "shipped",
-            "total_amount": 205.99, "payment_status": "completed", "payment_method": "MASTERCARD", "shipping_address": "69 Nice St Intercourse PA 17534",
-            "shipping_method": "FEDEX", "tracking_number": "9610 1385 2890", "shipping_cost": 15.39, "created_at": datetime(2025, 1, 1),
-            "updated_at": datetime(2025, 1, 3) 
+        "user_id": 1,
+        "order_date": datetime(2025, 1, 1),
+        "status": "delivered",
     }
 
     created_order = OrderMapper.create_order(data = data, db_session=mock_db_session)
@@ -68,8 +73,8 @@ def test_update_order(mock_db_session):
     mock_cursor = mock_db_session.cursor.return_value
     mock_cursor.rowcount = 1
     data = {
-        "shipping_method": "UPS",
-        "tracking_number": "1300ZASADFASDF"
+        "order_date": datetime(2025, 1, 1),
+        "status": "delivered",
     }
 
     rows_updated = OrderMapper.update_order(order_id=3, data=data, db_session=mock_db_session)
@@ -89,10 +94,11 @@ def test_create_order_missing_fields(mock_db_session):
     mock_cursor = mock_db_session.cursor.return_value
     mock_cursor.lastrowid = 3
     data = {
-        "user_id": 10, "order_date": datetime(2024, 1, 1), "status": "shipped", "total_amount": 150.0,
-        "payment_status": "paid", "payment_method": "credit_card", "shipping_address": "123 Street",
-        "shipping_method": "ground", "tracking_number": "XYZ123", "shipping_cost": 5.0, 
-        "created_at": datetime(2024, 1, 1), "updated_at": datetime(2024, 1, 2)
+        "order_id": 2,
+        "user_id": 1,
+        "status": "delivered",
+        "created_at": datetime(2025, 1, 1),
+        "updated_at": datetime(2025, 1, 1),
     }
 
     del data["total_amount"]
@@ -113,10 +119,12 @@ def test_create_order_db_failure(mock_db_session):
     mock_cursor = mock_db_session.cursor.return_value
     mock_cursor.execute.side_effect = Exception("Database error")
     data = {
-        "user_id": 10, "order_date": datetime(2024, 1, 1), "status": "shipped", "total_amount": 150.0,
-        "payment_status": "pending", "payment_method": "credit_card", "shipping_address": "123 Street",
-        "shipping_method": "ground", "tracking_number": "XYZ123", "shipping_cost": 5.0, 
-        "created_at": datetime(2024, 1, 1), "updated_at": datetime(2024, 1, 2)
+        "order_id": 2,
+        "user_id": 1,
+        "order_date": datetime(2025, 1, 1),
+        "status": "delivered",
+        "created_at": datetime(2025, 1, 1),
+        "updated_at": datetime(2025, 1, 1),
     }
 
     with pytest.raises(expected_exception=Exception, match="Database error"):
@@ -128,8 +136,8 @@ def test_update_order_invalid_id(mock_db_session):
     mock_cursor.rowcount = 0  # Simulate no rows were updated
 
     data = {
+        "order_date": datetime(2025, 1, 1),
         "status": "delivered",
-        "shipping_address": "789 Boulevard"
     }
 
     rows_updated = OrderMapper.update_order(order_id=999, data=data, db_session=mock_db_session)  # Invalid ID
