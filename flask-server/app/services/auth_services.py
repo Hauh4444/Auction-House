@@ -1,9 +1,15 @@
 from flask import jsonify, session, Response
 from flask_login import login_user, logout_user, current_user
 
+from datetime import datetime, timedelta
+import os, jwt
+
+from pygments.lexers.jsonnet import jsonnet_function_token
+
 from .profile_services import ProfileService
 from .session_services import SessionService
-from ..data_mappers import AuthMapper
+from .email_services import EmailService
+from ..data_mappers import AuthMapper, ProfileMapper, UserMapper
 from ..utils.password import hash_password
 
 
@@ -113,39 +119,72 @@ class AuthService:
 
 
     @staticmethod
-    def password_reset_request(data):
+    def password_reset_request(db_session=None):
         """
         Handles a password reset request.
-
-        Args:
-            data: A dictionary containing the request arguments.
 
         Returns:
             A Response object indicating whether the request was successful.
         """
-        if not data.get("email"):
-            response_data = {"error": "Email is required"}
-            return Response(response=jsonify(response_data).get_data(), status=400, mimetype="application/json")
+        reset_token = jwt.encode({
+            'user_id': session.get("user_id"),
+            'exp': datetime.utcnow() + timedelta(hours=1)
+        }, os.getenv('SECRET_KEY'), algorithm='HS256')
 
-        response_data = {"message": "Password reset request sent"}
+        reset_link = f"{os.getenv('FRONTEND_URL')}/reset_password?token={reset_token}"
+        subject = "Password Reset Request"
+        body = f"Your password reset link is: {reset_link}"
+
+        profile = ProfileMapper.get_profile(user_id=session.get("user_id"), db_session=db_session)
+        if not profile:
+            response_data = {"error": "Profile not found"}
+            return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
+
+        # Use EmailService to send the email
+        EmailService.send_email(subject, [profile.get("email")], body)
+
+        response_data = {"message": "Password reset email sent"}
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
 
     @staticmethod
-    def reset_user_password(data, db_session=None):
+    def reset_user_password(reset_token, new_password, db_session=None):
         """
         Resets a user's password using a reset token.
 
         Args:
-            data: A dictionary containing the request arguments.
+            reset_token: The token used to verify the password reset request.
+            new_password: The new password to be set for the user.
             db_session: Optional database session to be used in tests.
 
         Returns:
             A Response object indicating whether the password reset was successful.
         """
-        if not data.get("reset_token") or not data.get("new_password"):
-            response_data = {"error": "Reset token and new password are required"}
+        try:
+            jwt.decode(reset_token, os.getenv('SECRET_KEY'), algorithms=['HS256'])
+        except jwt.ExpiredSignatureError:
+            response_data = {"error": "Reset token has expired"}
+            return Response(response=jsonify(response_data).get_data(), status=400, mimetype="application/json")
+        except jwt.InvalidTokenError:
+            response_data = {"error": "Invalid reset token"}
             return Response(response=jsonify(response_data).get_data(), status=400, mimetype="application/json")
 
-        response_data = {"message": "Password successfully reset"}
+        # Get the current user
+        user = UserMapper.get_user(user_id=session.get("user_id"), db_session=db_session)
+
+        if not user:
+            response_data = {"error": "User not found"}
+            return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
+
+        # Update the user's password
+        updated_user_data = {
+            "password_hash": hash_password(new_password)
+        }
+        updated_rows = UserMapper.update_user(user_id=session.get("user_id"), data=updated_user_data, db_session=db_session)
+
+        if not updated_rows:
+            response_data = {"error": "User not found"}
+            return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
+
+        response_data = {"message": "Password has been reset"}
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")

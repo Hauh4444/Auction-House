@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify
 from flask_login import login_required
 
 from ..services import AuthService
@@ -76,18 +76,14 @@ def logout_user():
 # POST /api/auth/password_reset_request/
 @bp.route("/password_reset_request/", methods=["POST"])
 @login_required
-def password_reset_request():
+def password_reset_request(db_session=None):
     """
     Request a password reset email.
-
-    Expects:
-        JSON payload with "email" key.
 
     Returns:
         JSON response indicating the status of the reset request.
     """
-    data = request.json
-    return AuthService.password_reset_request(data=data)
+    return AuthService.password_reset_request(db_session=db_session)
 
 
 # POST /api/auth/password_reset/
@@ -103,5 +99,9 @@ def password_reset(db_session=None):
     Returns:
         JSON response indicating the status of the password reset.
     """
-    data = request.json
-    return AuthService.reset_user_password(data=data, db_session=db_session)
+    data = request.get_json()
+    reset_token = data.get('token')
+    new_password = data.get('new_password')
+    if not reset_token or not new_password:
+        return jsonify({"error": "Token and new password are required"}), 400
+    return AuthService.reset_user_password(reset_token=reset_token, new_password=new_password, db_session=db_session)
