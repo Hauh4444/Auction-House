@@ -1,7 +1,8 @@
-import os
-from sendgrid import SendGridAPIClient
+from sendgrid import SendGridAPIClient, SendGridException
 from sendgrid.helpers.mail import Mail
 from dotenv import load_dotenv
+from requests import RequestException
+import os, logging
 
 load_dotenv()  # Load environment variables from .env file
 
@@ -30,6 +31,9 @@ class EmailService:
             sg = SendGridAPIClient(os.getenv('SENDGRID_API_KEY'))
             response = sg.send(message)
             return response.status_code == 202
-        except Exception as e:
-            print(e.message)
+        except SendGridException as e:
+            logging.error(f"SendGrid error: {e}")
+            return False
+        except RequestException as e:
+            logging.error(f"Network error: {e}")
             return False

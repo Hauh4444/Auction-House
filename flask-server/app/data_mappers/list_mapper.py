@@ -1,3 +1,5 @@
+from pymysql import cursors
+
 from ..database.connection import get_db
 from ..entities import List, ListItem
 
@@ -16,8 +18,8 @@ class ListMapper:
             list[dict]: A list of dictionaries representing the user's lists.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
-        cursor.execute("SELECT * FROM lists WHERE user_id = ?", (user_id,))
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor.execute("SELECT * FROM lists WHERE user_id = %s", (user_id,))
         lists = cursor.fetchall()
         return [List(**list_row).to_dict() for list_row in lists]
 
@@ -34,8 +36,8 @@ class ListMapper:
             list[dict]: A list of dictionaries representing the list's items.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
-        cursor.execute("SELECT * FROM list_items WHERE list_id = ?", (list_id,))
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor.execute("SELECT * FROM list_items WHERE list_id = %s", (list_id,))
         list_items = cursor.fetchall()
         return [ListItem(**list_item).to_dict() for list_item in list_items]
 
@@ -52,8 +54,8 @@ class ListMapper:
             dict | None: A dictionary representing the list if found, otherwise None.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
-        cursor.execute("SELECT * FROM lists WHERE list_id = ?", (list_id,))
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor.execute("SELECT * FROM lists WHERE list_id = %s", (list_id,))
         list_row = cursor.fetchone()
         return List(**list_row).to_dict() if list_row else None
 
@@ -70,11 +72,11 @@ class ListMapper:
             int: The ID of the newly created list.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
         statement = """
             INSERT INTO lists 
             (user_id, title, created_at) 
-            VALUES (?, ?, ?)
+            VALUES (%s, %s, %s)
         """
         cursor.execute(statement, tuple(List(**data).to_dict().values())[1:])  # Exclude list_id (auto-incremented)
         db.commit()
@@ -94,11 +96,11 @@ class ListMapper:
             int: The ID of the newly created list item.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
         statement = """
             INSERT INTO list_items 
             (list_id, listing_id, created_at) 
-            VALUES (?, ?, ?)
+            VALUES (%s, %s, %s)
         """
         data = {"list_id": list_id, "listing_id": listing_id}
         cursor.execute(statement, tuple(ListItem(**data).to_dict().values())[1:])  # Exclude list_id (auto-incremented)
@@ -119,8 +121,8 @@ class ListMapper:
             int: The number of rows updated (should be 1 if successful).
         """
         db = db_session or get_db()
-        cursor = db.cursor()
-        statement = "UPDATE lists SET title = ?, updated_at = CURRENT_TIMESTAMP WHERE list_id = ?"
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        statement = "UPDATE lists SET title = %s, updated_at = CURRENT_TIMESTAMP WHERE list_id = %s"
         cursor.execute(statement, (title, list_id))
         db.commit()
         return cursor.rowcount
@@ -138,8 +140,8 @@ class ListMapper:
             int: The number of rows deleted (should be 1 if successful).
         """
         db = db_session or get_db()
-        cursor = db.cursor()
-        cursor.execute("DELETE FROM lists WHERE list_id = ?", (list_id,))
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor.execute("DELETE FROM lists WHERE list_id = %s", (list_id,))
         db.commit()
         return cursor.rowcount
 
@@ -157,7 +159,7 @@ class ListMapper:
             int: The number of rows deleted (should be 1 if successful).
         """
         db = db_session or get_db()
-        cursor = db.cursor()
-        cursor.execute("DELETE FROM list_items WHERE list_id = ? AND listing_id = ?", (list_id, listing_id))
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor.execute("DELETE FROM list_items WHERE list_id = %s AND listing_id = %s", (list_id, listing_id))
         db.commit()
         return cursor.rowcount

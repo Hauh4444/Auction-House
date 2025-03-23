@@ -1,3 +1,4 @@
+from pymysql import cursors
 from datetime import datetime
 
 from ..database.connection import get_db
@@ -18,8 +19,8 @@ class SupportTicketMapper:
             dict: Support ticket details if found, otherwise None.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
-        cursor.execute("SELECT * FROM support_tickets WHERE ticket_id = ?", (ticket_id,))
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor.execute("SELECT * FROM support_tickets WHERE ticket_id = %s", (ticket_id,))
         ticket = cursor.fetchone()
         return SupportTicket(**ticket).to_dict() if ticket else None
 
@@ -37,8 +38,8 @@ class SupportTicketMapper:
             list: A list of support ticket dictionaries.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
-        cursor.execute("SELECT * FROM support_tickets WHERE user_id = ?", (user_id,))
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor.execute("SELECT * FROM support_tickets WHERE user_id = %s", (user_id,))
         tickets = cursor.fetchall()
         return [SupportTicket(**ticket).to_dict() for ticket in tickets]
 
@@ -56,10 +57,10 @@ class SupportTicketMapper:
             int: The ID of the newly created ticket.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
         statement = """
             INSERT INTO support_tickets (user_id, order_id, subject, status, priority, assigned_to, created_at, updated_at) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
         """
         cursor.execute(statement, tuple(SupportTicket(**data).to_dict().values())[1:]) # Exclude ticket_id (auto-incremented)
         db.commit()
@@ -80,10 +81,10 @@ class SupportTicketMapper:
             int: Number of rows updated.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
-        update_clause = ", ".join(f"{key} = ?" for key in updates.keys())
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        update_clause = ", ".join(f"{key} = %s" for key in updates.keys())
         values = list(updates.values()) + [ticket_id]
-        cursor.execute(f"UPDATE support_tickets SET {update_clause}, updated_at = ? WHERE ticket_id = ?", (*values, datetime.now()))
+        cursor.execute(f"UPDATE support_tickets SET {update_clause}, updated_at = %s WHERE ticket_id = %s", (*values, datetime.now()))
         db.commit()
         return cursor.rowcount
 
@@ -101,7 +102,7 @@ class SupportTicketMapper:
             int: Number of rows deleted.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
-        cursor.execute("DELETE FROM support_tickets WHERE ticket_id = ?", (ticket_id,))
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor.execute("DELETE FROM support_tickets WHERE ticket_id = %s", (ticket_id,))
         db.commit()
         return cursor.rowcount

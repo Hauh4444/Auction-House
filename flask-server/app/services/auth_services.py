@@ -139,10 +139,13 @@ class AuthService:
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
         # Use EmailService to send the email
-        EmailService.send_email(subject, [profile.get("email")], body)
+        response_code = EmailService.send_email(subject, profile.get("email"), body)
+        if response_code != 202:
+            response_data = {"error": "HTTP error sending email"}
+            return Response(response=jsonify(response_data).get_data(), status=response_code, mimetype="application/json")
 
         response_data = {"message": "Password reset email sent"}
-        return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
+        return Response(response=jsonify(response_data).get_data(), status=202, mimetype="application/json")
 
 
     @staticmethod

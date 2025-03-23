@@ -15,3 +15,7 @@ class Config:
     CORS_ORIGINS = "http://localhost:5173"
     LIMITER_STORAGE_URI = os.getenv("memory://")
     DEFAULT_RATE_LIMITS = ["10000 per hour", "2000 per minute"]
+    MYSQL_HOST = "localhost"
+    MYSQL_USER = "root"
+    MYSQL_PASSWORD = ""
+    MYSQL_DB = "auctionhouse"

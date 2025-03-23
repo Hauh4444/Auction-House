@@ -83,7 +83,7 @@ const SellerProfile = () => {
                 },
                 withCredentials: true, // Ensure cookies are sent
             })
-            .then(() => navigate("/seller-profile?nav=manage"))
+            .then(() => navigate("/user/seller-profile?nav=manage"))
             .catch(err => console.log(err)); // Log errors if any
     }
 

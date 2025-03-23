@@ -1,9 +1,8 @@
+from mysql.connector import Error
 import sqlite3
-import os
-from .backup import recover_db
 
-DB_DIRECTORY = "database"
-DB_FILE = "auctionhouse.db"
+from ..utils.mysql import mysql
+from .backup import recover_db
 
 
 def get_db():
@@ -14,11 +13,17 @@ def get_db():
     Returns:
         sqlite3.Connection: A database connection object if successful.
     """
-    db_path = os.path.join(DB_DIRECTORY, DB_FILE)
+    try:
+        conn = mysql.connect()
+        conn.cursor().execute("USE auctionhouse")  # Try selecting the database
+        return conn
 
-    if not os.path.exists(db_path):  # Check if DB file is missing
-        recover_db()
-
-    conn = sqlite3.connect(database=db_path)
-    conn.row_factory = sqlite3.Row  # Enables row access by column name
-    return conn
+    except Error as e:
+        if e.errno == 1049:  # Error code for "Unknown database"
+            recover_db()  # Recover the database from backup
+            conn = mysql.connect()
+            conn.cursor().execute("USE auctionhouse")  # Retry selecting the database
+            return conn
+        else:
+            print(f"MySQL Connection Error: {e}")
+            return None

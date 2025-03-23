@@ -1,3 +1,5 @@
+from pymysql import cursors
+
 from ..database.connection import get_db
 from ..entities import Order, OrderItem
 
@@ -16,8 +18,8 @@ class OrderMapper:
             list: A list of order dictionaries.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
-        cursor.execute("SELECT * FROM orders WHERE user_id = ?", (user_id,))
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor.execute("SELECT * FROM orders WHERE user_id = %s", (user_id,))
         orders = cursor.fetchall()
         return [Order(**order).to_dict() for order in orders]
 
@@ -35,8 +37,8 @@ class OrderMapper:
             dict: Order details if found, otherwise None.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
-        cursor.execute("SELECT * FROM orders WHERE order_id = ?", (order_id,))
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor.execute("SELECT * FROM orders WHERE order_id = %s", (order_id,))
         order = cursor.fetchone()
         return Order(**order).to_dict() if order else None
 
@@ -54,11 +56,11 @@ class OrderMapper:
             int: The ID of the newly created order.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
         statement = """
             INSERT INTO orders 
             (user_id, order_date, status, created_at, updated_at) 
-            VALUES (?, ?, ?, ?, ?)
+            VALUES (%s, %s, %s, %s, %s)
         """
         cursor.execute(statement, tuple(Order(**data).to_dict().values())[1:]) # Exclude order_id (auto-incremented)
         db.commit()
@@ -78,11 +80,11 @@ class OrderMapper:
             int: The ID of the newly created order item.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
         statement = """
             INSERT INTO order_items 
             (order_id, listing_id, quantity, price, total_price, created_at, updated_at) 
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
         """
         cursor.execute(statement, tuple(OrderItem(**data).to_dict().values())[1:]) # Exclude order_item_id (auto-incremented)
         db.commit()
@@ -103,11 +105,11 @@ class OrderMapper:
             int: Number of rows updated.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
-        conditions = [f"{key} = ?" for key in data if key not in ["order_id", "created_at"]]
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        conditions = [f"{key} = %s" for key in data if key not in ["order_id", "created_at"]]
         values = [data.get(key) for key in data if key not in ["order_id", "created_at"]]
         values.append(order_id)
-        statement = f"UPDATE orders SET {', '.join(conditions)}, updated_at = CURRENT_TIMESTAMP WHERE order_id = ?"
+        statement = f"UPDATE orders SET {', '.join(conditions)}, updated_at = CURRENT_TIMESTAMP WHERE order_id = %s"
         cursor.execute(statement, values)
         db.commit()
         return cursor.rowcount
@@ -126,8 +128,8 @@ class OrderMapper:
             int: Number of rows deleted.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
-        cursor.execute("DELETE FROM orders WHERE order_id = ?", (order_id,))
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor.execute("DELETE FROM orders WHERE order_id = %s", (order_id,))
         db.commit()
         return cursor.rowcount
 

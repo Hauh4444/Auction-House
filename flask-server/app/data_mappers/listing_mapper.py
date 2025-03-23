@@ -1,3 +1,5 @@
+from pymysql import cursors
+
 from ..database.connection import get_db
 from ..entities import Listing
 
@@ -16,8 +18,8 @@ class ListingMapper:
             list: A list of listing dictionaries matching the query conditions.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
-        cursor.execute("SELECT * FROM listings WHERE user_id = ?", (user_id,))
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor.execute("SELECT * FROM listings WHERE user_id = %s", (user_id,))
         listings = cursor.fetchall()
         return [Listing(**listing).to_dict() for listing in listings]
 
@@ -35,27 +37,27 @@ class ListingMapper:
             list: A list of listing dictionaries matching the query conditions.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
         statement = "SELECT * FROM listings"
         conditions = []
         values = []
 
         # Add conditions
         if "category_id" in args:
-            conditions.append("category_id = ?")
+            conditions.append("category_id = %s")
             values.append(args.get("category_id"))
         if "listing_type" in args:
-            conditions.append("listing_type = ?")
+            conditions.append("listing_type = %s")
             values.append(args.get("listing_type"))
         if "min_price" in args:
-            conditions.append("buy_now_price > ?")
+            conditions.append("buy_now_price > %s")
             values.append(args.get("min_price"))
         if "max_price" in args:
-            conditions.append("buy_now_price < ?")
+            conditions.append("buy_now_price < %s")
             values.append(args.get("max_price"))
         if "query" in args:
             query = args.get("query")
-            conditions.append("(title LIKE ? OR description LIKE ?)")
+            conditions.append("(title LIKE %s OR description LIKE %s)")
             values.extend([f"%{query}%", f"%{query}%"])
 
         if conditions:
@@ -67,8 +69,8 @@ class ListingMapper:
 
         # Add pagination
         if "start" in args and "range" in args:
-            statement += " LIMIT ? OFFSET ?"
-            values.extend([args.get("range"), args.get("start")])
+            statement += " LIMIT %s OFFSET %s"
+            values.extend([int(args.get("range")), int(args.get("start"))])
 
         cursor.execute(statement, values)
         listings = cursor.fetchall()
@@ -88,8 +90,8 @@ class ListingMapper:
             dict: Listing details if found, otherwise None.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
-        cursor.execute("SELECT * FROM listings WHERE listing_id = ?", (listing_id,))
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor.execute("SELECT * FROM listings WHERE listing_id = %s", (listing_id,))
         listing = cursor.fetchone()
         return Listing(**listing).to_dict() if listing else None
 
@@ -107,13 +109,13 @@ class ListingMapper:
             int: The ID of the newly created listing.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
         statement = """
             INSERT INTO listings 
             (user_id, title, title_short, description, item_specifics, category_id, listing_type, starting_price, 
             reserve_price, current_price, buy_now_price, auction_start, auction_end, status, image_encoded, bids, purchases, 
             average_review, total_reviews, created_at, updated_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """
         cursor.execute(statement, tuple(Listing(**data).to_dict().values())[1:])
         db.commit()
@@ -134,11 +136,11 @@ class ListingMapper:
             int: Number of rows updated.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
-        set_clause = ", ".join([f"{key} = ?" for key in data if key not in ["listing_id", "created_at"]])
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        set_clause = ", ".join([f"{key} = %s" for key in data if key not in ["listing_id", "created_at"]])
         values = [data.get(key) for key in data if key not in ["listing_id", "created_at"]]
         values.append(listing_id)
-        statement = f"UPDATE listings SET {set_clause} WHERE listing_id = ?"
+        statement = f"UPDATE listings SET {set_clause} WHERE listing_id = %s"
         cursor.execute(statement, values)
         db.commit()
         return cursor.rowcount
@@ -157,8 +159,8 @@ class ListingMapper:
             int: Number of rows deleted.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
-        cursor.execute("DELETE FROM listings WHERE listing_id = ?", (listing_id,))
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor.execute("DELETE FROM listings WHERE listing_id = %s", (listing_id,))
         db.commit()
         return cursor.rowcount
 

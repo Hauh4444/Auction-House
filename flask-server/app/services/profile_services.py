@@ -5,17 +5,21 @@ from ..data_mappers import ProfileMapper
 
 class ProfileService:
     @staticmethod
-    def get_profile(db_session=None):
+    def get_profile(data, db_session=None):
         """
         Retrieves a specific profile by its associate user ID.
 
         Args:
+            data: A dictionary containing the request arguments.
             db_session: Optional database session to be used in tests.
 
         Returns:
             A Response object with the profile data if found, otherwise a 404 error with a message.
         """
-        profile = ProfileMapper.get_profile(user_id=session.get("user_id"), db_session=db_session)
+        if session.get("role") in ["staff", "admin"]:
+            profile = ProfileMapper.get_profile(user_id=data.get("user_id"), db_session=db_session)
+        else:
+            profile = ProfileMapper.get_profile(user_id=session.get("user_id"), db_session=db_session)
 
         if not profile:
             response_data = {"error": "Profile not found"}

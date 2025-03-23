@@ -27,15 +27,15 @@ const UserAccount = () => {
     const navigate = useNavigate(); // Navigate hook for routing
 
     const cardInfo = {
-        "history?nav=orders": ["Your History", "View and manage your history"],
+        "history?nav=orders": ["History", "View and manage your history"],
         "security": ["Login & Security", "Edit login information: username, password, etc"],
-        "profile": ["Your Profile", "Edit profile information: name, address, etc "],
-        "payment-info?nav=transactions": ["Your Payments", "View transactions, manage payment methods and settings"],
-        "lists": ["Your Lists", "View, modify, and share your lists, or create new ones"],
+        "profile": ["Profile", "Edit profile information: name, address, etc "],
+        "payment-info?nav=transactions": ["Payments", "View transactions, manage payment methods and settings"],
+        "lists": ["Lists", "View, modify, and share your lists, or create new ones"],
         "seller-profile?nav=manage": ["Seller Profile", "View and manage your seller profile"],
         "report": ["Customer Service", "Browse self service options or speak with a staff member"],
-        "messages": ["Your Messages", "View or respond to messages from other Sellers and Buyers"],
-        "deliveries": ["Your Deliveries", "View and track your deliveries with status updates."],
+        "messages": ["Messages", "View or respond to messages from other Sellers and Buyers"],
+        "deliveries": ["Deliveries", "View and track your deliveries with status updates."],
     };
 
     return (

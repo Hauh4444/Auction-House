@@ -1,3 +1,5 @@
+from pymysql import cursors
+
 from ..database.connection import get_db
 from ..entities import Chat
 
@@ -15,7 +17,7 @@ class ChatMapper:
             list: A list of chat dictionaries.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
         cursor.execute("SELECT * FROM chats")
         chats = cursor.fetchall()
         return [Chat(**chat).to_dict() for chat in chats]
@@ -34,8 +36,8 @@ class ChatMapper:
             dict: Chat details if found, otherwise None.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
-        cursor.execute("SELECT * FROM chats WHERE chat_id = ?", (chat_id,))
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor.execute("SELECT * FROM chats WHERE chat_id = %s", (chat_id,))
         chat = cursor.fetchone()
         return Chat(**chat).to_dict() if chat else None
 
@@ -53,10 +55,10 @@ class ChatMapper:
             int: The ID of the newly created chat.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
         statement = """
             INSERT INTO chats (user1_id, user2_id, created_at) 
-            VALUES (?, ?, ?)
+            VALUES (%s, %s, %s)
         """
         cursor.execute(statement, tuple(Chat(**data).to_dict().values())[1:]) # Exclude chat_id (auto-incremented)
         db.commit()
@@ -76,8 +78,8 @@ class ChatMapper:
             int: Number of rows deleted.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
-        cursor.execute("DELETE FROM chats WHERE chat_id = ?", (chat_id,))
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor.execute("DELETE FROM chats WHERE chat_id = %s", (chat_id,))
         db.commit()
         return cursor.rowcount
 

@@ -1,3 +1,5 @@
+from pymysql import cursors
+
 from ..database.connection import get_db
 from ..entities import Session
 
@@ -15,7 +17,7 @@ class SessionMapper:
             list: A list of session dictionaries retrieved from the database.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
         cursor.execute("SELECT * FROM sessions")
         sessions = cursor.fetchall()
         return [Session(**session).to_dict() for session in sessions]
@@ -34,8 +36,8 @@ class SessionMapper:
             dict: A dictionary representation of the session if found, else None.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
-        cursor.execute("SELECT * FROM sessions WHERE session_id = ?", (session_id,))
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor.execute("SELECT * FROM sessions WHERE session_id = %s", (session_id,))
         session = cursor.fetchone()
         return Session(**session).to_dict() if session else None
 
@@ -53,11 +55,11 @@ class SessionMapper:
             int: The ID of the newly created session.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
         statement = """
             INSERT INTO sessions 
             (user_id, role, token, created_at, expires_at) 
-            VALUES (?, ?, ?, ?, ?)
+            VALUES (%s, %s, %s, %s, %s)
         """
         cursor.execute(statement, tuple(Session(**data).to_dict().values())[1:])
         db.commit()
@@ -78,11 +80,11 @@ class SessionMapper:
             int: The number of rows affected by the update.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
         statement = """
             UPDATE sessions 
-            SET user_id = ?, token = ?, role = ?, created_at = ?, expires_at = ?
-            WHERE session_id = ?
+            SET user_id = %s, token = %s, role = %s, created_at = %s, expires_at = %s
+            WHERE session_id = %s
         """
         cursor.execute(statement, tuple(Session(**data).to_dict().values())[1:] + (session_id,))
         db.commit()
@@ -102,7 +104,7 @@ class SessionMapper:
             int: The number of rows deleted.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
-        cursor.execute("DELETE FROM sessions WHERE session_id = ?", (session_id,))
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor.execute("DELETE FROM sessions WHERE session_id = %s", (session_id,))
         db.commit()
         return cursor.rowcount

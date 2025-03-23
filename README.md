@@ -24,14 +24,13 @@
 
 ### React Frontend
 1. In a terminal, change to the `react-frontend` directory.
-2. Run the `npm install` command to install node modules.
-3. Run the `npm install react react-router-dom react-icons react-share prop-types vite @mui/material @mui/styled-engine-sc styled-components axios sass vitest @vitest/coverage-v8 @testing-library/react @testing-library/jest-dom jsdom` command to install the necessary dependencies.
+2. Run the `npm install` command to install node modules and required packages within the `package.json` file.
 
 ### Flask Server
 1. In a terminal, change to the `flask-server` directory.
 2. Run the `python -m venv .venv` command to install a virtual environment.
 3. Run the `.venv/Scripts/activate` command to activate the virtual environment.
-4. Run the `pip install flask flask-cors flask-login flask-session flask-limiter flask-socketio python-dotenv APScheduler sendgrid pyjwt pytest` command to install the necessary dependencies.
+4. Run the `pip install -r requirements.txt` command to install the necessary dependencies.
 
 ## Usage
 

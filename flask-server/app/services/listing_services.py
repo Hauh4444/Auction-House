@@ -63,7 +63,6 @@ class ListingService:
         """
         listing_data = data.get("listing", {})
         listing_data.update(user_id=session.get("user_id"), status="active")
-        print(listing_data.get("buy_now_price"))
 
         listing_id = ListingMapper.create_listing(data=listing_data, db_session=db_session)
 

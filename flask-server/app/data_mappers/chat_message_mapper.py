@@ -1,3 +1,5 @@
+from pymysql import cursors
+
 from ..database.connection import get_db
 from ..entities import ChatMessage
 
@@ -16,8 +18,8 @@ class ChatMessagesMapper:
             list: A list of chat message dictionaries.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
-        cursor.execute("SELECT * FROM chat_messages WHERE chat_id = ? ORDER BY sent_at", (chat_id,))
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor.execute("SELECT * FROM chat_messages WHERE chat_id = %s ORDER BY sent_at", (chat_id,))
         messages = cursor.fetchall()
         return [ChatMessage(**message).to_dict() for message in messages]
 
@@ -35,8 +37,8 @@ class ChatMessagesMapper:
             dict: Chat message details if found, otherwise None.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
-        cursor.execute("SELECT * FROM chat_messages WHERE message_id = ?", (message_id,))
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor.execute("SELECT * FROM chat_messages WHERE message_id = %s", (message_id,))
         message = cursor.fetchone()
         return ChatMessage(**message).to_dict() if message else None
 
@@ -54,10 +56,10 @@ class ChatMessagesMapper:
             int: The ID of the newly created message.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
         statement = """
             INSERT INTO chat_messages (sender_id, chat_id, content, created_at) 
-            VALUES (?, ?, ?, ?)
+            VALUES (%s, %s, %s, %s)
         """
         cursor.execute(statement, tuple(ChatMessage(**data).to_dict().values())[1:]) # Exclude message_id (auto-incremented)
         db.commit()
@@ -77,7 +79,7 @@ class ChatMessagesMapper:
             int: Number of rows deleted.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
-        cursor.execute("DELETE FROM chat_messages WHERE message_id = ?", (message_id,))
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor.execute("DELETE FROM chat_messages WHERE message_id = %s", (message_id,))
         db.commit()
         return cursor.rowcount

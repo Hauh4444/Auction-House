@@ -1,4 +1,4 @@
-from pymysql import DatabaseError
+from pymysql import DatabaseError, cursors
 from datetime import datetime
 
 from ..database.connection import get_db
@@ -19,10 +19,10 @@ class AuthMapper:
             dict: User details if found, otherwise None.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
 
         # Check in users table
-        cursor.execute("SELECT * FROM users WHERE user_id = ?", (user_id,))
+        cursor.execute("SELECT * FROM users WHERE user_id = %s", (user_id,))
         user = cursor.fetchone()
 
         if user:
@@ -30,7 +30,7 @@ class AuthMapper:
             return User(**user).to_dict()
         else:
             # Check in staff_users table if not found in users table
-            cursor.execute("SELECT * FROM staff_users WHERE staff_id = ?", (user_id,))
+            cursor.execute("SELECT * FROM staff_users WHERE staff_id = %s", (user_id,))
             staff_user = cursor.fetchone()
             return StaffUser(**staff_user).to_dict() if staff_user else None
 
@@ -48,10 +48,10 @@ class AuthMapper:
             Object: User details if found, otherwise None.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
 
         # Check in users table
-        cursor.execute("SELECT * FROM users WHERE username = ?", (username,))
+        cursor.execute("SELECT * FROM users WHERE username = %s", (username,))
         user = cursor.fetchone()
 
         if user:
@@ -59,7 +59,7 @@ class AuthMapper:
             return User(**user)
         else:
             # Check in staff_users table if not found in users table
-            cursor.execute("SELECT * FROM staff_users WHERE username = ?", (username,))
+            cursor.execute("SELECT * FROM staff_users WHERE username = %s", (username,))
             user = cursor.fetchone()
             return StaffUser(**user) if user else None
 
@@ -77,18 +77,18 @@ class AuthMapper:
             int: The ID of the newly created user.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
 
         try:
             statement = """
                 INSERT INTO users (username, password_hash, email, created_at, updated_at, last_login, is_active)
-                VALUES (?, ?, ?, ?, ?, ?, ?)
+                VALUES (%s, %s, %s, %s, %s, %s, %s)
             """
             cursor.execute(statement, tuple(User(**data).to_dict().values())[1:])
         except TypeError or DatabaseError:
             statement = """
                 INSERT INTO staff_users (username, password_hash, name, email, phone, role, created_at, updated_at, last_login, is_active)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             """
             cursor.execute(statement, tuple(StaffUser(**data).to_dict().values())[1:])
 
@@ -110,12 +110,12 @@ class AuthMapper:
             int: Number of rows updated.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
 
         if role == "user":
-            statement = "UPDATE users SET last_login = ? WHERE user_id = ?"
+            statement = "UPDATE users SET last_login = %s WHERE user_id = %s"
         else:
-            statement = "UPDATE staff_users SET last_login = ? WHERE staff_id = ?"
+            statement = "UPDATE staff_users SET last_login = %s WHERE staff_id = %s"
 
         cursor.execute(statement, (datetime.now(), user_id))
         db.commit()

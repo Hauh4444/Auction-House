@@ -24,7 +24,17 @@ const Security = () => {
         })
             .then(res => setUser(res.data.user)) // Set the user state
             .catch(err => console.log(err)); // Log errors if any
-    }, []); 
+    }, []);
+
+    const password_reset_request = () => {
+        axios.post("http://127.0.0.1:5000/api/auth/password_reset_request/", {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            withCredentials: true,
+        })
+            .catch(err => console.log(err));
+    }
 
     return (
         <div className="securityPage page">
@@ -47,8 +57,8 @@ const Security = () => {
                 </div>
                 <div className="card">
                     <div className="info">
-                        <h2>Password</h2>
-                        <p>********</p>
+                        <h2>Email</h2>
+                        <p>{user["email"]}</p>
                     </div>
                     <Button
                         className="editBtn"
@@ -59,14 +69,14 @@ const Security = () => {
                 </div>
                 <div className="card">
                     <div className="info">
-                        <h2>Email</h2>
-                        <p>{user["email"]}</p>
+                        <h2>Password</h2>
+                        <p>********</p>
                     </div>
                     <Button
                         className="editBtn"
-                        onClick={() => {}}
+                        onClick={() => password_reset_request()}
                     >
-                        Edit
+                        Reset
                     </Button>
                 </div>
             </div>

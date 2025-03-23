@@ -1,3 +1,5 @@
+from pymysql import cursors
+
 from ..database.connection import get_db
 from ..entities import Transaction
 
@@ -16,8 +18,8 @@ class TransactionMapper:
             list: A list of transaction dictionaries.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
-        cursor.execute("SELECT * FROM transactions WHERE user_id = ?", (user_id,))
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor.execute("SELECT * FROM transactions WHERE user_id = %s", (user_id,))
         transactions = cursor.fetchall()
         return [Transaction(**transaction).to_dict() for transaction in transactions]
 
@@ -35,8 +37,8 @@ class TransactionMapper:
             dict: Transaction details if found, otherwise None.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
-        cursor.execute("SELECT * FROM transactions WHERE transaction_id = ?", (transaction_id,))
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor.execute("SELECT * FROM transactions WHERE transaction_id = %s", (transaction_id,))
         transaction = cursor.fetchone()
         return Transaction(**transaction).to_dict() if transaction else None
 
@@ -54,12 +56,12 @@ class TransactionMapper:
             int: The ID of the newly created transaction.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
         statement = """
             INSERT INTO transactions 
             (order_id, user_id, transaction_date, transaction_type, amount, 
             shipping_cost, payment_method, payment_status, created_at, updated_at) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """
         cursor.execute(statement, tuple(Transaction(**data).to_dict().values())[1:]) # Exclude transaction_id (auto-incremented)
         db.commit()
@@ -80,11 +82,11 @@ class TransactionMapper:
             int: Number of rows updated.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
-        conditions = [f"{key} = ?" for key in data if key not in ["transaction_id", "created_at"]]
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        conditions = [f"{key} = %s" for key in data if key not in ["transaction_id", "created_at"]]
         values = [data.get(key) for key in data if key not in ["transaction_id", "created_at"]]
         values.append(transaction_id)
-        statement = f"UPDATE transactions SET {', '.join(conditions)}, updated_at = CURRENT_TIMESTAMP WHERE transaction_id = ?"
+        statement = f"UPDATE transactions SET {', '.join(conditions)}, updated_at = CURRENT_TIMESTAMP WHERE transaction_id = %s"
         cursor.execute(statement, values)
         db.commit()
         return cursor.rowcount
@@ -103,7 +105,7 @@ class TransactionMapper:
             int: Number of rows deleted.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
-        cursor.execute("DELETE FROM transactions WHERE transaction_id = ?", (transaction_id,))
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor.execute("DELETE FROM transactions WHERE transaction_id = %s", (transaction_id,))
         db.commit()
         return cursor.rowcount

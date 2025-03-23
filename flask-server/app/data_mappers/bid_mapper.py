@@ -1,3 +1,5 @@
+from pymysql import cursors
+
 from ..database.connection import get_db
 from ..entities import Bid
 
@@ -15,7 +17,7 @@ class BidMapper:
             list: A list of bid dictionaries.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
         cursor.execute("SELECT * FROM bids")
         bids = cursor.fetchall()
         return [Bid(**bid).to_dict() for bid in bids]
@@ -34,8 +36,8 @@ class BidMapper:
             dict: Bid details if found, otherwise None.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
-        cursor.execute("SELECT * FROM bids WHERE bid_id = ?", (bid_id,))
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor.execute("SELECT * FROM bids WHERE bid_id = %s", (bid_id,))
         bid = cursor.fetchone()
         return Bid(**bid).to_dict() if bid else None
 
@@ -53,11 +55,11 @@ class BidMapper:
             int: The ID of the newly created category.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
         statement = """
             INSERT INTO categories 
             (listing_id, user_id, amount, created_at) 
-            VALUES (?, ?, ?, ?)
+            VALUES (%s, %s, %s, %s)
         """
         cursor.execute(statement, tuple(Bid(**data).to_dict().values())[1:])
         db.commit()

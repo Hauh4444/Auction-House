@@ -1,5 +1,6 @@
 from flask_login import UserMixin
 
+from pymysql import cursors
 from dataclasses import dataclass
 from datetime import datetime
 
@@ -82,8 +83,8 @@ class StaffUser(UserMixin):
     def is_active(self, value):
         self._is_active = bool(value)
         db = get_db()
-        cursor = db.cursor()
-        cursor.execute("UPDATE staff_users SET is_active = ? WHERE staff_id = ?", (int(value), self.staff_id))
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor.execute("UPDATE staff_users SET is_active = %s WHERE staff_id = %s", (int(value), self.staff_id))
         db.commit()
 
     @username.setter
@@ -92,8 +93,8 @@ class StaffUser(UserMixin):
             raise ValueError("Username must be at least 3 characters long.")
 
         db = get_db()
-        cursor = db.cursor()
-        cursor.execute("UPDATE staff_users SET username = ? WHERE staff_id = ?", (new_username, self.staff_id))
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor.execute("UPDATE staff_users SET username = %s WHERE staff_id = %s", (new_username, self.staff_id))
         db.commit()
 
         self._username = new_username

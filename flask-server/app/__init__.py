@@ -6,6 +6,7 @@ import os, pkgutil, importlib
 from .utils.limiter import limiter
 from .utils.session import session
 from .utils.login_manager import login_manager
+from .utils.mysql import mysql
 from .utils.scheduler import scheduler
 from . import routes
 
@@ -21,11 +22,10 @@ def create_app():
     # Initialize extensions
     limiter.init_app(app)
     login_manager.init_app(app)
+    mysql.init_app(app)
     session.init_app(app)
-    CORS(app, supports_credentials=True, resources={r"/api/*": {"origins": "http://localhost:5173"}})
-
-    # Start the cron job for backups
     scheduler.start()
+    CORS(app, supports_credentials=True, resources={r"/api/*": {"origins": "http://localhost:5173"}})
 
     # Register routes
     for _, module_name, _ in pkgutil.iter_modules(routes.__path__):

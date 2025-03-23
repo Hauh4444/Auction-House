@@ -1,4 +1,5 @@
 from flask_login import LoginManager
+
 from ..data_mappers import AuthMapper
 from ..entities import User, StaffUser
 

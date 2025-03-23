@@ -124,10 +124,7 @@ describe("Header Component", () => {
         fireEvent.click(screen.queryByTestId("searchBtn")); // Trigger the search button click
 
         // Expect navigate to have been called with the home page params
-        expect(mockNavigate).toHaveBeenCalledWith({
-            pathname: "/",
-            search: "nav=view-all", // Default view on home page
-        });
+        expect(mockNavigate).toHaveBeenCalledWith("/");
     });
 
     it("navigates to the search results page with the query when search input is not empty", () => {
