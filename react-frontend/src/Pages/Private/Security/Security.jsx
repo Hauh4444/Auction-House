@@ -6,7 +6,6 @@ import axios from "axios";
 // Internal Modules
 import Header from "@/Components/Header/Header";
 import RightNav from "@/Components/Navigation/RightNav/RightNav";
-import { useAuth } from "@/ContextAPI/AuthProvider"
 
 // Stylesheets
 import "./Security.scss"
@@ -15,11 +14,9 @@ import "./Security.scss"
 const Security = () => {
     const [user, setUser] = useState({});
 
-    const auth = useAuth();
-
     // Fetch user data from the backend API
     useEffect(() => {
-        axios.get("http://127.0.0.1:5000/api/user/" + auth.user, {
+        axios.get("http://127.0.0.1:5000/api/user/", {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -27,7 +24,7 @@ const Security = () => {
         })
             .then(res => setUser(res.data.user)) // Set the user state
             .catch(err => console.log(err)); // Log errors if any
-    }, []); // Empty dependency array to ensure it runs only once when the component is mounted
+    }, []); 
 
     return (
         <div className="securityPage page">

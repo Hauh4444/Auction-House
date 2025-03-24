@@ -1,14 +1,16 @@
 from flask import jsonify, session, Response
 from flask_login import login_user, logout_user, current_user
-import os
-import jwt
-import datetime
+
+from datetime import datetime, timedelta
+import os, jwt
+
+from pygments.lexers.jsonnet import jsonnet_function_token
 
 from .profile_services import ProfileService
 from .session_services import SessionService
-from ..data_mappers import AuthMapper
-from ..utils import hash_password
-from app.services.email_services import EmailService
+from .email_services import EmailService
+from ..data_mappers import AuthMapper, ProfileMapper, UserMapper
+from ..utils.password import hash_password
 
 
 class AuthService:
@@ -21,14 +23,12 @@ class AuthService:
             A Response object with the authentication status and user ID if authenticated, otherwise a 401 error.
         """
 
-        if current_user.is_authenticated:
-            data = {"authenticated": True, "user": current_user.id}
-            response = Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
-            return response
+        if not current_user.is_authenticated:
+            response_data = {"error": "Error user is not authenticated", "authenticated": False}
+            return Response(response=jsonify(response_data).get_data(), status=401, mimetype="application/json")
 
-        data = {"authenticated": False}
-        response = Response(response=jsonify(data).get_data(), status=401, mimetype="application/json")
-        return response
+        response_data = {"message": "User is authenticated", "authenticated": True, "user": current_user.id}
+        return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
 
     @staticmethod
@@ -43,50 +43,63 @@ class AuthService:
         Returns:
             A Response object indicating success with the user ID or an error message.
         """
-        data["password_hash"] = hash_password(password=data["password"])
+        if not data.get("username") or not data.get("password") or not data.get("email"):
+            response_data = {"error": "Username, password, and email are required"}
+            return Response(response=jsonify(response_data).get_data(), status=400, mimetype="application/json")
 
-        if not data.get("username") or not data.get("password_hash") or not data.get("email"):
-            data = {"error": "Username, password, and email are required"}
-            response = Response(response=jsonify(data).get_data(), status=400, mimetype='application/json')
-            return response
+        user_data = {"username": data.get("username"), "password_hash": hash_password(password=data.get("password")), "email": data.get("email")}
+        user_id = AuthMapper.create_user(data=user_data, db_session=db_session)
 
-        ProfileService.create_profile(data=data, db_session=db_session)
-        user_id = AuthMapper.create_user(data=data, db_session=db_session)
+        if not user_id:
+            response_data = {"error": "Error creating user"}
+            return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
 
-        data = {"message": "User registered successfully", "user_id": user_id}
-        response = Response(response=jsonify(data).get_data(), status=201, mimetype='application/json')
-        return response
+        profile_data = {"user_id": user_id, "first_name": data.get("first_name"), "last_name": data.get("last_name")}
+        profile_id = ProfileService.create_profile(data=profile_data, db_session=db_session).get_json().get("profile_id")
+
+        if not profile_id:
+            response_data = {"error": "Error creating profile"}
+            return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
+
+        response_data = {"message": "User registered successfully", "user_id": user_id, "profile_id": profile_id}
+        return Response(response=jsonify(response_data).get_data(), status=201, mimetype="application/json")
 
 
     @staticmethod
-    def login_user(username, password, db_session=None):
+    def login_user(data, db_session=None):
         """
         Logs in a user by verifying their username and password.
 
         Args:
-            username: The username of the user.
-            password: The password provided by the user.
+            data: A dictionary containing the request arguments.
             db_session: Optional database session to be used in tests.
 
         Returns:
             A Response object containing a success message and the user details if login is successful,
             or a 401 error if the username or password is incorrect.
         """
-        user = AuthMapper.get_user_by_username(username, db_session)
-        if user and user.password_hash == hash_password(password):
-            session["user_id"], session["role"] = (user.user_id, "user") if user.__class__.__name__ == "User" else (user.staff_id, user.role)
-            AuthMapper.update_last_login(user_id=session["user_id"], role=session["role"] if "role" in session else "user", db_session=db_session)
-            user.is_active = True
-            login_user(user, remember=True)
-            SessionService.create_session(db_session)
+        if not data.get("username") or not data.get("password"):
+            return jsonify({"error": "Username and password are required"}), 400
 
-            data = {"message": "Login successful", "user": user}
-            response = Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
-            return response
+        user = AuthMapper.get_user_by_username(data.get("username"), db_session)
 
-        data = {"error": "Invalid username or password"}
-        response = Response(response=jsonify(data).get_data(), status=401, mimetype='application/json')
-        return response
+        if not user or not user.password_hash == hash_password(data.get("password")):
+            response_data = {"error": "Invalid username or password"}
+            return Response(response=jsonify(response_data).get_data(), status=422, mimetype="application/json")
+
+        if user.__class__.__name__ == "User":
+            session.update(user_id=user.user_id, role="user")
+        else:
+            session.update(user_id=user.staff_id, role=user.role)
+
+        login_user(user, remember=True)
+        user.is_active = True
+
+        AuthMapper.update_last_login(user_id=session.get("user_id"), role=session.get("role"), db_session=db_session)
+        SessionService.create_session(db_session)
+
+        response_data = {"message": "Login successful", "user": user}
+        return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
 
     @staticmethod
@@ -97,70 +110,81 @@ class AuthService:
         Returns:
             A Response object indicating the success of the logout operation.
         """
-        current_user.is_active = False
         logout_user()
         session.clear()
+        current_user.is_active = False
 
-        data = {"message": "Logout successful"}
-        response = Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
-        return response
+        response_data = {"message": "Logout successful"}
+        return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
 
     @staticmethod
-    def password_reset_request(email):
+    def password_reset_request(db_session=None):
         """
         Handles a password reset request.
-
-        Args:
-            email: The email of the user requesting a password reset.
 
         Returns:
             A Response object indicating whether the request was successful.
         """
-        user = User.query.filter_by(email=email).first()
-        if not user:
-            return {"error": "User not found"}, 404
-
         reset_token = jwt.encode({
-            'user_id': user.id,
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=1)
+            'user_id': session.get("user_id"),
+            'exp': datetime.utcnow() + timedelta(hours=1)
         }, os.getenv('SECRET_KEY'), algorithm='HS256')
 
         reset_link = f"{os.getenv('FRONTEND_URL')}/reset_password?token={reset_token}"
         subject = "Password Reset Request"
         body = f"Your password reset link is: {reset_link}"
 
-        # Use EmailService to send the email
-        EmailService.send_email(subject, [email], body)
+        profile = ProfileMapper.get_profile(user_id=session.get("user_id"), db_session=db_session)
+        if not profile:
+            response_data = {"error": "Profile not found"}
+            return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
-        return {"message": "Password reset email sent"}, 200
+        # Use EmailService to send the email
+        EmailService.send_email(subject, [profile.get("email")], body)
+
+        response_data = {"message": "Password reset email sent"}
+        return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
 
     @staticmethod
-    def reset_user_password(reset_token, new_password):
+    def reset_user_password(reset_token, new_password, db_session=None):
         """
         Resets a user's password using a reset token.
 
         Args:
             reset_token: The token used to verify the password reset request.
-            new_password: The new password to set for the user.
+            new_password: The new password to be set for the user.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             A Response object indicating whether the password reset was successful.
         """
         try:
-            data = jwt.decode(reset_token, os.getenv('SECRET_KEY'), algorithms=['HS256'])
-            user_id = data['user_id']
+            jwt.decode(reset_token, os.getenv('SECRET_KEY'), algorithms=['HS256'])
         except jwt.ExpiredSignatureError:
-            return {"error": "Reset token has expired"}, 400
+            response_data = {"error": "Reset token has expired"}
+            return Response(response=jsonify(response_data).get_data(), status=400, mimetype="application/json")
         except jwt.InvalidTokenError:
-            return {"error": "Invalid reset token"}, 400
+            response_data = {"error": "Invalid reset token"}
+            return Response(response=jsonify(response_data).get_data(), status=400, mimetype="application/json")
 
-        user = User.query.get(user_id)
+        # Get the current user
+        user = UserMapper.get_user(user_id=session.get("user_id"), db_session=db_session)
+
         if not user:
-            return {"error": "User not found"}, 404
+            response_data = {"error": "User not found"}
+            return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
-        user.password = generate_password_hash(new_password)
-        db.session.commit()
+        # Update the user's password
+        updated_user_data = {
+            "password_hash": hash_password(new_password)
+        }
+        updated_rows = UserMapper.update_user(user_id=session.get("user_id"), data=updated_user_data, db_session=db_session)
 
-        return {"message": "Password has been reset"}, 200
+        if not updated_rows:
+            response_data = {"error": "User not found"}
+            return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
+
+        response_data = {"message": "Password has been reset"}
+        return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")

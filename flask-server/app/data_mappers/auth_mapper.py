@@ -1,15 +1,15 @@
 from pymysql import DatabaseError
 from datetime import datetime
 
-from ..database import get_db
+from ..database.connection import get_db
 from ..entities import User, StaffUser
 
 
 class AuthMapper:
-    """Handles database operations related to authorization."""
     @staticmethod
     def get_user_by_id(user_id, db_session=None):
-        """Retrieve a user by their ID.
+        """
+        Retrieve a user by their ID.
 
         Args:
             user_id (int): The ID of the user to retrieve.
@@ -31,13 +31,14 @@ class AuthMapper:
         else:
             # Check in staff_users table if not found in users table
             cursor.execute("SELECT * FROM staff_users WHERE staff_id = ?", (user_id,))
-            user = cursor.fetchone()
-            return StaffUser(**user).to_dict() if user else None
+            staff_user = cursor.fetchone()
+            return StaffUser(**staff_user).to_dict() if staff_user else None
 
 
     @staticmethod
     def get_user_by_username(username, db_session=None):
-        """Retrieve a user by their username.
+        """
+        Retrieve a user by their username.
 
         Args:
             username (str): The username of the user to retrieve.
@@ -65,7 +66,8 @@ class AuthMapper:
 
     @staticmethod
     def create_user(data, db_session=None):
-        """Create a new user in the database.
+        """
+        Create a new user in the database.
 
         Args:
             data (dict): Dictionary containing user details.
@@ -76,13 +78,14 @@ class AuthMapper:
         """
         db = db_session or get_db()
         cursor = db.cursor()
-        statement = """
-            INSERT INTO users (username, password_hash, email, created_at, updated_at, last_login, is_active)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-        """
+
         try:
+            statement = """
+                INSERT INTO users (username, password_hash, email, created_at, updated_at, last_login, is_active)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+            """
             cursor.execute(statement, tuple(User(**data).to_dict().values())[1:])
-        except DatabaseError:
+        except TypeError or DatabaseError:
             statement = """
                 INSERT INTO staff_users (username, password_hash, name, email, phone, role, created_at, updated_at, last_login, is_active)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -94,12 +97,13 @@ class AuthMapper:
 
 
     @staticmethod
-    def update_last_login(user_id, role=None, db_session=None):
-        """Update the last login timestamp for a user.
+    def update_last_login(user_id, role, db_session=None):
+        """
+        Update the last login timestamp for a user.
 
         Args:
             user_id (int): The ID of the user to update.
-            role: Optional role to differentiate between standard or staff/admin user.
+            role: The role of the user.
             db_session: Optional database session to be used in tests.
 
         Returns:
@@ -108,7 +112,7 @@ class AuthMapper:
         db = db_session or get_db()
         cursor = db.cursor()
 
-        if not role:
+        if role == "user":
             statement = "UPDATE users SET last_login = ? WHERE user_id = ?"
         else:
             statement = "UPDATE staff_users SET last_login = ? WHERE staff_id = ?"

@@ -1,9 +1,8 @@
-from ..database import get_db
+from ..database.connection import get_db
 from ..entities import Session
 
 
 class SessionMapper:
-    """Handles database operations related to sessions."""
     @staticmethod
     def get_all_sessions(db_session=None):
         """

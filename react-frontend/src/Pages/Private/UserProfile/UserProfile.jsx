@@ -1,13 +1,13 @@
 // External Libraries
 import { useEffect, useState } from "react";
-import { Card, CardHeader, CardContent, TextField, Button } from "@mui/material";
+import { Button, Card, CardContent, TextField } from "@mui/material";
 import axios from "axios";
 import PropTypes from "prop-types";
 
 // Internal Modules
 import Header from "@/Components/Header/Header";
 import RightNav from "@/Components/Navigation/RightNav/RightNav";
-import { useAuth } from "@/ContextAPI/AuthProvider";
+import { encodeImageToBase64 } from "@/utils/helpers"
 
 // Stylesheets
 import "./UserProfile.scss";
@@ -31,9 +31,6 @@ import "./UserProfile.scss";
 const UserProfile = () => {
     const [edit, setEdit] = useState(false); // State to toggle between view and edit modes
     const [profile, setProfile] = useState({}) // State to hold profile data
-    const [newProfilePicture, setNewProfilePicture] = useState(""); // For storing the new image
-
-    const auth = useAuth(); // Access authentication functions from the AuthProvider context
 
     // Fields to be displayed in the profile
     const fields = [
@@ -50,7 +47,7 @@ const UserProfile = () => {
 
     // Fetch profile data from the backend API
     useEffect(() => {
-        axios.get("http://127.0.0.1:5000/api/profile/" + auth.user, {
+        axios.get("http://127.0.0.1:5000/api/user/profile/", {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -58,50 +55,31 @@ const UserProfile = () => {
         })
             .then(res => setProfile(res.data.profile)) // Set the user state
             .catch(err => console.log(err)); // Log errors if any
-    }, []); // Empty dependency array to ensure it runs only once when the component is mounted
-
-    const encodeImageToBase64 = (file) => {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-
-            reader.onloadend = () => {
-                // The result is the base64 encoded string
-                const base64String = reader.result.split(',')[1]; // Remove data URL prefix
-                resolve(base64String);
-            };
-
-            reader.onerror = (error) => {
-                reject(error);
-            };
-
-            reader.readAsDataURL(file); // This converts the file into a base64 string
-        });
-    };
+    }, []); 
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
             encodeImageToBase64(file)
                 .then((base64String) => {
-                    const image = base64String;
-                    setNewProfilePicture(`data:image/jpg;base64,${image}`); // Temporarily display the new image
-                    setProfile({ ...profile, profile_picture: image }); // Save the file object for upload
+                    setProfile({ ...profile, profile_picture: base64String }); // Save the file object for upload
                 })
-                .catch((error) => {
-                    console.error('Error encoding image:', error);
-                });
+                .catch((error) => console.error("Error encoding image:", error)); // Log errors if any
         }
     };
 
     // On submit, post updated profile data to the backend API
     const handleSubmit = () => {
-        axios.put("http://127.0.0.1:5000/api/profile/" + profile.profile_id, {
-            headers: {
-                "Content-Type": "application/json",
+        axios.put("http://127.0.0.1:5000/api/user/profile/",
+            {
+                profile: profile,
             },
-            withCredentials: true, // Ensure cookies are sent if needed
-            data: profile,
-        })
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                withCredentials: true, // Ensure cookies are sent if needed
+            })
             .then(() => {setEdit(false)}) // Turn edit mode off if no errors
             .catch(err => console.log(err)); // Log errors if any
     }
@@ -111,16 +89,17 @@ const UserProfile = () => {
             <div className="mainPage">
                 {/* Page Header */}
                 <Header />
-                {/* profile Card */}
+
+                {/* Profile Card */}
+                <h1>Your Profile</h1>
                 <Card className="userProfileCard">
-                    <CardHeader title="Your Profile" sx={{width: "fit-content", margin: "0 auto"}}></CardHeader>
                     <CardContent className="content">
                         {!edit ? (
                             /* If edit mode is off, display the data */
                             <>
                                 <div className="profileInfo">
                                     <img
-                                        src={newProfilePicture || `data:image/jpg;base64,${profile.profile_picture}`}
+                                        src={ profile.profile_picture ? `data:image/jpg;base64,${profile.profile_picture}` : "" }
                                         alt="Profile"
                                         className="profile-image"
                                     />
@@ -139,7 +118,7 @@ const UserProfile = () => {
                                 {/* Profile Picture Replace Button */}
                                 <div className="imageUpload">
                                     <img
-                                        src={newProfilePicture || `data:image/jpg;base64,${profile.profile_picture}`}
+                                        src={ profile.profile_picture ? `data:image/jpg;base64,${profile.profile_picture}` : "" }
                                         alt="Profile"
                                         className="profile-image"
                                     />
@@ -148,7 +127,7 @@ const UserProfile = () => {
                                         accept="image/*"
                                         id="profile-picture"
                                         style={{ display: "none" }}
-                                        onChange={handleImageChange}
+                                        onChange={ handleImageChange }
                                     />
                                     <Button
                                         className="btn"
@@ -161,7 +140,7 @@ const UserProfile = () => {
                                 {fields.map((field) => (
                                     <TextField
                                         key={field.name}
-                                        className={`input ${field.name === 'bio' ? 'bio' : 'shortField'}`}
+                                        className={`input ${field.name === "bio" ? "bio" : "shortField"}`}
                                         style={{ display: "flex", ...field.style }}
                                         label={field.label}
                                         name={field.name}

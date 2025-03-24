@@ -1,11 +1,105 @@
 // Built In Modules
 @use "sass:map";
 // Custom Variables
-@use "@/assets/variables.modules" as *;
+@use "@/assets/variables.modules.scss" as *;
 
 .listingPage {
     .mainPage {
         .listing {
+            .main {
+                height: 50vh;
+                margin-top: 2px;
+                padding: 98px 0;
+                box-shadow: 0 2px 4px map.get($theme-colors, mainColor4);
+                background-color: map.get($theme-colors, mainColor1);
+                display: flex;
+                flex-direction: row;
+
+                .info {
+                    margin: auto 0;
+                    padding: 0 2% 0 5%;
+                    flex-basis: 26%;
+
+                    .title {
+                        margin: 0;
+                        font-weight: bold;
+                        font-size: 24px;
+                    }
+
+                    .bid,
+                    .price {
+                        margin-top: 25px;
+                        display: inline-block;
+                        font-weight: normal;
+                        font-size: 20px;
+                    }
+
+                    .placeBidBtn,
+                    .addCartBtn {
+                        height: 35px;
+                        margin: 20px 0 0 20px;
+                        padding: 0 20px;
+                        border-radius: 5px;
+                        box-shadow: 0 2px 4px map.get($theme-colors, mainColor4);
+                        background-image: linear-gradient(to right, map.get($theme-colors, accentColor1), map.get($theme-colors, accentColor2));
+                        display: inline-block;
+                        vertical-align: top;
+                        font-weight: normal;
+                        font-size: 20px;
+                        color: map.get($theme-colors, mainColor1);
+                    }
+
+                    .bidDescription {
+                        width: fit-content;
+                        margin: 20px 0 0 25px;
+                    }
+
+                    .shareButtons {
+                        margin-top: 15px;
+
+                        .shareBtn {
+                            margin-right: 15px;
+                        }
+                    }
+                }
+
+                .image {
+                    display: flex;
+                    flex-basis: 34%;
+                    justify-content: center;
+
+                    img {
+                        width: auto;
+                        height: auto;
+                        max-width: 100%;
+                        max-height: 100%;
+                        object-fit: contain;
+                    }
+                }
+
+                .description {
+                    height: fit-content;
+                    max-height: 100%;
+                    margin: auto 0;
+                    padding: 0 5% 0 2%;
+                    flex-basis: 26%;
+                    overflow-y: scroll;
+
+                    &::-webkit-scrollbar {
+                        display: none;
+                    }
+
+                    .title {
+                        font-size: 22px;
+                        font-weight: bold;
+                    }
+
+                    .list {
+                        padding-left: 18px;
+                    }
+                }
+            }
+
             .lesserInfo {
                 width: 100%;
                 margin-top: 2px;
@@ -13,6 +107,93 @@
                 display: flex;
                 box-shadow: 0 2px 4px map.get($theme-colors, mainColor4);
                 background-color: map.get($theme-colors, mainColor1);
+
+                .specifics {
+                    width: 100%;
+                    display: flex;
+                    flex-basis: 50%;
+                    flex-direction: column;
+                    justify-content: center;
+
+                    table {
+                        width: 100%;
+                        padding: 0 10%;
+
+                        caption {
+                            margin-bottom: 10px;
+                            padding-left: calc(10% + 3px);
+                            text-align: left;
+                            font-size: 20px;
+                            font-weight: bold;
+                            color: map.get($theme-colors, mainColor3);
+                        }
+
+                        tr {
+                            th {
+                                color: map.get($theme-colors, mainColor2);
+                            }
+
+                            td {
+                                color: map.get($theme-colors, mainColor3);
+                            }
+
+                            th,
+                            td {
+                                width: 50%;
+                                height: 30px;
+                                text-align: left;
+                                font-weight: normal;
+                            }
+                        }
+                    }
+                }
+
+                .reviewSection {
+                    width: 100%;
+                    padding-right: 5%;
+                    display: flex;
+                    flex-basis: 45%;
+                    flex-direction: column;
+                    justify-content: center;
+
+                    .review {
+                        margin: 10px 0;
+                        padding: 0 20px;
+                        border-radius: 10px;
+                        box-shadow: 0 2px 4px map.get($theme-colors, mainColor4);
+                        background-color: map.get($theme-colors, mainColor5);
+                        display: flex;
+
+                        .left {
+                            width: 200px;
+                            margin: 20px 0;
+                            display: inline-block;
+
+                            p {
+                                width: 100%;
+                                margin-bottom: 0;
+                            }
+
+                            .date {
+                                font-style: italic;
+                                color: map.get($theme-colors, mainColor2);
+                            }
+                        }
+
+                        .right {
+                            width: calc(100% - 200px);
+                            display: inline-block;
+
+                            h3 {
+                                margin: 20px 0
+                            }
+
+                            p {
+
+                            }
+                        }
+                    }
+                }
             }
         }
     }

@@ -19,12 +19,14 @@ import StaffRoute from "@/Routes/StaffRoute";
 import AdminRoute from "@/Routes/AdminRoute";
 
 // Private Internal Modules
+import Cart from "@/Pages/Private/Cart/Cart";
+import Deliveries from "@/Pages/Private/Deliveries/Deliveries";
 import History from "@/Pages/Private/History/History";
-import ListingDetails from "@/Pages/Private/ListingDetails/ListingDetails";
 import Lists from "@/Pages/Private/Lists/Lists";
+import ManageListing from "@/Pages/Private/ManageListing/ManageListing";
 import Messages from "@/Pages/Private/Messages/Messages";
 import MyBids from "@/Pages/Private/MyBids/MyBids";
-import ProductUpload from "@/Pages/Private/ProductUpload/ProductUpload";
+import PaymentInfo from "@/Pages/Private/PaymentInfo/PaymentInfo";
 import Report from "@/Pages/Private/Report/Report";
 import Review from "@/Pages/Private/Review/Review";
 import Security from "@/Pages/Private/Security/Security";
@@ -52,7 +54,7 @@ import SystemLogs from "@/Pages/Admin/SystemLogs/SystemLogs";
  * PublicRoutes Component
  *
  * This component defines the routing structure for both public and private sections of the application.
- * It utilizes the `AuthProvider` context to manage the user's authentication state. The routing setup includes:
+ * It utilizes the `AuthProvider` context to manage the user"s authentication state. The routing setup includes:
  * - Public routes that are accessible to all users.
  * - Private routes that are protected by the `PrivateRoute` component, allowing access only to authenticated users.
  * - Staff routes that are protected by the `StaffRoute` component, allowing access only to authenticated users with staff privileges.
@@ -78,12 +80,14 @@ const PublicRoutes = () => {
 
                 {/* Protected PublicRoutes for Authenticated Users */}
                 <Route element={<PrivateRoute />}>
+                    <Route path="/user/cart" element={<Cart />} />
+                    <Route path="/user/deliveries" element={<Deliveries />} />
                     <Route path="/user/history" element={<History />} />
-                    <Route path="/user/listings/:id" element={<ListingDetails />} />
                     <Route path="/user/lists" element={<Lists />} />
+                    <Route path="/user/listings/:id" element={<ManageListing />} />
                     <Route path="/user/messages" element={<Messages />} />
                     <Route path="/user/my-bids" element={<MyBids />} />
-                    <Route path="/user/upload-product" element={<ProductUpload />} />
+                    <Route path="/user/payment-info" element={<PaymentInfo />} />
                     <Route path="/user/report" element={<Report />} />
                     <Route path="/user/review" element={<Review />} />
                     <Route path="/user/security" element={<Security />} />

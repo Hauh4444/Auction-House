@@ -1,13 +1,22 @@
-from flask import Blueprint, request, jsonify
-from app.services.purchase_services import PurchaseService
+from flask import Blueprint, request
+from flask_login import login_required
 
-purchase_bp = Blueprint('purchase', __name__)
+from ..services import PurchaseService
 
-@purchase_bp.route('/purchase', methods=['POST'])
-def purchase():
-    data = request.get_json()
-    listing_id = data.get('listing_id')
-    user_id = data.get('user_id')
-    if not listing_id or not user_id:
-        return jsonify({"error": "Listing ID and User ID are required"}), 400
-    return PurchaseService.process_purchase(listing_id, user_id)
+bp = Blueprint("purchase_bp", __name__, url_prefix="/api/purchase")
+
+
+@bp.route('/', methods=['POST'])
+@login_required
+def purchase(db_session=None):
+    """
+    Process a purchase request.
+
+    Args:
+        db_session (optional): A database session for testing or direct queries.
+
+    Returns:
+        JSON response indicating the success or failure of the purchase.
+    """
+    data = request.json
+    return PurchaseService.process_purchase(data=data, db_session=db_session)

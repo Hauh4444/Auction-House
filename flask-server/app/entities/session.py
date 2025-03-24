@@ -10,8 +10,8 @@ class Session:
             role: str,
             token: str,
             expires_at: datetime,
-            session_id: int | None = None,
-            created_at: datetime | None = None
+            created_at: datetime | None = None,
+            session_id: int | None = None
     ):
         self.session_id = session_id
         self.user_id = user_id

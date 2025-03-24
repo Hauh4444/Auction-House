@@ -3,7 +3,7 @@ from flask_login import UserMixin
 from dataclasses import dataclass
 from datetime import datetime
 
-from ..database import get_db
+from ..database.connection import get_db
 
 
 @dataclass
@@ -23,14 +23,14 @@ class User(UserMixin):
     """
     def __init__(
             self,
-            user_id: int,
             username: str,
             password_hash: str,
             email: str,
-            is_active: bool,
             created_at: datetime | None = None,
             updated_at: datetime | None = None,
             last_login: datetime | None = None,
+            is_active: bool | None = None,
+            user_id: int | None = None,
     ):
         self.user_id = user_id
         self.username = username

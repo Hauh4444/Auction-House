@@ -6,7 +6,66 @@
     <title>Auction House and Marketing System</title>
 </head>
 <body>
-<div id="root"></div>
-<script src="/src/index.jsx" type="module"></script>
+    <!-- React Mount Point -->
+    <div id="root"></div>
+
+    <!-- Bidding Section (for real-time updates) -->
+    <div>
+        <h3>Painting</h3>
+        <p id="bid-1">Current Bid: $100</p>
+        <input type="number" id="bid-input-1" placeholder="Enter bid amount">
+        <button onclick="submitBid(1)">Place Bid</button>
+    </div>
+    <div>
+        <h3>Sculpture</h3>
+        <p id="bid-2">Current Bid: $150</p>
+        <input type="number" id="bid-input-2" placeholder="Enter bid amount">
+        <button onclick="submitBid(2)">Place Bid</button>
+    </div>
+
+    <!-- Socket.IO and React -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.min.js"></script>
+    <script>
+        // Establish SocketIO connection
+        var socket = io.connect('http://localhost:5000');  // Adjust URL if needed
+
+        // Listen for 'new_bid' event to update the UI with the new bid
+        socket.on('new_bid', function(data) {
+            var itemId = data.item_id;
+            var newBid = data.new_bid;
+            var bidElement = document.getElementById('bid-' + itemId);
+            bidElement.innerText = 'Current Bid: $' + newBid;
+        });
+
+        // Function to submit a bid
+        function submitBid(itemId) {
+            var bidAmount = document.getElementById('bid-input-' + itemId).value;
+
+            fetch('/api/bids/post_bid', {  // Correct API URL
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    user: "user1",  // Assuming user info is static or fetched dynamically
+                    amount: bidAmount,
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert('Bid placed successfully!');
+                } else {
+                    alert('Error placing bid: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+
+    <!-- React App -->
+    <script src="/src/index.jsx" type="module"></script>
 </body>
 </html>

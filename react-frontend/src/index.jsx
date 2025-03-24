@@ -4,6 +4,7 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 
 // Internal Modules
+import CartProvider from "@/ContextAPI/CartProvider";
 import App from "@/App";
 
 // Stylesheets
@@ -24,7 +25,9 @@ import "./index.scss";
 createRoot(document.getElementById("root")).render(
     <StrictMode>
         <BrowserRouter>
-            <App /> {/* Main App component */}
+            <CartProvider>
+                <App /> {/* Main App component */}
+            </CartProvider>
         </BrowserRouter>
     </StrictMode>
 );

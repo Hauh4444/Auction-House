@@ -1,4 +1,4 @@
-from flask import jsonify, Response
+from flask import jsonify, Response, session
 
 from ..data_mappers import ListingMapper
 
@@ -18,10 +18,13 @@ class ListingService:
         """
         listings = ListingMapper.get_all_listings(args=args, db_session=db_session)
 
-        data = {"message": "Listings found", "listings": listings}
-        response = Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
-        return response
+        if not listings:
+            response_data = {"error": "No listings found"}
+            return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
+        response_data = {"message": "Listings found", "listings": listings}
+        return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
+        
 
     @staticmethod
     def get_listing_by_id(listing_id, db_session=None):
@@ -37,14 +40,13 @@ class ListingService:
         """
         listing = ListingMapper.get_listing_by_id(listing_id=listing_id, db_session=db_session)
 
-        if listing:
-            data = {"message": "Listing found", "listing": listing}
-            response = Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
-            return response
+        if not listing:
+            response_data = {"error": "Listing not found"}
+            return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
-        data = {"error": "Listing not found"}
-        response = Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
-        return response
+        response_data = {"message": "Listing found", "listing": listing}
+        return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
+
 
 
     @staticmethod
@@ -59,17 +61,19 @@ class ListingService:
         Returns:
             A Response object with the success message and newly created listing ID, or a 400 error if the title is missing.
         """
-        if not data.get("title"):
-            data = {"error": "Listing title is required"}
-            response = Response(response=jsonify(data).get_data(), status=400, mimetype='application/json')
-            return response
+        listing_data = data.get("listing", {})
+        listing_data.update(user_id=session.get("user_id"), status="active")
+        print(listing_data.get("buy_now_price"))
 
-        listing_id = ListingMapper.create_listing(data=data, db_session=db_session)
+        listing_id = ListingMapper.create_listing(data=listing_data, db_session=db_session)
 
-        data = {"message": "Listing created", "listing_id": listing_id}
-        response = Response(response=jsonify(data).get_data(), status=201, mimetype='application/json')
-        return response
+        if not listing_id:
+            response_data = {"error": "Error creating listing"}
+            return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
 
+        response_data = {"message": "Listing created", "listing_id": listing_id}
+        return Response(response=jsonify(response_data).get_data(), status=201, mimetype="application/json")
+        
 
     @staticmethod
     def update_listing(listing_id, data, db_session=None):
@@ -86,14 +90,13 @@ class ListingService:
         """
         updated_rows = ListingMapper.update_listing(listing_id=listing_id, data=data, db_session=db_session)
 
-        if updated_rows:
-            data = {"message": "Listing updated", "updated_rows": updated_rows}
-            response = Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
-            return response
+        if not updated_rows:
+            response_data = {"error": "Listing not found"}
+            return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
-        data = {"error": "Listing not found"}
-        response = Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
-        return response
+        response_data = {"message": "Listing updated", "updated_rows": updated_rows}
+        return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
+
 
 
     @staticmethod
@@ -110,11 +113,10 @@ class ListingService:
         """
         deleted_rows = ListingMapper.delete_listing(listing_id=listing_id, db_session=db_session)
 
-        if deleted_rows:
-            data = {"message": "Listing deleted", "deleted_rows": deleted_rows}
-            response = Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
-            return response
+        if not deleted_rows:
+            response_data = {"message": "Listing not found"}
+            return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
-        data = {"message": "Listing not found"}
-        response = Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
-        return response
+        response_data = {"message": "Listing deleted", "deleted_rows": deleted_rows}
+        return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
+

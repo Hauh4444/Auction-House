@@ -1,29 +1,12 @@
-from ..database import get_db
+from ..database.connection import get_db
 from ..entities import Profile
 
 
 class ProfileMapper:
-    """Handles database operations related to profiles."""
-    @staticmethod
-    def get_all_profiles(db_session=None):
-        """Retrieve all profiles from the database.
-
-        Args:
-            db_session: Optional database session to be used in tests.
-
-        Returns:
-            list: A list of profile dictionaries.
-        """
-        db = db_session or get_db()
-        cursor = db.cursor()
-        cursor.execute("SELECT * FROM profiles")
-        profiles = cursor.fetchall()
-        return [Profile(**profile).to_dict() for profile in profiles]
-
-
     @staticmethod
     def get_profile(user_id, db_session=None):
-        """Retrieve a profile by its associated user ID.
+        """
+        Retrieve a profile by its associated user ID.
 
         Args:
             user_id (int): The ID of the user to retrieve.
@@ -41,7 +24,8 @@ class ProfileMapper:
 
     @staticmethod
     def create_profile(data, db_session=None):
-        """Create a new profile in the database.
+        """
+        Create a new profile in the database.
 
         Args:
             data (dict): Dictionary containing profile details.
@@ -54,7 +38,8 @@ class ProfileMapper:
         cursor = db.cursor()
         statement = """
             INSERT INTO profiles 
-            (user_id, first_name, last_name, date_of_birth, phone_number, address, city, state, country, profile_picture, bio, social_links, created_at, updated_at) 
+            (user_id, first_name, last_name, date_of_birth, phone_number, address, city, 
+            state, country, profile_picture, bio, social_links, created_at, updated_at) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """
         cursor.execute(statement, tuple(Profile(**data).to_dict().values())[1:])
@@ -63,11 +48,12 @@ class ProfileMapper:
 
 
     @staticmethod
-    def update_profile(profile_id, data, db_session=None):
-        """Update an existing profile.
+    def update_profile(user_id, data, db_session=None):
+        """
+        Update an existing profile.
 
         Args:
-            profile_id (int): The ID of the profile to update.
+            user_id (int): The ID of the user whos profile to update.
             data (dict): Dictionary of fields to update.
             db_session: Optional database session to be used in tests.
 
@@ -78,14 +64,14 @@ class ProfileMapper:
         cursor = db.cursor()
 
         # Filter out the keys you don't want to update
-        filtered_data = {key: value for key, value in data.items() if key not in ["profile_id", "created_at"]}
+        filtered_data = {key: value for key, value in data.items() if key not in ["user_id", "created_at"]}
 
         # Build the condition placeholders (SET part)
         conditions = [f"{key} = ?" for key in filtered_data]
-        statement = "UPDATE profiles SET " + ", ".join(conditions) + " WHERE profile_id = ?"
+        statement = "UPDATE profiles SET " + ", ".join(conditions) + " WHERE user_id = ?"
 
-        # Create the values list (filtered data values + profile_id for WHERE clause)
-        values = list(filtered_data.values()) + [profile_id]
+        # Create the values list (filtered data values + user_id for WHERE clause)
+        values = list(filtered_data.values()) + [user_id]
 
         # Execute the statement
         cursor.execute(statement, values)
@@ -97,7 +83,8 @@ class ProfileMapper:
 
     @staticmethod
     def delete_profile(user_id, db_session=None):
-        """Delete a profile by its ID.
+        """
+        Delete a profile by its ID.
 
         Args:
             user_id (int): The ID of the user associated with the profile to delete.

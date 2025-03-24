@@ -40,7 +40,7 @@ class Listing:
             description: str,
             item_specifics: str,
             listing_type: str, # "auction", "buy_now"
-            buy_now_price: float,
+            buy_now_price: int | float,
             status: str, # "active", "sold", "cancelled", "ended", "draft"
             image_encoded: str,
             starting_price: float | None = None,
@@ -49,9 +49,9 @@ class Listing:
             auction_start: datetime | None = None,
             auction_end: datetime | None = None,
             bids: int | None = None,
-            purchases: int | None = None,
+            purchases: int | None = 0,
             average_review: float | None = None,
-            total_reviews: int | None = None,
+            total_reviews: int | None = 0,
             created_at: datetime | None = None,
             updated_at: datetime | None = None,
             listing_id: int | None = None

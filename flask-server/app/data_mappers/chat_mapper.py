@@ -1,12 +1,12 @@
-from ..database import get_db
+from ..database.connection import get_db
 from ..entities import Chat
 
 
 class ChatMapper:
-    """Handles database operations related to chats."""
     @staticmethod
     def get_all_chats(db_session=None):
-        """Retrieve all chats from the database.
+        """
+        Retrieve all chats from the database.
 
         Args:
             db_session: Optional database session to be used in tests.
@@ -23,7 +23,8 @@ class ChatMapper:
 
     @staticmethod
     def get_chat_by_id(chat_id, db_session=None):
-        """Retrieve a chat by its ID.
+        """
+        Retrieve a chat by its ID.
 
         Args:
             chat_id (int): The ID of the chat to retrieve.
@@ -41,7 +42,8 @@ class ChatMapper:
 
     @staticmethod
     def create_chat(data, db_session=None):
-        """Create a new chat in the database.
+        """
+        Create a new chat in the database.
 
         Args:
             data (dict): Dictionary containing chat details.
@@ -63,7 +65,8 @@ class ChatMapper:
 
     @staticmethod
     def delete_chat(chat_id, db_session=None):
-        """Delete a chat by its ID.
+        """
+        Delete a chat by its ID.
 
         Args:
             chat_id (int): The ID of the chat to delete.

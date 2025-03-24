@@ -4,13 +4,14 @@ from flask_login import login_required
 from ..services import ListingService
 
 # Blueprint for listing-related routes
-bp = Blueprint('listings_bp', __name__, url_prefix="/api/listings")
+bp = Blueprint("listings_bp", __name__, url_prefix="/api/listings")
 
 
-# GET /api/listings
-@bp.route('/', methods=['GET'])
+# GET /api/listings/
+@bp.route("/", methods=["GET"])
 def get_all_listings(db_session=None):
-    """Retrieve all listings with optional filters.
+    """
+    Retrieve all listings with optional filters.
 
     Args:
         db_session: Optional database session to be used in tests.
@@ -22,10 +23,11 @@ def get_all_listings(db_session=None):
     return ListingService.get_all_listings(args=args, db_session=db_session)
 
 
-# GET /api/listings/{id}
-@bp.route('/<int:listing_id>', methods=['GET'])
+# GET /api/listings/{id}/
+@bp.route("/<int:listing_id>/", methods=["GET"])
 def get_listing(listing_id, db_session=None):
-    """Retrieve a single listing by its ID.
+    """
+    Retrieve a single listing by its ID.
 
     Args:
         listing_id (int): The ID of the listing to retrieve.
@@ -37,11 +39,12 @@ def get_listing(listing_id, db_session=None):
     return ListingService.get_listing_by_id(listing_id=listing_id, db_session=db_session)
 
 
-# POST /api/listings
-@bp.route('/', methods=['POST'])
+# POST /api/listings/
+@bp.route("/", methods=["POST"])
 @login_required
 def create_listing(db_session=None):
-    """Create a new listing.
+    """
+    Create a new listing.
 
     Args:
         db_session: Optional database session to be used in tests.
@@ -56,11 +59,12 @@ def create_listing(db_session=None):
     return ListingService.create_listing(data=data, db_session=db_session)
 
 
-# PUT /api/listings/{id}
-@bp.route('/<int:listing_id>', methods=['PUT'])
+# PUT /api/listings/{id}/
+@bp.route("/<int:listing_id>/", methods=["PUT"])
 @login_required
 def update_listing(listing_id, db_session=None):
-    """Update an existing listing by its ID.
+    """
+    Update an existing listing by its ID.
 
     Args:
         listing_id (int): The ID of the listing to update.
@@ -76,11 +80,12 @@ def update_listing(listing_id, db_session=None):
     return ListingService.update_listing(listing_id=listing_id, data=data, db_session=db_session)
 
 
-# DELETE /api/listings/{id}
-@bp.route('/<int:listing_id>', methods=['DELETE'])
+# DELETE /api/listings/{id}/
+@bp.route("/<int:listing_id>/", methods=["DELETE"])
 @login_required
 def deleteListing(listing_id, db_session=None):
-    """Delete a listing by its ID.
+    """
+    Delete a listing by its ID.
 
     Args:
         listing_id (int): The ID of the listing to delete.

@@ -9,12 +9,11 @@ class Delivery:
 
     Attributes:
         delivery_id (int, optional): The unique identifier for the delivery.
-        order_id (int): The order associated with this delivery.
+        order_item_id (int): The order item associated with this delivery.
         user_id (int): The user who placed the order.
         address (str): The delivery address.
         city (str): The city of delivery.
         state (str): The state of delivery.
-        postal_code (str): The postal code of the delivery address.
         country (str): The country of delivery.
         delivery_status (str): The current status of the delivery.
         tracking_number (str, optional): The tracking number for the delivery.
@@ -26,12 +25,11 @@ class Delivery:
     """
     def __init__(
             self,
-            order_id: int,
+            order_item_id: int,
             user_id: int,
             address: str,
             city: str,
             state: str,
-            postal_code: str,
             country: str,
             delivery_status: str, # "pending", "processing", "shipped", "in_transit", "out_for_delivery", "delivered", "cancelled", "returned", "failed"
             tracking_number: str | None = None,
@@ -45,8 +43,8 @@ class Delivery:
         self.VALID_DELIVERY_STATUSES = {"pending", "processing", "shipped", "in_transit", "out_for_delivery", "delivered", "cancelled", "returned", "failed"}
 
         # Type checks for required attributes
-        if not isinstance(order_id, int):
-            raise TypeError(f"order_id must be an int, got {type(order_id).__name__}")
+        if not isinstance(order_item_id, int):
+            raise TypeError(f"order_id must be an int, got {type(order_item_id).__name__}")
         if not isinstance(user_id, int):
             raise TypeError(f"user_id must be an int, got {type(user_id).__name__}")
         if not isinstance(address, str):
@@ -55,8 +53,6 @@ class Delivery:
             raise TypeError(f"city must be a str, got {type(city).__name__}")
         if not isinstance(state, str):
             raise TypeError(f"state must be a str, got {type(state).__name__}")
-        if not isinstance(postal_code, str):
-            raise TypeError(f"postal_code must be a str, got {type(postal_code).__name__}")
         if not isinstance(country, str):
             raise TypeError(f"country must be a str, got {type(country).__name__}")
         if not isinstance(delivery_status, str):
@@ -81,12 +77,11 @@ class Delivery:
             raise ValueError(f"delivery_status must be one of {self.VALID_DELIVERY_STATUSES}, got '{delivery_status}' instead")
 
         self.delivery_id = delivery_id
-        self.order_id = order_id
+        self.order_item_id = order_item_id
         self.user_id = user_id
         self.address = address
         self.city = city
         self.state = state
-        self.postal_code = postal_code
         self.country = country
         self.delivery_status = delivery_status
         self.tracking_number = tracking_number
@@ -100,12 +95,11 @@ class Delivery:
         """Converts the delivery object to a dictionary representation."""
         return {
             "delivery_id": self.delivery_id,
-            "order_id": self.order_id,
+            "order_item_id": self.order_item_id,
             "user_id": self.user_id,
             "address": self.address,
             "city": self.city,
             "state": self.state,
-            "postal_code": self.postal_code,
             "country": self.country,
             "delivery_status": self.delivery_status,
             "tracking_number": self.tracking_number,

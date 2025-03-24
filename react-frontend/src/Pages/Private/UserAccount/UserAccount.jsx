@@ -18,30 +18,32 @@ import "./UserAccount.scss";
  *
  * Features:
  * - Displays a persistent header (`Header`).
- * - Shows the user's account navigation.
+ * - Shows the user"s account navigation.
  * - Includes a right-side navigation menu (`RightNav`) for additional options.
  *
  * @returns {JSX.Element} The rendered UserAccount page component.
  */
 const UserAccount = () => {
-    const navigate = useNavigate();
+    const navigate = useNavigate(); // Navigate hook for routing
 
     const cardInfo = {
-        "orders": ["Your History", "View and manage your orders"],
+        "history?nav=orders": ["Your History", "View and manage your history"],
         "security": ["Login & Security", "Edit login information: username, password, etc"],
         "profile": ["Your Profile", "Edit profile information: name, address, etc "],
-        "payment-info": ["Your Payments", "View transactions, manage payment methods and settings"],
+        "payment-info?nav=transactions": ["Your Payments", "View transactions, manage payment methods and settings"],
         "lists": ["Your Lists", "View, modify, and share your lists, or create new ones"],
-        "seller-profile": ["Seller Profile", "View and manage your seller profile"],
+        "seller-profile?nav=manage": ["Seller Profile", "View and manage your seller profile"],
         "report": ["Customer Service", "Browse self service options or speak with a staff member"],
-        "messages": ["Your Messages", "View or respond to messages from other Sellers and Buyers"]
+        "messages": ["Your Messages", "View or respond to messages from other Sellers and Buyers"],
+        "deliveries": ["Your Deliveries", "View and track your deliveries with status updates."],
     };
 
     return (
-        <div className="userAccountPage page">
+        <div className="userAccountPage page" data-testid="userAccountPage">
             <div className="mainPage">
                 {/* Page Header */}
                 <Header />
+
                 <h1>Your Account</h1>
                 {/* Account Navigation Cards */}
                 <div className="accountNav">
