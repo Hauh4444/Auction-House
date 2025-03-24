@@ -1,8 +1,11 @@
 from mysql.connector import Error
-import sqlite3
+from dotenv import load_dotenv
+import os, pymysql
 
 from ..utils.mysql import mysql
 from .backup import recover_db
+
+load_dotenv()
 
 
 def get_db():
@@ -14,8 +17,12 @@ def get_db():
         sqlite3.Connection: A database connection object if successful.
     """
     try:
-        conn = mysql.connect()
-        conn.cursor().execute("USE auctionhouse")  # Try selecting the database
+        conn = pymysql.connect(
+            host=os.getenv("DB_HOST"),
+            user=os.getenv("DB_USER"),
+            password=os.getenv("DB_PASSWORD"),
+            database=os.getenv("DB")
+        )
         return conn
 
     except Error as e:

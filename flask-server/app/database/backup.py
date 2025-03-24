@@ -1,6 +1,9 @@
-import mysql.connector
-import os
 from datetime import datetime
+from dotenv import load_dotenv
+import os, pymysql
+from ..utils.mysql import mysql
+
+load_dotenv()
 
 BACKUP_DIRECTORY = os.path.join(os.getcwd(), "database_backups")
 
@@ -16,11 +19,11 @@ def backup_db():
         backup_file = f"auctionhouse_backup_{today}.sql"
         backup_path = os.path.join(BACKUP_DIRECTORY, backup_file)
 
-        conn = mysql.connector.connect(
-            host="localhost",
-            user="Preston",
-            password="",
-            database="auctionhouse"
+        conn = pymysql.connect(
+            host=os.getenv("DB_HOST"),
+            user=os.getenv("DB_USER"),
+            password=os.getenv("DB_PASSWORD"),
+            database=os.getenv("DB")
         )
 
         cursor = conn.cursor()
