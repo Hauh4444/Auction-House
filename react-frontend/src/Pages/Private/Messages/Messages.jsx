@@ -1,6 +1,7 @@
 // External Libraries
 import { useState, useEffect } from 'react';
 import axios from "axios";
+import { Button } from "@mui/material";
 
 // Internal Modules
 import Header from "@/Components/Header/Header.jsx";
@@ -12,6 +13,7 @@ import './Messages.scss';
 const Messages = () => {
     const [chats, setChats] = useState([]);
     const [messages, setMessages] = useState([]);
+    const [currentChat, setCurrentChat] = useState(null);
 
     useEffect(() => {
         axios.get("http://127.0.0.1:5000/api/user/chats", {
@@ -25,7 +27,7 @@ const Messages = () => {
     }, []);
 
     useEffect(() => {
-        axios.get("http://127.0.0.1:5000/api/user/messages", {
+        axios.get("http://127.0.0.1:5000/api/user/messages/" + currentChat.chat_id, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -33,7 +35,7 @@ const Messages = () => {
         })
             .then(res => setMessages(res.data.messages)) // Set the user state
             .catch(err => console.log(err)); // Log errors if any
-    }, []);
+    }, [currentChat]);
 
     return (
         <div className="messagesPage page">
@@ -43,9 +45,9 @@ const Messages = () => {
 
                 <div className="chats">
                     {chats.map((chat, index) => (
-                        <div className="chat" key={index}>
+                        <Button className="chat" key={index} onClick={() => setCurrentChat(chat)}>
                             {chat.other_user}
-                        </div>
+                        </Button>
                     ))}
                 </div>
                 <div className="messages">
