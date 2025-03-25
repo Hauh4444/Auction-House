@@ -138,8 +138,13 @@ class AuthService:
             response_data = {"error": "Profile not found"}
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
+        user = UserMapper.get_user(user_id=session.get("user_id"), db_session=db_session)
+        if not user:
+            response_data = {"error": "User not found"}
+            return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
+
         # Use EmailService to send the email
-        response_code = EmailService.send_email(subject, profile.get("email"), body)
+        response_code = EmailService.send_email(subject, user.get("email"), body)
         if response_code != 202:
             response_data = {"error": "HTTP error sending email"}
             return Response(response=jsonify(response_data).get_data(), status=response_code, mimetype="application/json")

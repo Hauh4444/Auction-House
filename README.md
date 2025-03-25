@@ -2,22 +2,35 @@
 
 ## TODO
 
-### React Frontend
-
-1. Password Reset Functionality 
-2. Live Auction UI 
-3. View Bids UI 
-4. Support Ticket Functionality 
-5. Chat UI 
-6. Customer Service Management
-
-### Flask Server
-
-1. Password Recovery with Email Connection
-2. Bidding Flow
-3. Support Ticket API
-4. Chat API
-5. Staff Control
+1. Messages Page
+   1. Need adding friends functionality
+      1. Simple add friend button not gonna fuck around with verification
+      2. Setup routes and db table
+   2. Search friends to create chat
+   3. Get chats and chat messages
+      1. Backend needs to set viewing_user and other_user via checking session user against user1 and user2 ids
+   4. Search chats by username or profile name
+2. Support page for users
+   1. General support UI
+   2. Create support ticket UI
+   3. Backend needs to assign support tickets upon creation
+   4. Messaging UI for tickets
+3. Ticket UI for staff
+   1. Messaging UI for tickets
+4. User info access UI for staff
+   1. UI to access user information
+   2. UI to access logs
+      1. Backend needs to create logs
+   3. Verify backend authentication checks
+5. Live auction UI
+   1. Page for bidding UI
+   2. Proxy bidding
+   3. Live updating from the backend
+6. View current bids page
+7. Email notifications
+   1. Notification settings integrated into UI
+   2. Email sending on the backend doesn't work right now because fuck you
+8. MySQL doesn't have foreign keys setup so do it yourself fucker
 
 ## Setup
 1. Ensure you have [Node.js](https://nodejs.org/en/download) installed on your machine.
