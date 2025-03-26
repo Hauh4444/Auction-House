@@ -29,3 +29,9 @@ class Config:
 
     # Initialize Flask-Notifications
     notifications = Notifications(app)
+
+    # Register the email_login notification
+    @notifications.register('email_login')
+    def email_login_notification(notification):
+        user = notification.user  # Access user details from the notification
+        UserLoginService.send_login_notification(user.email)  # Call the method to send the login email
