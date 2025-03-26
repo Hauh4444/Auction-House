@@ -1,7 +1,7 @@
 // External Libraries
 import { useState, useEffect } from 'react';
 import axios from "axios";
-import { Button } from "@mui/material";
+import {Button, TextField} from "@mui/material";
 
 // Internal Modules
 import Header from "@/Components/Header/Header.jsx";
@@ -12,8 +12,9 @@ import './Messages.scss';
 
 const Messages = () => {
     const [chats, setChats] = useState([]);
-    const [messages, setMessages] = useState([]);
     const [currentChat, setCurrentChat] = useState(null);
+    const [messages, setMessages] = useState([]);
+    const [newMessage, setNewMessage] = useState('');
 
     useEffect(() => {
         axios.get("http://127.0.0.1:5000/api/user/chats", {
@@ -22,20 +23,50 @@ const Messages = () => {
             },
             withCredentials: true, // Ensures cookies are sent with requests
         })
-            .then(res => setChats(res.data.chats)) // Set the user state
+            .then((res) => {
+                setChats(res.data.chats);
+                setCurrentChat(res.data.chats[0])
+            }) // Set the user state
             .catch(err => console.log(err)); // Log errors if any
     }, []);
 
     useEffect(() => {
+        if (!currentChat) return;
+
         axios.get("http://127.0.0.1:5000/api/user/messages/" + currentChat.chat_id, {
             headers: {
                 "Content-Type": "application/json",
             },
             withCredentials: true, // Ensures cookies are sent with requests
         })
-            .then(res => setMessages(res.data.messages)) // Set the user state
+            .then((res) => setMessages(res.data.messages)) // Set the user state
             .catch(err => console.log(err)); // Log errors if any
     }, [currentChat]);
+
+    const handleCreateChat = () => {
+
+    }
+
+    const handleSendMessage = () => {
+        if (!newMessage.trim()) return;
+        axios.post("http://127.0.0.1:5000/api/user/messages",
+            {
+                text: newMessage
+            },
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                withCredentials: true,
+            })
+            .then((res) => {
+                setMessages([...messages, res.data]);
+                if (res.data.chats.length > 0) {
+                    setCurrentChat(res.data.chats[0]);
+                }
+            })
+            .catch(error => console.error('Error sending message:', error));
+    };
 
     return (
         <div className="messagesPage page">
@@ -44,19 +75,35 @@ const Messages = () => {
                 <Header />
 
                 <div className="chats">
-                    {chats.map((chat, index) => (
+                    {chats && chats.map((chat, index) => (
                         <Button className="chat" key={index} onClick={() => setCurrentChat(chat)}>
                             {chat.other_user}
                         </Button>
                     ))}
                 </div>
+                <div>
+                    <Button className="createChat" onClick={() => handleCreateChat()}>
+                        New Chat
+                    </Button>
+                </div>
                 <div className="messages">
-                    {messages.map((message, index) => (
+                    {messages && messages.map((message, index) => (
                         <div className="message" key={index}>
                             {/* needs to have check if sender_id is viewing user or other user */}
                             {message.message}
                         </div>
                     ))}
+                </div>
+                <div>
+                    <TextField
+                        className="newMessage"
+                        value={newMessage}
+                        label="Message"
+                        type="text"
+                        onChange={(e) => setNewMessage(e.target.value)}
+                        variant="outlined"
+                    />
+                    <button onClick={() => handleSendMessage()}>Send</button>
                 </div>
             </div>
             {/* Right-side Navigation */}

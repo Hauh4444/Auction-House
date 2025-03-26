@@ -26,7 +26,7 @@ const PaymentInfo = () => {
             },
             withCredentials: true,
         })
-            .then(res => setTransactions(res.data.transactions))
+            .then((res) => setTransactions(res.data.transactions))
             .catch(err => console.log(err)); // Log errors if any
     }, [location.search]);
 

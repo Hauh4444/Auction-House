@@ -47,7 +47,7 @@ const Popup = () => {
                 "Content-Type": "application/json",
             }
         })
-            .then(res => setCategories(res.data.categories)) // Update state with fetched data
+            .then((res) => setCategories(res.data.categories)) // Update state with fetched data
             .catch(err => console.log(err)); // Log errors if any
     }, []); 
 

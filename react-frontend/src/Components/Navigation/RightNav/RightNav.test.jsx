@@ -35,7 +35,7 @@ describe("RightNav Component", () => {
         expect(screen.queryByTestId("accountBtn")).toBeInTheDocument();
         expect(screen.queryByTestId("flagBtn")).toBeInTheDocument();
         expect(screen.queryByTestId("cartBtn")).toBeInTheDocument();
-        expect(screen.queryByTestId("userBtn")).toBeInTheDocument();
+        expect(screen.queryByTestId("friendBtn")).toBeInTheDocument();
         expect(screen.queryByTestId("truckBtn")).toBeInTheDocument();
     });
 

@@ -48,7 +48,7 @@ const RightNav = () => {
                     <RiAccountCircle2Fill className="fill" /> {/* Filled account icon */}
                     <RiAccountCircle2Line className="outline" /> {/* Outlined account icon */}
                 </Button>
-                <Button className="btn" data-testid="flagBtn" style={{marginBottom: "15px"}}> {/* Button for flag */}
+                <Button className="btn" data-testid="flagBtn" style={{marginBottom: "15px"}} onClick={() => navigate("/support")}> {/* Button for flag */}
                     <IoFlag className="fill" /> {/* Filled flag icon */}
                     <IoFlagOutline className="outline" /> {/* Outlined flag icon */}
                 </Button>
@@ -56,7 +56,7 @@ const RightNav = () => {
                     <IoCart className="fill" /> {/* Filled cart icon */}
                     <IoCartOutline className="outline" /> {/* Outlined cart icon */}
                 </Button>
-                <Button className="btn" data-testid="userBtn" style={{marginBottom: "15px"}}> {/* Button for user group */}
+                <Button className="btn" data-testid="friendBtn" style={{marginBottom: "15px"}} onClick={() => navigate("/user/messages")}> {/* Button for user group */}
                     <HiUserGroup className="fill" /> {/* Filled user group icon */}
                     <HiOutlineUserGroup className="outline" /> {/* Outlined user group icon */}
                 </Button>

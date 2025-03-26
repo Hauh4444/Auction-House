@@ -2,20 +2,20 @@
 
 ## TODO
 
-1. Add friend button
-2. Friends backend setup
-3. Create chat functionality 
-4. Backend needs to set viewing_user and other_user via checking session user against user1 and user2 ids
-5. Search chats by username or profile name
-6. General support UI for users
-7. Create support ticket UI
-8. Backend needs to assign support tickets upon creation
-9. Messaging UI for tickets
-10. UI to access user information 
-11. UI to access logs 
-12. Backend needs to create logs
-13. Verify backend authentication checks for staff
-14. MySQL foreign keys
+1. View profile page
+2. Friend functionality
+3. Messaging Page - Started (Needs styling)
+4. Staff UI
+   1. Access user info
+   2. Access logs
+5. Other
+   1. Backend needs to set viewing_user and other_user via checking session user against user1 and user2 ids 
+   2. Backend needs to assign support tickets upon creation 
+6. Minor
+   1. Verify backend authentication for staff 
+   2. MySQL foreign keys 
+   3. Search chats
+   4. Friends page in user account
 
 ## Setup
 1. Ensure you have [Node.js](https://nodejs.org/en/download) installed on your machine.

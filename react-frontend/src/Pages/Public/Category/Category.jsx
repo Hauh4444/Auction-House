@@ -61,7 +61,7 @@ const Category = () => {
                 "Content-Type": "application/json",
             },
         })
-            .then(res => setCategory(res.data.category)) // Update state with fetched data
+            .then((res) => setCategory(res.data.category)) // Update state with fetched data
             .catch(err => console.log(err)); // Log errors if any
     }, [location.search]);
 
@@ -79,7 +79,7 @@ const Category = () => {
                 range: 8, // Limit to 8 items
             }
         })
-            .then(res => setBestSellers(res.data.listings)) // Update state with fetched data
+            .then((res) => setBestSellers(res.data.listings)) // Update state with fetched data
             .catch(() => setBestSellers([]));
     }, [location.search])
 
@@ -97,7 +97,7 @@ const Category = () => {
                 range: 8, // Number of listings to fetch
             }
         })
-            .then(res => setNewListings(res.data.listings)) // Update state with fetched data
+            .then((res) => setNewListings(res.data.listings)) // Update state with fetched data
             .catch(() => setNewListings([]));
     }, [location.search]);
 
@@ -119,7 +119,7 @@ const Category = () => {
                 range: filters.range, // Number of listings to fetch
             }
         })
-            .then(res => setListings(res.data.listings)) // Update state with fetched data
+            .then((res) => setListings(res.data.listings)) // Update state with fetched data
             .catch(() => setListings([]));
     }, [location.search]); // Call on update of URL filters
 

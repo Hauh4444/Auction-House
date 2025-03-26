@@ -22,7 +22,7 @@ const Security = () => {
             },
             withCredentials: true, // Ensures cookies are sent with requests
         })
-            .then(res => setUser(res.data.user)) // Set the user state
+            .then((res) => setUser(res.data.user)) // Set the user state
             .catch(err => console.log(err)); // Log errors if any
     }, []);
 

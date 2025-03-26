@@ -11,6 +11,7 @@ import Home from "@/Pages/Public/Home/Home";
 import Listing from "@/Pages/Public/Listing/Listing";
 import PageNotFound from "@/Pages/Public/PageNotFound/PageNotFound";
 import Search from "@/Pages/Public/Search/Search";
+import Support from "@/Pages/Public/Support/Support";
 
 // Internal Authentication Modules
 import AuthProvider from "@/ContextAPI/AuthProvider";
@@ -67,7 +68,7 @@ const PublicRoutes = () => {
     return (
         <AuthProvider>
             <Routes>
-                {/* Public PublicRoutes */}
+                {/* Public Routes */}
                 <Route path="/about" element={<About />} />
                 <Route path="/auth-page" element={<AuthPage />} />
                 <Route path="/browse" element={<Browse />} />
@@ -77,8 +78,9 @@ const PublicRoutes = () => {
                 <Route path="/listing" element={<Listing />} />
                 <Route path="*" element={<PageNotFound />} />
                 <Route path="/search" element={<Search />} />
+                <Route path="/support" element={<Support />} />
 
-                {/* Protected PublicRoutes for Authenticated Users */}
+                {/* Protected Routes for Authenticated Users */}
                 <Route element={<PrivateRoute />}>
                     <Route path="/user/cart" element={<Cart />} />
                     <Route path="/user/deliveries" element={<Deliveries />} />
@@ -96,7 +98,7 @@ const PublicRoutes = () => {
                     <Route path="/user/profile" element={<UserProfile />} />
                 </Route>
 
-                {/* Protected PublicRoutes for Staff Users */}
+                {/* Protected Routes for Staff Users */}
                 <Route element={<StaffRoute />}>
                     <Route path="/staff/messages" element={<CustomerInquiries />} />
                     <Route path="/staff/reports" element={<ListingReports />} />
@@ -106,7 +108,7 @@ const PublicRoutes = () => {
                     <Route path="/staff/profile" element={<StaffProfile />} />
                 </Route>
 
-                {/* Protected PublicRoutes for Admin Users */}
+                {/* Protected Routes for Admin Users */}
                 <Route element={<AdminRoute />}>
                     <Route path="/admin/account" element={<AdminAccount />} />
                     <Route path="/admin/dashboard" element={<AdminDashboard />} />
