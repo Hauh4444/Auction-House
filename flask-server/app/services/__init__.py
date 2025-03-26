@@ -1,4 +1,5 @@
 import pkgutil, importlib
+from flask_socketio import socketio
 
 
 # Dynamically import all classes from modules in the services package
