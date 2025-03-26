@@ -1,7 +1,56 @@
 from flask import jsonify, Response, session
 
 from ..data_mappers import UserMapper, ProfileMapper
+from flask_mail import Message
+from flask import current_app as app
+from flask_login import login_user
+from flask import session
+from flask_notifications import Notification
+from ..data_mappers.user_login_mapper import UserMapper
+from ..services.session_services import SessionService
 
+class UserLoginService:
+    @staticmethod
+    def login_user(username, password):
+        """
+        Logs in a user by verifying their username and password.
+
+        Args:
+            username: The username of the user.
+            password: The password provided by the user.
+
+        Returns:
+            A JSON response containing a success message and the user details if login is successful,
+            or a 401 error if the username or password is incorrect.
+        """
+        user = UserMapper.get_user_by_username(username)
+        if user and user.password_hash == UserLoginService.hash_password(password):
+            UserMapper.update_last_login(user.user_id)  # Update the last login timestamp
+            login_user(user, remember=True)  # Log User in using flask-login
+            session["user_id"] = user.user_id  # Store user ID in session
+            SessionService.create_session()
+
+            # Send a login notification email
+            UserLoginService.send_login_notification(user.email)
+
+            # Send a login notification via Flask-Notifications
+            notification = Notification('email_login', user=user)
+            notifications.send(notification)
+
+            return jsonify({"message": "Login successful", "user": user}), 200
+        return jsonify({"error": "Invalid username or password"}), 401
+
+    @staticmethod
+    def send_login_notification(user_email):
+        """Send a login notification email to the user."""
+        msg = Message("Login Notification",
+                      sender="your-email@gmail.com",  # Replace with your email
+                      recipients=[user_email])
+        msg.body = "You have successfully logged in to your account."
+
+        # Send the email
+        with app.app_context():
+            mail.send(msg)
 
 class UserService:
     @staticmethod
