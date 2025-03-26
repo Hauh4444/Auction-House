@@ -22,7 +22,12 @@ def get_profile(db_session=None):
     """
     data = None
     if session.get("role") in ["staff", "admin"]:
-        data = request.json
+        user_id = request.json.get("user_id")
+        if not user_id:
+            return {"error": "User ID is required for staff"}, 400
+        data["user_id"] = user_id
+    else:
+        data["user_id"] = session.get("user_id")
 
     return ProfileService.get_profile(data=data, db_session=db_session)
 

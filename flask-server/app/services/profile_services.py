@@ -16,10 +16,19 @@ class ProfileService:
         Returns:
             A Response object with the profile data if found, otherwise a 404 error with a message.
         """
-        if session.get("role") in ["staff", "admin"]:
-            profile = ProfileMapper.get_profile(user_id=data.get("user_id"), db_session=db_session)
+        user_id = data.get("user_id")
+        current_user_id = session.get("user_id")
+        user_role = session.get("role")
+        
+        if user_role in ["staff", "admin"]:
+            if not user_id:
+                return Response(response=jsonify({"error": "User ID is required for staff access"}).get_data(), status=400, mimetype="application/json")
         else:
-            profile = ProfileMapper.get_profile(user_id=session.get("user_id"), db_session=db_session)
+            if user_id and user_id != current_user_id:
+                return Response(response=jsonify({"error": "Unauthorized access"}).get_data(), status=403, mimetype="application/json")
+            user_id = current_user_id
+
+        profile = ProfileMapper.get_profile(user_id=user_id, db_session=db_session)
 
         if not profile:
             response_data = {"error": "Profile not found"}
