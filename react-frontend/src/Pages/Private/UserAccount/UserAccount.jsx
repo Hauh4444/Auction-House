@@ -50,7 +50,7 @@ const UserAccount = () => {
                     {/* Map Dictionary to Cards */}
                     {Object.keys(cardInfo).map((key, index) => (
                         <Button
-                            className={`navBtn ${index % 3 === 0 ? "first" : ""}`}
+                            className={"navBtn"}
                             onClick={() => {navigate("/user/" + key)}}
                             key={index}
                         >

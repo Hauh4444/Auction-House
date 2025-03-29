@@ -14,6 +14,7 @@ class User(UserMixin):
 
     Attributes:
         user_id (int): The unique identifier for the user.
+        role (str): The role of the user.
         username (str): The username of the user.
         password_hash (str): The hashed password.
         email (str): The email address of the user.
@@ -24,6 +25,7 @@ class User(UserMixin):
     """
     def __init__(
             self,
+            role: str,
             username: str,
             password_hash: str,
             email: str,
@@ -34,6 +36,7 @@ class User(UserMixin):
             user_id: int | None = None,
     ):
         self.user_id = user_id
+        self.role = role
         self.username = username
         self.password_hash = password_hash
         self.email = email
@@ -46,6 +49,7 @@ class User(UserMixin):
         """Converts the user object to a dictionary representation."""
         return {
             "user_id": self.user_id,
+            "role": self.role,
             "username": self.username,
             "password_hash": self.password_hash,
             "email": self.email,
@@ -67,6 +71,16 @@ class User(UserMixin):
     def is_active(self):
         return self._is_active
 
+    @username.setter
+    def username(self, new_username):
+        if not new_username or len(new_username) < 3:
+            raise ValueError("Username must be at least 3 characters long.")
+        db = get_db()
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor.execute("UPDATE users SET username = %s WHERE user_id = %s", (new_username, self.user_id))
+        db.commit()
+        self._username = new_username
+
     @is_active.setter
     def is_active(self, value):
         self._is_active = bool(value)
@@ -74,15 +88,3 @@ class User(UserMixin):
         cursor = db.cursor(cursors.DictCursor) # type: ignore
         cursor.execute("UPDATE users SET is_active = %s WHERE user_id = %s", (int(value), self.user_id))
         db.commit()
-
-    @username.setter
-    def username(self, new_username):
-        if not new_username or len(new_username) < 3:
-            raise ValueError("Username must be at least 3 characters long.")
-
-        db = get_db()
-        cursor = db.cursor(cursors.DictCursor) # type: ignore
-        cursor.execute("UPDATE users SET username = %s WHERE user_id = %s", (new_username, self.user_id))
-        db.commit()
-
-        self._username = new_username

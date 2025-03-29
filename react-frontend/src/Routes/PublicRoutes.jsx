@@ -11,7 +11,7 @@ import Home from "@/Pages/Public/Home/Home";
 import Listing from "@/Pages/Public/Listing/Listing";
 import PageNotFound from "@/Pages/Public/PageNotFound/PageNotFound";
 import Search from "@/Pages/Public/Search/Search";
-import Support from "@/Pages/Public/Support/Support";
+import Support from "@/Pages/Private/Support/Support";
 
 // Internal Authentication Modules
 import AuthProvider from "@/ContextAPI/AuthProvider";
@@ -37,11 +37,10 @@ import UserProfile from "@/Pages/Private/UserProfile/UserProfile";
 
 // Staff Internal Modules
 import CustomerInquiries from "@/Pages/Staff/CustomerInquiries/CustomerInquiries";
-import ListingReports from "@/Pages/Staff/ListingReports/ListingReports";
 import ManageListings from "@/Pages/Staff/ManageListings/ManageListings";
 import StaffAccount from "@/Pages/Staff/StaffAccount/StaffAccount";
-import StaffDashboard from "@/Pages/Staff/StaffDashboard/StaffDashboard";
 import StaffProfile from "@/Pages/Staff/StaffProfile/StaffProfile";
+import StaffReports from "@/Pages/Staff/StaffReports/StaffReports";
 
 // Admin Internal Modules
 import AdminAccount from "@/Pages/Admin/AdminAccount/AdminAccount";
@@ -78,7 +77,6 @@ const PublicRoutes = () => {
                 <Route path="/listing" element={<Listing />} />
                 <Route path="*" element={<PageNotFound />} />
                 <Route path="/search" element={<Search />} />
-                <Route path="/support" element={<Support />} />
 
                 {/* Protected Routes for Authenticated Users */}
                 <Route element={<PrivateRoute />}>
@@ -94,6 +92,7 @@ const PublicRoutes = () => {
                     <Route path="/user/review" element={<Review />} />
                     <Route path="/user/security" element={<Security />} />
                     <Route path="/user/seller-profile" element={<SellerProfile />} />
+                    <Route path="/user/support" element={<Support />} />
                     <Route path="/user/account" element={<UserAccount />} />
                     <Route path="/user/profile" element={<UserProfile />} />
                 </Route>
@@ -101,11 +100,10 @@ const PublicRoutes = () => {
                 {/* Protected Routes for Staff Users */}
                 <Route element={<StaffRoute />}>
                     <Route path="/staff/messages" element={<CustomerInquiries />} />
-                    <Route path="/staff/reports" element={<ListingReports />} />
                     <Route path="/staff/manage-listings" element={<ManageListings />} />
                     <Route path="/staff/account" element={<StaffAccount />} />
-                    <Route path="/staff/dashboard" element={<StaffDashboard />} />
                     <Route path="/staff/profile" element={<StaffProfile />} />
+                    <Route path="/staff/reports" element={<StaffReports />} />
                 </Route>
 
                 {/* Protected Routes for Admin Users */}

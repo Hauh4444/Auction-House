@@ -1,7 +1,7 @@
 from flask_login import LoginManager
 
 from ..data_mappers import AuthMapper
-from ..entities import User, StaffUser
+from ..entities import User
 
 login_manager = LoginManager()
 
@@ -19,8 +19,6 @@ def load_user(user_id, db_session=None):
         User: A User object if found, else None.
     """
     user_data = AuthMapper.get_user_by_id(user_id=user_id, db_session=db_session)
-    if isinstance(user_data, dict) and not user_data.get("role"):
+    if isinstance(user_data, dict):
         return User(**user_data)
-    elif isinstance(user_data, dict):
-        return StaffUser(**user_data)
     return user_data

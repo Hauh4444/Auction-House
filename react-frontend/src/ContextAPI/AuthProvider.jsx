@@ -16,7 +16,7 @@ const AuthProvider = ({ children }) => {
     const checkAuthStatus = async () => {
         try {
             const res = await axios.get("http://127.0.0.1:5000/api/auth/auth_status/");
-            setUser(res.data.authenticated ? res.data.user : null);
+            setUser(res.data.authenticated ? {"user_id": res.data.id, "role": res.data.role} : null);
         } catch (err) {
             console.log(err);
             setUser(null);

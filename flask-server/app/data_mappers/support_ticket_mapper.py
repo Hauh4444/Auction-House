@@ -16,7 +16,7 @@ class SupportTicketMapper:
             db_session: Optional database session to be used in tests.
 
         Returns:
-            dict: Support ticket details if found, otherwise None.
+            dict: StaffSupport ticket details if found, otherwise None.
         """
         db = db_session or get_db()
         cursor = db.cursor(cursors.DictCursor) # type: ignore
@@ -59,8 +59,8 @@ class SupportTicketMapper:
         db = db_session or get_db()
         cursor = db.cursor(cursors.DictCursor) # type: ignore
         statement = """
-            INSERT INTO support_tickets (user_id, order_id, subject, status, priority, assigned_to, created_at, updated_at) 
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+            INSERT INTO support_tickets (user_id, subject, status, priority, assigned_to, created_at, updated_at) 
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
         """
         cursor.execute(statement, tuple(SupportTicket(**data).to_dict().values())[1:]) # Exclude ticket_id (auto-incremented)
         db.commit()

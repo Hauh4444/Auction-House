@@ -4,8 +4,8 @@ import axios from "axios";
 import {Button, TextField} from "@mui/material";
 
 // Internal Modules
-import Header from "@/Components/Header/Header.jsx";
-import RightNav from "@/Components/Navigation/RightNav/RightNav.jsx";
+import Header from "@/Components/Header/Header";
+import RightNav from "@/Components/Navigation/RightNav/RightNav";
 
 // Stylesheets
 import './Messages.scss';

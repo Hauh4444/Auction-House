@@ -1,0 +1,116 @@
+// Built In Modules
+@use "sass:map";
+// Custom Variables
+@use "@/assets/variables.modules" as *;
+
+.supportPage {
+    .mainPage {
+        h1 {
+            text-align: center;
+            font-weight: lighter;
+        }
+
+        .supportNav {
+            width: 940px;
+            margin: 25px auto;
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            flex-wrap: wrap;
+
+            .navBtn {
+                max-width: 300px;
+                height: 100px;
+                margin: 20px 0 5px;
+                padding: 15px;
+                background-color: map.get($theme-colors, mainColor1);
+                box-shadow: 0 2px 4px map.get($theme-colors, mainColor4);
+                border-radius: 10px;
+                flex-direction: column;
+                flex-grow: 1;
+                flex-basis: 300px;
+                overflow: hidden;
+                text-transform: none;
+                color: map.get($theme-colors, mainColor3);
+                transition: all 0.5s ease;
+
+                h2 {
+                    font-weight: normal;
+                    font-size: 18px;
+                }
+
+                &::after {
+                    background: linear-gradient(to right, map.get($theme-colors, accentColor3), map.get($theme-colors, accentColor4)) no-repeat;
+                    position: absolute;
+                    z-index: -1;
+                    opacity: 0;
+                    inset: 0;
+                    content: "";
+                    transition: opacity 0.5s ease;
+                }
+
+                &:hover::after {
+                    opacity: 1;
+                }
+
+                &:hover {
+                    border: none;
+                    background-color: transparent;
+                    color: map.get($theme-colors, mainColor1) !important;
+                }
+            }
+        }
+        .supportTicket {
+            width: 50%;
+            margin: 0 auto;
+            padding: 50px 0;
+            display: flex;
+            flex-direction: column;
+
+            .subject {
+                width: 250px;
+                margin-bottom: 15px;
+                display: flex;
+            }
+
+            .message {
+                width: 100%;
+                margin-bottom: 15px;
+                display: flex;
+            }
+
+            .submitBtn {
+                width: 150px;
+                height: 50px;
+                margin-left: auto;
+                background-color: map.get($theme-colors, mainColor1);
+                box-shadow: 0 1px 2px map.get($theme-colors, mainColor4);
+                border-radius: 25px;
+                overflow: hidden;
+                text-transform: none;
+                color: map.get($theme-colors, mainColor3);
+                transition: all 0.2s ease;
+
+                &::after {
+                    background: linear-gradient(to right, map.get($theme-colors, accentColor3), map.get($theme-colors, accentColor4)) no-repeat;
+                    position: absolute;
+                    z-index: -1;
+                    opacity: 0;
+                    inset: 0;
+                    content: "";
+                    transition: opacity 0.5s ease;
+                }
+
+                &:hover::after {
+                    opacity: 1;
+                }
+
+                &:hover {
+                    border: none;
+                    background-color: transparent !important;
+                    color: map.get($theme-colors, mainColor1) !important;
+                }
+            }
+        }
+    }
+}

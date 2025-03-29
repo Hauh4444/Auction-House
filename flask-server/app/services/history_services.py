@@ -102,10 +102,10 @@ class HistoryService:
         tickets = SupportTicketMapper.get_all_support_tickets(user_id=session.get("user_id"), db_session=db_session)
 
         if not tickets:
-            response_data = {"error": "Support tickets not found"}
+            response_data = {"error": "StaffSupport tickets not found"}
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype='application/json')
 
-        response_data = {"message": "Support tickets found", "support_tickets": tickets}
+        response_data = {"message": "StaffSupport tickets found", "support_tickets": tickets}
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype='application/json')
 
 

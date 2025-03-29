@@ -20,12 +20,11 @@ class AuthService:
         Returns:
             A Response object with the authentication status and user ID if authenticated, otherwise a 401 error.
         """
-
         if not current_user.is_authenticated:
             response_data = {"error": "Error user is not authenticated", "authenticated": False}
             return Response(response=jsonify(response_data).get_data(), status=401, mimetype="application/json")
 
-        response_data = {"message": "User is authenticated", "authenticated": True, "user": current_user.id}
+        response_data = {"message": "User is authenticated", "authenticated": True, "id": current_user.id, "role": current_user.role}
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
 
@@ -85,15 +84,12 @@ class AuthService:
             response_data = {"error": "Invalid username or password"}
             return Response(response=jsonify(response_data).get_data(), status=422, mimetype="application/json")
 
-        if user.__class__.__name__ == "User":
-            session.update(user_id=user.user_id, role="user")
-        else:
-            session.update(user_id=user.staff_id, role=user.role)
+        session.update(user_id=user.id, role=user.role)
 
         login_user(user, remember=True)
         user.is_active = True
 
-        AuthMapper.update_last_login(user_id=session.get("user_id"), role=session.get("role"), db_session=db_session)
+        AuthMapper.update_last_login(user_id=session.get("user_id"), db_session=db_session)
         SessionService.create_session(db_session)
 
         response_data = {"message": "Login successful", "user": user}
