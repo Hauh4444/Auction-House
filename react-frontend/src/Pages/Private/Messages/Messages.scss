@@ -5,6 +5,142 @@
 
 .messagesPage {
     .mainPage {
+        .content {
+            width: 70%;
+            height: calc(100vh - 80px);
+            margin: 0 auto;
+            display: flex;
+            flex-direction: row;
 
+
+            .chats {
+                display: flex;
+                flex-direction: column;
+                flex-basis: 250px;
+                box-shadow: inset -4px 0 4px -4px map.get($theme-colors, mainColor4);
+
+
+                .createChat {
+                    width: 125px !important;
+                    margin: auto auto 25px auto !important;
+                }
+
+                .chat,
+                .createChat {
+                    width: fit-content;
+                    height: 50px;
+                    margin: 20px auto 0;
+                    padding: 15px;
+                    background-color: map.get($theme-colors, mainColor1);
+                    box-shadow: 0 2px 4px map.get($theme-colors, mainColor4);
+                    border-radius: 25px;
+                    overflow: hidden;
+                    text-transform: none;
+                    color: map.get($theme-colors, mainColor3);
+                    transition: all 0.5s ease;
+
+                    &::after {
+                        background: linear-gradient(to right, map.get($theme-colors, accentColor3), map.get($theme-colors, accentColor4)) no-repeat;
+                        position: absolute;
+                        z-index: -1;
+                        opacity: 0;
+                        inset: 0;
+                        content: "";
+                        transition: opacity 0.5s ease;
+                    }
+
+                    &:hover::after {
+                        opacity: 1;
+                    }
+
+                    &:hover {
+                        border: none;
+                        background-color: transparent;
+                        color: map.get($theme-colors, mainColor1) !important;
+                    }
+
+                    &.selected {
+                        border: none;
+                        background-color: transparent;
+                        color: map.get($theme-colors, mainColor1) !important;
+                    }
+
+                    &.selected::after {
+                        opacity: 1;
+                    }
+                }
+            }
+
+            .main {
+                display: flex;
+                flex-direction: column;
+                flex-basis: calc(100% - 250px);
+
+
+                .messages {
+                    height: calc(100% - 100px);
+
+
+                    .message {
+                        width: fit-content;
+                        max-width: 500px;
+                        margin: 20px;
+                        padding: 15px;
+                        background-color: map.get($theme-colors, mainColor1);
+                        box-shadow: 0 2px 4px map.get($theme-colors, mainColor4);
+                        border-radius: 25px;
+                        text-wrap: wrap;
+
+                        &.thisUser {
+                            margin-left: auto !important;
+                        }
+                    }
+                }
+
+                .newMessage {
+                    height: 100px;
+                    box-shadow: inset 0 4px 4px -4px map.get($theme-colors, mainColor4);
+
+                    .input {
+                        width: calc(100% - 150px);
+                        margin: 20px 25px;
+                    }
+
+                    .btn {
+                        width: 100px;
+                        height: 50px;
+                        margin: 20px auto;
+                        padding: 15px;
+                        background-color: map.get($theme-colors, mainColor1);
+                        box-shadow: 0 2px 4px map.get($theme-colors, mainColor4);
+                        border-radius: 25px;
+                        overflow: hidden;
+                        text-transform: none;
+                        color: map.get($theme-colors, mainColor3);
+                        transition: all 0.5s ease;
+
+                        &::after {
+                            background: linear-gradient(to right, map.get($theme-colors, accentColor3), map.get($theme-colors, accentColor4)) no-repeat;
+                            position: absolute;
+                            z-index: -1;
+                            opacity: 0;
+                            inset: 0;
+                            content: "";
+                            transition: opacity 0.5s ease;
+                        }
+
+                        &:hover::after {
+                            opacity: 1;
+                        }
+
+                        &:hover {
+                            border: none;
+                            background-color: transparent;
+                            color: map.get($theme-colors, mainColor1) !important;
+                        }
+                    }
+                }
+            }
+        }
     }
 }

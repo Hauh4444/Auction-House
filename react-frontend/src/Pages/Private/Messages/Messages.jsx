@@ -1,16 +1,19 @@
 // External Libraries
 import { useState, useEffect } from 'react';
 import axios from "axios";
-import {Button, TextField} from "@mui/material";
+import { Button, TextField } from "@mui/material";
 
 // Internal Modules
 import Header from "@/Components/Header/Header";
 import RightNav from "@/Components/Navigation/RightNav/RightNav";
+import { useAuth } from "@/ContextAPI/AuthContext.js";
 
 // Stylesheets
 import './Messages.scss';
 
 const Messages = () => {
+    const auth = useAuth();
+
     const [chats, setChats] = useState([]);
     const [currentChat, setCurrentChat] = useState(null);
     const [messages, setMessages] = useState([]);
@@ -74,36 +77,43 @@ const Messages = () => {
                 {/* Page Header */}
                 <Header />
 
-                <div className="chats">
-                    {chats && chats.map((chat, index) => (
-                        <Button className="chat" key={index} onClick={() => setCurrentChat(chat)}>
-                            {chat.other_user}
+                <div className="content">
+                    <div className="chats">
+                        {chats && chats.map((chat, index) => (
+                            <Button className={`chat${currentChat === chat ? " selected" : ""}`} key={index} onClick={() => setCurrentChat(chat)}>
+                                {chat.other_user}
+                            </Button>
+                        ))}
+                        <Button className="createChat" onClick={() => handleCreateChat()}>
+                            New Chat
                         </Button>
-                    ))}
-                </div>
-                <div>
-                    <Button className="createChat" onClick={() => handleCreateChat()}>
-                        New Chat
-                    </Button>
-                </div>
-                <div className="messages">
-                    {messages && messages.map((message, index) => (
-                        <div className="message" key={index}>
-                            {/* needs to have check if sender_id is viewing user or other user */}
-                            {message.message}
+                    </div>
+                    <div className="main">
+                        <div className="messages">
+                            {messages && messages.map((message, index) => (
+                                <div className={`message${auth.user.user_id === message.sender_id ? " thisUser" : ""}`} key={index}>
+                                    {/* needs to have check if sender_id is viewing user or other user */}
+                                    {message.message}
+                                </div>
+                            ))}
                         </div>
-                    ))}
-                </div>
-                <div>
-                    <TextField
-                        className="newMessage"
-                        value={newMessage}
-                        label="Message"
-                        type="text"
-                        onChange={(e) => setNewMessage(e.target.value)}
-                        variant="outlined"
-                    />
-                    <button onClick={() => handleSendMessage()}>Send</button>
+                        <div className="newMessage">
+                            <TextField
+                                className="input"
+                                value={newMessage}
+                                label="Message"
+                                type="text"
+                                onChange={(e) => setNewMessage(e.target.value)}
+                                variant="outlined"
+                                sx={{
+                                    '& .MuiOutlinedInput-root': {
+                                        borderRadius: '25px', // Set the border radius
+                                    },
+                                }}
+                            />
+                            <Button className="btn" onClick={() => handleSendMessage()}>Send</Button>
+                        </div>
+                    </div>
                 </div>
             </div>
             {/* Right-side Navigation */}

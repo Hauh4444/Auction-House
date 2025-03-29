@@ -13,10 +13,11 @@ const StaffAccount = () => {
     const navigate = useNavigate(); // Navigate hook for routing
 
     const cardInfo = {
-        "messages": "Customer Inquiries",
-        "manage-listings": "Manage Listings",
-        "profile": "Profile",
-        "reports": "Reports",
+        "messages": ["Customer Inquiries", "View and respond to customer messages and inquiries."],
+        "user-info": ["Manage User Info", "View, create, edit, and manage user information."],
+        "manage-listings": ["Manage Listings", "Manage product listings and auctions."],
+        "profile": ["Profile", "Update personal details, preferences, and account settings."],
+        "reports": ["Reports", "View sales, performance, and analytical reports."]
     };
 
     return (
@@ -35,7 +36,8 @@ const StaffAccount = () => {
                             onClick={() => {navigate("/staff/" + key)}}
                             key={index}
                         >
-                            <h2>{cardInfo[key]}</h2>
+                            <h2>{cardInfo[key][0]}</h2>
+                            <p>{cardInfo[key][1]}</p>
                         </Button>
                     ))}
                 </div>

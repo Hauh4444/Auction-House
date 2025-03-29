@@ -1,0 +1,13 @@
+// Built In Modules
+@use "sass:map";
+// Custom Variables
+@use "@/assets/variables.modules.scss" as *;
+
+.staffAccountPage {
+    .mainPage {
+        h1 {
+            text-align: center;
+            font-weight: lighter;
+        }
+    }
+}

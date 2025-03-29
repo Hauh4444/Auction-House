@@ -16,7 +16,7 @@ const Support = () => {
     const location = useLocation(); // Hook to access the current location (URL)
     const filters = Object.fromEntries(new URLSearchParams(location.search).entries()); // Extract query parameters from URL
 
-    const [subject, setSubject] = useState(filters.nav.charAt(0).toUpperCase() + filters.nav.slice(1));
+    const [subject, setSubject] = useState(null);
     const [message, setMessage] = useState("");
 
     const cardInfo = {
@@ -29,6 +29,11 @@ const Support = () => {
         "?nav=report": "Report",
         "?nav=other": "Other",
     };
+
+    const handleSelectSupport = (key) => {
+        navigate("/user/support" + key);
+        setSubject(key.charAt(5).toUpperCase() + key.slice(6));
+    }
 
     const handleSubmit = () => {
         axios.post("http://127.0.0.1:5000/api/support/tickets/",
@@ -59,7 +64,7 @@ const Support = () => {
                         {Object.keys(cardInfo).map((key, index) => (
                             <Button
                                 className="navBtn"
-                                onClick={() => {navigate("/user/support" + key)}}
+                                onClick={() => handleSelectSupport(key)}
                                 key={index}
                             >
                                 <h2>{cardInfo[key]}</h2>
@@ -70,7 +75,7 @@ const Support = () => {
                     <div className="supportTicket">
                         <TextField
                             className="subject"
-                            value={subject || filters.nav.charAt(0).toUpperCase() + filters.nav.slice(1)}
+                            value={subject}
                             label="Subject"
                             type="text"
                             onChange={(e) => {

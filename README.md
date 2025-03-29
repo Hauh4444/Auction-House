@@ -2,20 +2,27 @@
 
 ## TODO
 
-1. View profile page
-2. Friend functionality
-3. Messaging Page - Started (Needs styling)
-4. Staff UI
+### React Frontend
+
+1. Staff UI
    1. Access user info
-   2. Access logs
-5. Other
-   1. Backend needs to set viewing_user and other_user via checking session user against user1 and user2 ids 
-   2. Backend needs to assign support tickets upon creation 
-6. Minor
-   1. Verify backend authentication for staff 
-   2. MySQL foreign keys 
-   3. Search chats
+   2. Manage listings 
+   3. Staff profile
+   4. Access reports
+2. Minor
+   1. Search chats and tickets
+   2. View profile page
+   3. Friend functionality
    4. Friends page in user account
+
+### Flask Server
+
+1. Verify authentication for staff
+2. MySQL foreign keys
+3. Implement notifications
+4. Bidding flow
+5. Chat API
+   1. Live updates
 
 ## Setup
 1. Ensure you have [Node.js](https://nodejs.org/en/download) installed on your machine.

@@ -28,7 +28,6 @@ import ManageListing from "@/Pages/Private/ManageListing/ManageListing";
 import Messages from "@/Pages/Private/Messages/Messages";
 import MyBids from "@/Pages/Private/MyBids/MyBids";
 import PaymentInfo from "@/Pages/Private/PaymentInfo/PaymentInfo";
-import Report from "@/Pages/Private/Report/Report";
 import Review from "@/Pages/Private/Review/Review";
 import Security from "@/Pages/Private/Security/Security";
 import SellerProfile from "@/Pages/Private/SellerProfile/SellerProfile";
@@ -41,6 +40,7 @@ import ManageListings from "@/Pages/Staff/ManageListings/ManageListings";
 import StaffAccount from "@/Pages/Staff/StaffAccount/StaffAccount";
 import StaffProfile from "@/Pages/Staff/StaffProfile/StaffProfile";
 import StaffReports from "@/Pages/Staff/StaffReports/StaffReports";
+import UserInfo from "@/Pages/Staff/UserInfo/UserInfo";
 
 // Admin Internal Modules
 import AdminAccount from "@/Pages/Admin/AdminAccount/AdminAccount";
@@ -88,7 +88,6 @@ const PublicRoutes = () => {
                     <Route path="/user/messages" element={<Messages />} />
                     <Route path="/user/my-bids" element={<MyBids />} />
                     <Route path="/user/payment-info" element={<PaymentInfo />} />
-                    <Route path="/user/report" element={<Report />} />
                     <Route path="/user/review" element={<Review />} />
                     <Route path="/user/security" element={<Security />} />
                     <Route path="/user/seller-profile" element={<SellerProfile />} />
@@ -104,6 +103,7 @@ const PublicRoutes = () => {
                     <Route path="/staff/account" element={<StaffAccount />} />
                     <Route path="/staff/profile" element={<StaffProfile />} />
                     <Route path="/staff/reports" element={<StaffReports />} />
+                    <Route path="/staff/user-info" element={<UserInfo />} />
                 </Route>
 
                 {/* Protected Routes for Admin Users */}

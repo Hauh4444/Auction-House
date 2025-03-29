@@ -33,7 +33,7 @@ const UserAccount = () => {
         "payment-info?nav=transactions": ["Payments", "View transactions, manage payment methods and settings"],
         "lists": ["Lists", "View, modify, and share your lists, or create new ones"],
         "seller-profile?nav=manage": ["Seller Profile", "View and manage your seller profile"],
-        "report": ["Customer Service", "Browse self service options or speak with a staff member"],
+        "support": ["Customer Service", "Browse self service options or speak with a staff member"],
         "messages": ["Messages", "View or respond to messages from other Sellers and Buyers"],
         "deliveries": ["Deliveries", "View and track your deliveries with status updates."],
     };
