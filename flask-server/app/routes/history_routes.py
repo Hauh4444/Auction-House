@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, session, request
 from flask_login import login_required
 
 from ..services import HistoryService
@@ -20,7 +20,11 @@ def get_user_orders(db_session=None):
     Returns:
         JSON response containing a list of the user's past orders.
     """
-    return HistoryService.get_user_orders(db_session=db_session)
+    data = None
+    if session.get("role") in ["staff", "admin"]:
+        data = request.json
+
+    return HistoryService.get_user_orders(data=data, db_session=db_session)
 
 
 # GET /api/user/listings/
@@ -36,6 +40,10 @@ def get_user_listings(db_session=None):
     Returns:
         JSON response containing a list of the user's past listings.
     """
+    data = None
+    if session.get("role") in ["staff", "admin"]:
+        data = request.json
+
     return HistoryService.get_user_listings(db_session=db_session)
 
 
@@ -52,6 +60,10 @@ def get_user_transactions(db_session=None):
     Returns:
         JSON response containing a list of the user's past transactions.
     """
+    data = None
+    if session.get("role") in ["staff", "admin"]:
+        data = request.json
+
     return HistoryService.get_user_transactions(db_session=db_session)
 
 

@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, session, request
 from flask_login import login_required
 
 from ..services import UserService
@@ -20,6 +20,10 @@ def get_user(db_session=None):
     Returns:
         JSON response with user details.
     """
+    data = None
+    if session.get("role") in ["staff", "admin"]:
+        data = request.json
+
     return UserService.get_user(db_session=db_session)
 
 

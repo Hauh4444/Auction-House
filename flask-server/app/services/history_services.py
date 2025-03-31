@@ -5,7 +5,7 @@ from ..data_mappers import OrderMapper, ListingMapper, TransactionMapper, Delive
 
 class HistoryService:
     @staticmethod
-    def get_user_orders(db_session=None):
+    def get_user_orders(data, db_session=None):
         """
         Retrieve a user's order history.
 
@@ -17,6 +17,12 @@ class HistoryService:
         """
         orders = OrderMapper.get_all_orders(user_id=session.get("user_id"), db_session=db_session)
 
+        if session.get("role") in ["staff", "admin"]:
+            profile = OrderMapper.get_user_orders(user_id=data.get("user_id"), db_session=db_session)
+        else:
+            profile = OrderMapper.get_user_orders(user_id=session.get("user_id"), db_session=db_session)
+
+
         if not orders:
             response_data = {"error": "Orders not found"}
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype='application/json')
@@ -26,7 +32,7 @@ class HistoryService:
 
 
     @staticmethod
-    def get_user_listings(db_session=None):
+    def get_user_listings(data, db_session=None):
         """
         Retrieve a user's listing history.
 
@@ -38,6 +44,12 @@ class HistoryService:
         """
         listings = ListingMapper.get_all_user_listings(user_id=session.get("user_id"), db_session=db_session)
 
+        if session.get("role") in ["staff", "admin"]:
+            profile = ListingMapper.get_user_listings(user_id=data.get("user_id"), db_session=db_session)
+        else:
+            profile = ListingMapper.get_user_listings(user_id=session.get("user_id"), db_session=db_session)
+
+
         if not listings:
             response_data = {"error": "Listings not found"}
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype='application/json')
@@ -47,7 +59,7 @@ class HistoryService:
 
 
     @staticmethod
-    def get_user_transactions(db_session=None):
+    def get_user_transactions(data, db_session=None):
         """
         Retrieve a user's transaction history.
 
@@ -58,6 +70,12 @@ class HistoryService:
             Response: A JSON response containing the user's transactions if found, otherwise a 404 error.
         """
         transactions = TransactionMapper.get_all_transactions(user_id=session.get("user_id"), db_session=db_session)
+
+        if session.get("role") in ["staff", "admin"]:
+            profile = TransactionMapper.get_all_transactions(user_id=data.get("user_id"), db_session=db_session)
+        else:
+            profile = TransactionMapper.get_all_tranactions(user_id=session.get("user_id"), db_session=db_session)
+
 
         if not transactions:
             response_data = {"error": "Transactions not found"}
