@@ -5,22 +5,21 @@ from ..data_mappers import OrderMapper, ListingMapper, TransactionMapper, Delive
 
 class HistoryService:
     @staticmethod
-    def get_user_orders(data, db_session=None):
+    def get_user_orders(data=None, db_session=None):
         """
         Retrieve a user's order history.
 
         Args:
+            data: A dictionary containing the request arguments.
             db_session (optional): A database session for testing or direct queries.
 
         Returns:
             Response: A JSON response containing the user's orders if found, otherwise a 404 error.
         """
-        orders = OrderMapper.get_all_orders(user_id=session.get("user_id"), db_session=db_session)
-
         if session.get("role") in ["staff", "admin"]:
-            profile = OrderMapper.get_all_orders(user_id=data.get("user_id"), db_session=db_session)
+            orders = OrderMapper.get_all_orders(user_id=data.get("user_id"), db_session=db_session)
         else:
-            profile = OrderMapper.get_all_orders(user_id=session.get("user_id"), db_session=db_session)
+            orders = OrderMapper.get_all_orders(user_id=session.get("user_id"), db_session=db_session)
 
 
         if not orders:
@@ -32,22 +31,21 @@ class HistoryService:
 
 
     @staticmethod
-    def get_user_listings(data, db_session=None):
+    def get_user_listings(data=None, db_session=None):
         """
         Retrieve a user's listing history.
 
         Args:
+            data: A dictionary containing the request arguments.
             db_session (optional): A database session for testing or direct queries.
 
         Returns:
             Response: A JSON response containing the user's listings if found, otherwise a 404 error.
         """
-        listings = ListingMapper.get_all_user_listings(user_id=session.get("user_id"), db_session=db_session)
-
         if session.get("role") in ["staff", "admin"]:
-            profile = ListingMapper.get_all_user_listings(user_id=data.get("user_id"), db_session=db_session)
+            listings = ListingMapper.get_all_user_listings(user_id=data.get("user_id"), db_session=db_session)
         else:
-            profile = ListingMapper.get_all_user_listings(user_id=session.get("user_id"), db_session=db_session)
+            listings = ListingMapper.get_all_user_listings(user_id=session.get("user_id"), db_session=db_session)
 
 
         if not listings:
@@ -59,23 +57,21 @@ class HistoryService:
 
 
     @staticmethod
-    def get_user_transactions(data, db_session=None):
+    def get_user_transactions(data=None, db_session=None):
         """
         Retrieve a user's transaction history.
 
         Args:
+            data: A dictionary containing the request arguments.
             db_session (optional): A database session for testing or direct queries.
 
         Returns:
             Response: A JSON response containing the user's transactions if found, otherwise a 404 error.
         """
-        transactions = TransactionMapper.get_all_transactions(user_id=session.get("user_id"), db_session=db_session)
-
         if session.get("role") in ["staff", "admin"]:
-            profile = TransactionMapper.get_all_transactions(user_id=data.get("user_id"), db_session=db_session)
+            transactions = TransactionMapper.get_all_transactions(user_id=data.get("user_id"), db_session=db_session)
         else:
-            profile = TransactionMapper.get_all_tranactions(user_id=session.get("user_id"), db_session=db_session)
-
+            transactions = TransactionMapper.get_all_tranactions(user_id=session.get("user_id"), db_session=db_session)
 
         if not transactions:
             response_data = {"error": "Transactions not found"}
@@ -86,22 +82,21 @@ class HistoryService:
 
 
     @staticmethod
-    def get_user_deliveries(data, db_session=None):
+    def get_user_deliveries(data=None, db_session=None):
         """
         Retrieve a user's delivery history.
 
         Args:
+            data: A dictionary containing the request arguments.
             db_session (optional): A database session for testing or direct queries.
 
         Returns:
             Response: A JSON response containing the user's deliveries if found, otherwise a 404 error.
         """
-        deliveries = DeliveryMapper.get_all_deliveries(user_id=session.get("user_id"), db_session=db_session)
-
         if session.get("role") in ["staff", "admin"]:
-            profile = DeliveryMapper.get_all_deliveries(user_id=data.get("user_id"), db_session=db_session)
+            deliveries = DeliveryMapper.get_all_deliveries(user_id=data.get("user_id"), db_session=db_session)
         else:
-            profile = DeliveryMapper.get_all_deliveries(user_id=session.get("user_id"), db_session=db_session)
+            deliveries = DeliveryMapper.get_all_deliveries(user_id=session.get("user_id"), db_session=db_session)
 
         if not deliveries:
             response_data = {"error": "Deliveries not found"}
@@ -112,22 +107,21 @@ class HistoryService:
 
 
     @staticmethod
-    def get_user_support_tickets(data, db_session=None):
+    def get_user_support_tickets(data=None, db_session=None):
         """
         Retrieve a user's support ticket history.
 
         Args:
+            data: A dictionary containing the request arguments.
             db_session (optional): A database session for testing or direct queries.
 
         Returns:
             Response: A JSON response containing the user's support tickets if found, otherwise a 404 error.
         """
-        tickets = SupportTicketMapper.get_all_support_tickets(user_id=session.get("user_id"), db_session=db_session)
-
         if session.get("role") in ["staff", "admin"]:
-            profile = SupportTicketMapper.get_all_support_tickets(user_id=data.get("user_id"), db_session=db_session)
+            tickets = SupportTicketMapper.get_all_support_tickets(user_id=data.get("user_id"), db_session=db_session)
         else:
-            profile = SupportTicketMapper.get_all_support_tickets(user_id=session.get("user_id"), db_session=db_session)
+            tickets = SupportTicketMapper.get_all_support_tickets(user_id=session.get("user_id"), db_session=db_session)
 
         if not tickets:
             response_data = {"error": "Support tickets not found"}
@@ -138,22 +132,21 @@ class HistoryService:
 
 
     @staticmethod
-    def get_user_reviews(data, db_session=None):
+    def get_user_reviews(data=None, db_session=None):
         """
         Retrieve a user's review history.
 
         Args:
+            data: A dictionary containing the request arguments.
             db_session (optional): A database session for testing or direct queries.
 
         Returns:
             Response: A JSON response containing the user's reviews if found, otherwise a 404 error.
         """
-        reviews = ReviewMapper.get_all_reviews(args={"user_id": session.get("user_id")}, db_session=db_session)
-
         if session.get("role") in ["staff", "admin"]:
-            profile = ReviewMapper.get_all_reviews(user_id=data.get("user_id"), db_session=db_session)
+            reviews = ReviewMapper.get_all_reviews(user_id=data.get("user_id"), db_session=db_session)
         else:
-            profile = ReviewMapper.get_all_reviews(user_id=session.get("user_id"), db_session=db_session)
+            reviews = ReviewMapper.get_all_reviews(user_id=session.get("user_id"), db_session=db_session)
 
         if not reviews:
             response_data = {"error": "Reviews not found"}

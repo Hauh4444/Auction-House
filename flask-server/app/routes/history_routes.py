@@ -44,7 +44,7 @@ def get_user_listings(db_session=None):
     if session.get("role") in ["staff", "admin"]:
         data = request.json
 
-    return HistoryService.get_user_listings(db_session=db_session)
+    return HistoryService.get_user_listings(data=data, db_session=db_session)
 
 
 # GET /api/user/transactions/
@@ -64,7 +64,7 @@ def get_user_transactions(db_session=None):
     if session.get("role") in ["staff", "admin"]:
         data = request.json
 
-    return HistoryService.get_user_transactions(db_session=db_session)
+    return HistoryService.get_user_transactions(data=data, db_session=db_session)
 
 
 # GET /api/user/deliveries/
@@ -84,7 +84,7 @@ def get_user_deliveries(db_session=None):
     if session.get("role") in ["staff", "admin"]:
         data = request.json
 
-    return HistoryService.get_user_deliveries(db_session=db_session)
+    return HistoryService.get_user_deliveries(data=data, db_session=db_session)
 
 
 # GET /api/user/support-tickets/
@@ -104,7 +104,7 @@ def get_user_support_tickets(db_session=None):
     if session.get("role") in ["staff", "admin"]:
         data = request.json
 
-    return HistoryService.get_user_support_tickets(db_session=db_session)
+    return HistoryService.get_user_support_tickets(data=data, db_session=db_session)
 
 
 # GET /api/user/reviews/
@@ -124,4 +124,4 @@ def get_user_reviews(db_session=None):
     if session.get("role") in ["staff", "admin"]:
         data = request.json
         
-    return HistoryService.get_user_reviews(db_session=db_session)
+    return HistoryService.get_user_reviews(data=data, db_session=db_session)

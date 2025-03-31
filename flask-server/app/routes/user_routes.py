@@ -24,7 +24,7 @@ def get_user(db_session=None):
     if session.get("role") in ["staff", "admin"]:
         data = request.json
 
-    return UserService.get_user(db_session=db_session)
+    return UserService.get_user(data=data, db_session=db_session)
 
 
 # PUT /api/user/
@@ -64,4 +64,4 @@ def delete_user(db_session=None):
     if session.get("role") in ["staff", "admin"]:
         data = request.json
         
-    return UserService.delete_user(db_session=db_session)
+    return UserService.delete_user(data=data, db_session=db_session)
