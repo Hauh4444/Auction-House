@@ -21,7 +21,7 @@ const StaffAccount = () => {
     };
 
     return (
-        <div className="staffAccountPage page" data-testid="staffAccountPage">
+        <div className="staffAccountPage page">
             <div className="mainPage">
                 {/* Page Header */}
                 <Header />

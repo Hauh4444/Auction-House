@@ -26,7 +26,7 @@ def get_tickets(db_session=None):
 # GET /api/support/tickets/{id}/
 @bp.route("/<int:ticket_id>/", methods=["GET"])
 @login_required
-def get_ticket(ticket_id, db_session=None):
+def get_ticket_by_id(ticket_id, db_session=None):
     """
     Retrieve details of a specific support ticket.
 
@@ -37,7 +37,7 @@ def get_ticket(ticket_id, db_session=None):
     Returns:
         JSON response containing the details of the specified ticket.
     """
-    return SupportTicketService.get_ticket(ticket_id=ticket_id, db_session=db_session)
+    return SupportTicketService.get_ticket_by_id(ticket_id=ticket_id, db_session=db_session)
 
 
 # POST /api/support/tickets/

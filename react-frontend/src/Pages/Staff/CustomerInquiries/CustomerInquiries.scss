@@ -71,8 +71,13 @@
                 flex-basis: calc(100% - 250px);
 
 
+                .messages::-webkit-scrollbar {
+                    display: none;
+                }
+
                 .messages {
                     height: calc(100% - 100px);
+                    overflow-y: scroll;
 
 
                     .message {

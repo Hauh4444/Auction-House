@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, session, request
 from flask_login import login_required
 
 from ..services import HistoryService
@@ -20,7 +20,11 @@ def get_user_orders(db_session=None):
     Returns:
         JSON response containing a list of the user's past orders.
     """
-    return HistoryService.get_user_orders(db_session=db_session)
+    data = None
+    if session.get("role") in ["staff", "admin"]:
+        data = request.args.to_dict()
+
+    return HistoryService.get_user_orders(data=data, db_session=db_session)
 
 
 # GET /api/user/listings/
@@ -36,7 +40,11 @@ def get_user_listings(db_session=None):
     Returns:
         JSON response containing a list of the user's past listings.
     """
-    return HistoryService.get_user_listings(db_session=db_session)
+    data = None
+    if session.get("role") in ["staff", "admin"]:
+        data = request.args.to_dict()
+
+    return HistoryService.get_user_listings(data=data, db_session=db_session)
 
 
 # GET /api/user/transactions/
@@ -52,7 +60,11 @@ def get_user_transactions(db_session=None):
     Returns:
         JSON response containing a list of the user's past transactions.
     """
-    return HistoryService.get_user_transactions(db_session=db_session)
+    data = None
+    if session.get("role") in ["staff", "admin"]:
+        data = request.args.to_dict()
+
+    return HistoryService.get_user_transactions(data=data, db_session=db_session)
 
 
 # GET /api/user/deliveries/
@@ -68,7 +80,11 @@ def get_user_deliveries(db_session=None):
     Returns:
         JSON response containing a list of the user's past deliveries.
     """
-    return HistoryService.get_user_deliveries(db_session=db_session)
+    data = None
+    if session.get("role") in ["staff", "admin"]:
+        data = request.args.to_dict()
+
+    return HistoryService.get_user_deliveries(data=data, db_session=db_session)
 
 
 # GET /api/user/support-tickets/
@@ -84,7 +100,11 @@ def get_user_support_tickets(db_session=None):
     Returns:
         JSON response containing a list of the user's past support tickets.
     """
-    return HistoryService.get_user_support_tickets(db_session=db_session)
+    data = None
+    if session.get("role") in ["staff", "admin"]:
+        data = request.args.to_dict()
+
+    return HistoryService.get_user_support_tickets(data=data, db_session=db_session)
 
 
 # GET /api/user/reviews/
@@ -100,4 +120,8 @@ def get_user_reviews(db_session=None):
     Returns:
         JSON response containing a list of the user's past reviews.
     """
-    return HistoryService.get_user_reviews(db_session=db_session)
+    data = None
+    if session.get("role") in ["staff", "admin"]:
+        data = request.args.to_dict()
+
+    return HistoryService.get_user_reviews(data=data, db_session=db_session)

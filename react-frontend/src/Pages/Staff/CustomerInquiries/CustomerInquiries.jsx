@@ -14,6 +14,8 @@ import "./CustomerInquiries.scss"
 const CustomerInquiries = () => {
     const auth = useAuth();
 
+    console.log(auth.user.user_id)
+
     const [supportTickets, setSupportTickets] = useState([]);
     const [currentSupportTicket, setCurrentSupportTicket] = useState(null);
     const [ticketMessages, setTicketMessages] = useState([]);

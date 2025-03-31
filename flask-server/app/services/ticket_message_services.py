@@ -1,6 +1,6 @@
 from flask import jsonify, Response, session
 
-from ..data_mappers import TicketMessageMapper
+from ..data_mappers import TicketMessageMapper, SupportTicketMapper
 
 
 class TicketMessageService:
@@ -29,6 +29,12 @@ class TicketMessageService:
         if not message_id:
             response_data = {"error": "Error creating message"}
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype='application/json')
+
+        updated_rows = SupportTicketMapper.update_ticket_timestamp(ticket_id=data.get("ticket_id"), db_session=db_session)
+
+        if not updated_rows:
+            response_data = {"error": "Error updating ticket timestamp"}
+            return Response(response=jsonify(response_data).get_data(), status=404, mimetype='application/json')
 
         response_data = {"message": "Message created", "message_id": message_id}
         return Response(response=jsonify(response_data).get_data(), status=201, mimetype='application/json')

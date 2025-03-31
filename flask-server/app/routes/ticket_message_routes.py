@@ -1,5 +1,5 @@
 from flask import Blueprint, request, session
-from flask_login import login_required
+from flask_login import login_required, current_user
 
 from ..services import TicketMessageService
 
@@ -26,6 +26,7 @@ def create_message(ticket_id, db_session=None):
     """
     data = request.json
     data.update(sender_id=session.get("user_id"), ticket_id=ticket_id)
+    print(current_user.user_id)
     return TicketMessageService.create_message(data=data, db_session=db_session)
 
 
