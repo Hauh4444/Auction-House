@@ -80,6 +80,10 @@ def get_user_deliveries(db_session=None):
     Returns:
         JSON response containing a list of the user's past deliveries.
     """
+    data = None
+    if session.get("role") in ["staff", "admin"]:
+        data = request.json
+
     return HistoryService.get_user_deliveries(db_session=db_session)
 
 
@@ -96,6 +100,10 @@ def get_user_support_tickets(db_session=None):
     Returns:
         JSON response containing a list of the user's past support tickets.
     """
+    data = None
+    if session.get("role") in ["staff", "admin"]:
+        data = request.json
+
     return HistoryService.get_user_support_tickets(db_session=db_session)
 
 
@@ -112,4 +120,8 @@ def get_user_reviews(db_session=None):
     Returns:
         JSON response containing a list of the user's past reviews.
     """
+    data = None
+    if session.get("role") in ["staff", "admin"]:
+        data = request.json
+        
     return HistoryService.get_user_reviews(db_session=db_session)

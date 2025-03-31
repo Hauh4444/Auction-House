@@ -18,9 +18,9 @@ class HistoryService:
         orders = OrderMapper.get_all_orders(user_id=session.get("user_id"), db_session=db_session)
 
         if session.get("role") in ["staff", "admin"]:
-            profile = OrderMapper.get_user_orders(user_id=data.get("user_id"), db_session=db_session)
+            profile = OrderMapper.get_all_orders(user_id=data.get("user_id"), db_session=db_session)
         else:
-            profile = OrderMapper.get_user_orders(user_id=session.get("user_id"), db_session=db_session)
+            profile = OrderMapper.get_all_orders(user_id=session.get("user_id"), db_session=db_session)
 
 
         if not orders:
@@ -45,9 +45,9 @@ class HistoryService:
         listings = ListingMapper.get_all_user_listings(user_id=session.get("user_id"), db_session=db_session)
 
         if session.get("role") in ["staff", "admin"]:
-            profile = ListingMapper.get_user_listings(user_id=data.get("user_id"), db_session=db_session)
+            profile = ListingMapper.get_all_user_listings(user_id=data.get("user_id"), db_session=db_session)
         else:
-            profile = ListingMapper.get_user_listings(user_id=session.get("user_id"), db_session=db_session)
+            profile = ListingMapper.get_all_user_listings(user_id=session.get("user_id"), db_session=db_session)
 
 
         if not listings:
@@ -86,7 +86,7 @@ class HistoryService:
 
 
     @staticmethod
-    def get_user_deliveries(db_session=None):
+    def get_user_deliveries(data, db_session=None):
         """
         Retrieve a user's delivery history.
 
@@ -98,6 +98,11 @@ class HistoryService:
         """
         deliveries = DeliveryMapper.get_all_deliveries(user_id=session.get("user_id"), db_session=db_session)
 
+        if session.get("role") in ["staff", "admin"]:
+            profile = DeliveryMapper.get_all_deliveries(user_id=data.get("user_id"), db_session=db_session)
+        else:
+            profile = DeliveryMapper.get_all_deliveries(user_id=session.get("user_id"), db_session=db_session)
+
         if not deliveries:
             response_data = {"error": "Deliveries not found"}
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype='application/json')
@@ -107,7 +112,7 @@ class HistoryService:
 
 
     @staticmethod
-    def get_user_support_tickets(db_session=None):
+    def get_user_support_tickets(data, db_session=None):
         """
         Retrieve a user's support ticket history.
 
@@ -119,6 +124,11 @@ class HistoryService:
         """
         tickets = SupportTicketMapper.get_all_support_tickets(user_id=session.get("user_id"), db_session=db_session)
 
+        if session.get("role") in ["staff", "admin"]:
+            profile = SupportTicketMapper.get_all_support_tickets(user_id=data.get("user_id"), db_session=db_session)
+        else:
+            profile = SupportTicketMapper.get_all_support_tickets(user_id=session.get("user_id"), db_session=db_session)
+
         if not tickets:
             response_data = {"error": "Support tickets not found"}
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype='application/json')
@@ -128,7 +138,7 @@ class HistoryService:
 
 
     @staticmethod
-    def get_user_reviews(db_session=None):
+    def get_user_reviews(data, db_session=None):
         """
         Retrieve a user's review history.
 
@@ -139,6 +149,11 @@ class HistoryService:
             Response: A JSON response containing the user's reviews if found, otherwise a 404 error.
         """
         reviews = ReviewMapper.get_all_reviews(args={"user_id": session.get("user_id")}, db_session=db_session)
+
+        if session.get("role") in ["staff", "admin"]:
+            profile = ReviewMapper.get_all_reviews(user_id=data.get("user_id"), db_session=db_session)
+        else:
+            profile = ReviewMapper.get_all_reviews(user_id=session.get("user_id"), db_session=db_session)
 
         if not reviews:
             response_data = {"error": "Reviews not found"}

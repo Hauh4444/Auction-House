@@ -5,7 +5,7 @@ from ..data_mappers import UserMapper, ProfileMapper
 
 class UserService:
     @staticmethod
-    def get_user(db_session=None):
+    def get_user(data, db_session=None):
         """
         Retrieves a user by their ID.
 
@@ -16,6 +16,11 @@ class UserService:
             A Response object with the user details if found, otherwise a 404 error with a message.
         """
         user = UserMapper.get_user(user_id=session.get("user_id"), db_session=db_session)
+
+        if session.get("role") in ["staff", "admin"]:
+            profile = UserMapper.get_user(user_id=data.get("user_id"), db_session=db_session)
+        else:
+            profile = UserMapper.get_user(user_id=session.get("user_id"), db_session=db_session)
 
         if not user:
             response_data = {"error": "User not found"}
@@ -40,6 +45,11 @@ class UserService:
         """
         updated_rows = UserMapper.update_user(user_id=session.get("user_id"), data=data, db_session=db_session)
 
+        if session.get("role") in ["staff", "admin"]:
+            profile = UserMapper.update_user(user_id=data.get("user_id"), db_session=db_session)
+        else:
+            profile = UserMapper.update_user(user_id=session.get("user_id"), db_session=db_session)
+
         if not updated_rows:
             response_data = {"error": "User not found"}
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
@@ -50,7 +60,7 @@ class UserService:
 
 
     @staticmethod
-    def delete_user(db_session=None):
+    def delete_user(data, db_session=None):
         """
         Deletes a user by their ID.
 
@@ -62,11 +72,21 @@ class UserService:
         """
         deleted_rows = ProfileMapper.delete_profile(user_id=session.get("user_id"), db_session=db_session)
 
+        if session.get("role") in ["staff", "admin"]:
+            profile = ProfileMapper.delete_profile(user_id=data.get("user_id"), db_session=db_session)
+        else:
+            profile = ProfileMapper.delete_profile(user_id=session.get("user_id"), db_session=db_session)
+
         if not deleted_rows:
             response_data = {"error": "Profile not found"}
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
         deleted_rows = UserMapper.delete_user(user_id=session.get("user_id"), db_session=db_session)
+
+        if session.get("role") in ["staff", "admin"]:
+            profile = UserMapper.delete_user(user_id=data.get("user_id"), db_session=db_session)
+        else:
+            profile = UserMapper.delete_user(user_id=session.get("user_id"), db_session=db_session)
 
         if not deleted_rows:
             response_data = {"error": "User not found"}

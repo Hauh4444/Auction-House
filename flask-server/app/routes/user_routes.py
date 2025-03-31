@@ -60,4 +60,8 @@ def delete_user(db_session=None):
     Returns:
         JSON response indicating the deletion status.
     """
+    data = None
+    if session.get("role") in ["staff", "admin"]:
+        data = request.json
+        
     return UserService.delete_user(db_session=db_session)

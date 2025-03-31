@@ -43,6 +43,11 @@ class ProfileService:
         """
         profile_id = ProfileMapper.create_profile(data=data, db_session=db_session)
 
+        if session.get("role") in ["staff", "admin"]:
+            profile = ProfileMapper.create_profile(user_id=data.get("user_id"), db_session=db_session)
+        else:
+            profile = ProfileMapper.create_profile(user_id=session.get("user_id"), db_session=db_session)
+
         if not profile_id:
             response_data = {"error": "Error creating profile"}
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
@@ -65,6 +70,11 @@ class ProfileService:
         """
         updated_rows = ProfileMapper.update_profile(user_id=session.get("user_id"), data=data.get("profile"), db_session=db_session)
 
+        if session.get("role") in ["staff", "admin"]:
+            profile = ProfileMapper.update_profile(user_id=data.get("user_id"), db_session=db_session)
+        else:
+            profile = ProfileMapper.update_profile(user_id=session.get("user_id"), db_session=db_session)
+
         if not updated_rows:
             response_data = {"error": "Profile not found"}
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
@@ -74,7 +84,7 @@ class ProfileService:
 
 
     @staticmethod
-    def delete_profile(user_id, db_session=None):
+    def delete_profile(user_id, data, db_session=None):
         """
         Deletes a profile by its ID.
 
@@ -86,6 +96,11 @@ class ProfileService:
             A Response object with a success message if the profile was deleted, or a 404 error if the profile was not found.
         """
         deleted_rows = ProfileMapper.delete_profile(user_id=user_id, db_session=db_session)
+
+        if session.get("role") in ["staff", "admin"]:
+            profile = ProfileMapper.delete_profile(user_id=data.get("user_id"), db_session=db_session)
+        else:
+            profile = ProfileMapper.delete_profile(user_id=session.get("user_id"), db_session=db_session)
 
         if not deleted_rows:
             response_data = {"error": "Profile not found"}
