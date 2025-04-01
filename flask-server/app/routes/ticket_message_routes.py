@@ -13,6 +13,12 @@ bp = Blueprint("ticket_message_bp", __name__, url_prefix="/api/ticket/messages")
 def get_messages_by_ticket(ticket_id, db_session=None):
     """
     Retrieve all messages for a given ticket.
+
+    Args:
+        ticket_id (int): The ID of the ticket for which messages are being retrieved.
+
+    Returns:
+        JSON response containing the list of messages for the ticket.
     """
     return TicketMessageService.get_messages_by_ticket_id(ticket_id=ticket_id, db_session=db_session)
 
@@ -23,6 +29,15 @@ def get_messages_by_ticket(ticket_id, db_session=None):
 def create_message(ticket_id, db_session=None):
     """
     Create a new message in a support ticket.
+
+    Args:
+        ticket_id (int): The ID of the ticket where the message will be added.
+
+    Expects:
+        JSON payload containing the message content.
+
+    Returns:
+        JSON response indicating the creation status of the message.
     """
     data = request.json
     data.update(sender_id=session.get("user_id"), ticket_id=ticket_id)
@@ -36,6 +51,15 @@ def create_message(ticket_id, db_session=None):
 def update_message(message_id, db_session=None):
     """
     Update an existing ticket message.
+
+    Args:
+        message_id (int): The ID of the message to update.
+
+    Expects:
+        JSON payload containing the updates for the message.
+
+    Returns:
+        JSON response indicating the status of the message update.
     """
     data = request.json
     return TicketMessageService.update_message(message_id=message_id, updates=data, db_session=db_session)
@@ -47,5 +71,11 @@ def update_message(message_id, db_session=None):
 def delete_message(message_id, db_session=None):
     """
     Delete a ticket message by its ID.
+
+    Args:
+        message_id (int): The ID of the message to delete.
+
+    Returns:
+        JSON response indicating the status of the deletion.
     """
     return TicketMessageService.delete_message(message_id=message_id, db_session=db_session)

@@ -15,10 +15,11 @@ class AuthService:
     @staticmethod
     def check_auth_status():
         """
-        Checks authentication status of the current session.
+        Checks the authentication status of the current session.
 
         Returns:
-            A Response object with the authentication status and user ID if authenticated, otherwise a 401 error.
+            Response: A JSON response containing the authentication status and user details.
+                Status code 200 if authenticated, 401 if not.
         """
         if not current_user.is_authenticated:
             response_data = {"error": "Error user is not authenticated", "authenticated": False}
@@ -34,11 +35,12 @@ class AuthService:
         Creates a new user account.
 
         Args:
-            data: A dictionary containing the request arguments.
-            db_session: Optional database session to be used in tests.
+            data (dict): A dictionary containing the user's information (username, password, email, etc.).
+            db_session (Optional[Session]): A database session used for testing.
 
         Returns:
-            A Response object indicating success with the user ID or an error message.
+            Response: A JSON response indicating success or failure.
+                Returns 201 status if user created successfully, 400 for missing data, and 409 for conflicts.
         """
         if not data.get("username") or not data.get("password") or not data.get("email"):
             response_data = {"error": "Username, password, and email are required"}
@@ -63,17 +65,17 @@ class AuthService:
 
 
     @staticmethod
-    def login_user(data, db_session=None):
+    def login(data, db_session=None):
         """
-        Logs in a user by verifying their username and password.
+        Authenticates and logs in a user based on the provided username and password.
 
         Args:
-            data: A dictionary containing the request arguments.
-            db_session: Optional database session to be used in tests.
+            data (dict): A dictionary containing 'username' and 'password' keys.
+            db_session (Optional[Session]): A database session used for testing.
 
         Returns:
-            A Response object containing a success message and the user details if login is successful,
-            or a 401 error if the username or password is incorrect.
+            Response: A JSON response with a success message and user data if login is successful.
+                Returns 400 if username or password is missing, 422 if credentials are invalid.
         """
         if not data.get("username") or not data.get("password"):
             return jsonify({"error": "Username and password are required"}), 400
@@ -97,12 +99,13 @@ class AuthService:
 
 
     @staticmethod
-    def logout_user():
+    def logout():
         """
-        Logs out the currently logged-in user.
+        Logs out the currently authenticated user.
 
         Returns:
-            A Response object indicating the success of the logout operation.
+            Response: A JSON response indicating the result of the logout operation.
+                Status 200 if logout was successful.
         """
         logout_user()
         session.clear()
@@ -115,10 +118,11 @@ class AuthService:
     @staticmethod
     def password_reset_request(db_session=None):
         """
-        Handles a password reset request.
+        Handles a password reset request by generating and sending a reset email.
 
         Returns:
-            A Response object indicating whether the request was successful.
+            Response: A JSON response indicating success or failure in sending the password reset email.
+                Returns 202 if email was successfully sent, 404 if profile or user not found.
         """
         reset_token = jwt.encode({
             'user_id': session.get("user_id"),
@@ -152,15 +156,16 @@ class AuthService:
     @staticmethod
     def reset_user_password(reset_token, new_password, db_session=None):
         """
-        Resets a user's password using a reset token.
+        Resets the user's password using a provided reset token.
 
         Args:
-            reset_token: The token used to verify the password reset request.
-            new_password: The new password to be set for the user.
-            db_session: Optional database session to be used in tests.
+            reset_token (str): The token used to verify the password reset request.
+            new_password (str): The new password to set for the user.
+            db_session (Optional[Session]): A database session used for testing.
 
         Returns:
-            A Response object indicating whether the password reset was successful.
+            Response: A JSON response indicating the result of the password reset operation.
+                Returns 200 if password is successfully reset, 400 if the token is expired or invalid, 404 if user not found.
         """
         try:
             jwt.decode(reset_token, os.getenv('SECRET_KEY'), algorithms=['HS256'])
