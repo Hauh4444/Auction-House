@@ -5,11 +5,11 @@
 ### React Frontend
 
 1. Minor
-    1. Search chats and tickets
-    2. View profile page
-    3. Friend functionality
-    4. Friends page in user account
-    5. Bidding UI
+   1. Search chats and tickets
+   2. View profile page
+   3. Friend functionality
+   4. Friends page in user account
+   5. Bidding UI
 
 ### Flask Server
 

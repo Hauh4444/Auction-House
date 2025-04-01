@@ -10,7 +10,19 @@ BACKUP_DIRECTORY = os.path.join(os.getcwd(), "database_backups")
 
 def backup_db():
     """
-    Creates a backup of the MySQL database by exporting its contents into a `.sql` file.
+    Creates a backup of the MySQL database by exporting its structure and data into a `.sql` file.
+
+    This function performs the following tasks:
+    1. Creates a backup directory if it does not already exist.
+    2. Connects to the MySQL database using the credentials from the environment variables.
+    3. Dumps the structure (CREATE TABLE statements) and data (INSERT INTO statements) of each table in the database into a `.sql` file.
+    4. Saves the backup file with a timestamped filename in the `database_backups` directory.
+
+    The resulting `.sql` file contains the full schema and data necessary to recreate the database.
+
+    Raises:
+        mysql.connector.Error: If there is an error while interacting with the MySQL database.
+        Exception: If an unexpected error occurs during the backup process.
     """
     try:
         os.makedirs(BACKUP_DIRECTORY, exist_ok=True)
@@ -63,6 +75,19 @@ def backup_db():
 def recover_db():
     """
     Restores the MySQL database from the latest `.sql` backup file.
+
+    This function performs the following tasks:
+    1. Scans the `database_backups` directory for `.sql` backup files.
+    2. Sorts the backup files by modification date to find the most recent backup.
+    3. Connects to the MySQL database using the configured credentials.
+    4. Reads the SQL script from the latest backup file and executes it to restore the database.
+    5. Commits the changes to the database.
+
+    The restoration process will overwrite the current database state with the data from the backup.
+
+    Raises:
+        mysql.connector.Error: If there is an error while interacting with the MySQL database during the recovery process.
+        Exception: If an unexpected error occurs during the recovery process.
     """
     try:
         backup_files = [

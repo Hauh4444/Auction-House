@@ -12,11 +12,12 @@ class BidService:
         Posts a new bid and broadcasts it in real-time.
 
         Args:
-            data: A dictionary containing the bid details.
-            db_session: Optional database session for tests.
+            data (dict): A dictionary containing the bid details (e.g., user, amount).
+            db_session (Optional[Session]): An optional database session used for testing.
 
         Returns:
-            A Response object with the success message and newly created bid, or an error message if validation fails.
+            Response: A JSON response containing the success message, bid ID, and bid data if successful.
+                Returns status code 400 if required fields are missing.
         """
         # Validation to check if required fields are present
         if not data.get("user") or not data.get("amount"):
@@ -35,17 +36,19 @@ class BidService:
         data = {"message": "Bid posted", "bid_id": bid_id, "bid": data}
         return Response(response=jsonify(data).get_data(), status=201, mimetype='application/json')
 
+
     @staticmethod
     def get_bid_by_id(bid_id, db_session=None):
         """
         Retrieves a specific bid by its ID.
 
         Args:
-            bid_id: The ID of the bid to retrieve.
-            db_session: Optional database session to be used in tests.
+            bid_id (int): The ID of the bid to retrieve.
+            db_session (Optional[Session]): An optional database session to be used in tests.
 
         Returns:
-            A Response object with the bid data if found, otherwise a 404 error with a message.
+            Response: A JSON response containing the bid data if found.
+                Returns status code 404 if the bid is not found.
         """
         # Use BidMapper to get the bid from the database by its ID
         bid = BidMapper.get_bid_by_id(bid_id=bid_id, db_session=db_session)
@@ -59,16 +62,17 @@ class BidService:
         data = {"error": "Bid not found"}
         return Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
 
+
     @staticmethod
     def get_all_bids(db_session=None):
         """
         Retrieves a list of all bids.
 
         Args:
-            db_session: Optional database session to be used in tests.
+            db_session (Optional[Session]): An optional database session to be used in tests.
 
         Returns:
-            A Response object containing the list of bids.
+            Response: A JSON response containing the list of all bids.
         """
         # Use BidMapper to get all bids from the database
         bids = BidMapper.get_all_bids(db_session=db_session)
