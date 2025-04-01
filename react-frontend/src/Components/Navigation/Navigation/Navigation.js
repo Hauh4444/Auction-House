@@ -14,9 +14,12 @@
  *                    which contains information about the clicked element.
  */
 function toggleNav(e) {
+    // Remove "selected" class from all buttons
     document.querySelectorAll(".navBtn").forEach(element => {
-        element.classList.remove("selected")
+        element.classList.remove("selected");
     });
+
+    // Add "selected" class to the clicked button
     e.target.classList.add("selected");
 }
 

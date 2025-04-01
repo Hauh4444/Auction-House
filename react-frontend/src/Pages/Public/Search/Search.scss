@@ -1,0 +1,113 @@
+// Built In Modules
+@use "sass:map";
+// Custom Variables
+@use "@/assets/variables.modules.scss" as *;
+
+.searchPage {
+    .mainPage {
+        .searchListings {
+            width: 70%;
+            margin: 0 15%;
+
+            .last {
+                margin-bottom: 50px !important ;
+            }
+
+            .listing {
+                width: calc(100% - 40px);
+                height: 200px;
+                margin: 25px 0 0 0;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 2px 4px map.get($theme-colors, mainColor4);
+                background-color: map.get($theme-colors, mainColor1);
+                display: inline-flex;
+                flex-direction: row;
+                position: relative;
+
+                .image {
+                    width: 200px;
+                    border-radius: 10px;
+                    display: inline-flex;
+                    overflow: hidden;
+                    align-items: center;
+                    justify-content: center;
+
+                    img {
+                        width: auto;
+                        height: auto;
+                        max-width: 100%;
+                        max-height: 100%;
+                    }
+                }
+
+                .info {
+                    height: fit-content;
+                    margin: auto 0;
+                    padding-left: 20px;
+                    display: flex;
+                    flex-direction: column;
+                    flex-basis: calc(100% - 420px);
+                    gap: 10px;
+                    text-align: left;
+
+                    .title {
+                        width: 100%;
+                        height: 62px;
+                        padding: 0;
+                        display: flex;
+                        overflow: hidden;
+                        align-items: flex-start;
+                        text-align: left;
+                        text-transform: none;
+
+                        &:hover {
+                            background-color: map.get($theme-colors, mainColor1);
+                        }
+                    }
+
+                    .price {
+                        width: fit-content;
+                        margin: 0;
+                    }
+
+                    .title,
+                    .price {
+                        font-size: 18px;
+                        color: map.get($theme-colors, mainColor3);
+                    }
+                }
+
+                .btns {
+                    height: calc(100% - 20px);
+                    margin: 10px 0;
+                    display: flex;
+                    flex-direction: column;
+                    flex-basis: 200px;
+                    gap: 10px;
+                    justify-content: end;
+
+                    .addToListBtn,
+                    .addCartBtn {
+                        width: 135px;
+                        height: 35px;
+                        margin: 0 auto;
+                        padding: 0 20px;
+                        border-radius: 20px;
+                        box-shadow: 0 2px 4px map.get($theme-colors, mainColor4);
+                    }
+
+                    .addToListBtn {
+                        background-color: map.get($theme-colors, mainColor1);
+                        color: map.get($theme-colors, mainColor3);
+                    }
+
+                    .addCartBtn {
+                        background-image: linear-gradient(to right, map.get($theme-colors, accentColor1), map.get($theme-colors, accentColor2));
+                        color: map.get($theme-colors, mainColor1);
+                    }
+                }
+            }
+        }
+    }
+}

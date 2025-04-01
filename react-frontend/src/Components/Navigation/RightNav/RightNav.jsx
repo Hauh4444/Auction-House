@@ -7,11 +7,14 @@ import { HiOutlineUserGroup, HiUserGroup } from "react-icons/hi2";
 import { PiTruckFill, PiTruckLight } from "react-icons/pi";
 import { Button } from "@mui/material";
 
+// Internal Modules
+import { useAuth } from "@/ContextAPI/AuthContext";
+
 // Stylesheets
 import "./RightNav.scss";
 
 // Custom Variables
-import { variables } from "@/assets/variables.modules.js";
+import { variables } from "@/assets/variables.modules";
 
 /**
  * RightNav Component
@@ -33,37 +36,43 @@ import { variables } from "@/assets/variables.modules.js";
  *                       application.
  */
 const RightNav = () => {
-    const navigate = useNavigate();
+    const navigate = useNavigate(); // Navigate hook for routing
+    const auth = useAuth();
 
     return (
-        <nav className="rightNav" style={{flexBasis: "15%"}}>
-            <div className="navBar">
-                <Button className="btn">
-                    <BsThreeDots className="menuBtn" style={{
-                        fontSize: "25px",
-                        color: variables.mainColor3,
-                    }} />
+        <nav className="rightNav"> {/* Navigation container */}
+            <div className="navBar"> {/* Navigation bar container */}
+                <Button className="btn" data-testid="menuBtn"> {/* Button for menu */}
+                    <BsThreeDots className="menuBtn" style={{fontSize: "25px", color: variables.mainColor3}} onClick={() => {if (!auth.user) navigate("/auth-page")}}/>
                 </Button>
-                <Button className="btn" style={{marginBottom: "15px"}} onClick={() => navigate("/user/account")}>
-                    <RiAccountCircle2Fill className="fill" />
-                    <RiAccountCircle2Line className="outline" />
+                <Button className="btn" data-testid="accountBtn" style={{marginBottom: "15px"}} onClick={() => navigate(`/${auth.user ? auth.user.role : "user"}/account`)}>
+                    <RiAccountCircle2Fill className="fill" /> {/* Filled account icon */}
+                    <RiAccountCircle2Line className="outline" /> {/* Outlined account icon */}
                 </Button>
-                <Button className="btn" style={{marginBottom: "15px"}}>
-                    <IoFlag className="fill" />
-                    <IoFlagOutline className="outline" />
+                {(!auth.user || auth.user.role === "user") && (
+                    <>
+                        <Button className="btn" data-testid="flagBtn" style={{marginBottom: "15px"}} onClick={() => navigate(`/${auth.user ? auth.user.role : "user"}/support`)}> {/* Button for flag */}
+                            <IoFlag className="fill" /> {/* Filled flag icon */}
+                            <IoFlagOutline className="outline" /> {/* Outlined flag icon */}
+                        </Button>
+                        <Button className="btn" data-testid="cartBtn" style={{marginBottom: "15px"}} onClick={() => navigate(`/${auth.user ? auth.user.role : "user"}/cart`)}>
+                            <IoCart className="fill" /> {/* Filled cart icon */}
+                            <IoCartOutline className="outline" /> {/* Outlined cart icon */}
+                        </Button>
+                    </>
+                )}
+                <Button className="btn" data-testid="friendBtn" style={{marginBottom: "15px"}} onClick={() => navigate(`/${auth.user ? auth.user.role : "user"}/messages`)}> {/* Button for user group */}
+                    <HiUserGroup className="fill" /> {/* Filled user group icon */}
+                    <HiOutlineUserGroup className="outline" /> {/* Outlined user group icon */}
                 </Button>
-                <Button className="btn" style={{marginBottom: "15px"}}>
-                    <IoCart className="fill" />
-                    <IoCartOutline className="outline" />
-                </Button>
-                <Button className="btn" style={{marginBottom: "15px"}}>
-                    <HiUserGroup className="fill" />
-                    <HiOutlineUserGroup className="outline" />
-                </Button>
-                <Button className="btn" style={{marginBottom: "15px"}}>
-                    <PiTruckFill className="fill" />
-                    <PiTruckLight className="outline" />
-                </Button>
+                {(!auth.user || auth.user.role === "user") && (
+                    <>
+                        <Button className="btn" data-testid="truckBtn" style={{marginBottom: "15px"}} onClick={() => navigate(`/${auth.user ? auth.user.role : "user"}/deliveries`)}>
+                            <PiTruckFill className="fill" /> {/* Filled truck icon */}
+                            <PiTruckLight className="outline" /> {/* Outlined truck icon */}
+                        </Button>
+                    </>
+                )}
             </div>
         </nav>
     )

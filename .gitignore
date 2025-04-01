@@ -5,9 +5,10 @@ flask-server/app/routes/__pycache__/
 flask-server/app/entities/__pycache__/
 flask-server/app/data_mappers/__pycache__/
 flask-server/app/services/__pycache__/
+flask-server/flask_session/
+flask-server/.env
 
+react-frontend/coverage/
 react-frontend/node_modules/
-
-flask-server/database/auctionhouse_backup.sql
 
 *.pyc

@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from datetime import datetime
 
+
 @dataclass
 class SupportTicket:
     """
@@ -9,7 +10,6 @@ class SupportTicket:
     Attributes:
         ticket_id (int, optional): The unique identifier for the support ticket.
         user_id (int): The ID of the user who created the ticket.
-        order_id (int): The ID of the related order.
         subject (str): The subject of the support ticket.
         status (str): The status of the ticket (e.g., "Open", "Closed", "In Progress").
         priority (str): The priority level of the ticket (e.g., "Low", "Medium", "High").
@@ -20,7 +20,6 @@ class SupportTicket:
     def __init__(
             self,
             user_id: int,
-            order_id: int,
             subject: str,
             status: str,
             priority: str,
@@ -31,20 +30,18 @@ class SupportTicket:
     ):
         self.ticket_id = ticket_id
         self.user_id = user_id
-        self.order_id = order_id
         self.subject = subject
         self.status = status
         self.priority = priority
         self.assigned_to = assigned_to
-        self.created_at = created_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        self.updated_at = updated_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.created_at = created_at or datetime.now()
+        self.updated_at = updated_at or datetime.now()
 
     def to_dict(self):
         """Converts the support ticket object to a dictionary representation."""
         return {
             "ticket_id": self.ticket_id,
             "user_id": self.user_id,
-            "order_id": self.order_id,
             "subject": self.subject,
             "status": self.status,
             "priority": self.priority,

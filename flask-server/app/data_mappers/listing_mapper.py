@@ -1,43 +1,64 @@
-from ..database import get_db
-from ..entities.listing import Listing
+from pymysql import cursors
+
+from ..database.connection import get_db
+from ..entities import Listing
 
 
 class ListingMapper:
-    """Handles database operations related to listings."""
-
     @staticmethod
-    def get_all_listings(args):
-        """Retrieve all listings with optional filtering, sorting, and pagination.
+    def get_all_user_listings(user_id, db_session=None):
+        """
+        Retrieve all listings by user id.
 
         Args:
-            args (dict): Dictionary of query parameters (e.g., category_id, min_price, query).
+            user_id (int): ID of the user whos listings to retrieve
+            db_session: Optional database session to be used in tests.
 
         Returns:
             list: A list of listing dictionaries matching the query conditions.
         """
-        db = get_db()
-        cursor = db.cursor()
+        db = db_session or get_db()
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor.execute("SELECT * FROM listings WHERE user_id = %s", (user_id,))
+        listings = cursor.fetchall()
+        return [Listing(**listing).to_dict() for listing in listings]
+
+
+    @staticmethod
+    def get_all_listings(args, db_session=None):
+        """
+        Retrieve all listings with optional filtering, sorting, and pagination.
+
+        Args:
+            args (dict): Dictionary of query parameters.
+            db_session: Optional database session to be used in tests.
+
+        Returns:
+            list: A list of listing dictionaries matching the query conditions.
+        """
+        db = db_session or get_db()
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
         statement = "SELECT * FROM listings"
         conditions = []
         values = []
 
         # Add conditions
         if "category_id" in args:
-            conditions.append("category_id=?")
-            values.append(args["category_id"])
+            conditions.append("category_id = %s")
+            values.append(args.get("category_id"))
         if "listing_type" in args:
-            conditions.append("listing_type=?")
-            values.append(args["listing_type"])
+            conditions.append("listing_type = %s")
+            values.append(args.get("listing_type"))
         if "min_price" in args:
-            conditions.append("buy_now_price > ?")
-            values.append(args["min_price"])
+            conditions.append("buy_now_price > %s")
+            values.append(args.get("min_price"))
         if "max_price" in args:
-            conditions.append("buy_now_price < ?")
-            values.append(args["max_price"])
+            conditions.append("buy_now_price < %s")
+            values.append(args.get("max_price"))
         if "query" in args:
-            query = args["query"]
-            conditions.append("(title LIKE ? OR description LIKE ?)")
-            values.extend([f'%{query}%', f'%{query}%'])
+            query = args.get("query")
+            conditions.append("(title LIKE %s OR description LIKE %s)")
+            values.extend([f"%{query}%", f"%{query}%"])
 
         if conditions:
             statement += " WHERE " + " AND ".join(conditions)
@@ -48,86 +69,98 @@ class ListingMapper:
 
         # Add pagination
         if "start" in args and "range" in args:
-            statement += " LIMIT ? OFFSET ?"
-            values.extend([args["range"], args["start"]])
+            statement += " LIMIT %s OFFSET %s"
+            values.extend([int(args.get("range")), int(args.get("start"))])
 
         cursor.execute(statement, values)
         listings = cursor.fetchall()
         return [Listing(**listing).to_dict() for listing in listings]
 
+
     @staticmethod
-    def get_listing_by_id(listing_id):
-        """Retrieve a single listing by its ID.
+    def get_listing_by_id(listing_id, db_session=None):
+        """
+        Retrieve a single listing by its ID.
 
         Args:
             listing_id (int): The ID of the listing to retrieve.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             dict: Listing details if found, otherwise None.
         """
-        db = get_db()
-        cursor = db.cursor()
-        cursor.execute("SELECT * FROM listings WHERE listing_id=?", (listing_id,))
+        db = db_session or get_db()
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor.execute("SELECT * FROM listings WHERE listing_id = %s", (listing_id,))
         listing = cursor.fetchone()
         return Listing(**listing).to_dict() if listing else None
 
+
     @staticmethod
-    def create_listing(data):
-        """Create a new listing in the database.
+    def create_listing(data, db_session=None):
+        """
+        Create a new listing in the database.
 
         Args:
             data (dict): Dictionary containing listing details.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             int: The ID of the newly created listing.
         """
-        db = get_db()
-        cursor = db.cursor()
+        db = db_session or get_db()
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
         statement = """
             INSERT INTO listings 
-            (listing_id, user_id, title, title_short, description, item_specifics, category_id, listing_type, starting_price, 
+            (user_id, title, title_short, description, item_specifics, category_id, listing_type, starting_price, 
             reserve_price, current_price, buy_now_price, auction_start, auction_end, status, image_encoded, bids, purchases, 
             average_review, total_reviews, created_at, updated_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """
-        cursor.execute(statement, tuple(Listing(**data).to_dict().values()))
+        cursor.execute(statement, tuple(Listing(**data).to_dict().values())[1:])
         db.commit()
         return cursor.lastrowid
 
+
     @staticmethod
-    def update_listing(listing_id, data):
-        """Update an existing listing.
+    def update_listing(listing_id, data, db_session=None):
+        """
+        Update an existing listing.
 
         Args:
             listing_id (int): The ID of the listing to update.
             data (dict): Dictionary of fields to update.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             int: Number of rows updated.
         """
-        db = get_db()
-        cursor = db.cursor()
-        set_clause = ", ".join([f"{key}=?" for key in data if key not in ["listing_id", "created_at"]])
-        values = [data[key] for key in data if key not in ["listing_id", "created_at"]]
+        db = db_session or get_db()
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        set_clause = ", ".join([f"{key} = %s" for key in data if key not in ["listing_id", "created_at"]])
+        values = [data.get(key) for key in data if key not in ["listing_id", "created_at"]]
         values.append(listing_id)
-        statement = f"UPDATE listings SET {set_clause} WHERE listing_id=?"
+        statement = f"UPDATE listings SET {set_clause} WHERE listing_id = %s"
         cursor.execute(statement, values)
         db.commit()
         return cursor.rowcount
 
+
     @staticmethod
-    def delete_listing(listing_id):
-        """Delete a listing by its ID.
+    def delete_listing(listing_id, db_session=None):
+        """
+        Delete a listing by its ID.
 
         Args:
             listing_id (int): The ID of the listing to delete.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             int: Number of rows deleted.
         """
-        db = get_db()
-        cursor = db.cursor()
-        cursor.execute("DELETE FROM listings WHERE listing_id=?", (listing_id,))
+        db = db_session or get_db()
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor.execute("DELETE FROM listings WHERE listing_id = %s", (listing_id,))
         db.commit()
         return cursor.rowcount
 

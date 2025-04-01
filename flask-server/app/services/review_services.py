@@ -1,84 +1,121 @@
-from flask import jsonify
-from ..data_mappers.review_mapper import ReviewMapper
+from flask import jsonify, Response
+
+from ..data_mappers import ReviewMapper
+
 
 class ReviewService:
     @staticmethod
-    def get_all_reviews(request):
+    def get_all_reviews(args, db_session=None):
         """
         Retrieves a list of all reviews.
-        
+
+        Args:
+            args (dict): Dictionary of query parameters.
+            db_session: Optional database session to be used in tests.
+
         Returns:
-            A JSON response containing the list of reviews with a 200 status code.
+            A Response object containing the list of reviews with a 200 status code.
         """
-        reviews = ReviewMapper.get_all_reviews(args=request.args)
-        return jsonify(reviews), 200
-    
+        reviews = ReviewMapper.get_all_reviews(args=args, db_session=db_session)
+
+        if not reviews:
+            response_data = {"error": "No reviews found"}
+            return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
+
+        response_data = {"message": "Reviews found", "reviews": reviews}
+        return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
+            
+
     @staticmethod
-    def get_review_by_id(review_id):
+    def get_review_by_id(review_id, db_session=None):
         """
         Retrieves a specific review by its ID.
         
         Args:
             review_id: The ID of the review to retrieve.
-            
+            db_session: Optional database session to be used in tests.
+
         Returns:
-            A JSON response with the review data if found, otherwise a 404 error with a message.
+            A Response object with the review data if found, otherwise a 404 error with a message.
         """
-        review = ReviewMapper.get_review_by_id(review_id)
-        if review:
-            return jsonify(review), 200
-        return jsonify({"error": "Review not found"}), 404
-    
+        review = ReviewMapper.get_review_by_id(review_id=review_id, db_session=db_session)
+
+        if not review:
+            response_data = {"error": "Review not found"}
+            return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
+
+        response_data = {"message": "Review found", "review": review}
+        return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
+
+
+
     @staticmethod
-    def create_review(data):
+    def create_review(data, db_session=None):
         """
         Creates a new review with the provided data.
         
         Args:
-            data: A dictionary containing the review details.
-            
+            data: A dictionary containing the request arguments.
+            db_session: Optional database session to be used in tests.
+
         Returns:
-            A JSON response with the success message and newly created reviewID,
+            A Response object with the success message and newly created reviewID,
             or a 400 error if required fields are missing.
         """
-        required_fields = ["listing_id", "user_id", "username", "title", "description", "stars", "created_at"]
-        if not all(field in data for field in required_fields):
-            return jsonify({"message": "Missing required review fields"}), 400
-        
-        review_id = ReviewMapper.create_review(data)
-        return jsonify({"message": "Review created", "review_id": review_id}), 201
-    
+        review_id = ReviewMapper.create_review(data=data, db_session=db_session)
+
+        if not review_id:
+            response_data = {"error": "Error creating review"}
+            return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
+
+        response_data = {"message": "Review created", "review_id": review_id}
+        return Response(response=jsonify(response_data).get_data(), status=201, mimetype="application/json")
+            
+
     @staticmethod
-    def update_review(review_id, data):
+    def update_review(review_id, data, db_session=None):
         """
         Updates an existing review by its ID with the provided data.
         
         Args:
             review_id: The ID of the review to update.
-            data: A dictionary containing the fields to update.
-            
+            data: A dictionary containing the request arguments.
+            db_session: Optional database session to be used in tests.
+
         Returns:
-            A JSON response with a success message if the review was updated,
+            A Response object with a success message if the review was updated,
             or a 404 error if the review was not found.
         """
-        updated_rows = ReviewMapper.update_review(review_id, data)
-        if updated_rows:
-            return jsonify({"message": "Review updated"}), 200
-        return jsonify({"error": "Review not found"}), 404
-    
+        updated_rows = ReviewMapper.update_review(review_id=review_id, data=data, db_session=db_session)
+
+        if not updated_rows:
+            response_data = {"error": "Review not found"}
+            return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
+
+        response_data = {"message": "Review updated", "updated_rows": updated_rows}
+        return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
+
+
+
     @staticmethod
-    def delete_review(review_id):
+    def delete_review(review_id, db_session=None):
         """
         Deletes a review by its ID.
         
         Args:
             review_id: The ID of the review to delete.
-            
+            db_session: Optional database session to be used in tests.
+
         Returns:
-            A JSON response with a success message if the review was deleted,
+            A Response object with a success message if the review was deleted,
             or a 404 error if the review was not found.
-            """
-        deleted_rows = ReviewMapper.delete_review(review_id)
-        if deleted_rows:
-            return jsonify({"message": "Review deleted"}), 200
-        return jsonify({"error": "Review not found"}), 404
+        """
+        deleted_rows = ReviewMapper.delete_review(review_id=review_id, db_session=db_session)
+
+        if not deleted_rows:
+            response_data = {"error": "Review not found"}
+            return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
+
+        response_data = {"message": "Review deleted", "deleted_rows": deleted_rows}
+        return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
+

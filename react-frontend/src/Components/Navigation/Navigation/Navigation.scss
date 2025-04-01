@@ -3,8 +3,10 @@
 // Custom Variables
 @use "@/assets/variables.modules.scss" as *;
 
-.homeNav,
-.searchNav {
+.searchNav,
+.historyNav,
+.paymentNav,
+.sellerProfileNav {
     width: fit-content;
     height: 60px;
     margin: 15px auto;

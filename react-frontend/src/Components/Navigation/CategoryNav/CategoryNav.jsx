@@ -18,47 +18,53 @@ import "./CategoryNav.scss";
  * @returns {JSX.Element} A section displaying categories with navigation buttons.
  */
 const CategoryNav = () => {
-    const [categories, setCategories] = useState([]);
-    const navigate = useNavigate();
-    const location = useLocation();
+    const navigate = useNavigate(); // To navigate between pages
+    const location = useLocation(); // Hook to access the current location (URL)
 
+    const [categories, setCategories] = useState([]); // State to store fetched categories
+
+    // Fetch categories from API on component mount
     useEffect(() => {
-        axios.get("http://127.0.0.1:5000/api/categories", {
+        axios.get("http://127.0.0.1:5000/api/categories/", {
             headers: {
                 "Content-Type": "application/json",
             }
         })
-            .then(res => setCategories(res.data))
-            .catch(err => console.log(err));
-    }, []); // Empty dependency array to ensure it runs only once when the component is mounted
+            .then((res) => setCategories(res.data.categories)) // Set the fetched categories into the state
+            .catch(err => console.log(err)); // Log errors if any
+    }, []); // Empty dependency array ensures the request runs once when the component mounts
 
+    // Function to navigate to the selected category page
     const navigateToCategory = (id) => {
+        // Close the categories navigation if on a page other than home
         if (location.pathname !== "/") {
-            document.querySelector(".categoriesPopup").style.maxHeight = "0";
+            document.querySelector(".categoryNav").style.maxHeight = "0";
         }
-        navigate(`/category?category_id=${id}&page=1`);
+        navigate(`/category?category_id=${id}&page=1`); // Navigate to the category page with the category ID and page number
     }
 
     return (
         <>
+            {/* Check if the current page is not the homepage */}
             {location.pathname !== "/" ? (
-                <div className="categoriesPopup">
+                <nav className="categoryNav" data-testid="categoryNav">
                     {categories.map((category, index) => (
-                        <div style={{width: "25%", display: "inline-block", textAlign: "center"}} key={index}>
+                        <div className="categoryContainer" key={index}>
                             <Button className="categoryBtn" onClick={() => navigateToCategory(category.category_id)}
                                     key={index}>
-                                {category.name}
+                                {category.name} {/* Display category name */}
                             </Button>
                         </div>
                     ))}
-                </div>
+                </nav>
             ) : (
-                <div className="categoriesList">
+                <div className="categoryList" data-testid="categoryList">
                     {categories.map((category, index) => (
                         <div className="category" key={index}>
                             <div className="image">
+                                {/* Check if category has an image, if yes, display it, otherwise show a fallback */}
                                 {category.image_encoded ? (
-                                    <img src={`data:image/jpg;base64,${category.image_encoded}`} alt={category.title} />
+                                    <img src={`data:image/jpg;base64,${category.image_encoded}`} alt={category.name} />
                                 ) : (
                                     <div>No image available</div>
                                 )}
@@ -66,15 +72,15 @@ const CategoryNav = () => {
                             <div className="categoryBtn">
                                 <Button className="btn" onClick={() => navigateToCategory(category.category_id)}
                                         key={index}>
-                                    {category.name}
+                                    {category.name} {/* Display category name */}
                                 </Button>
                             </div>
                         </div>
                     ))}
                 </div>
             )}
-        < />
-    )
+        </>
+    );
 }
 
 export default CategoryNav;
