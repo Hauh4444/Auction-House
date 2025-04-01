@@ -16,6 +16,7 @@ def get_messages_by_ticket(ticket_id, db_session=None):
 
     Args:
         ticket_id (int): The ID of the ticket for which messages are being retrieved.
+        db_session: Optional database session to be used in tests.
 
     Returns:
         JSON response containing the list of messages for the ticket.
@@ -32,6 +33,7 @@ def create_message(ticket_id, db_session=None):
 
     Args:
         ticket_id (int): The ID of the ticket where the message will be added.
+        db_session: Optional database session to be used in tests.
 
     Expects:
         JSON payload containing the message content.
@@ -41,7 +43,6 @@ def create_message(ticket_id, db_session=None):
     """
     data = request.json
     data.update(sender_id=session.get("user_id"), ticket_id=ticket_id)
-    print(current_user.user_id)
     return TicketMessageService.create_message(data=data, db_session=db_session)
 
 
@@ -54,6 +55,7 @@ def update_message(message_id, db_session=None):
 
     Args:
         message_id (int): The ID of the message to update.
+        db_session: Optional database session to be used in tests.
 
     Expects:
         JSON payload containing the updates for the message.
@@ -74,6 +76,7 @@ def delete_message(message_id, db_session=None):
 
     Args:
         message_id (int): The ID of the message to delete.
+        db_session: Optional database session to be used in tests.
 
     Returns:
         JSON response indicating the status of the deletion.

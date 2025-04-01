@@ -4,7 +4,7 @@ from ..database.connection import get_db
 from ..entities import ChatMessage
 
 
-class ChatMessagesMapper:
+class ChatMessageMapper:
     @staticmethod
     def get_messages_by_chat_id(chat_id, db_session=None):
         """
@@ -58,7 +58,7 @@ class ChatMessagesMapper:
         db = db_session or get_db()
         cursor = db.cursor(cursors.DictCursor) # type: ignore
         statement = """
-            INSERT INTO chat_messages (sender_id, chat_id, content, created_at) 
+            INSERT INTO chat_messages (sender_id, chat_id, message, sent_at) 
             VALUES (%s, %s, %s, %s)
         """
         cursor.execute(statement, tuple(ChatMessage(**data).to_dict().values())[1:]) # Exclude message_id (auto-incremented)
