@@ -111,7 +111,7 @@ class SupportTicketMapper:
     @staticmethod
     def update_ticket_timestamp(ticket_id, db_session=None):
         """
-        Update a support ticket's details.
+        Update a support ticket's timestamp.
 
         Args:
             ticket_id (int): The ID of the ticket to update.

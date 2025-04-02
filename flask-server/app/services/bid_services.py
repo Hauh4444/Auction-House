@@ -36,6 +36,7 @@ class BidService:
         data = {"message": "Bid posted", "bid_id": bid_id, "bid": data}
         return Response(response=jsonify(data).get_data(), status=201, mimetype='application/json')
 
+
     @staticmethod
     def get_bid_by_id(bid_id, db_session=None):
         """
@@ -60,6 +61,7 @@ class BidService:
         # If the bid is not found, return an error message
         data = {"error": "Bid not found"}
         return Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
+
 
     @staticmethod
     def get_all_bids(db_session=None):

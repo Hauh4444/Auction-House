@@ -44,9 +44,7 @@ const CustomerInquiries = () => {
             },
             withCredentials: true, // Ensures cookies are sent with requests
         })
-            .then((res) => {
-                setTicketMessages(res.data.ticket_messages); // Set the user state
-            } )
+            .then((res) => setTicketMessages(res.data.ticket_messages))
             .catch(() => setTicketMessages([]));
     }, [currentSupportTicket]);
 

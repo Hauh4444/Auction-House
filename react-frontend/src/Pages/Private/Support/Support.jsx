@@ -46,9 +46,7 @@ const Support = () => {
             },
             withCredentials: true, // Ensures cookies are sent with requests
         })
-            .then((res) => {
-                setTicketMessages(res.data.ticket_messages); // Set the user state
-            } )
+            .then((res) => setTicketMessages(res.data.ticket_messages))
             .catch(() => setTicketMessages([]));
     }, [currentSupportTicket]);
 
@@ -113,7 +111,7 @@ const Support = () => {
                     withCredentials: true, // Ensures cookies are sent with requests
                 })
                     .then((res) => {
-                        setTicketMessages(res.data.ticket_messages); // Set the user state
+                        setTicketMessages(res.data.ticket_messages);
                     } )
                     .catch(err => console.log(err)); // Log errors if any
             })

@@ -1,5 +1,24 @@
 # Dinkleberg's Auction House
 
+## TODO
+
+### React Frontend
+
+1. Minor
+   1. Search chats and tickets
+   2. View profile page
+   3. Friend functionality
+   4. Friends page in user account
+   5. Bidding UI
+
+### Flask Server
+
+1. MySQL foreign keys
+2. Implement notifications
+3. Bidding flow
+4. Chat API
+5. Live updates
+
 ## Setup
 
 1. Ensure you have [Node.js](https://nodejs.org/en/download) installed on your machine.

@@ -1,10 +1,31 @@
 from pymysql import cursors
+from datetime import datetime
 
 from ..database.connection import get_db
 from ..entities import Chat
 
 
 class ChatMapper:
+    @staticmethod
+    def get_chats_by_user_id(user_id, db_session=None):
+        """
+        Retrieve all chats for a given user.
+
+        Args:
+            user_id (int): The ID of the user.
+            db_session: Optional database session to be used in tests.
+
+        Returns:
+            list: A list of chat dictionaries.
+        """
+        db = db_session or get_db()
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor.execute("SELECT * FROM chats WHERE user1_id = %s OR user2_id = %s ORDER BY updated_at DESC", (user_id, user_id))
+        chats = cursor.fetchall()
+
+        return [Chat(**chat).to_dict() for chat in chats]
+
+
     @staticmethod
     def get_all_chats(db_session=None):
         """
@@ -57,12 +78,31 @@ class ChatMapper:
         db = db_session or get_db()
         cursor = db.cursor(cursors.DictCursor) # type: ignore
         statement = """
-            INSERT INTO chats (user1_id, user2_id, created_at) 
+            INSERT INTO chats (user1_id, user2_id, created_at, updated_at) 
             VALUES (%s, %s, %s)
         """
         cursor.execute(statement, tuple(Chat(**data).to_dict().values())[1:]) # Exclude chat_id (auto-incremented)
         db.commit()
         return cursor.lastrowid
+
+
+    @staticmethod
+    def update_chat_timestamp(chat_id, db_session=None):
+        """
+        Update a chat's timestamp.
+
+        Args:
+            chat_id (int): The ID of the chat to update.
+            db_session: Optional database session to be used in tests.
+
+        Returns:
+            int: Number of rows updated.
+        """
+        db = db_session or get_db()
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor.execute(f"UPDATE chats SET updated_at = %s WHERE chat_id = %s", (datetime.now(), chat_id))
+        db.commit()
+        return cursor.rowcount
 
 
     @staticmethod

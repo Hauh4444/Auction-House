@@ -20,7 +20,7 @@ const Messages = () => {
     const [newMessage, setNewMessage] = useState('');
 
     useEffect(() => {
-        axios.get("http://127.0.0.1:5000/api/user/chats", {
+        axios.get("http://127.0.0.1:5000/api/user/chats/", {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -36,14 +36,14 @@ const Messages = () => {
     useEffect(() => {
         if (!currentChat) return;
 
-        axios.get("http://127.0.0.1:5000/api/user/messages/" + currentChat.chat_id, {
+        axios.get(`http://127.0.0.1:5000/api/user/messages/${currentChat.chat_id}/`, {
             headers: {
                 "Content-Type": "application/json",
             },
             withCredentials: true, // Ensures cookies are sent with requests
         })
-            .then((res) => setMessages(res.data.messages)) // Set the user state
-            .catch(err => console.log(err)); // Log errors if any
+            .then((res) => setMessages(res.data.messages))
+            .catch(() => setMessages([])); // Log errors if any
     }, [currentChat]);
 
     const handleCreateChat = () => {
@@ -52,9 +52,9 @@ const Messages = () => {
 
     const handleSendMessage = () => {
         if (!newMessage.trim()) return;
-        axios.post("http://127.0.0.1:5000/api/user/messages",
+        axios.post(`http://127.0.0.1:5000/api/user/messages/${currentChat.chat_id}/`,
             {
-                text: newMessage
+                message: newMessage
             },
             {
                 headers: {
@@ -62,11 +62,19 @@ const Messages = () => {
                 },
                 withCredentials: true,
             })
-            .then((res) => {
-                setMessages([...messages, res.data]);
-                if (res.data.chats.length > 0) {
-                    setCurrentChat(res.data.chats[0]);
-                }
+            .then(() => {
+                setNewMessage("");
+
+                axios.get(`http://127.0.0.1:5000/api/user/messages/${currentChat.chat_id}`, {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    withCredentials: true, // Ensures cookies are sent with requests
+                })
+                    .then((res) => {
+                        setMessages(res.data.messages);
+                    } )
+                    .catch(err => console.log(err)); // Log errors if any
             })
             .catch(error => console.error('Error sending message:', error));
     };
@@ -81,7 +89,7 @@ const Messages = () => {
                     <div className="chats">
                         {chats && chats.map((chat, index) => (
                             <Button className={`chat${currentChat === chat ? " selected" : ""}`} key={index} onClick={() => setCurrentChat(chat)}>
-                                {chat.other_user}
+                                Chat {index + 1}
                             </Button>
                         ))}
                         <Button className="createChat" onClick={() => handleCreateChat()}>
