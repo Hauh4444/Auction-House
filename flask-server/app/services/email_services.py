@@ -1,6 +1,7 @@
 import os
 from mailersend import emails
 from dotenv import load_dotenv
+from cryptography.fernet import Fernet
 
 load_dotenv()  # Load environment variables from .env file
 
@@ -19,7 +20,10 @@ class EmailService:
         Returns:
             bool: True if the email was sent successfully, False otherwise.
         """
-        mailer = emails.NewEmail(os.getenv('MAILERSEND_API_KEY'))
+        cipher = Fernet(os.getenv('ENCRYPTION_KEY'))
+        MAILERSEND_API_KEY = cipher.decrypt(os.getenv('ENCRYPTED_API_KEY').encode()).decode()
+
+        mailer = emails.NewEmail(MAILERSEND_API_KEY)
 
         email_data = {
             'from': {
