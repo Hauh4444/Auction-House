@@ -4,20 +4,19 @@
 
 ### React Frontend
 
-1. Minor
-   1. Search chats and tickets
-   2. View profile page
-   3. Friend functionality
-   4. Friends page in user account
-   5. Bidding UI
+1. Admin Management
+2. 3D Showcase UI
+3. Friend UI
+4. Live Auction UI
 
 ### Flask Server
 
-1. MySQL foreign keys
-2. Implement notifications
-3. Bidding flow
-4. Chat API
-5. Live updates
+1. MySQL Foreign Keys 
+2. Logging 
+3. Analytics & Reports 
+4. 3D Showcase API 
+5. Live Updates
+6. Admin Control
 
 ## Setup
 

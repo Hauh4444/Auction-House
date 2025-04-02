@@ -33,6 +33,7 @@ const Security = () => {
             },
             withCredentials: true,
         })
+            .then(() => alert("Password reset request email sent to: " + user["email"]))
             .catch(err => console.log(err));
     }
 
