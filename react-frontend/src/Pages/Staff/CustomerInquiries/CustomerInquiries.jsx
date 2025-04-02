@@ -22,7 +22,7 @@ const CustomerInquiries = () => {
     const [newTicketMessage, setNewTicketMessage] = useState('');
 
     useEffect(() => {
-        axios.get("http://127.0.0.1:5000/api/support/tickets", {
+        axios.get("http://127.0.0.1:5000/api/support/tickets/", {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -38,7 +38,7 @@ const CustomerInquiries = () => {
     useEffect(() => {
         if (!currentSupportTicket) return;
 
-        axios.get(`http://127.0.0.1:5000/api/ticket/messages/${currentSupportTicket.ticket_id}`, {
+        axios.get(`http://127.0.0.1:5000/api/ticket/messages/${currentSupportTicket.ticket_id}/`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -67,7 +67,7 @@ const CustomerInquiries = () => {
             .then(() => {
                 setNewTicketMessage("");
 
-                axios.get(`http://127.0.0.1:5000/api/ticket/messages/${currentSupportTicket.ticket_id}`, {
+                axios.get(`http://127.0.0.1:5000/api/ticket/messages/${currentSupportTicket.ticket_id}/`, {
                     headers: {
                         "Content-Type": "application/json",
                     },

@@ -65,7 +65,7 @@ const Messages = () => {
             .then(() => {
                 setNewMessage("");
 
-                axios.get(`http://127.0.0.1:5000/api/user/messages/${currentChat.chat_id}`, {
+                axios.get(`http://127.0.0.1:5000/api/user/messages/${currentChat.chat_id}/`, {
                     headers: {
                         "Content-Type": "application/json",
                     },
