@@ -1,5 +1,5 @@
-from flask import Blueprint, session, request
-from flask_login import login_required
+from flask import Blueprint, request
+from flask_login import login_required, current_user
 
 from ..services import UserService
 
@@ -21,7 +21,7 @@ def get_user(db_session=None):
         JSON response with user details.
     """
     data = None
-    if session.get("role") in ["staff", "admin"]:
+    if current_user.role in ["staff", "admin"]:
         data = request.args.to_dict()
 
     return UserService.get_user(data=data, db_session=db_session)
@@ -61,7 +61,7 @@ def delete_user(db_session=None):
         JSON response indicating the deletion status.
     """
     data = None
-    if session.get("role") in ["staff", "admin"]:
+    if current_user.role in ["staff", "admin"]:
         data = request.json
 
     return UserService.delete_user(data=data, db_session=db_session)

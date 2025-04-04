@@ -61,11 +61,6 @@ class BidService:
             Response: A JSON response containing the success message, bid ID, and bid data if successful.
                 Returns status code 400 if required fields are missing.
         """
-        # Validation to check if required fields are present
-        if not data.get("user") or not data.get("amount"):
-            response_data = {"error": "User and amount are required"}
-            return Response(response=jsonify(response_data).get_data(), status=400, mimetype="application/json")
-
         bid_id = BidMapper.create_bid(data=data, db_session=db_session)
         if not bid_id:
             response_data = {"error": "Error creating bid"}

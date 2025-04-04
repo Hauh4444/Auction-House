@@ -1,4 +1,6 @@
-from flask import Response, jsonify, session
+from flask import Response, jsonify
+from flask_login import current_user
+
 from datetime import date, datetime, timedelta
 
 from ..services import ProfileService
@@ -20,7 +22,7 @@ class PurchaseService:
         Returns:
             Response: A JSON response with an error message on failure or the result of order creation.
         """
-        user_id, listings, total_amount = session.get("user_id"), data.get('listings'), data.get("total_amount")
+        user_id, listings, total_amount = current_user.id, data.get('listings'), data.get("total_amount")
         if not listings or not total_amount:
             response_data = {"error": "Required data not provided"}
             return Response(response=jsonify(response_data).get_data(), status=400, mimetype="application/json")

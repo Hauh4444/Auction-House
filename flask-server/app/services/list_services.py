@@ -1,4 +1,5 @@
-from flask import jsonify, Response, session
+from flask import jsonify, Response
+from flask_login import current_user
 
 from ..data_mappers import ListMapper, ListingMapper
 
@@ -15,7 +16,7 @@ class ListService:
         Returns:
             Response: A JSON response containing the user's lists if found, otherwise a 404 error.
         """
-        lists = ListMapper.get_lists(user_id=session.get("user_id"), db_session=db_session)
+        lists = ListMapper.get_lists(user_id=current_user.id, db_session=db_session)
         if not lists:
             response_data = {"error": "Lists not found"}
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype='application/json')
@@ -60,8 +61,6 @@ class ListService:
         Returns:
             Response: A JSON response containing the newly created list ID or an error message.
         """
-        data.update(user_id=session.get("user_id"))
-
         list_id = ListMapper.create_list(data=data, db_session=db_session)
         if not list_id:
             response_data = {"error": "Error creating list"}

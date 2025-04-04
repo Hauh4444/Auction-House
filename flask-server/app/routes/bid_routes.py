@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify, Response
 
 from ..services import BidService
 
@@ -50,4 +50,9 @@ def create_bid(db_session=None):
         JSON response with status of the bid posting operation.
     """
     data = request.json
+
+    if not data.get("user") or not data.get("amount"):
+        response_data = {"error": "User and amount are required"}
+        return Response(response=jsonify(response_data).get_data(), status=400, mimetype="application/json")
+
     return BidService.create_bid(data=data, db_session=db_session)

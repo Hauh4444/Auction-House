@@ -1,4 +1,5 @@
-from flask import jsonify, Response, session
+from flask import jsonify, Response
+from flask_login import current_user
 
 from ..data_mappers import SupportTicketMapper, TicketMessageMapper
 
@@ -15,10 +16,10 @@ class SupportTicketService:
         Returns:
             Response: A JSON response containing the user's support tickets if found, otherwise a 404 error.
         """
-        if session.get("role") in ["staff", "admin"]:
-            support_tickets = SupportTicketMapper.get_tickets_by_staff_id(staff_id=session.get("user_id"), db_session=db_session)
+        if current_user.role in ["staff", "admin"]:
+            support_tickets = SupportTicketMapper.get_tickets_by_staff_id(staff_id=current_user.id, db_session=db_session)
         else:
-            support_tickets = SupportTicketMapper.get_tickets_by_user_id(user_id=session.get("user_id"), db_session=db_session)
+            support_tickets = SupportTicketMapper.get_tickets_by_user_id(user_id=current_user.id, db_session=db_session)
 
         if not support_tickets:
             response_data = {"error": "No support tickets found"}

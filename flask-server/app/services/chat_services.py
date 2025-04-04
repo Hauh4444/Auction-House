@@ -1,4 +1,5 @@
-from flask import jsonify, Response, session
+from flask import jsonify, Response
+from flask_login import current_user
 
 from ..data_mappers import ChatMapper, ChatMessageMapper
 
@@ -15,7 +16,7 @@ class ChatService:
         Returns:
             Response: JSON response containing the user's chats if available, otherwise a 404 error.
         """
-        chats = ChatMapper.get_chats_by_user_id(user_id=session.get("user_id"), db_session=db_session)
+        chats = ChatMapper.get_chats_by_user_id(user_id=current_user.id, db_session=db_session)
         if not chats:
             return Response(response=jsonify({"error": "No chats found"}).get_data(), status=404, mimetype='application/json')
 

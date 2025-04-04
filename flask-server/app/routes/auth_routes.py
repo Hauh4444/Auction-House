@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, Response
 from flask_login import login_required
 
 from ..services import AuthService
@@ -36,6 +36,11 @@ def create_user(db_session=None):
         Response: A JSON response indicating the registration status.
     """
     data = request.json
+
+    if not data.get("username") or not data.get("password") or not data.get("email"):
+        response_data = {"error": "Username, password, and email are required"}
+        return Response(response=jsonify(response_data).get_data(), status=400, mimetype="application/json")
+
     return AuthService.create_user(data=data, db_session=db_session)
 
 
@@ -55,6 +60,10 @@ def login(db_session=None):
         Response: A JSON response indicating the login status.
     """
     data = request.json
+
+    if not data.get("username") or not data.get("password"):
+        return jsonify({"error": "Username and password are required"}), 400
+
     return AuthService.login(data=data, db_session=db_session)
 
 
@@ -106,8 +115,9 @@ def password_reset(db_session=None):
         Response: A JSON response indicating the status of the password reset.
     """
     data = request.get_json()
-    reset_token = data.get('token')
-    new_password = data.get('new_password')
-    if not reset_token or not new_password:
-        return jsonify({"error": "Token and new password are required"}), 400
-    return AuthService.reset_user_password(reset_token=reset_token, new_password=new_password, db_session=db_session)
+
+    if not data.get("token") or not data.get("new_password"):
+        response_data = {"error": "Token and new password are required"}
+        return Response(response=jsonify(response_data).get_data(), status=400, mimetype="application/json")
+
+    return AuthService.reset_user_password(reset_token=data.get("token"), new_password=data.get("new_password"), db_session=db_session)

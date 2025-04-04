@@ -1,5 +1,5 @@
-from flask import Blueprint, session, request
-from flask_login import login_required
+from flask import Blueprint, request
+from flask_login import login_required, current_user
 
 from ..services import HistoryService
 
@@ -21,7 +21,7 @@ def get_user_orders(db_session=None):
         JSON response containing a list of the user's past orders.
     """
     data = None
-    if session.get("role") in ["staff", "admin"]:
+    if current_user.role in ["staff", "admin"]:
         data = request.args.to_dict()
 
     return HistoryService.get_user_orders(data=data, db_session=db_session)
@@ -41,7 +41,7 @@ def get_user_listings(db_session=None):
         JSON response containing a list of the user's past listings.
     """
     data = None
-    if session.get("role") in ["staff", "admin"]:
+    if current_user.role in ["staff", "admin"]:
         data = request.args.to_dict()
 
     return HistoryService.get_user_listings(data=data, db_session=db_session)
@@ -61,7 +61,7 @@ def get_user_transactions(db_session=None):
         JSON response containing a list of the user's past transactions.
     """
     data = None
-    if session.get("role") in ["staff", "admin"]:
+    if current_user.role in ["staff", "admin"]:
         data = request.args.to_dict()
 
     return HistoryService.get_user_transactions(data=data, db_session=db_session)
@@ -81,7 +81,7 @@ def get_user_deliveries(db_session=None):
         JSON response containing a list of the user's past deliveries.
     """
     data = None
-    if session.get("role") in ["staff", "admin"]:
+    if current_user.role in ["staff", "admin"]:
         data = request.args.to_dict()
 
     return HistoryService.get_user_deliveries(data=data, db_session=db_session)
@@ -101,7 +101,7 @@ def get_user_support_tickets(db_session=None):
         JSON response containing a list of the user's past support tickets.
     """
     data = None
-    if session.get("role") in ["staff", "admin"]:
+    if current_user.role in ["staff", "admin"]:
         data = request.args.to_dict()
 
     return HistoryService.get_user_support_tickets(data=data, db_session=db_session)
@@ -121,7 +121,7 @@ def get_user_reviews(db_session=None):
         JSON response containing a list of the user's past reviews.
     """
     data = None
-    if session.get("role") in ["staff", "admin"]:
+    if current_user.role in ["staff", "admin"]:
         data = request.args.to_dict()
 
     return HistoryService.get_user_reviews(data=data, db_session=db_session)

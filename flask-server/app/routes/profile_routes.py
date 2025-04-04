@@ -1,5 +1,5 @@
-from flask import Blueprint, request, session
-from flask_login import login_required
+from flask import Blueprint, request
+from flask_login import login_required, current_user
 
 from ..services import ProfileService
 
@@ -21,7 +21,7 @@ def get_profile(db_session=None):
         Response: JSON response containing profile details.
     """
     data = None
-    if session.get("role") in ["staff", "admin"]:
+    if current_user.role in ["staff", "admin"]:
         data = request.args.to_dict()
 
     return ProfileService.get_profile(data=data, db_session=db_session)
