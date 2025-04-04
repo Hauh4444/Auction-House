@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import { Button, Card, CardContent, TextField } from "@mui/material";
 import axios from "axios";
-import PropTypes from "prop-types";
 
 // Internal Modules
 import Header from "@/Components/Header/Header";
@@ -167,23 +166,5 @@ const UserProfile = () => {
         </div>
     );
 }
-
-
-// Define the expected shape of the profile prop
-UserProfile.propTypes = {
-    profile: PropTypes.shape({
-        profile_id: PropTypes.number,
-        first_name: PropTypes.string,
-        last_name: PropTypes.string,
-        date_of_birth: PropTypes.string,
-        phone_number: PropTypes.string,
-        address: PropTypes.string,
-        city: PropTypes.string,
-        state: PropTypes.string,
-        country: PropTypes.string,
-        profile_picture: PropTypes.string,
-        bio: PropTypes.string,
-    }),
-};
 
 export default UserProfile;

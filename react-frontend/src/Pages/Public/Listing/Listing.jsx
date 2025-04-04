@@ -4,7 +4,6 @@ import { useLocation } from "react-router-dom";
 import { FacebookIcon, FacebookShareButton, PinterestIcon, PinterestShareButton, TwitterShareButton, XIcon } from "react-share";
 import { Button } from "@mui/material";
 import axios from "axios";
-import PropTypes from "prop-types";
 
 // Internal Modules
 import Header from "@/Components/Header/Header";
@@ -19,7 +18,7 @@ import "./Listing.scss";
  * Listing Component
  *
  * This component fetches and displays a listing based on query parameters from the URL.
- * It utilizes React"s `useEffect` and `useState` hooks to manage the API request and state updates.
+ * It utilizes React"s `useEffect` and `useState` Hooks to manage the API request and state updates.
  *
  * Features:
  * - Retrieves listing data from the Flask server using Axios.
@@ -192,27 +191,5 @@ const Listing = () => {
         </div>
     );
 }
-
-// Define PropTypes for type-checking the listing object
-Listing.propTypes = {
-    listing: PropTypes.shape({
-        title: PropTypes.string,
-        description: PropTypes.string,
-        item_specifics: PropTypes.string,
-        listing_type: PropTypes.string,
-        current_price: PropTypes.number,
-        buy_now_price: PropTypes.number,
-        auction_end: PropTypes.string,
-        image_encoded: PropTypes.string,
-        bids: PropTypes.number,
-    }),
-    review: PropTypes.shape({
-        title: PropTypes.string,
-        description: PropTypes.string,
-        username: PropTypes.string,
-        stars: PropTypes.number,
-        created_at: PropTypes.string,
-    })
-};
 
 export default Listing;

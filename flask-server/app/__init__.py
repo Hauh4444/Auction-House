@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_cors import CORS
+
 from dotenv import load_dotenv
 import os, pkgutil, importlib
 
@@ -8,6 +9,7 @@ from .utils.session import session
 from .utils.login_manager import login_manager
 from .utils.mysql import mysql
 from .utils.scheduler import scheduler
+from .utils.socketio import socketio
 from . import routes
 
 
@@ -42,8 +44,9 @@ def create_app():
     login_manager.init_app(app)
     mysql.init_app(app)
     session.init_app(app)
+    socketio.init_app(app, cors_allowed_origins=os.getenv("FRONTEND_URL"), transports=["websocket", "polling"])
     scheduler.start()
-    CORS(app, supports_credentials=True, resources={r"/api/*": {"origins": "http://localhost:5173"}})
+    CORS(app, supports_credentials=True, resources={r"/api/*": {"origins": os.getenv("FRONTEND_URL")}, r"/socket.io/*": {"origins": os.getenv("FRONTEND_URL")}})
 
     # Register routes
     for _, module_name, _ in pkgutil.iter_modules(routes.__path__):

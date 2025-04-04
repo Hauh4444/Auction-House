@@ -48,8 +48,8 @@ class UserService:
             updated_rows = UserMapper.update_user(user_id=session.get("user_id"), db_session=db_session)
 
         if not updated_rows:
-            response_data = {"error": "User not found"}
-            return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
+            response_data = {"error": "Error updating user"}
+            return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
 
         response_data = {"message": "User updated", "updated_rows": updated_rows}
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")

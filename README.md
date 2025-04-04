@@ -15,8 +15,7 @@
 2. Logging 
 3. Analytics & Reports 
 4. 3D Showcase API 
-5. Live Updates
-6. Admin Control
+5. Admin Control
 
 ## Setup
 

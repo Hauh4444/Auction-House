@@ -4,7 +4,6 @@ import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
 import { MdArrowBackIosNew, MdArrowForwardIos } from "react-icons/md";
 import { Button } from "@mui/material";
 import axios from "axios";
-import PropTypes from "prop-types";
 
 // Internal Modules
 import Header from "@/Components/Header/Header";
@@ -162,17 +161,5 @@ const Search = () => {
         </div>
     );
 }
-
-// Define the expected shape of the listings prop
-Search.propTypes = {
-    listing: PropTypes.shape({
-        listing_id: PropTypes.number,
-        title_short: PropTypes.string,
-        buy_now_price: PropTypes.number,
-        image_encoded: PropTypes.string,
-        average_review: PropTypes.number,
-        total_reviews: PropTypes.number,
-    }),
-};
 
 export default Search;

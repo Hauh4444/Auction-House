@@ -17,7 +17,6 @@ class ListingService:
             A Response object containing the list of listings with a 200 status code.
         """
         listings = ListingMapper.get_all_listings(args=args, db_session=db_session)
-
         if not listings:
             response_data = {"error": "No listings found"}
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
@@ -39,7 +38,6 @@ class ListingService:
             A Response object with the listing data if found, otherwise a 404 error with a message.
         """
         listing = ListingMapper.get_listing_by_id(listing_id=listing_id, db_session=db_session)
-
         if not listing:
             response_data = {"error": "Listing not found"}
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
@@ -65,7 +63,6 @@ class ListingService:
         listing_data.update(user_id=session.get("user_id"), status="active")
 
         listing_id = ListingMapper.create_listing(data=listing_data, db_session=db_session)
-
         if not listing_id:
             response_data = {"error": "Error creating listing"}
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
@@ -88,10 +85,9 @@ class ListingService:
             A Response object with a success message if the listing was updated, or a 404 error if the listing was not found.
         """
         updated_rows = ListingMapper.update_listing(listing_id=listing_id, data=data, db_session=db_session)
-
         if not updated_rows:
-            response_data = {"error": "Listing not found"}
-            return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
+            response_data = {"error": "Error updating listing"}
+            return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
 
         response_data = {"message": "Listing updated", "updated_rows": updated_rows}
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
@@ -111,7 +107,6 @@ class ListingService:
             A Response object with a success message if the listing was deleted, or a 404 error if the listing was not found.
         """
         deleted_rows = ListingMapper.delete_listing(listing_id=listing_id, db_session=db_session)
-
         if not deleted_rows:
             response_data = {"message": "Listing not found"}
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")

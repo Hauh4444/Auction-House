@@ -70,8 +70,8 @@ class ProfileService:
             updated_rows = ProfileMapper.update_profile(user_id=session.get("user_id"), db_session=db_session)
 
         if not updated_rows:
-            response_data = {"error": "Profile not found"}
-            return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
+            response_data = {"error": "Error updating profile"}
+            return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
 
         response_data = {"message": "Profile updated", "updated_rows": updated_rows}
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")

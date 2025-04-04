@@ -118,8 +118,7 @@ class PurchaseService:
             listing.update(purchases=(listing.get("purchases") + listing.get("quantity")))
 
             listing_data = {key: val for key, val in listing.items() if key != "quantity"}
-            updated_rows = ListingMapper.update_listing(listing_id=listing.get("listing_id"), data=listing_data,
-                                                        db_session=db_session)
+            updated_rows = ListingMapper.update_listing(listing_id=listing.get("listing_id"), data=listing_data, db_session=db_session)
             if not updated_rows:
                 response_data = {"error": "Error updating listing"}
                 return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")

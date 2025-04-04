@@ -48,14 +48,12 @@ class AuthService:
 
         user_data = {"username": data.get("username"), "password_hash": hash_password(password=data.get("password")), "email": data.get("email")}
         user_id = AuthMapper.create_user(data=user_data, db_session=db_session)
-
         if not user_id:
             response_data = {"error": "Error creating user"}
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
 
         profile_data = {"user_id": user_id, "first_name": data.get("first_name"), "last_name": data.get("last_name")}
         profile_id = ProfileService.create_profile(data=profile_data, db_session=db_session).get_json().get("profile_id")
-
         if not profile_id:
             response_data = {"error": "Error creating profile"}
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
@@ -81,16 +79,13 @@ class AuthService:
             return jsonify({"error": "Username and password are required"}), 400
 
         user = AuthMapper.get_user_by_username(data.get("username"), db_session)
-
         if not user or not user.password_hash == hash_password(data.get("password")):
             response_data = {"error": "Invalid username or password"}
             return Response(response=jsonify(response_data).get_data(), status=422, mimetype="application/json")
 
         session.update(user_id=user.id, role=user.role)
-
         login_user(user, remember=True)
         user.is_active = True
-
         AuthMapper.update_last_login(user_id=session.get("user_id"), db_session=db_session)
         SessionService.create_session(db_session)
 
@@ -126,9 +121,8 @@ class AuthService:
         """
         reset_token = jwt.encode({
             'user_id': session.get("user_id"),
-            'exp': datetime.utcnow() + timedelta(hours=1)
+            'exp': datetime.now() + timedelta(hours=1)
         }, os.getenv('SECRET_KEY'), algorithm='HS256')
-
         reset_link = f"{os.getenv('FRONTEND_URL')}/reset_password?token={reset_token}"
         subject = "Password Reset Request"
         body = f"Your password reset link is: {reset_link}"
@@ -190,8 +184,8 @@ class AuthService:
         updated_rows = UserMapper.update_user(user_id=session.get("user_id"), data=updated_user_data, db_session=db_session)
 
         if not updated_rows:
-            response_data = {"error": "User not found"}
-            return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
+            response_data = {"error": "Error updating user"}
+            return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
 
         response_data = {"message": "Password has been reset"}
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")

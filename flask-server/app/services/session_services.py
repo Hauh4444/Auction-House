@@ -24,7 +24,6 @@ class SessionService:
             "expires_at": datetime.now() + timedelta(days=1),
         }
         session_id = SessionMapper.create_session(data=data, db_session=db_session)
-
         if not session_id:
             response_data = {"error": "Error creating session"}
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")

@@ -180,6 +180,7 @@ const Category = () => {
                             <div className={`category${section.identifier}`}>
                                 {/* Map through the best sellers and display them */}
                                 {section.listings.map((listing, index) => (
+                                    /* TODO FIX THIS STUPID HACKY BULLSHIT */
                                     <div className={`listing ${section.identifier !== "Listings" && index === 0 ? "first" :
                                         (section.identifier === "Listings" && index % 4 === 0 ? "first" : "")}`} key={index}>
                                         <div className="image">

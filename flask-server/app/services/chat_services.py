@@ -16,7 +16,6 @@ class ChatService:
             Response: JSON response containing the user's chats if available, otherwise a 404 error.
         """
         chats = ChatMapper.get_chats_by_user_id(user_id=session.get("user_id"), db_session=db_session)
-
         if not chats:
             return Response(response=jsonify({"error": "No chats found"}).get_data(), status=404, mimetype='application/json')
 
@@ -36,7 +35,6 @@ class ChatService:
             Response: JSON response with chat details if found, otherwise a 404 error.
         """
         chat = ChatMapper.get_chat_by_id(chat_id=chat_id, db_session=db_session)
-
         if not chat:
             return Response(response=jsonify({"error": "Chat not found"}).get_data(), status=404, mimetype='application/json')
 
@@ -56,7 +54,6 @@ class ChatService:
             Response: JSON response with the created chat ID if successful, otherwise a 409 error.
         """
         chat_id = ChatMapper.create_chat(data=data, db_session=db_session)
-
         if not chat_id:
             return Response(response=jsonify({"error": "Error creating Chat"}).get_data(), status=409, mimetype='application/json')
 
@@ -77,9 +74,8 @@ class ChatService:
             Response: JSON response confirming update success or a 404 error if the chat is not found.
         """
         updated_rows = ChatMapper.update_chat(chat_id=chat_id, data=data, db_session=db_session)
-
         if not updated_rows:
-            return Response(response=jsonify({"error": "Chat not found or update failed"}).get_data(), status=404, mimetype="application/json")
+            return Response(response=jsonify({"error": "Error updating chat"}).get_data(), status=409, mimetype="application/json")
 
         return Response(response=jsonify({"message": "Chat updated", "updated_rows": updated_rows}).get_data(), status=200, mimetype="application/json")
 
@@ -97,7 +93,6 @@ class ChatService:
             Response: JSON response confirming deletion success or a 404 error if the chat is not found.
         """
         deleted_rows = ChatMapper.delete_chat(chat_id=chat_id, db_session=db_session)
-
         if not deleted_rows:
             return Response(response=jsonify({"error": "Chat not found"}).get_data(), status=404, mimetype="application/json")
 

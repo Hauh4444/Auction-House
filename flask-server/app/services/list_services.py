@@ -16,7 +16,6 @@ class ListService:
             Response: A JSON response containing the user's lists if found, otherwise a 404 error.
         """
         lists = ListMapper.get_lists(user_id=session.get("user_id"), db_session=db_session)
-
         if not lists:
             response_data = {"error": "Lists not found"}
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype='application/json')
@@ -38,7 +37,6 @@ class ListService:
             Response: A JSON response containing the list items if found, otherwise a 404 error.
         """
         list_items = ListMapper.get_list_items(list_id=list_id, db_session=db_session)
-
         if not list_items:
             response_data = {"error": "List items not found"}
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype='application/json')
@@ -63,8 +61,8 @@ class ListService:
             Response: A JSON response containing the newly created list ID or an error message.
         """
         data.update(user_id=session.get("user_id"))
-        list_id = ListMapper.create_list(data=data, db_session=db_session)
 
+        list_id = ListMapper.create_list(data=data, db_session=db_session)
         if not list_id:
             response_data = {"error": "Error creating list"}
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype='application/json')
@@ -87,14 +85,12 @@ class ListService:
             Response: A JSON response containing the newly created list item ID or an error message.
         """
         list_items = ListMapper.get_list_items(list_id=list_id, db_session=db_session)
-
         for item in list_items:
             if item.get("listing_id") == listing_id:
                 response_data = {"error": "Item is already in list"}
                 return Response(response=jsonify(response_data).get_data(), status=409, mimetype='application/json')
 
         list_item_id = ListMapper.create_list_item(list_id=list_id, listing_id=listing_id, db_session=db_session)
-
         if not list_item_id:
             response_data = {"error": "Error creating list item"}
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype='application/json')
@@ -127,7 +123,6 @@ class ListService:
             old_list_items = current_list_items - updated_list_items
             for listing_id in old_list_items:
                 deleted_rows = ListMapper.delete_list_item(list_id=list_id, listing_id=listing_id)
-
                 if not deleted_rows:
                     response_data = {"error": "List item not found"}
                     return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
@@ -135,20 +130,17 @@ class ListService:
             new_list_items = updated_list_items - current_list_items
             for listing_id in new_list_items:
                 created_rows = ListMapper.create_list_item(list_id=list_id, listing_id=listing_id)
-
                 if not created_rows:
                     response_data = {"error": "Error creating list item"}
                     return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
 
             response_data = {"message": "List items updated"}
             return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
-
         else:
             updated_rows = ListMapper.update_list(list_id=list_id, title=data.get("title"), db_session=db_session)
-
             if not updated_rows:
-                response_data = {"error": "List not found"}
-                return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
+                response_data = {"error": "Error updating list"}
+                return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
 
             response_data = {"message": "List updated", "updated_rows": updated_rows}
             return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
@@ -167,7 +159,6 @@ class ListService:
             Response: A JSON response indicating success or an error message.
         """
         deleted_rows = ListMapper.delete_list(list_id=list_id, db_session=db_session)
-
         if not deleted_rows:
             response_data = {"error": "List not found"}
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")

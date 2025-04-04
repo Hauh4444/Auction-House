@@ -19,20 +19,8 @@ const SellerProfile = () => {
     const filters = Object.fromEntries(new URLSearchParams(location.search).entries()); // Extract query parameters from the URL
 
     const [listings, setListings] = useState([]);
-
-    const [listing, setListing] = useState({
-        image_encoded: "",
-        title: "",
-        title_short: "",
-        description: "",
-        item_specifics: "",
-        category_id: "",
-        listing_type: "buy_now",
-        starting_price: 0,
-        reserve_price: 0,
-        auction_end: "",
-        buy_now_price: 0,
-    }) // State to hold uploaded listing data
+    const [listing, setListing] = useState({image_encoded: "", title: "", title_short: "", description: "", item_specifics: "",
+        category_id: "", listing_type: "buy_now", starting_price: 0, reserve_price: 0, auction_end: "", buy_now_price: 0}) // State to hold uploaded listing data
     const [categories, setCategories] = useState([]); // State to hold category data
     const [listingCategory, setListingCategory] = useState("") // State to hold currently selected category data
     const tempImage = useState("") // State to hold blank encoded image
