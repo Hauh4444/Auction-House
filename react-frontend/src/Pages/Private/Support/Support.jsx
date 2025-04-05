@@ -165,7 +165,11 @@ const Support = () => {
                             <div className="content">
                                 <div className="supportTickets">
                                     {supportTickets && supportTickets.map((ticket, index) => (
-                                        <Button className={`ticket${currentSupportTicket === ticket ? " selected" : ""}`} key={index} onClick={() => handleSelectTicket(ticket)}>
+                                        <Button
+                                            className={`ticket${currentSupportTicket === ticket ? " selected" : ""}`}
+                                            key={index}
+                                            onClick={() => handleSelectTicket(ticket)}
+                                        >
                                             {ticket.subject}
                                         </Button>
                                     ))}

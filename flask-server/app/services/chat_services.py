@@ -1,7 +1,7 @@
 from flask import jsonify, Response
 from flask_login import current_user
 
-from ..data_mappers import ChatMapper, ChatMessageMapper
+from ..data_mappers import ChatMapper
 
 
 class ChatService:

@@ -59,7 +59,7 @@ describe("SearchNav Component", () => {
             );
         })
 
-        // Check if the "Best Sellers" button is highlighted by default (based on the query parameter `nav=best-sellers`)
+        // Check if the "Best Sellers" button is highlighted by default (based on the query parameter nav)
         const bestSellersBtn = screen.queryByTestId("bestSellersBtn");
         expect(bestSellersBtn).toHaveClass("selected");
     });

@@ -54,7 +54,7 @@ import SystemLogs from "@/Pages/Admin/SystemLogs/SystemLogs";
  * PublicRoutes Component
  *
  * This component defines the routing structure for both public and private sections of the application.
- * It utilizes the `AuthProvider` context to manage the user"s authentication state. The routing setup includes:
+ * It utilizes the `AuthProvider` context to manage the user's authentication state. The routing setup includes:
  * - Public routes that are accessible to all users.
  * - Private routes that are protected by the `PrivateRoute` component, allowing access only to authenticated users.
  * - Staff routes that are protected by the `StaffRoute` component, allowing access only to authenticated users with staff privileges.

@@ -51,23 +51,43 @@ const RightNav = () => {
                 </Button>
                 {(!auth.user || auth.user.role === "user") && (
                     <>
-                        <Button className="btn" data-testid="flagBtn" style={{marginBottom: "15px"}} onClick={() => navigate(`/${auth.user ? auth.user.role : "user"}/support`)}> {/* Button for flag */}
+                        <Button
+                            className="btn"
+                            data-testid="flagBtn"
+                            style={{marginBottom: "15px"}}
+                            onClick={() => navigate(`/${auth.user ? auth.user.role : "user"}/support`)}
+                        >
                             <IoFlag className="fill" /> {/* Filled flag icon */}
                             <IoFlagOutline className="outline" /> {/* Outlined flag icon */}
                         </Button>
-                        <Button className="btn" data-testid="cartBtn" style={{marginBottom: "15px"}} onClick={() => navigate(`/${auth.user ? auth.user.role : "user"}/cart`)}>
+                        <Button
+                            className="btn"
+                            data-testid="cartBtn"
+                            style={{marginBottom: "15px"}}
+                            onClick={() => navigate(`/${auth.user ? auth.user.role : "user"}/cart`)}
+                        >
                             <IoCart className="fill" /> {/* Filled cart icon */}
                             <IoCartOutline className="outline" /> {/* Outlined cart icon */}
                         </Button>
                     </>
                 )}
-                <Button className="btn" data-testid="friendBtn" style={{marginBottom: "15px"}} onClick={() => navigate(`/${auth.user ? auth.user.role : "user"}/messages`)}> {/* Button for user group */}
+                <Button
+                    className="btn"
+                    data-testid="friendBtn"
+                    style={{marginBottom: "15px"}}
+                    onClick={() => navigate(`/${auth.user ? auth.user.role : "user"}/messages`)}
+                >
                     <HiUserGroup className="fill" /> {/* Filled user group icon */}
                     <HiOutlineUserGroup className="outline" /> {/* Outlined user group icon */}
                 </Button>
                 {(!auth.user || auth.user.role === "user") && (
                     <>
-                        <Button className="btn" data-testid="truckBtn" style={{marginBottom: "15px"}} onClick={() => navigate(`/${auth.user ? auth.user.role : "user"}/deliveries`)}>
+                        <Button
+                            className="btn"
+                            data-testid="truckBtn"
+                            style={{marginBottom: "15px"}}
+                            onClick={() => navigate(`/${auth.user ? auth.user.role : "user"}/deliveries`)}
+                        >
                             <PiTruckFill className="fill" /> {/* Filled truck icon */}
                             <PiTruckLight className="outline" /> {/* Outlined truck icon */}
                         </Button>

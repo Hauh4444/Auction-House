@@ -39,7 +39,7 @@ class AuthService:
 
         Returns:
             Response: A JSON response indicating success or failure.
-                Returns 201 status if user created successfully, 400 for missing data, and 409 for conflicts.
+                Returns 201 status if user created successfully or 409 for conflicts.
         """
         user_data = {"username": data.get("username"), "password_hash": hash_password(password=data.get("password")), "email": data.get("email")}
         user_id = AuthMapper.create_user(data=user_data, db_session=db_session)

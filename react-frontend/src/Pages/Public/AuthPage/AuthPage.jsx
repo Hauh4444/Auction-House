@@ -85,7 +85,7 @@ const AuthPage = () => {
             setLoginError(""); // Clear error if passwords match
         }
 
-        // Attempt create account authorization
+        // Attempt to create account
         const success = await createAccount({
             username,
             first_name,

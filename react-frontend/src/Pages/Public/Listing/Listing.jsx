@@ -18,7 +18,7 @@ import "./Listing.scss";
  * Listing Component
  *
  * This component fetches and displays a listing based on query parameters from the URL.
- * It utilizes React"s `useEffect` and `useState` Hooks to manage the API request and state updates.
+ * It utilizes React's `useEffect` and `useState` Hooks to manage the API request and state updates.
  *
  * Features:
  * - Retrieves listing data from the Flask server using Axios.

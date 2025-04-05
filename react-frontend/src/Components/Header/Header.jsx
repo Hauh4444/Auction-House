@@ -58,7 +58,7 @@ const Header = () => {
             navigate({
                 pathname: "/search",
                 search: createSearchParams({
-                    query: query, // User"s search query
+                    query: query, // User's search query
                     start: "0", // Start pagination from the first page
                     range: "10", // Limit results to 10
                     nav: "best-results", // Default to "best-results" view

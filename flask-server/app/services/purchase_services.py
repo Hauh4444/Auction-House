@@ -8,7 +8,7 @@ from ..data_mappers import OrderMapper, TransactionMapper, DeliveryMapper, Listi
 
 
 class PurchaseService:
-    """For now we mock most of the external data due to integration unavailability."""
+    """For now, we mock most of the external data due to integration unavailability."""
 
     @staticmethod
     def process_purchase(data, db_session=None):

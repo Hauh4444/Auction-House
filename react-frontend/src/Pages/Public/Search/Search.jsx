@@ -44,7 +44,7 @@ const Search = () => {
             filters.start = ((filters.page - 1) * 10).toString();
             filters.range = "10";
         }
-        // Apply sorting logic based on filter (new or best-sellers)
+        // Apply sorting logic based on filter (new or bestsellers)
         if (filters.nav === "new") {
             filters.sort = "created_at";
             filters.order = "desc";

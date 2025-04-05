@@ -42,7 +42,7 @@ const SearchNav = () => {
             if (filters.nav) {
                 condition = btn.classList.contains(filters.nav); // Check if button matches the current filter
             } else {
-                condition = btn.classList.contains("best-sellers"); // Default to "best-sellers" if no filter is set
+                condition = btn.classList.contains("best-sellers"); // Default to bestsellers if no filter is set
             }
             btn.classList.toggle("selected", condition); // Toggle "selected" class based on condition
         });

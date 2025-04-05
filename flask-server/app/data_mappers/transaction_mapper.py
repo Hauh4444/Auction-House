@@ -11,7 +11,7 @@ class TransactionMapper:
         Retrieve all transactions from the database.
 
         Args:
-            user_id: Id of the user to retrieve transactions of
+            user_id: ID of the user to retrieve transactions of
             db_session: Optional database session to be used in tests.
 
         Returns:

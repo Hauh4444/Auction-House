@@ -111,7 +111,7 @@ def recover_db():
         )
         cursor = conn.cursor()
 
-        with open(latest_backup, "r", encoding="utf-8") as f:
+        with open(latest_backup, encoding="utf-8") as f:
             sql_script = f.read()
 
         for statement in sql_script.split(';'):

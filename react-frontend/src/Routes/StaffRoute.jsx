@@ -7,7 +7,7 @@ import { useAuth } from "@/ContextAPI/AuthContext";
 /**
  * AdminRoute Component
  *
- * This component protects routes that require staff privileges. It checks the user"s authentication
+ * This component protects routes that require staff privileges. It checks the user's authentication
  * status and role, redirecting users as necessary:
  * - If the user is not authenticated, they are redirected to the login page.
  * - If the user is authenticated but does not have staff privileges, they are redirected to the home page.

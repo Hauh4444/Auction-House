@@ -23,7 +23,7 @@ def get_all_bids(db_session=None):
 @bp.route('/<int:bid_id>', methods=['GET'])
 def get_bid_by_id(bid_id, db_session=None):
     """
-    Get bid by it's id.
+    Get bid by its id.
 
     Args:
         bid_id (int): The ID of the bid to retrieve.

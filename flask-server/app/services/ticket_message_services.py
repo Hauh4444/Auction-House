@@ -1,4 +1,4 @@
-from flask import jsonify, Response, session
+from flask import jsonify, Response
 
 from ..data_mappers import TicketMessageMapper, SupportTicketMapper
 from ..utils.socketio import socketio

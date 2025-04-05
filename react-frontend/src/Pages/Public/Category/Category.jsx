@@ -22,7 +22,7 @@ import "./Category.scss";
  *
  * Features:
  * - Fetches category data from a backend API based on the "category_id" query parameter.
- * - Displays the category"s best sellers, new listings, and specific category listings.
+ * - Displays the category"s bestsellers, new listings, and specific category listings.
  * - Implements pagination using React Router, allowing users to navigate between pages of listings.
  *
  * @returns {JSX.Element} The rendered category page containing category information and listings.
@@ -33,7 +33,7 @@ const Category = () => {
     const filters = Object.fromEntries(new URLSearchParams(location.search).entries()); // Extract query parameters
 
     const [category, setCategory] = useState({}); // State to store the category data
-    const [bestSellers, setBestSellers] = useState([]); // State to hold best sellers data
+    const [bestSellers, setBestSellers] = useState([]); // State to hold bestsellers data
     const [newListings, setNewListings] = useState([]); // State to hold new listings data
     const [listings, setListings] = useState([]); // State to hold listings data
     const sections = [
@@ -66,7 +66,7 @@ const Category = () => {
     }, [location.search]);
 
     useEffect(() => {
-        // Fetch best sellers from the backend API
+        // Fetch bestsellers from the backend API
         axios.get("http://127.0.0.1:5000/api/listings/", {
             headers: {
                 "Content-Type": "application/json",
@@ -178,7 +178,7 @@ const Category = () => {
                         <div key={index}>
                             <h1 className={`categoryHead`}>{section.title}</h1>
                             <div className={`category${section.identifier}`}>
-                                {/* Map through the best sellers and display them */}
+                                {/* Map through the bestsellers and display them */}
                                 {section.listings.map((listing, index) => (
                                     /* TODO FIX THIS STUPID HACKY BULLSHIT */
                                     <div className={`listing ${section.identifier !== "Listings" && index === 0 ? "first" :

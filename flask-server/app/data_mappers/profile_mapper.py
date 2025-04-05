@@ -55,7 +55,7 @@ class ProfileMapper:
         Update an existing profile.
 
         Args:
-            user_id (int): The ID of the user whos profile to update.
+            user_id (int): The ID of the user whose profile to update.
             data (dict): Dictionary of fields to update.
             db_session: Optional database session to be used in tests.
 
