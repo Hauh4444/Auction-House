@@ -25,7 +25,7 @@ const Messages = () => {
     const messagesEndRef = useRef(null); // Reference to scroll to the bottom of the messages div
 
     useEffect(() => {
-        axios.get("http://127.0.0.1:5000/api/user/chats/", {
+        axios.get(`${import.meta.env.BACKEND_URL}/user/chats/`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -39,7 +39,7 @@ const Messages = () => {
     }, []);
 
     const getMessages = () => {
-        axios.get(`http://127.0.0.1:5000/api/user/messages/${currentChat.chat_id}/`, {
+        axios.get(`${import.meta.env.BACKEND_URL}/user/messages/${currentChat.chat_id}/`, {
             headers: { "Content-Type": "application/json" },
             withCredentials: true, // Ensures cookies are sent with requests
         })
@@ -50,7 +50,7 @@ const Messages = () => {
                     messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
                 }
             })
-            .catch(() => setMessages([])); // If there is an error, set messages as empty
+            .catch(() => setMessages([]));
     }
 
     useEffect(() => {
@@ -75,7 +75,7 @@ const Messages = () => {
 
     const handleSendMessage = () => {
         if (!newMessage.trim()) return; // Prevent sending empty messages
-        axios.post(`http://127.0.0.1:5000/api/user/messages/${currentChat.chat_id}/`,
+        axios.post(`${import.meta.env.BACKEND_URL}/user/messages/${currentChat.chat_id}/`,
             {
                 message: newMessage
             },
@@ -89,7 +89,7 @@ const Messages = () => {
                 setNewMessage("");
                 getMessages();
             })
-            .catch(error => console.error('Error sending message:', error)); // Log errors if any
+            .catch(err => console.error(err)); // Log errors if any
     };
 
     const handleKeyPress = (e) => {

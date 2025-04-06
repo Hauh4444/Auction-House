@@ -10,7 +10,7 @@ const SocketProvider = ({ children }) => {
     const [socket, setSocket] = useState(null);
 
     useEffect(() => {
-        const socketInstance = io("http://127.0.0.1:5000", {
+        const socketInstance = io(import.meta.env.BACKEND_URL, {
             transports: ['websocket'],
             withCredentials: true,
         });

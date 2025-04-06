@@ -14,7 +14,7 @@ const Deliveries = () => {
     const [deliveries, setDeliveries] = useState([]);
 
     useEffect(() => {
-        axios.get("http://127.0.0.1:5000/api/user/deliveries/" , {
+        axios.get(`${import.meta.env.BACKEND_URL}/user/deliveries/`, {
             headers: {
                 "Content-Type": "application/json",
             },

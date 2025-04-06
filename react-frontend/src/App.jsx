@@ -36,7 +36,6 @@ const lightTheme = createTheme({
  * - Contains the `PublicRoutes` component, which defines the application"s routing for public pages.
  */
 function App() {
-    // State to manage the theme mode (dark or light)
     const [isDarkMode, setIsDarkMode] = useState(false);
 
     useEffect(() => {
@@ -53,11 +52,9 @@ function App() {
         return () => mediaQuery.removeEventListener("change", changeListener);
     }, []); 
 
-    // Apply the light theme regardless of user preference for now
-    // Will need to replace lightTheme with 'isDarkMode ? darkTheme : lightTheme'
+    // Need to replace !isDarkMode with isDarkMode
     return (
-        <ThemeProvider theme={lightTheme}>
-            {/* Public routes of the app */}
+        <ThemeProvider theme={!isDarkMode ? darkTheme : lightTheme}>
             <PublicRoutes />
         </ThemeProvider>
     );

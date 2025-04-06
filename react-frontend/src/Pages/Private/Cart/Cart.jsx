@@ -39,7 +39,7 @@ const Cart = () => {
         if (!cartItems.length) {
             return;
         }
-        axios.post("http://127.0.0.1:5000/api/purchase/",
+        axios.post(`${import.meta.env.BACKEND_URL}/purchase/`,
             {
                 listings: cartItems,
                 total_amount: getCartTotal(),

@@ -21,17 +21,19 @@ class EmailService:
         Returns:
             bool: True if the email was sent successfully, False otherwise.
         """
-        cipher = Fernet(os.getenv('CIPHER_ENCRYPTION_KEY'))
-        mailer = emails.NewEmail(cipher.decrypt(os.getenv('ENCRYPTED_MAILERSEND_API_KEY').encode()).decode())
+        # Setup cipher for new API key
+        # cipher = Fernet(os.getenv("CIPHER_ENCRYPTION_KEY"))
+        mailer = emails.NewEmail(os.getenv("MAILERSEND_API_TOKEN"))
         email_data = {
-            'from': {'email': os.getenv('MAIL_DEFAULT_SENDER')},
-            'to': [{'email': recipient} for recipient in recipients],
-            'subject': subject,
-            'text': body
+            "from": {"email": os.getenv("MAIL_DEFAULT_SENDER")},
+            "to": [{"email": recipient} for recipient in recipients],
+            "subject": subject,
+            "text": body
         }
 
         try:
             response = mailer.send(email_data)
+            print(response)
             return response
         except Exception as e:
             print(f"Unexpected error sending mail: {e}")

@@ -26,7 +26,7 @@ const SellerProfile = () => {
     const tempImage = useState("") // State to hold blank encoded image
 
     useEffect(() => {
-        axios.get("http://127.0.0.1:5000/api/user/listings/", {
+        axios.get(`${import.meta.env.BACKEND_URL}/user/listings/`, {
             headers: {
                 "Content-Type": "application/json",
             }
@@ -37,7 +37,7 @@ const SellerProfile = () => {
 
     useEffect(() => {
         // Fetch categories from the backend API when the component mounts
-        axios.get("http://127.0.0.1:5000/api/categories/", {
+        axios.get(`${import.meta.env.BACKEND_URL}/categories/`, {
             headers: {
                 "Content-Type": "application/json",
             }
@@ -54,14 +54,14 @@ const SellerProfile = () => {
                     const image_encoded = `data:image/jpg;base64,${base64String}`;
                     setListing({ ...listing, image_encoded: image_encoded }); // Save the file object for upload
                 })
-                .catch((error) => console.error("Error encoding image:", error)); // Log errors if any
+                .catch(err => console.error(err)); // Log errors if any
         }
     };
 
     // On submit, post new listing to the backend API
     const handleSubmit = () => {
         console.log(listing)
-        axios.post("http://127.0.0.1:5000/api/listings/",
+        axios.post(`${import.meta.env.BACKEND_URL}/listings/`,
             {
                 listing: listing,
             },

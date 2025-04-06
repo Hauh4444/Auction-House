@@ -43,7 +43,7 @@ const Support = () => {
     };
 
     const getMessages = () => {
-        axios.get(`http://127.0.0.1:5000/api/ticket/messages/${currentSupportTicket.ticket_id}/`, {
+        axios.get(`${import.meta.env.BACKEND_URL}/ticket/messages/${currentSupportTicket.ticket_id}/`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -80,7 +80,7 @@ const Support = () => {
         setSubject(key.charAt(5).toUpperCase() + key.slice(6));
 
         if (key.slice(5) === "tickets") {
-            axios.get("http://127.0.0.1:5000/api/support/tickets/", {
+            axios.get(`${import.meta.env.BACKEND_URL}/support/tickets/`, {
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -95,7 +95,7 @@ const Support = () => {
     }
 
     const handleSubmitTicket = () => {
-        axios.post("http://127.0.0.1:5000/api/support/tickets/",
+        axios.post(`${import.meta.env.BACKEND_URL}/support/tickets/`,
             {
                 subject: subject,
                 message: message,
@@ -107,7 +107,7 @@ const Support = () => {
                 withCredentials: true,
             })
             .then(() => navigate("/"))
-            .catch(error => console.error('Error submitting support ticket:', error));
+            .catch(err => console.error(err));
     }
 
     const handleSelectTicket = (chat) => {
@@ -116,7 +116,7 @@ const Support = () => {
 
     const handleSendMessage = () => {
         if (!newTicketMessage.trim()) return;
-        axios.post(`http://127.0.0.1:5000/api/ticket/messages/${currentSupportTicket.ticket_id}/`,
+        axios.post(`${import.meta.env.BACKEND_URL}/ticket/messages/${currentSupportTicket.ticket_id}/`,
             {
                 message: newTicketMessage
             },
@@ -130,7 +130,7 @@ const Support = () => {
                 setNewTicketMessage("");
                 getMessages();
             })
-            .catch(error => console.error('Error sending message:', error));
+            .catch(err => console.error(err));
     };
 
     const handleKeyPress = (e) => {

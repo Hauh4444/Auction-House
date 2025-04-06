@@ -42,7 +42,7 @@ const Listing = () => {
      */
     useEffect(() => {
         // API call to fetch the listing data
-        axios.get(`http://127.0.0.1:5000/api/listings/${filters.key}/`, {
+        axios.get(`${import.meta.env.BACKEND_URL}/listings/${filters.key}/`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -52,7 +52,7 @@ const Listing = () => {
             }) // Update state with fetched data
             .catch(err => console.log(err)); // Log errors if any
 
-        axios.get("http://127.0.0.1:5000/api/reviews/", {
+        axios.get(`${import.meta.env.BACKEND_URL}/reviews/`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -65,7 +65,7 @@ const Listing = () => {
             },
         })
             .then((res) => setReviews(res.data.reviews)) // Update state with fetched data
-            .catch((err) => console.log(err)); // Log errors if any
+            .catch(err => console.log(err)); // Log errors if any
     }, [location.search]); // Call on update of URL filters
 
     return (

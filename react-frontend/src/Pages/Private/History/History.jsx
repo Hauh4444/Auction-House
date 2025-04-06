@@ -21,7 +21,7 @@ const History = () => {
 
     useEffect(() => {
         // Fetch listings from the API with the specified filters
-        axios.get(`http://127.0.0.1:5000/api/user/${filters.nav}/`, {
+        axios.get(`${import.meta.env.BACKEND_URL}/user/${filters.nav}/`, {
             headers: {
                 "Content-Type": "application/json",
             },

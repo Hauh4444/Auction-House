@@ -131,7 +131,7 @@ class AuthService:
 
         # Use EmailService to send the email
         mail_response = EmailService.send_email(subject, [user.get("email")], body)
-        if not mail_response:
+        if not int(mail_response) == 202:
             response_data = {"error": "HTTP error sending email"}
             return Response(response=jsonify(response_data).get_data(), status=400, mimetype="application/json")
 

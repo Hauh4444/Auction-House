@@ -46,7 +46,7 @@ const UserProfile = () => {
 
     // Fetch profile data from the backend API
     useEffect(() => {
-        axios.get("http://127.0.0.1:5000/api/user/profile/", {
+        axios.get(`${import.meta.env.BACKEND_URL}/user/profile/`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -63,13 +63,13 @@ const UserProfile = () => {
                 .then((base64String) => {
                     setProfile({ ...profile, profile_picture: base64String }); // Save the file object for upload
                 })
-                .catch((error) => console.error("Error encoding image:", error)); // Log errors if any
+                .catch(err => console.error(err)); // Log errors if any
         }
     };
 
     // On submit, post updated profile data to the backend API
     const handleSubmit = () => {
-        axios.put("http://127.0.0.1:5000/api/user/profile/",
+        axios.put(`${import.meta.env.BACKEND_URL}/user/profile/`,
             {
                 profile: profile,
             },

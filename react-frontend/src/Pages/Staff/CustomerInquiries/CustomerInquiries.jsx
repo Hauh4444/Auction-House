@@ -25,7 +25,7 @@ const CustomerInquiries = () => {
     const messagesEndRef = useRef(null); // Reference to scroll to the bottom of the messages div
 
     useEffect(() => {
-        axios.get("http://127.0.0.1:5000/api/support/tickets/", {
+        axios.get(`${import.meta.env.BACKEND_URL}/support/tickets/`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -39,7 +39,7 @@ const CustomerInquiries = () => {
     }, []);
 
     const getMessages = () => {
-        axios.get(`http://127.0.0.1:5000/api/ticket/messages/${currentSupportTicket.ticket_id}/`, {
+        axios.get(`${import.meta.env.BACKEND_URL}/ticket/messages/${currentSupportTicket.ticket_id}/`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -77,7 +77,7 @@ const CustomerInquiries = () => {
 
     const handleSendMessage = () => {
         if (!newTicketMessage.trim()) return;
-        axios.post(`http://127.0.0.1:5000/api/ticket/messages/${currentSupportTicket.ticket_id}/`,
+        axios.post(`${import.meta.env.BACKEND_URL}/ticket/messages/${currentSupportTicket.ticket_id}/`,
             {
                 message: newTicketMessage
             },
@@ -91,7 +91,7 @@ const CustomerInquiries = () => {
                 setNewTicketMessage("");
                 getMessages();
             })
-            .catch(error => console.error('Error sending message:', error));
+            .catch(err => console.error(err));
     };
 
     const handleKeyPress = (e) => {

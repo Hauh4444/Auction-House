@@ -52,7 +52,7 @@ const navigateToListing = (id, navigate) => {
 };
 
 const addToList = (list_id, listing_id) => {
-    axios.post(`http://127.0.0.1:5000/api/user/lists/${list_id}/`,
+    axios.post(`${import.meta.env.BACKEND_URL}/user/lists/${list_id}/`,
         {
             listing_id: listing_id,
         },
@@ -66,7 +66,7 @@ const addToList = (list_id, listing_id) => {
 }
 
 const updateList = (list_id, list_items) => {
-    axios.put(`http://127.0.0.1:5000/api/user/lists/${list_id}/`,
+    axios.put(`${import.meta.env.BACKEND_URL}/user/lists/${list_id}/`,
         {
             list_items: list_items,
         },
