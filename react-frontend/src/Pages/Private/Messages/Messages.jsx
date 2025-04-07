@@ -25,7 +25,7 @@ const Messages = () => {
     const messagesEndRef = useRef(null); // Reference to scroll to the bottom of the messages div
 
     useEffect(() => {
-        axios.get(`${import.meta.env.BACKEND_URL}/user/chats/`, {
+        axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/user/chats/`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -39,7 +39,7 @@ const Messages = () => {
     }, []);
 
     const getMessages = () => {
-        axios.get(`${import.meta.env.BACKEND_URL}/user/messages/${currentChat.chat_id}/`, {
+        axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/user/messages/${currentChat.chat_id}/`, {
             headers: { "Content-Type": "application/json" },
             withCredentials: true, // Ensures cookies are sent with requests
         })
@@ -75,7 +75,7 @@ const Messages = () => {
 
     const handleSendMessage = () => {
         if (!newMessage.trim()) return; // Prevent sending empty messages
-        axios.post(`${import.meta.env.BACKEND_URL}/user/messages/${currentChat.chat_id}/`,
+        axios.post(`${import.meta.env.VITE_BACKEND_API_URL}/user/messages/${currentChat.chat_id}/`,
             {
                 message: newMessage
             },

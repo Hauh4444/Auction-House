@@ -56,7 +56,7 @@ const Category = () => {
 
     useEffect(() => {
         // API call to access the category data
-        axios.get(`${import.meta.env.BACKEND_URL}/categories/${filters.category_id}/`, {
+        axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/categories/${filters.category_id}/`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -67,7 +67,7 @@ const Category = () => {
 
     useEffect(() => {
         // Fetch bestsellers from the backend API
-        axios.get(`${import.meta.env.BACKEND_URL}/listings/`, {
+        axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/listings/`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -85,7 +85,7 @@ const Category = () => {
 
     useEffect(() => {
         // Fetch new listings from the backend API
-        axios.get(`${import.meta.env.BACKEND_URL}/listings/`, {
+        axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/listings/`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -109,7 +109,7 @@ const Category = () => {
         }
 
         // Fetch listings from the backend API
-        axios.get(`${import.meta.env.BACKEND_URL}/listings/`, {
+        axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/listings/`, {
             headers: {
                 "Content-Type": "application/json",
             },

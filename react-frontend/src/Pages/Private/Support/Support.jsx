@@ -43,7 +43,7 @@ const Support = () => {
     };
 
     const getMessages = () => {
-        axios.get(`${import.meta.env.BACKEND_URL}/ticket/messages/${currentSupportTicket.ticket_id}/`, {
+        axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/ticket/messages/${currentSupportTicket.ticket_id}/`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -80,7 +80,7 @@ const Support = () => {
         setSubject(key.charAt(5).toUpperCase() + key.slice(6));
 
         if (key.slice(5) === "tickets") {
-            axios.get(`${import.meta.env.BACKEND_URL}/support/tickets/`, {
+            axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/support/tickets/`, {
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -95,7 +95,7 @@ const Support = () => {
     }
 
     const handleSubmitTicket = () => {
-        axios.post(`${import.meta.env.BACKEND_URL}/support/tickets/`,
+        axios.post(`${import.meta.env.VITE_BACKEND_API_URL}/support/tickets/`,
             {
                 subject: subject,
                 message: message,
@@ -116,7 +116,7 @@ const Support = () => {
 
     const handleSendMessage = () => {
         if (!newTicketMessage.trim()) return;
-        axios.post(`${import.meta.env.BACKEND_URL}/ticket/messages/${currentSupportTicket.ticket_id}/`,
+        axios.post(`${import.meta.env.VITE_BACKEND_API_URL}/ticket/messages/${currentSupportTicket.ticket_id}/`,
             {
                 message: newTicketMessage
             },

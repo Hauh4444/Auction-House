@@ -46,7 +46,7 @@ const UserProfile = () => {
 
     // Fetch profile data from the backend API
     useEffect(() => {
-        axios.get(`${import.meta.env.BACKEND_URL}/user/profile/`, {
+        axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/user/profile/`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -69,7 +69,7 @@ const UserProfile = () => {
 
     // On submit, post updated profile data to the backend API
     const handleSubmit = () => {
-        axios.put(`${import.meta.env.BACKEND_URL}/user/profile/`,
+        axios.put(`${import.meta.env.VITE_BACKEND_API_URL}/user/profile/`,
             {
                 profile: profile,
             },

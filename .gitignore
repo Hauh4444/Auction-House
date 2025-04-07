@@ -3,9 +3,7 @@
 **/.idea/
 
 /react-frontend/node_modules/
-/react-frontend/.env*
 /react-frontend/coverage/
 /react-frontend/dist/
 
-/flask-server/.env
 /flask-server/venv/

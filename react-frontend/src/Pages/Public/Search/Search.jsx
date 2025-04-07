@@ -79,7 +79,7 @@ const Search = () => {
         }
 
         // Fetch listings from the API with the specified filters
-        axios.get(`${import.meta.env.BACKEND_URL}/listings/`, {
+        axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/listings/`, {
             headers: {
                 "Content-Type": "application/json",
             },

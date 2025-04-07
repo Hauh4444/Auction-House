@@ -24,7 +24,7 @@ const Lists = () => {
 
     // Fetch user list data from the backend API
     useEffect(() => {
-        axios.get(`${import.meta.env.BACKEND_URL}/user/lists/`, {
+        axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/user/lists/`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -40,7 +40,7 @@ const Lists = () => {
     const goToList = (list) => {
         setList(list);
 
-        axios.get(`${import.meta.env.BACKEND_URL}/user/lists/${list.list_id}/`, {
+        axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/user/lists/${list.list_id}/`, {
             headers: {
                 "Content-Type": "application/json",
             },

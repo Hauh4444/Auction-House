@@ -16,7 +16,7 @@ const Security = () => {
 
     // Fetch user data from the backend API
     useEffect(() => {
-        axios.get(`${import.meta.env.BACKEND_URL}/user/`, {
+        axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/user/`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -27,7 +27,7 @@ const Security = () => {
     }, []);
 
     const password_reset_request = () => {
-        axios.post(`${import.meta.env.BACKEND_URL}/auth/password_reset_request/`, {
+        axios.post(`${import.meta.env.VITE_BACKEND_API_URL}/auth/password_reset_request/`, {
             headers: {
                 "Content-Type": "application/json",
             },

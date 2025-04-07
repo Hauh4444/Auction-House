@@ -68,13 +68,13 @@ describe("Category component", () => {
     // Before each test, mock the axios request
     beforeEach(() => {
         axios.get = vi.fn((url) => {
-            if (url === `${import.meta.env.BACKEND_URL}/categories/1/`) {
+            if (url === `${import.meta.env.VITE_BACKEND_API_URL}/categories/1/`) {
                 return Promise.resolve(mockCategory);
             }
-            else if (url === `${import.meta.env.BACKEND_URL}/categories/`) {
+            else if (url === `${import.meta.env.VITE_BACKEND_API_URL}/categories/`) {
                 return Promise.resolve(mockCategories);
             }
-            else if (url === `${import.meta.env.BACKEND_URL}/listings/`) {
+            else if (url === `${import.meta.env.VITE_BACKEND_API_URL}/listings/`) {
                 return Promise.resolve(mockListings);
             }
         });

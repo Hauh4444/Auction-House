@@ -14,7 +14,7 @@ const Deliveries = () => {
     const [deliveries, setDeliveries] = useState([]);
 
     useEffect(() => {
-        axios.get(`${import.meta.env.BACKEND_URL}/user/deliveries/`, {
+        axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/user/deliveries/`, {
             headers: {
                 "Content-Type": "application/json",
             },

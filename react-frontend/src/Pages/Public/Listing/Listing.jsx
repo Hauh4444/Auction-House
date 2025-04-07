@@ -42,7 +42,7 @@ const Listing = () => {
      */
     useEffect(() => {
         // API call to fetch the listing data
-        axios.get(`${import.meta.env.BACKEND_URL}/listings/${filters.key}/`, {
+        axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/listings/${filters.key}/`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -52,7 +52,7 @@ const Listing = () => {
             }) // Update state with fetched data
             .catch(err => console.log(err)); // Log errors if any
 
-        axios.get(`${import.meta.env.BACKEND_URL}/reviews/`, {
+        axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/reviews/`, {
             headers: {
                 "Content-Type": "application/json",
             },

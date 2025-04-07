@@ -26,7 +26,7 @@ const SellerProfile = () => {
     const tempImage = useState("") // State to hold blank encoded image
 
     useEffect(() => {
-        axios.get(`${import.meta.env.BACKEND_URL}/user/listings/`, {
+        axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/user/listings/`, {
             headers: {
                 "Content-Type": "application/json",
             }
@@ -37,7 +37,7 @@ const SellerProfile = () => {
 
     useEffect(() => {
         // Fetch categories from the backend API when the component mounts
-        axios.get(`${import.meta.env.BACKEND_URL}/categories/`, {
+        axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/categories/`, {
             headers: {
                 "Content-Type": "application/json",
             }
@@ -61,7 +61,7 @@ const SellerProfile = () => {
     // On submit, post new listing to the backend API
     const handleSubmit = () => {
         console.log(listing)
-        axios.post(`${import.meta.env.BACKEND_URL}/listings/`,
+        axios.post(`${import.meta.env.VITE_BACKEND_API_URL}/listings/`,
             {
                 listing: listing,
             },

@@ -39,7 +39,7 @@ const Cart = () => {
         if (!cartItems.length) {
             return;
         }
-        axios.post(`${import.meta.env.BACKEND_URL}/purchase/`,
+        axios.post(`${import.meta.env.VITE_BACKEND_API_URL}/purchase/`,
             {
                 listings: cartItems,
                 total_amount: getCartTotal(),

@@ -42,7 +42,7 @@ const Popup = () => {
 
     // Effect hook to fetch categories from the API on component mount
     useEffect(() => {
-        axios.get(`${import.meta.env.BACKEND_URL}/categories/`, {
+        axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/categories/`, {
             headers: {
                 "Content-Type": "application/json",
             }

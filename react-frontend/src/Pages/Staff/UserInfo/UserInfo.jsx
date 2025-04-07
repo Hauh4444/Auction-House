@@ -21,7 +21,7 @@ const UserInfo = () => {
         let apiRoute = currentRoute;
         if (apiRoute === "user") { apiRoute = ""; }
 
-        axios.get(`${import.meta.env.BACKEND_URL}/user/${apiRoute}/`, {
+        axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/user/${apiRoute}/`, {
             params: { user_id: userIdInput },
             headers: { "Content-Type": "application/json" },
             withCredentials: true,
