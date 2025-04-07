@@ -1,5 +1,6 @@
 from flask import Response, jsonify, session
 from datetime import date, datetime, timedelta
+import stripe
 
 from ..services import ProfileService
 from ..data_mappers import OrderMapper, TransactionMapper, DeliveryMapper, ListingMapper
@@ -38,6 +39,10 @@ class PurchaseService:
             "profile": profile,
         }
         return PurchaseService.create_order(data=data, db_session=db_session)
+    
+    @staticmethod
+    def process_payment(data, db_session=None):
+
 
     @staticmethod
     def create_order(data, db_session=None):
