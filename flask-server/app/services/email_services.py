@@ -1,7 +1,8 @@
-import os
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail
+from mailersend import emails
 from dotenv import load_dotenv
+from cryptography.fernet import Fernet
+
+import os
 
 load_dotenv()  # Load environment variables from .env file
 
@@ -20,16 +21,19 @@ class EmailService:
         Returns:
             bool: True if the email was sent successfully, False otherwise.
         """
-        message = Mail(
-            from_email=os.getenv('MAIL_DEFAULT_SENDER'),
-            to_emails=recipients,
-            subject=subject,
-            plain_text_content=body
-        )
+        cipher = Fernet(os.getenv('CIPHER_ENCRYPTION_KEY'))
+        mailer = emails.NewEmail(cipher.decrypt(os.getenv('ENCRYPTED_MAILERSEND_API_KEY').encode()).decode())
+
+        email_data = {
+            'from': {'email': os.getenv('MAIL_DEFAULT_SENDER')},
+            'to': [{'email': recipient} for recipient in recipients],
+            'subject': subject,
+            'text': body
+        }
+
         try:
-            sg = SendGridAPIClient(os.getenv('SENDGRID_API_KEY'))
-            response = sg.send(message)
-            return response.status_code == 202
+            response = mailer.send(email_data)
+            return response
         except Exception as e:
-            print(e.message)
+            print(f"Unexpected error sending mail: {e}")
             return False

@@ -10,8 +10,8 @@ class HistoryService:
         Retrieve a user's order history.
 
         Args:
-            data: A dictionary containing the request arguments.
-            db_session (optional): A database session for testing or direct queries.
+            data (dict, optional): A dictionary containing the request arguments, including user ID.
+            db_session (Session, optional): A database session for testing or direct queries.
 
         Returns:
             Response: A JSON response containing the user's orders if found, otherwise a 404 error.
@@ -20,7 +20,6 @@ class HistoryService:
             orders = OrderMapper.get_all_orders(user_id=data.get("user_id"), db_session=db_session)
         else:
             orders = OrderMapper.get_all_orders(user_id=session.get("user_id"), db_session=db_session)
-
 
         if not orders:
             response_data = {"error": "Orders not found"}
@@ -36,8 +35,8 @@ class HistoryService:
         Retrieve a user's listing history.
 
         Args:
-            data: A dictionary containing the request arguments.
-            db_session (optional): A database session for testing or direct queries.
+            data (dict, optional): A dictionary containing the request arguments, including user ID.
+            db_session (Session, optional): A database session for testing or direct queries.
 
         Returns:
             Response: A JSON response containing the user's listings if found, otherwise a 404 error.
@@ -46,7 +45,6 @@ class HistoryService:
             listings = ListingMapper.get_all_user_listings(user_id=data.get("user_id"), db_session=db_session)
         else:
             listings = ListingMapper.get_all_user_listings(user_id=session.get("user_id"), db_session=db_session)
-
 
         if not listings:
             response_data = {"error": "Listings not found"}
@@ -62,8 +60,8 @@ class HistoryService:
         Retrieve a user's transaction history.
 
         Args:
-            data: A dictionary containing the request arguments.
-            db_session (optional): A database session for testing or direct queries.
+            data (dict, optional): A dictionary containing the request arguments, including user ID.
+            db_session (Session, optional): A database session for testing or direct queries.
 
         Returns:
             Response: A JSON response containing the user's transactions if found, otherwise a 404 error.
@@ -71,7 +69,7 @@ class HistoryService:
         if session.get("role") in ["staff", "admin"]:
             transactions = TransactionMapper.get_all_transactions(user_id=data.get("user_id"), db_session=db_session)
         else:
-            transactions = TransactionMapper.get_all_tranactions(user_id=session.get("user_id"), db_session=db_session)
+            transactions = TransactionMapper.get_all_transactions(user_id=session.get("user_id"), db_session=db_session)
 
         if not transactions:
             response_data = {"error": "Transactions not found"}
@@ -87,8 +85,8 @@ class HistoryService:
         Retrieve a user's delivery history.
 
         Args:
-            data: A dictionary containing the request arguments.
-            db_session (optional): A database session for testing or direct queries.
+            data (dict, optional): A dictionary containing the request arguments, including user ID.
+            db_session (Session, optional): A database session for testing or direct queries.
 
         Returns:
             Response: A JSON response containing the user's deliveries if found, otherwise a 404 error.
@@ -112,8 +110,8 @@ class HistoryService:
         Retrieve a user's support ticket history.
 
         Args:
-            data: A dictionary containing the request arguments.
-            db_session (optional): A database session for testing or direct queries.
+            data (dict, optional): A dictionary containing the request arguments, including user ID.
+            db_session (Session, optional): A database session for testing or direct queries.
 
         Returns:
             Response: A JSON response containing the user's support tickets if found, otherwise a 404 error.
@@ -137,16 +135,16 @@ class HistoryService:
         Retrieve a user's review history.
 
         Args:
-            data: A dictionary containing the request arguments.
-            db_session (optional): A database session for testing or direct queries.
+            data (dict, optional): A dictionary containing the request arguments, including user ID.
+            db_session (Session, optional): A database session for testing or direct queries.
 
         Returns:
             Response: A JSON response containing the user's reviews if found, otherwise a 404 error.
         """
         if session.get("role") in ["staff", "admin"]:
-            reviews = ReviewMapper.get_all_reviews(user_id=data.get("user_id"), db_session=db_session)
+            reviews = ReviewMapper.get_all_reviews(args={"user_id": data.get("user_id")}, db_session=db_session)
         else:
-            reviews = ReviewMapper.get_all_reviews(user_id=session.get("user_id"), db_session=db_session)
+            reviews = ReviewMapper.get_all_reviews(args={"user_id": data.get("user_id")}, db_session=db_session)
 
         if not reviews:
             response_data = {"error": "Reviews not found"}
@@ -154,4 +152,3 @@ class HistoryService:
 
         response_data = {"message": "Reviews found", "reviews": reviews}
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype='application/json')
-

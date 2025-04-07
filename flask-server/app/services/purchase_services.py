@@ -114,7 +114,6 @@ class PurchaseService:
                       or an error message if any step fails.
         """
         for listing in data.get("listings"):
-            print(listing.get("status"))
             if listing.get("status") != 'active':
                 response_data = {"error": "Listing is not available for purchase"}
                 return Response(response=jsonify(response_data).get_data(), status=400, mimetype="application/json")

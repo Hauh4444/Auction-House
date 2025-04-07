@@ -15,7 +15,7 @@ def check_auth_status():
     Check the authentication status of the current user.
 
     Returns:
-        JSON response indicating whether the user is logged in or not.
+        Response: A JSON response indicating whether the user is logged in or not.
     """
     return AuthService.check_auth_status()
 
@@ -27,13 +27,13 @@ def create_user(db_session=None):
     Register a new user.
 
     Args:
-        db_session: Optional database session to be used in tests.
+        db_session (Session, optional): A database session for testing or direct queries.
 
     Expects:
-        JSON payload with user details (username, password, email, etc.).
+        JSON payload with user details (e.g., username, password, email, etc.).
 
     Returns:
-        JSON response indicating the registration status.
+        Response: A JSON response indicating the registration status.
     """
     data = request.json
     return AuthService.create_user(data=data, db_session=db_session)
@@ -41,36 +41,36 @@ def create_user(db_session=None):
 
 # POST /api/auth/login/
 @bp.route("/login/", methods=["POST"])
-def login_user(db_session=None):
+def login(db_session=None):
     """
     Login a user by verifying their username and password.
 
     Args:
-        db_session: Optional database session to be used in tests.
+        db_session (Session, optional): A database session for testing or direct queries.
 
     Expects:
         JSON payload with "username" and "password" keys.
 
     Returns:
-        JSON response indicating the login status.
+        Response: A JSON response indicating the login status.
     """
     data = request.json
-    return AuthService.login_user(data=data, db_session=db_session)
+    return AuthService.login(data=data, db_session=db_session)
 
 
 # POST /api/auth/logout/
 @bp.route("/logout/", methods=["POST"])
 @login_required
-def logout_user():
+def logout():
     """
     Log out the current user.
 
     This will invalidate the session or token.
 
     Returns:
-        JSON response indicating the logout status.
+        Response: A JSON response indicating the logout status.
     """
-    return AuthService.logout_user()
+    return AuthService.logout()
 
 
 # POST /api/auth/password_reset_request/
@@ -80,8 +80,11 @@ def password_reset_request(db_session=None):
     """
     Request a password reset email.
 
+    Args:
+        db_session (Session, optional): A database session for testing or direct queries.
+
     Returns:
-        JSON response indicating the status of the reset request.
+        Response: A JSON response indicating the status of the reset request.
     """
     return AuthService.password_reset_request(db_session=db_session)
 
@@ -93,11 +96,14 @@ def password_reset(db_session=None):
     """
     Reset the user password.
 
+    Args:
+        db_session (Session, optional): A database session for testing or direct queries.
+
     Expects:
         JSON payload with "reset_token" and "new_password" keys.
 
     Returns:
-        JSON response indicating the status of the password reset.
+        Response: A JSON response indicating the status of the password reset.
     """
     data = request.get_json()
     reset_token = data.get('token')

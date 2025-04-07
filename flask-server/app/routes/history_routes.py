@@ -22,7 +22,7 @@ def get_user_orders(db_session=None):
     """
     data = None
     if session.get("role") in ["staff", "admin"]:
-        data = request.json
+        data = request.args.to_dict()
 
     return HistoryService.get_user_orders(data=data, db_session=db_session)
 
@@ -42,7 +42,7 @@ def get_user_listings(db_session=None):
     """
     data = None
     if session.get("role") in ["staff", "admin"]:
-        data = request.json
+        data = request.args.to_dict()
 
     return HistoryService.get_user_listings(data=data, db_session=db_session)
 
@@ -62,7 +62,7 @@ def get_user_transactions(db_session=None):
     """
     data = None
     if session.get("role") in ["staff", "admin"]:
-        data = request.json
+        data = request.args.to_dict()
 
     return HistoryService.get_user_transactions(data=data, db_session=db_session)
 
@@ -82,7 +82,7 @@ def get_user_deliveries(db_session=None):
     """
     data = None
     if session.get("role") in ["staff", "admin"]:
-        data = request.json
+        data = request.args.to_dict()
 
     return HistoryService.get_user_deliveries(data=data, db_session=db_session)
 
@@ -102,7 +102,7 @@ def get_user_support_tickets(db_session=None):
     """
     data = None
     if session.get("role") in ["staff", "admin"]:
-        data = request.json
+        data = request.args.to_dict()
 
     return HistoryService.get_user_support_tickets(data=data, db_session=db_session)
 
@@ -122,6 +122,6 @@ def get_user_reviews(db_session=None):
     """
     data = None
     if session.get("role") in ["staff", "admin"]:
-        data = request.json
-        
+        data = request.args.to_dict()
+
     return HistoryService.get_user_reviews(data=data, db_session=db_session)

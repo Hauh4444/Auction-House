@@ -88,4 +88,3 @@ class UserService:
 
         response_data = {"message": "User and Profile deleted", "deleted_rows": deleted_rows}
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
-

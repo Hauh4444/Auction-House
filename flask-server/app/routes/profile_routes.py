@@ -22,7 +22,7 @@ def get_profile(db_session=None):
     """
     data = None
     if session.get("role") in ["staff", "admin"]:
-        data = request.json
+        data = request.args.to_dict()
 
     return ProfileService.get_profile(data=data, db_session=db_session)
 
