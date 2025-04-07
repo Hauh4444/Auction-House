@@ -1,3 +1,5 @@
+from pymysql import cursors
+
 from ..database.connection import get_db
 from ..entities import Category
 
@@ -15,7 +17,7 @@ class CategoryMapper:
             list: A list of category dictionaries.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
         cursor.execute("SELECT * FROM categories")
         categories = cursor.fetchall()
         return [Category(**category).to_dict() for category in categories]
@@ -34,8 +36,8 @@ class CategoryMapper:
             dict: Category details if found, otherwise None.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
-        cursor.execute("SELECT * FROM categories WHERE category_id = ?", (category_id,))
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor.execute("SELECT * FROM categories WHERE category_id = %s", (category_id,))
         category = cursor.fetchone()
         return Category(**category).to_dict() if category else None
 
@@ -53,11 +55,11 @@ class CategoryMapper:
             int: The ID of the newly created category.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
         statement = """
             INSERT INTO categories 
             (name, description, image_encoded, created_at, updated_at) 
-            VALUES (?, ?, ?, ?, ?)
+            VALUES (%s, %s, %s, %s, %s)
         """
         cursor.execute(statement, tuple(Category(**data).to_dict().values())[1:])
         db.commit()
@@ -78,11 +80,11 @@ class CategoryMapper:
             int: Number of rows updated.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
-        set_clause = ", ".join([f"{key} = ?" for key in data if key not in ["category_id", "created_at"]])
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        set_clause = ", ".join([f"{key} = %s" for key in data if key not in ["category_id", "created_at"]])
         values = [data.get(key) for key in data if key not in ["category_id", "created_at"]]
         values.append(category_id)
-        statement = f"UPDATE categories SET {set_clause} WHERE category_id = ?"
+        statement = f"UPDATE categories SET {set_clause} WHERE category_id = %s"
         cursor.execute(statement, values)
         db.commit()
         return cursor.rowcount
@@ -101,7 +103,7 @@ class CategoryMapper:
             int: Number of rows deleted.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
-        cursor.execute("DELETE FROM categories WHERE category_id = ?", (category_id,))
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor.execute("DELETE FROM categories WHERE category_id = %s", (category_id,))
         db.commit()
         return cursor.rowcount

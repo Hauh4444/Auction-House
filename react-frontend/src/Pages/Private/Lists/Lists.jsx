@@ -30,7 +30,7 @@ const Lists = () => {
             },
             withCredentials: true, // Ensures cookies are sent with requests
         })
-            .then(res => {
+            .then((res) => {
                 setLists(res.data.lists);
                 goToList(res.data.lists[0]);
             }) // Set the lists state
@@ -46,7 +46,7 @@ const Lists = () => {
             },
             withCredentials: true,
         })
-            .then(res => setListItems(res.data.list_items))
+            .then((res) => setListItems(res.data.list_items))
             .catch(() => setListItems([]));
     }
 

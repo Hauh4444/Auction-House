@@ -54,10 +54,6 @@ const Category = () => {
         },
     ]
 
-    /**
-     * Fetches category data based on the "category_id" parameter.
-     * The effect runs every time `location.search` changes.
-     */
     useEffect(() => {
         // API call to access the category data
         axios.get(`http://127.0.0.1:5000/api/categories/${filters.category_id}/`, {
@@ -65,9 +61,11 @@ const Category = () => {
                 "Content-Type": "application/json",
             },
         })
-            .then(res => setCategory(res.data.category)) // Update state with fetched data
+            .then((res) => setCategory(res.data.category)) // Update state with fetched data
             .catch(err => console.log(err)); // Log errors if any
+    }, [location.search]);
 
+    useEffect(() => {
         // Fetch best sellers from the backend API
         axios.get("http://127.0.0.1:5000/api/listings/", {
             headers: {
@@ -81,9 +79,11 @@ const Category = () => {
                 range: 8, // Limit to 8 items
             }
         })
-            .then(res => setBestSellers(res.data.listings)) // Update state with fetched data
+            .then((res) => setBestSellers(res.data.listings)) // Update state with fetched data
             .catch(() => setBestSellers([]));
+    }, [location.search])
 
+    useEffect(() => {
         // Fetch new listings from the backend API
         axios.get("http://127.0.0.1:5000/api/listings/", {
             headers: {
@@ -97,9 +97,11 @@ const Category = () => {
                 range: 8, // Number of listings to fetch
             }
         })
-            .then(res => setNewListings(res.data.listings)) // Update state with fetched data
+            .then((res) => setNewListings(res.data.listings)) // Update state with fetched data
             .catch(() => setNewListings([]));
+    }, [location.search]);
 
+    useEffect(() => {
         // Handle pagination by adjusting filters
         if (filters.page) {
             filters.start = ((filters.page - 1) * 12).toString(); // Start position for pagination
@@ -117,7 +119,7 @@ const Category = () => {
                 range: filters.range, // Number of listings to fetch
             }
         })
-            .then(res => setListings(res.data.listings)) // Update state with fetched data
+            .then((res) => setListings(res.data.listings)) // Update state with fetched data
             .catch(() => setListings([]));
     }, [location.search]); // Call on update of URL filters
 

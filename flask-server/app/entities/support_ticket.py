@@ -10,7 +10,6 @@ class SupportTicket:
     Attributes:
         ticket_id (int, optional): The unique identifier for the support ticket.
         user_id (int): The ID of the user who created the ticket.
-        order_id (int): The ID of the related order.
         subject (str): The subject of the support ticket.
         status (str): The status of the ticket (e.g., "Open", "Closed", "In Progress").
         priority (str): The priority level of the ticket (e.g., "Low", "Medium", "High").
@@ -21,7 +20,6 @@ class SupportTicket:
     def __init__(
             self,
             user_id: int,
-            order_id: int,
             subject: str,
             status: str,
             priority: str,
@@ -32,7 +30,6 @@ class SupportTicket:
     ):
         self.ticket_id = ticket_id
         self.user_id = user_id
-        self.order_id = order_id
         self.subject = subject
         self.status = status
         self.priority = priority
@@ -45,7 +42,6 @@ class SupportTicket:
         return {
             "ticket_id": self.ticket_id,
             "user_id": self.user_id,
-            "order_id": self.order_id,
             "subject": self.subject,
             "status": self.status,
             "priority": self.priority,

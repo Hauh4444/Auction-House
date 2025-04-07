@@ -1,24 +1,45 @@
-import sqlite3
-import os
+from mysql.connector import Error
+from dotenv import load_dotenv
+import os, pymysql
+
+from ..utils.mysql import mysql
 from .backup import recover_db
 
-DB_DIRECTORY = "database"
-DB_FILE = "auctionhouse.db"
+load_dotenv()
 
 
 def get_db():
     """
-    Establishes a connection to the SQLite database. If the database file is missing,
-    it attempts to recover it from the latest backup.
+    Establishes a connection to the MySQL database. If the database is missing (Error 1049),
+    it attempts to recover it from the latest backup file.
+
+    The function first tries to connect to the MySQL database using the credentials and database
+    name from environment variables. If the database is not found (Error 1049: "Unknown database"),
+    it invokes the `recover_db` function to restore the database from the most recent backup. After
+    recovery, it retries the connection and returns the connection object.
 
     Returns:
-        sqlite3.Connection: A database connection object if successful.
+        pymysql.connections.Connection: A connection object to the MySQL database if successful.
+        None: If the connection attempt fails due to an error other than "Unknown database".
+
+    Raises:
+        Error: If there is a MySQL connection error other than "Unknown database".
     """
-    db_path = os.path.join(DB_DIRECTORY, DB_FILE)
+    try:
+        conn = pymysql.connect(
+            host=os.getenv("DB_HOST"),
+            user=os.getenv("DB_USER"),
+            password=os.getenv("DB_PASSWORD"),
+            database=os.getenv("DB")
+        )
+        return conn
 
-    if not os.path.exists(db_path):  # Check if DB file is missing
-        recover_db()
-
-    conn = sqlite3.connect(database=db_path)
-    conn.row_factory = sqlite3.Row  # Enables row access by column name
-    return conn
+    except Error as e:
+        if e.errno == 1049:  # Error code for "Unknown database"
+            recover_db()  # Recover the database from backup
+            conn = mysql.connect()
+            conn.cursor().execute("USE auctionhouse")  # Retry selecting the database
+            return conn
+        else:
+            print(f"MySQL Connection Error: {e}")
+            return None

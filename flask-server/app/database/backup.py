@@ -1,83 +1,129 @@
 from datetime import datetime
-import sqlite3, os, gzip
+from dotenv import load_dotenv
+import os, pymysql
+from ..utils.mysql import mysql
 
-DB_DIRECTORY = os.path.join(os.getcwd(), "instance")  # Flask's instance directory
-BACKUP_DIRECTORY = os.path.join(DB_DIRECTORY, "backups")  # New folder for backups
-DB_FILE = "auctionhouse.db"
+load_dotenv()
+
+BACKUP_DIRECTORY = os.path.join(os.getcwd(), "database_backups")
 
 
 def backup_db():
     """
-    Creates a compressed backup of the SQLite database by exporting its contents
-    into a `.sql.gz` file.
+    Creates a backup of the MySQL database by exporting its structure and data into a `.sql` file.
+
+    This function performs the following tasks:
+    1. Creates a backup directory if it does not already exist.
+    2. Connects to the MySQL database using the credentials from the environment variables.
+    3. Dumps the structure (CREATE TABLE statements) and data (INSERT INTO statements) of each table in the database into a `.sql` file.
+    4. Saves the backup file with a timestamped filename in the `database_backups` directory.
+
+    The resulting `.sql` file contains the full schema and data necessary to recreate the database.
+
+    Raises:
+        mysql.connector.Error: If there is an error while interacting with the MySQL database.
+        Exception: If an unexpected error occurs during the backup process.
     """
     try:
         os.makedirs(BACKUP_DIRECTORY, exist_ok=True)
 
         today = datetime.now().strftime("%Y-%m-%d")
-        backup_file = f"auctionhouse_backup_{today}.sql.gz"
-
-        db_path = os.path.join(DB_DIRECTORY, DB_FILE)
+        backup_file = f"auctionhouse_backup_{today}.sql"
         backup_path = os.path.join(BACKUP_DIRECTORY, backup_file)
 
-        if not os.path.exists(db_path):
-            return
+        conn = pymysql.connect(
+            host=os.getenv("DB_HOST"),
+            user=os.getenv("DB_USER"),
+            password=os.getenv("DB_PASSWORD"),
+            database=os.getenv("DB")
+        )
 
-        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
 
-        with gzip.open(backup_path, "wt", encoding="utf-8") as f:  # Compress output
-            for line in conn.iterdump():
-                f.write(f"{line}\n")
+        with open(backup_path, "w", encoding="utf-8") as f:
+            cursor.execute("SHOW TABLES")
+            tables = [table[0] for table in cursor.fetchall()]
+
+            for table in tables:
+                # Dump table structure
+                cursor.execute(f"SHOW CREATE TABLE {table}")
+                create_table = cursor.fetchone()[1]
+                f.write(f"{create_table};\n\n")
+
+                # Dump table data
+                cursor.execute(f"SELECT * FROM {table}")
+                rows = cursor.fetchall()
+                columns = [desc[0] for desc in cursor.description]
+
+                for row in rows:
+                    values = ', '.join(
+                        f"'{str(item).replace('\'', '\\\'')}'" if item is not None else 'NULL' for item in row
+                    )
+                    f.write(f"INSERT INTO {table} ({', '.join(columns)}) VALUES ({values});\n")
+                f.write("\n")
+
+        cursor.close()
         conn.close()
+        print(f"Backup successful: {backup_path}")
 
-    except FileNotFoundError as e:
-        print(f"File error during backup: {e}")
-    except sqlite3.Error as e:
-        print(f"SQLite error during backup: {e}")
-    except gzip.GzipFile as e:
-        print(f"Gzip compression error: {e}")
+    except mysql.connector.Error as err:
+        print(f"MySQL Error during backup: {err}")
     except Exception as e:
-        print(f"An unexpected error occurred during backup: {e}")
+        print(f"Unexpected error during backup: {e}")
 
 
 def recover_db():
     """
-    Recovers the SQLite database from the most recent `.sql.gz` backup file.
+    Restores the MySQL database from the latest `.sql` backup file.
+
+    This function performs the following tasks:
+    1. Scans the `database_backups` directory for `.sql` backup files.
+    2. Sorts the backup files by modification date to find the most recent backup.
+    3. Connects to the MySQL database using the configured credentials.
+    4. Reads the SQL script from the latest backup file and executes it to restore the database.
+    5. Commits the changes to the database.
+
+    The restoration process will overwrite the current database state with the data from the backup.
+
+    Raises:
+        mysql.connector.Error: If there is an error while interacting with the MySQL database during the recovery process.
+        Exception: If an unexpected error occurs during the recovery process.
     """
     try:
-        db_path = os.path.join(DB_DIRECTORY, DB_FILE)
-
-        # Get full paths of backup files from the 'backups' directory
         backup_files = [
             os.path.join(BACKUP_DIRECTORY, f)
             for f in os.listdir(BACKUP_DIRECTORY)
-            if f.startswith("auctionhouse_backup_") and f.endswith(".sql.gz")
+            if f.startswith("auctionhouse_backup_") and f.endswith(".sql")
         ]
-
         backup_files = sorted(backup_files, key=os.path.getmtime, reverse=True)
 
         if not backup_files:
+            print("No backup files found.")
             return
 
         latest_backup = backup_files[0]
 
-        # Restore database from gzip file
-        with gzip.open(latest_backup, "rt", encoding="utf-8") as f:
+        conn = mysql.connector.connect(
+            host="localhost",
+            user="Preston",
+            password="",
+            database="auctionhouse"
+        )
+        cursor = conn.cursor()
+
+        with open(latest_backup, "r", encoding="utf-8") as f:
             sql_script = f.read()
 
-        with sqlite3.connect(db_path) as conn:
-            cursor = conn.cursor()
-            cursor.executescript(sql_script)
-            conn.commit()
+        for statement in sql_script.split(';'):
+            if statement.strip():
+                cursor.execute(statement)
 
-        # Delete the backup after successful recovery
-        os.remove(latest_backup)
+        conn.commit()
+        cursor.close()
+        conn.close()
+        print(f"Database restored from {latest_backup}")
 
-    except FileNotFoundError as e:
-        print(f"File error during recovery: {e}")
-    except sqlite3.Error as e:
-        print(f"SQLite error during recovery: {e}")
-    except gzip.GzipFile as e:
-        print(f"Gzip decompression error: {e}")
+    except mysql.connector.Error as err:
+        print(f"MySQL Error during recovery: {err}")
     except Exception as e:
-        print(f"An unexpected error occurred during recovery: {e}")
+        print(f"Unexpected error during recovery: {e}")

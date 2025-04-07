@@ -1,3 +1,5 @@
+from pymysql import cursors
+
 from ..database.connection import get_db
 from ..entities import Delivery
 
@@ -16,8 +18,8 @@ class DeliveryMapper:
             list[dict]: A list of dictionaries representing the user's deliveries.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
-        cursor.execute("SELECT * FROM deliveries WHERE user_id = ?", (user_id,))
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor.execute("SELECT * FROM deliveries WHERE user_id = %s", (user_id,))
         deliveries = cursor.fetchall()
         return [Delivery(**delivery).to_dict() for delivery in deliveries]
 
@@ -34,8 +36,8 @@ class DeliveryMapper:
             dict | None: A dictionary representing the delivery if found, otherwise None.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
-        cursor.execute("SELECT * FROM deliveries WHERE delivery_id = ?", (delivery_id,))
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor.execute("SELECT * FROM deliveries WHERE delivery_id = %s", (delivery_id,))
         delivery = cursor.fetchone()
         return Delivery(**delivery).to_dict() if delivery else None
 
@@ -52,12 +54,12 @@ class DeliveryMapper:
             int: The ID of the newly created delivery.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
         statement = """
             INSERT INTO deliveries 
             (order_item_id, user_id, address, city, state, country, delivery_status, 
             tracking_number, courier, estimated_delivery_date, delivered_at, created_at, updated_at) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """
         cursor.execute(statement, tuple(Delivery(**data).to_dict().values())[1:])  # Exclude delivery_id (auto-incremented)
         db.commit()
@@ -77,11 +79,11 @@ class DeliveryMapper:
             int: The number of rows updated (should be 1 if successful).
         """
         db = db_session or get_db()
-        cursor = db.cursor()
-        conditions = [f"{key} = ?" for key in data if key not in ["delivery_id", "created_at"]]
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        conditions = [f"{key} = %s" for key in data if key not in ["delivery_id", "created_at"]]
         values = [data.get(key) for key in data if key not in ["delivery_id", "created_at"]]
         values.append(delivery_id)
-        statement = f"UPDATE deliveries SET {', '.join(conditions)}, updated_at = CURRENT_TIMESTAMP WHERE delivery_id = ?"
+        statement = f"UPDATE deliveries SET {', '.join(conditions)}, updated_at = CURRENT_TIMESTAMP WHERE delivery_id = %s"
         cursor.execute(statement, values)
         db.commit()
         return cursor.rowcount
@@ -99,7 +101,7 @@ class DeliveryMapper:
             int: The number of rows deleted (should be 1 if successful).
         """
         db = db_session or get_db()
-        cursor = db.cursor()
-        cursor.execute("DELETE FROM deliveries WHERE delivery_id = ?", (delivery_id,))
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor.execute("DELETE FROM deliveries WHERE delivery_id = %s", (delivery_id,))
         db.commit()
         return cursor.rowcount

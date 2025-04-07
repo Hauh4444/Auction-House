@@ -47,7 +47,7 @@ const Popup = () => {
                 "Content-Type": "application/json",
             }
         })
-            .then(res => setCategories(res.data.categories)) // Update state with fetched data
+            .then((res) => setCategories(res.data.categories)) // Update state with fetched data
             .catch(err => console.log(err)); // Log errors if any
     }, []); 
 
@@ -133,7 +133,7 @@ const Popup = () => {
                 <InputLabel id="sortByLabel">Sort By</InputLabel>
                 <Select
                     id="sortByInput"
-                    labelid="sortByLabel"
+                    labelId="sortByLabel"
                     aria-labelledby="sortByLabel"
                     className="sortBy"
                     value={sortBy}
@@ -161,7 +161,7 @@ const Popup = () => {
                 <InputLabel id="categoryLabel">Category</InputLabel>
                 <Select
                     id="categoryInput"
-                    labelid="categoryLabel"
+                    labelId="categoryLabel"
                     aria-labelledby="categoryLabel"
                     className="category"
                     value={category}
@@ -183,7 +183,7 @@ const Popup = () => {
                 <InputLabel id="listingTypeLabel">Listing Type</InputLabel>
                 <Select
                     id="listingTypeInput"
-                    labelid="listingTypeLabel"
+                    labelId="listingTypeLabel"
                     aria-labelledby="listingTypeLabel"
                     className="listingType"
                     value={listingType}

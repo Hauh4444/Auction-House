@@ -53,7 +53,7 @@ const UserProfile = () => {
             },
             withCredentials: true, // Ensures cookies are sent with requests
         })
-            .then(res => setProfile(res.data.profile)) // Set the user state
+            .then((res) => setProfile(res.data.profile)) // Set the user state
             .catch(err => console.log(err)); // Log errors if any
     }, []); 
 

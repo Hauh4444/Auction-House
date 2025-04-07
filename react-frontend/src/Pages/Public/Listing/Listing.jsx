@@ -48,7 +48,7 @@ const Listing = () => {
                 "Content-Type": "application/json",
             },
         })
-            .then(res => {
+            .then((res) => {
                 setListing(res.data.listing)
             }) // Update state with fetched data
             .catch(err => console.log(err)); // Log errors if any
@@ -133,7 +133,7 @@ const Listing = () => {
                             )}
                         </div>
                     </div>
-                    <div className="lesserInfo">
+                    <div className="secondaryInfo">
                         {/* Additional listing information */}
                         <div className="specifics">
                             {listing.item_specifics && (

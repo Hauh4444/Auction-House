@@ -43,7 +43,7 @@ const SellerProfile = () => {
                 "Content-Type": "application/json",
             }
         })
-            .then(res => setListings(res.data.listings))
+            .then((res) => setListings(res.data.listings))
             .catch(err => console.log(err)); // Log errors if any
     }, []);
 
@@ -54,7 +54,7 @@ const SellerProfile = () => {
                 "Content-Type": "application/json",
             }
         })
-            .then(res => setCategories(res.data.categories)) // Update state with fetched data
+            .then((res) => setCategories(res.data.categories)) // Update state with fetched data
             .catch(err => console.log(err)); // Log errors if any
     }, []); // Empty dependency array ensures this effect runs only once
 
@@ -83,7 +83,7 @@ const SellerProfile = () => {
                 },
                 withCredentials: true, // Ensure cookies are sent
             })
-            .then(() => navigate("/seller-profile?nav=manage"))
+            .then(() => navigate("/user/seller-profile?nav=manage"))
             .catch(err => console.log(err)); // Log errors if any
     }
 

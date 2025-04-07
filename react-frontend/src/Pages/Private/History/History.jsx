@@ -27,7 +27,7 @@ const History = () => {
             },
             withCredentials: true,
         })
-            .then(res => setHistory(res.data[filters.nav]))
+            .then((res) => setHistory(res.data[filters.nav]))
             .catch(err => console.log(err)); // Log errors if any
     }, [location.search]);
 

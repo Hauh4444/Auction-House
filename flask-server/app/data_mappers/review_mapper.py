@@ -1,3 +1,5 @@
+from pymysql import cursors
+
 from ..database.connection import get_db
 from ..entities import Review
 
@@ -16,16 +18,16 @@ class ReviewMapper:
             list: A list of review dictionaries matching the query conditions.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
         statement = "SELECT * FROM reviews"
         values = []
 
         # Add conditions
         if "listing_id" in args:
-            statement += " WHERE listing_id = ?"
+            statement += " WHERE listing_id = %s"
             values.append(args.get("listing_id"))
         if "user_id" in args:
-            statement += " WHERE user_id = ?"
+            statement += " WHERE user_id = %s"
             values.append(args.get("user_id"))
 
         # Add sorting
@@ -34,8 +36,8 @@ class ReviewMapper:
 
         # Add start and range
         if "start" in args and "range" in args:
-            statement += " LIMIT ? OFFSET ?"
-            values.extend([args.get("range"), args.get("start")])
+            statement += " LIMIT %s OFFSET %s"
+            values.extend([int(args.get("range")), int(args.get("start"))])
 
         cursor.execute(statement, values)
         reviews = cursor.fetchall()
@@ -55,8 +57,8 @@ class ReviewMapper:
             dict: Review details if found, otherwise None.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
-        cursor.execute("SELECT * FROM reviews WHERE review_id = ?", (review_id,))
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor.execute("SELECT * FROM reviews WHERE review_id = %s", (review_id,))
         review = cursor.fetchone()
         return Review(**review).to_dict() if review else None
 
@@ -74,11 +76,11 @@ class ReviewMapper:
             int: The ID of the newly created review.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
         statement = """
             INSERT INTO reviews 
             (listing_id, user_id, username, title, description, stars, created_at) 
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
         """
         # Explicitly extract the values from the data dictionary, excluding review_id if it exists
         values = [
@@ -109,11 +111,11 @@ class ReviewMapper:
             int: Number of rows updated.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
-        conditions = [f"{key} = ?" for key in data if key != "review_id"]
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        conditions = [f"{key} = %s" for key in data if key != "review_id"]
         values = list(data.values())
         values.append(review_id)
-        statement = "UPDATE reviews SET " + ", ".join(conditions) + " WHERE review_id = ?"
+        statement = "UPDATE reviews SET " + ", ".join(conditions) + " WHERE review_id = %s"
         cursor.execute(statement, values)
         db.commit()
         return cursor.rowcount
@@ -132,7 +134,7 @@ class ReviewMapper:
             int: Number of rows deleted.
         """
         db = db_session or get_db()
-        cursor = db.cursor()
-        cursor.execute("DELETE FROM reviews WHERE review_id = ?", (review_id,))
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor.execute("DELETE FROM reviews WHERE review_id = %s", (review_id,))
         db.commit()
         return cursor.rowcount
