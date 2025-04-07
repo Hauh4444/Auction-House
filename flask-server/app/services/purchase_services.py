@@ -42,6 +42,27 @@ class PurchaseService:
     
     @staticmethod
     def process_payment(data, db_session=None):
+        try:
+            amount = int(float(data.get("amount")) * 100)
+            currency = data.get("currency")
+
+            if amount <= 0:
+                return Response(response=jsonify({"error": "Invalid amount"}).getdata(), status=400, mimetype="application/json")
+            
+            intent = stripe.PaymentIntent.create(
+                amount=amount,
+                currency=currency,
+                metadata={"integration_check": "accept_a_payment"},
+            )
+
+            return Response(response=jsonify({
+                "client_secret": intent.client_secret
+            }).get_data(), status=200, mimetype="application/json")
+        
+        except stripe.error.StripeError as e:
+            return Response(response=jsonify({"error": str(e)}).get_data(), status=400, mimetype="application/json")
+        except Exception as e:
+            return Response(response=jsonify({"error": "Internal server error", "details": str(e)}).get_data(), status=500, mimetype="application/json")
 
 
     @staticmethod
