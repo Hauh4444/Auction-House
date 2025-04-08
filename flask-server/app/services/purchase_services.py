@@ -9,7 +9,6 @@ from ..data_mappers import OrderMapper, TransactionMapper, DeliveryMapper, Listi
 
 class PurchaseService:
     """For now, we mock most of the external data due to integration unavailability."""
-
     @staticmethod
     def process_purchase(data, db_session=None):
         """
@@ -41,6 +40,7 @@ class PurchaseService:
         }
         return PurchaseService.create_order(data=data, db_session=db_session)
 
+
     @staticmethod
     def create_order(data, db_session=None):
         """
@@ -65,6 +65,7 @@ class PurchaseService:
 
         data.update(order_id=order_id)
         return PurchaseService.create_transaction(data=data, db_session=db_session)
+
 
     @staticmethod
     def create_transaction(data, db_session=None):
@@ -96,6 +97,7 @@ class PurchaseService:
 
         data.update(transaction_id=transaction_id)
         return PurchaseService.handle_items(data=data, db_session=db_session)
+
 
     @staticmethod
     def handle_items(data, db_session=None):

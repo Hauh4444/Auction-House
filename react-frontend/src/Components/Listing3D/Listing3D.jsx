@@ -20,7 +20,7 @@ const Loader = () => {
 
 const Listing3D = ({ modelPath }) => {
     return (
-        <div className="w-full h-[600px] relative">
+        <div className="listingShowcase">
             <Canvas camera={{ position: [0, 2, 5], fov: 45 }}>
                 <Suspense fallback={<Loader />}>
                     {/* eslint-disable-next-line react/no-unknown-property */}

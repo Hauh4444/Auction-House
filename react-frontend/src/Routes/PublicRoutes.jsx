@@ -38,14 +38,12 @@ import UserProfile from "@/Pages/Private/UserProfile/UserProfile";
 import CustomerInquiries from "@/Pages/Staff/CustomerInquiries/CustomerInquiries";
 import ManageListings from "@/Pages/Staff/ManageListings/ManageListings";
 import StaffAccount from "@/Pages/Staff/StaffAccount/StaffAccount";
-import StaffProfile from "@/Pages/Staff/StaffProfile/StaffProfile";
 import StaffReports from "@/Pages/Staff/StaffReports/StaffReports";
 import UserInfo from "@/Pages/Staff/UserInfo/UserInfo";
 
 // Admin Internal Modules
 import AdminAccount from "@/Pages/Admin/AdminAccount/AdminAccount";
-import AdminDashboard from "@/Pages/Admin/AdminDashboard/AdminDashboard";
-import AdminProfile from "@/Pages/Admin/AdminProfile/AdminProfile";
+import AdminReports from "@/Pages/Admin/AdminReports/AdminReports"
 import ManageUsers from "@/Pages/Admin/ManageUsers/ManageUsers";
 import SiteSettings from "@/Pages/Admin/SiteSettings/SiteSettings";
 import SystemLogs from "@/Pages/Admin/SystemLogs/SystemLogs";
@@ -101,7 +99,6 @@ const PublicRoutes = () => {
                     <Route path="/staff/messages" element={<CustomerInquiries />} />
                     <Route path="/staff/manage-listings" element={<ManageListings />} />
                     <Route path="/staff/account" element={<StaffAccount />} />
-                    <Route path="/staff/profile" element={<StaffProfile />} />
                     <Route path="/staff/reports" element={<StaffReports />} />
                     <Route path="/staff/user-info" element={<UserInfo />} />
                 </Route>
@@ -109,8 +106,7 @@ const PublicRoutes = () => {
                 {/* Protected Routes for Admin Users */}
                 <Route element={<AdminRoute />}>
                     <Route path="/admin/account" element={<AdminAccount />} />
-                    <Route path="/admin/dashboard" element={<AdminDashboard />} />
-                    <Route path="/admin/profile" element={<AdminProfile />} />
+                    <Route path="/admin/reports" element={<AdminReports />} />
                     <Route path="/admin/users" element={<ManageUsers />} />
                     <Route path="/admin/settings" element={<SiteSettings />} />
                     <Route path="/admin/logs" element={<SystemLogs />} />

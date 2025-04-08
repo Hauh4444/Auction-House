@@ -4,18 +4,29 @@
 
 ### React Frontend
 
-1. Admin Management
-2. 3D Showcase UI
-3. Friend UI
-4. Live Auction UI
+1. Analytics & Reports
+2. Admin Account
+3. Manage Users
+4. Site Settings
+5. Logs
+6. Other UI
+   1. Stripe Payments
+   2. Friend
+   3. View Profile
+   4. Live Auction
 
 ### Flask Server
 
-1. MySQL Foreign Keys 
-2. Logging 
-3. Analytics & Reports 
-4. 3D Showcase API 
-5. Admin Control
+1. MySQL
+   1. Foreign Keys
+   2. Payment Info Table
+   3. Direct Transaction to Payment Info ID
+   4. Listings Should Have Count
+2. Logging
+3. Analytics & Reports
+4. 3D Showcase API
+5. Order & Delivery API
+6. Payment API
 
 ## Setup
 
