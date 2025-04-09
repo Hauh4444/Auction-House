@@ -1,9 +1,13 @@
 from flask import Response, jsonify, session
+
 from datetime import date, datetime, timedelta
-import stripe
+from dotenv import load_dotenv
+import stripe, os
 
 from ..services import ProfileService
 from ..data_mappers import OrderMapper, TransactionMapper, DeliveryMapper, ListingMapper
+
+load_dotenv()
 
 
 class PurchaseService:
@@ -45,9 +49,8 @@ class PurchaseService:
         try:
             amount = int(float(data.get("amount")) * 100)
             currency = data.get("currency")
-
             if amount <= 0:
-                return Response(response=jsonify({"error": "Invalid amount"}).getdata(), status=400, mimetype="application/json")
+                return Response(response=jsonify({"error": "Invalid amount"}).get_data(), status=400, mimetype="application/json")
             
             intent = stripe.PaymentIntent.create(
                 amount=amount,
