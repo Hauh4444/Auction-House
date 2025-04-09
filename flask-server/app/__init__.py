@@ -49,7 +49,7 @@ def create_app():
 
     # PostHog for Analytics
     posthog.project_api_key = 'phc_CQazMsvnORt3xmDYd9XrWnx6NtGZH9qSLKggFoe51LC'  # PostHog API KEY
-    posthog.host = 'https://app.posthog.com'  # Or your self-hosted instance URL May 
+    posthog.host = 'https://us.posthog.com/project/145970'  # Or your self-hosted instance URL May 
 
     # Register analytics routes
     app.register_blueprint(analytics_bp)
