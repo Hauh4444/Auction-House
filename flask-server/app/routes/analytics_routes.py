@@ -19,5 +19,5 @@ def summary():
     """
     return jsonify({
         'message': 'Analytics are tracked via PostHog.',
-        'dashboard_link': 'https://app.posthog.com'  # Replace with your actual project dashboard URL
+        'dashboard_link': 'https://us.posthog.com/project/145970' #this is a link associated with Posthog
     })
