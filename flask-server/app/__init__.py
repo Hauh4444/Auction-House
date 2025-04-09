@@ -48,8 +48,8 @@ def create_app():
     CORS(app, supports_credentials=True, resources={r"/api/*": {"origins": "http://localhost:5173"}})
 
     # PostHog for Analytics
-    posthog.project_api_key = 'your_posthog_project_api_key'  # Replace with your actual API key
-    posthog.host = 'https://app.posthog.com'  # Or your self-hosted instance URL
+    posthog.project_api_key = 'phc_CQazMsvnORt3xmDYd9XrWnx6NtGZH9qSLKggFoe51LC'  # PostHog API KEY
+    posthog.host = 'https://app.posthog.com'  # Or your self-hosted instance URL May 
 
     # Register analytics routes
     app.register_blueprint(analytics_bp)
