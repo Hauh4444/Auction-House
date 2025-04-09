@@ -50,6 +50,9 @@ class PurchaseService:
         try:
             amount = int(float(data.get("amount")) * 100)
             currency = data.get("currency")
+            success_url = data.get("success_url")
+            cancel_url = data.get("cancel_url")
+
             if amount <= 0:
                 return Response(response=jsonify({"error": "Invalid amount"}).get_data(), status=400, mimetype="application/json")
             
@@ -57,6 +60,23 @@ class PurchaseService:
                 amount=amount,
                 currency=currency,
                 metadata={"integration_check": "accept_a_payment"},
+            )
+
+            session = stripe.checkout.Session.create(
+                payment_method_types = ["card"],
+                line_items = [{
+                    "price_data": {
+                        "currency": currency,
+                        "product_data": {
+                            "name": "Purchase from Marketplace",
+                        },
+                        "unit_amount": amount,
+                    },
+                    "quantity": 1,
+                }],
+                mode = "payment",
+                success_url = success_url,
+                cancel_url = cancel_url,
             )
 
             return Response(response=jsonify({
