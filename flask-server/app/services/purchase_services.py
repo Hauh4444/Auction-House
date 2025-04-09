@@ -8,6 +8,7 @@ from ..services import ProfileService
 from ..data_mappers import OrderMapper, TransactionMapper, DeliveryMapper, ListingMapper
 
 load_dotenv()
+stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 
 
 class PurchaseService:
