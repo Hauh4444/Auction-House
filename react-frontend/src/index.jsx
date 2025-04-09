@@ -26,7 +26,7 @@ import "./index.scss";
  */
 
 // Initialize PostHog
-posthog.init("YOUR_POSTHOG_API_KEY", { api_host: "https://app.posthog.com" });
+posthog.init("phc_CQazMsvnORt3xmDYd9XrWnx6NtGZH9qSLKggFoe51LC", { api_host: "https://us.posthog.com/project/145970" });
 
 /**
  * Tracking the page view for PostHog when the app loads.
