@@ -51,6 +51,9 @@ def create_app():
     posthog.project_api_key = 'your_posthog_project_api_key'  # Replace with your actual API key
     posthog.host = 'https://app.posthog.com'  # Or your self-hosted instance URL
 
+    # Register analytics routes
+    app.register_blueprint(analytics_bp)
+
     # Register routes
     for _, module_name, _ in pkgutil.iter_modules(routes.__path__):
         module = importlib.import_module(f".{module_name}", package="app.routes")
