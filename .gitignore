@@ -6,7 +6,7 @@ flask-server/app/entities/__pycache__/
 flask-server/app/data_mappers/__pycache__/
 flask-server/app/services/__pycache__/
 flask-server/flask_session/
-flask-server/.env
+flask-server/.venv
 
 react-frontend/coverage/
 react-frontend/node_modules/

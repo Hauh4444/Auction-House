@@ -9,7 +9,9 @@ from .session_services import SessionService
 from .email_services import EmailService
 from ..data_mappers import AuthMapper, ProfileMapper, UserMapper
 from ..utils.password import hash_password
+from ..utils.logger import setup_logger
 
+auth_logger = setup_logger("auth", "logs/auth.log")
 
 class AuthService:
     @staticmethod
@@ -23,9 +25,11 @@ class AuthService:
         """
         if not current_user.is_authenticated:
             response_data = {"error": "Error user is not authenticated", "authenticated": False}
+            auth_logger.error("User " + current_user + " is not authenticated")
             return Response(response=jsonify(response_data).get_data(), status=401, mimetype="application/json")
 
         response_data = {"message": "User is authenticated", "authenticated": True, "id": current_user.id, "role": current_user.role}
+        auth_logger.info("User " + current_user + " is authenticated")
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
 
@@ -84,6 +88,7 @@ class AuthService:
 
         if not user or not user.password_hash == hash_password(data.get("password")):
             response_data = {"error": "Invalid username or password"}
+            auth_logger.error("User " + login_user + " failed login attempt")
             return Response(response=jsonify(response_data).get_data(), status=422, mimetype="application/json")
 
         session.update(user_id=user.id, role=user.role)
@@ -95,6 +100,7 @@ class AuthService:
         SessionService.create_session(db_session)
 
         response_data = {"message": "Login successful", "user": user}
+        auth_logger.info("User " + login_user + " successful login")
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
 
@@ -112,6 +118,7 @@ class AuthService:
         current_user.is_active = False
 
         response_data = {"message": "Logout successful"}
+        auth_logger.info("User " + logout_user + " successful logout")
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
 

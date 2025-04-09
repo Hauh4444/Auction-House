@@ -3,6 +3,9 @@ from flask import jsonify, Response
 import socketio
 
 from ..data_mappers import BidMapper  # Assuming you have a BidMapper for DB interactions
+from ..utils.logger import setup_logger
+
+bid_logger = setup_logger("bid", "logs/bid.log")
 
 
 class BidService:
@@ -22,6 +25,7 @@ class BidService:
         # Validation to check if required fields are present
         if not data.get("user") or not data.get("amount"):
             data = {"error": "User and amount are required"}
+            bid_logger.error("User " + data.get("user") + " failed to post a bid")
             return Response(response=jsonify(data).get_data(), status=400, mimetype='application/json')
 
         # Save the bid using the BidMapper to interact with the DB
@@ -34,6 +38,7 @@ class BidService:
 
         # Return the success message with the bid ID and data
         data = {"message": "Bid posted", "bid_id": bid_id, "bid": data}
+        bid_logger.info("User " + data.get("user") + " posted a bid")
         return Response(response=jsonify(data).get_data(), status=201, mimetype='application/json')
 
 

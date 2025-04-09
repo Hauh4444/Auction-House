@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
 from flask_login import login_required
+from ..utils import logger
 
 from ..services import AuthService
 
@@ -11,6 +12,7 @@ bp = Blueprint("auth_bp", __name__, url_prefix="/api/auth")
 @bp.route("/auth_status/", methods=["GET"])
 @login_required
 def check_auth_status():
+    auth_logger = logger.setup_logger("auth", "logs/auth.log")
     """
     Check the authentication status of the current user.
 
