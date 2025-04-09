@@ -1,7 +1,7 @@
 // External Libraries
 import { useState } from "react";
-import axios from "axios";
 import { FormControl, Button, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import axios from "axios";
 
 // Internal Modules
 import Header from "@/Components/Header/Header";
@@ -21,7 +21,7 @@ const UserInfo = () => {
         let apiRoute = currentRoute;
         if (apiRoute === "user") { apiRoute = ""; }
 
-        axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/user/${apiRoute}/`, {
+        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/user/${ apiRoute }/`, {
             params: { user_id: userIdInput },
             headers: { "Content-Type": "application/json" },
             withCredentials: true,
@@ -42,6 +42,7 @@ const UserInfo = () => {
         <div className="userInfoPage page">
             <div className="mainPage">
                 <Header />
+
                 <h1>User Info</h1>
                 <div className="content">
                     <div className="filters">
@@ -52,26 +53,26 @@ const UserInfo = () => {
                                 labelId="routeLabel"
                                 aria-labelledby="routeLabel"
                                 className="routeInput"
-                                value={currentRoute}
-                                onChange={(e) => setCurrentRoute(e.target.value)}
+                                value={ currentRoute }
+                                onChange={ (e) => setCurrentRoute(e.target.value) }
                                 variant="outlined"
                             >
                                 {routes.map((filterRoute, index) => (
-                                    <MenuItem value={filterRoute} key={index}>
-                                        {filterRoute.charAt(0).toUpperCase() + filterRoute.slice(1)}
+                                    <MenuItem value={ filterRoute } key={ index }>
+                                        { filterRoute.charAt(0).toUpperCase() + filterRoute.slice(1) }
                                     </MenuItem>
                                 ))}
                             </Select>
                         </FormControl>
                         <TextField
                             className="input"
-                            value={userIdInput}
+                            value={ userIdInput }
                             label="User ID"
                             type="text"
-                            onChange={(e) => setUserIdInput(e.target.value)}
+                            onChange={ (e) => setUserIdInput(e.target.value) }
                             variant="outlined"
                         />
-                        <Button className="submitBtn" onClick={handleSubmit}>Submit</Button>
+                        <Button className="submitBtn" onClick={ handleSubmit }>Submit</Button>
                     </div>
                     <table className="data">
                         {Array.isArray(userData) && userData.length > 0 ? (
@@ -79,21 +80,21 @@ const UserInfo = () => {
                                 <thead>
                                 <tr className="header">
                                     {Object.keys(userData[0]).map((key, index) => (
-                                        <th key={index}>{key}</th>
+                                        <th key={ index }>{ key }</th>
                                     ))}
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {userData.map((item, rowIndex) => (
-                                    <tr className="item" key={rowIndex}>
+                                    <tr className="item" key={ rowIndex }>
                                         {Object.keys(item).map((key, colIndex) => (
                                             <td
-                                                key={colIndex}
-                                                onClick={() => handleCopy(item[key])}
-                                                style={{ cursor: "pointer", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}
-                                                title={item[key]}
+                                                key={ colIndex }
+                                                onClick={ () => handleCopy(item[key]) }
+                                                style={ { cursor: "pointer", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }
+                                                title={ item[key] }
                                             >
-                                                {item[key]}
+                                                { item[key] }
                                             </td>
                                         ))}
                                     </tr>
@@ -106,7 +107,7 @@ const UserInfo = () => {
                                     <thead>
                                     <tr className="header">
                                         {Object.keys(userData).map((key, index) => (
-                                            <th key={index}>{key}</th>
+                                            <th key={ index }>{ key }</th>
                                         ))}
                                     </tr>
                                     </thead>
@@ -114,12 +115,12 @@ const UserInfo = () => {
                                     <tr className="item">
                                         {Object.keys(userData).map((key, index) => (
                                             <td
-                                                key={index}
-                                                onClick={() => handleCopy(userData[key])}
-                                                style={{ cursor: "pointer", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}
-                                                title={userData[key]}
+                                                key={ index }
+                                                onClick={ () => handleCopy(userData[key]) }
+                                                style={ { cursor: "pointer", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }
+                                                title={ userData[key] }
                                             >
-                                                {userData[key]}
+                                                { userData[key] }
                                             </td>
                                         ))}
                                     </tr>

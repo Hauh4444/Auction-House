@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
  * - Displays a "Page Not Found" image.
  * - Provides a link to navigate back to the home page.
  *
- * @returns {JSX.Element} The rendered homepage containing the header, navigation, and conditionally rendered category navigation.
+ * @returns { JSX.Element } The rendered homepage containing the header, navigation, and conditionally rendered category navigation.
  */
 const PageNotFound = () => {
     return (

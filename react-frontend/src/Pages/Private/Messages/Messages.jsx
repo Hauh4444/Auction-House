@@ -1,7 +1,7 @@
 // External Libraries
 import { useState, useEffect, useRef } from 'react';
-import axios from "axios";
 import { Button, TextField } from "@mui/material";
+import axios from "axios";
 
 // Internal Modules
 import SocketProvider from "@/ContextAPI/SocketProvider";
@@ -25,10 +25,8 @@ const Messages = () => {
     const messagesEndRef = useRef(null); // Reference to scroll to the bottom of the messages div
 
     useEffect(() => {
-        axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/user/chats/`, {
-            headers: {
-                "Content-Type": "application/json",
-            },
+        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/user/chats/`, {
+            headers: { "Content-Type": "application/json" },
             withCredentials: true, // Ensures cookies are sent with requests
         })
             .then((res) => {
@@ -39,7 +37,7 @@ const Messages = () => {
     }, []);
 
     const getMessages = () => {
-        axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/user/messages/${currentChat.chat_id}/`, {
+        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/user/messages/${ currentChat.chat_id }/`, {
             headers: { "Content-Type": "application/json" },
             withCredentials: true, // Ensures cookies are sent with requests
         })
@@ -75,14 +73,12 @@ const Messages = () => {
 
     const handleSendMessage = () => {
         if (!newMessage.trim()) return; // Prevent sending empty messages
-        axios.post(`${import.meta.env.VITE_BACKEND_API_URL}/user/messages/${currentChat.chat_id}/`,
+        axios.post(`${ import.meta.env.VITE_BACKEND_API_URL }/user/messages/${ currentChat.chat_id }/`,
             {
                 message: newMessage
             },
             {
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                headers: { "Content-Type": "application/json" },
                 withCredentials: true, // Ensures cookies are sent with requests
             })
             .then(() => {
@@ -102,37 +98,37 @@ const Messages = () => {
         <SocketProvider>
             <div className="messagesPage page">
                 <div className="mainPage">
-                    {/* Page Header */}
+                    { /* Page Header */ }
                     <Header />
 
                     <div className="content">
                         <div className="chats">
                             {chats && chats.map((chat, index) => (
-                                <Button className={`chat${currentChat === chat ? " selected" : ""}`} key={index} onClick={() => setCurrentChat(chat)}>
-                                    Chat {index + 1}
+                                <Button className={ `chat${ currentChat === chat ? " selected" : ""  }`} key={ index } onClick={ () => setCurrentChat(chat) }>
+                                    Chat { index + 1 }
                                 </Button>
                             ))}
-                            <Button className="createChat" onClick={() => handleCreateChat()}>
+                            <Button className="createChat" onClick={ () => handleCreateChat() }>
                                 New Chat
                             </Button>
                         </div>
                         <div className="main">
                             <div className="messages">
                                 {messages && messages.map((message, index) => (
-                                    <div className={`message${auth.user.user_id === message.sender_id ? " thisUser" : ""}`} key={index}>
-                                        {message.message}
+                                    <div className={ `message${ auth.user.user_id === message.sender_id ? " thisUser" : ""  }`} key={ index }>
+                                        { message.message }
                                     </div>
                                 ))}
-                                <div ref={messagesEndRef} />
+                                <div ref={ messagesEndRef } />
                             </div>
                             <div className="newMessage">
                                 <TextField
                                     className="input"
-                                    value={newMessage}
+                                    value={ newMessage }
                                     label="Message"
                                     type="text"
-                                    onChange={(e) => setNewMessage(e.target.value)}
-                                    onKeyDown={handleKeyPress}
+                                    onChange={ (e) => setNewMessage(e.target.value) }
+                                    onKeyDown={ handleKeyPress }
                                     variant="outlined"
                                     sx={{
                                         '& .MuiOutlinedInput-root': {
@@ -140,12 +136,12 @@ const Messages = () => {
                                         },
                                     }}
                                 />
-                                <Button className="btn" onClick={() => handleSendMessage()}>Send</Button>
+                                <Button className="btn" onClick={ () => handleSendMessage() }>Send</Button>
                             </div>
                         </div>
                     </div>
                 </div>
-                {/* Right-side Navigation */}
+                { /* Right-side Navigation */ }
                 <RightNav />
             </div>
         </SocketProvider>

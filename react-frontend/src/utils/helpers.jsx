@@ -6,24 +6,24 @@ import axios from "axios";
  * Renders the star rating based on the average review score.
  * It will display filled, empty, or half stars accordingly.
  *
- * @param {number} averageReview - The average review score of the product.
- * @returns {JSX.Element} A span element with the appropriate number of stars.
+ * @param { number } averageReview - The average review score of the product.
+ * @returns { JSX.Element } A span element with the appropriate number of stars.
  */
 const renderStars = (averageReview) => {
     const filledStars = Math.floor(averageReview); // Number of filled stars
     const halfStar = averageReview > filledStars; // Check if there is a half star
     return (
         <span className="stars">
-            {/* Render empty stars */}
-            {Array.from({length: 5}, (_, index) => (
-                <LiaStarSolid className="blankStar" data-testid="blankStar" key={index} />
+            { /* Render empty stars */ }
+            { Array.from({ length: 5  }, (_, index) => (
+                <LiaStarSolid className="blankStar" data-testid="blankStar" key={ index } />
             ))}
-            {/* Render filled stars */}
-            {Array.from({length: filledStars}, (_, index) => (
-                <LiaStarSolid className="filledStar" data-testid="filledStar" key={index} />
+            { /* Render filled stars */ }
+            { Array.from({ length: filledStars  }, (_, index) => (
+                <LiaStarSolid className="filledStar" data-testid="filledStar" key={ index } />
             ))}
-            {/* Render half star if needed */}
-            {halfStar && <LiaStarHalfSolid className="halfStar" data-testid="halfStar" />}
+            { /* Render half star if needed */ }
+            { halfStar && <LiaStarHalfSolid className="halfStar" data-testid="halfStar" /> }
         </span>
     );
 };
@@ -48,32 +48,28 @@ const encodeImageToBase64 = (file) => {
 
 // Navigate to a specific listing page when a listing is clicked
 const navigateToListing = (id, navigate) => {
-    navigate(`/listing?key=${id}`);
+    navigate(`/listing?key=${ id }`);
 };
 
 const addToList = (list_id, listing_id) => {
-    axios.post(`${import.meta.env.VITE_BACKEND_API_URL}/user/lists/${list_id}/`,
+    axios.post(`${ import.meta.env.VITE_BACKEND_API_URL }/user/lists/${ list_id }/`,
         {
             listing_id: listing_id,
         },
         {
-            headers: {
-                "Content-Type": "application/json",
-            },
+            headers: { "Content-Type": "application/json" },
             withCredentials: true, // Ensure cookies are sent
         })
         .catch(err => console.log(err)); // Log errors if any
 }
 
 const updateList = (list_id, list_items) => {
-    axios.put(`${import.meta.env.VITE_BACKEND_API_URL}/user/lists/${list_id}/`,
+    axios.put(`${ import.meta.env.VITE_BACKEND_API_URL }/user/lists/${ list_id }/`,
         {
             list_items: list_items,
         },
         {
-            headers: {
-                "Content-Type": "application/json",
-            },
+            headers: { "Content-Type": "application/json" },
             withCredentials: true, // Ensure cookies are sent
         })
         .catch(err => console.log(err)); // Log errors if any

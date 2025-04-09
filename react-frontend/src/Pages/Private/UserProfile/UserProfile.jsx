@@ -25,7 +25,7 @@ import "./UserProfile.scss";
  * - Provides a button to toggle between view and edit modes.
  * - Submits updated profile data to the backend API.
  *
- * @returns {JSX.Element} The rendered UserProfile page component.
+ * @returns { JSX.Element } The rendered UserProfile page component.
  */
 const UserProfile = () => {
     const [edit, setEdit] = useState(false); // State to toggle between view and edit modes
@@ -46,10 +46,8 @@ const UserProfile = () => {
 
     // Fetch profile data from the backend API
     useEffect(() => {
-        axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/user/profile/`, {
-            headers: {
-                "Content-Type": "application/json",
-            },
+        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/user/profile/`, {
+            headers: { "Content-Type": "application/json" },
             withCredentials: true, // Ensures cookies are sent with requests
         })
             .then((res) => setProfile(res.data.profile)) // Set the user state
@@ -69,27 +67,25 @@ const UserProfile = () => {
 
     // On submit, post updated profile data to the backend API
     const handleSubmit = () => {
-        axios.put(`${import.meta.env.VITE_BACKEND_API_URL}/user/profile/`,
+        axios.put(`${ import.meta.env.VITE_BACKEND_API_URL }/user/profile/`,
             {
                 profile: profile,
             },
             {
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                headers: { "Content-Type": "application/json" },
                 withCredentials: true, // Ensure cookies are sent if needed
             })
-            .then(() => {setEdit(false)}) // Turn edit mode off if no errors
+            .then(() => { setEdit(false) }) // Turn edit mode off if no errors
             .catch(err => console.log(err)); // Log errors if any
     }
 
     return (
         <div className="userProfilePage page">
             <div className="mainPage">
-                {/* Page Header */}
+                { /* Page Header */ }
                 <Header />
 
-                {/* Profile Card */}
+                { /* Profile Card */ }
                 <h1>Your Profile</h1>
                 <Card className="userProfileCard">
                     <CardContent className="content">
@@ -98,26 +94,26 @@ const UserProfile = () => {
                             <>
                                 <div className="profileInfo">
                                     <img
-                                        src={ profile.profile_picture ? `data:image/jpg;base64,${profile.profile_picture}` : "" }
+                                        src={ profile.profile_picture ? `data:image/jpg;base64,${ profile.profile_picture }` : "" }
                                         alt="Profile"
                                         className="profile-image"
                                     />
                                     {fields.map((field) => (
-                                        <p key={field.name}>
-                                            <strong>{field.label}:</strong> {field.value}
+                                        <p key={ field.name }>
+                                            <strong>{ field.label }:</strong> { field.value }
                                         </p>
                                     ))}
                                 </div>
-                                {/* Toggle edit mode button */}
-                                <Button className="btn" onClick={() => setEdit(true)}>Edit</Button>
+                                { /* Toggle edit mode button */ }
+                                <Button className="btn" onClick={ () => setEdit(true) }>Edit</Button>
                             </>
                         ) : (
                             /* If edit mode is on, display the data as text fields that can be editted and submitted */
                             <>
-                                {/* Profile Picture Replace Button */}
+                                { /* Profile Picture Replace Button */ }
                                 <div className="imageUpload">
                                     <img
-                                        src={ profile.profile_picture ? `data:image/jpg;base64,${profile.profile_picture}` : "" }
+                                        src={ profile.profile_picture ? `data:image/jpg;base64,${ profile.profile_picture }` : "" }
                                         alt="Profile"
                                         className="profile-image"
                                     />
@@ -125,7 +121,7 @@ const UserProfile = () => {
                                         type="file"
                                         accept="image/*"
                                         id="profile-picture"
-                                        style={{ display: "none" }}
+                                        style={ { display: "none" } }
                                         onChange={ handleImageChange }
                                     />
                                     <Button
@@ -138,30 +134,30 @@ const UserProfile = () => {
                                 </div>
                                 {fields.map((field) => (
                                     <TextField
-                                        key={field.name}
-                                        className={`input ${field.name === "bio" ? "bio" : "shortField"}`}
-                                        style={{ display: "flex", ...field.style }}
-                                        label={field.label}
-                                        name={field.name}
-                                        type={field.type}
+                                        key={ field.name }
+                                        className={ `input ${ field.name === "bio" ? "bio" : "shortField"  }`}
+                                        style={ { display: "flex", ...field.style } }
+                                        label={ field.label }
+                                        name={ field.name }
+                                        type={ field.type }
                                         variant="outlined"
-                                        value={profile[field.name]}
-                                        onChange={(e) => setProfile({ ...profile, [e.target.name]: e.target.value })}
+                                        value={ profile[field.name] }
+                                        onChange={ (e) => setProfile({ ...profile, [e.target.name]: e.target.value  })}
                                         required
-                                        multiline={field.multiline}
-                                        rows={field.rows}
-                                        maxrows={field.maxrows}
-                                        fullWidth={field.fullWidth}
+                                        multiline={ field.multiline }
+                                        rows={ field.rows }
+                                        maxrows={ field.maxrows }
+                                        fullWidth={ field.fullWidth }
                                     />
                                 ))}
-                                {/* Submit button */}
-                                <Button className="btn" onClick={() => handleSubmit(profile)}>Submit</Button>
+                                { /* Submit button */ }
+                                <Button className="btn" onClick={ () => handleSubmit(profile) }>Submit</Button>
                             </>
                         )}
                     </CardContent>
                 </Card>
             </div>
-            {/* Right-side Navigation */}
+            { /* Right-side Navigation */ }
             <RightNav />
         </div>
     );

@@ -25,7 +25,7 @@ import "./Category.scss";
  * - Displays the category"s bestsellers, new listings, and specific category listings.
  * - Implements pagination using React Router, allowing users to navigate between pages of listings.
  *
- * @returns {JSX.Element} The rendered category page containing category information and listings.
+ * @returns { JSX.Element } The rendered category page containing category information and listings.
  */
 const Category = () => {
     const navigate = useNavigate(); // Navigate hook for routing
@@ -56,10 +56,8 @@ const Category = () => {
 
     useEffect(() => {
         // API call to access the category data
-        axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/categories/${filters.category_id}/`, {
-            headers: {
-                "Content-Type": "application/json",
-            },
+        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/categories/${ filters.category_id }/`, {
+            headers: { "Content-Type": "application/json" },
         })
             .then((res) => setCategory(res.data.category)) // Update state with fetched data
             .catch(err => console.log(err)); // Log errors if any
@@ -67,10 +65,8 @@ const Category = () => {
 
     useEffect(() => {
         // Fetch bestsellers from the backend API
-        axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/listings/`, {
-            headers: {
-                "Content-Type": "application/json",
-            },
+        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/listings/`, {
+            headers: { "Content-Type": "application/json" },
             params: {
                 category_id: filters.category_id, // Apply category filter
                 sort: "purchases", // Sort by number of purchases
@@ -85,10 +81,8 @@ const Category = () => {
 
     useEffect(() => {
         // Fetch new listings from the backend API
-        axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/listings/`, {
-            headers: {
-                "Content-Type": "application/json",
-            },
+        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/listings/`, {
+            headers: { "Content-Type": "application/json" },
             params: {
                 category_id: filters.category_id, // Filter by category ID
                 sort: "created_at", // Sort by creation date
@@ -109,10 +103,8 @@ const Category = () => {
         }
 
         // Fetch listings from the backend API
-        axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/listings/`, {
-            headers: {
-                "Content-Type": "application/json",
-            },
+        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/listings/`, {
+            headers: { "Content-Type": "application/json" },
             params: {
                 category_id: filters.category_id, // Filter by category ID
                 start: filters.start, // Starting position
@@ -127,7 +119,7 @@ const Category = () => {
      * Handles pagination for category listings.
      * Adjusts the `page` parameter in the URL and scrolls to the category listings.
      *
-     * @param {number} n - Increment or decrement for pagination.
+     * @param { number } n - Increment or decrement for pagination.
      */
     function pagination(n) {
         // Update URL filter
@@ -151,21 +143,21 @@ const Category = () => {
     return (
         <div className="categoryPage page">
             <div className="mainPage">
-                {/* Page Header */}
+                { /* Page Header */ }
                 <Header />
                 <div className="head">
-                    {/* Category Description */}
+                    { /* Category Description */ }
                     <div className="info">
-                        <h1 data-testid="categoryName">{category.name}</h1>
-                        <p data-testid="categoryDescription">{category.description}</p>
+                        <h1 data-testid="categoryName">{ category.name }</h1>
+                        <p data-testid="categoryDescription">{ category.description }</p>
                     </div>
-                    {/* Category Image */}
+                    { /* Category Image */ }
                     <div className="image">
                         {category.image_encoded ? (
                             <img
                                 data-testid="categoryImage"
-                                src={`data:image/jpg;base64,${category.image_encoded}`}
-                                alt={category.name}
+                                src={ `data:image/jpg;base64,${ category.image_encoded  }`}
+                                alt={ category.name }
                             />
                         ) : (
                             <div>No image available</div>
@@ -173,34 +165,34 @@ const Category = () => {
                     </div>
                 </div>
                 <div className="content">
-                    {/* Category Sections */}
+                    { /* Category Sections */ }
                     {sections.map((section, index) => (
-                        <div key={index}>
-                            <h1 className={`categoryHead`}>{section.title}</h1>
-                            <div className={`category${section.identifier}`}>
-                                {/* Map through the bestsellers and display them */}
+                        <div key={ index }>
+                            <h1 className={ `categoryHead` }>{ section.title }</h1>
+                            <div className={ `category${ section.identifier  }`}>
+                                { /* Map through the bestsellers and display them */ }
                                 {section.listings.map((listing, index) => (
                                     /* TODO FIX THIS STUPID HACKY BULLSHIT */
                                     <div className={`listing ${section.identifier !== "Listings" && index === 0 ? "first" :
-                                        (section.identifier === "Listings" && index % 4 === 0 ? "first" : "")}`} key={index}>
+                                        (section.identifier === "Listings" && index % 4 === 0 ? "first" : "")}`} key={ index }>
                                         <div className="image">
-                                            <img src={`data:image/jpg;base64,${listing.image_encoded}`} alt="" />
+                                            <img src={ `data:image/jpg;base64,${ listing.image_encoded  }`} alt="" />
                                         </div>
                                         <div className="info">
                                             <div className="review">
-                                                {renderStars(listing.average_review)} {/* Render the star ratings */}
+                                                { renderStars(listing.average_review) } { /* Render the star ratings */ }
                                                 <span className="totalReviews"
-                                                      style={{left: -16 * Math.ceil(listing.average_review) + "px"}}>
-                                                &emsp;{listing.total_reviews} {/* Display the total reviews */}
+                                                      style={ { left: -16 * Math.ceil(listing.average_review) + "px" } }>
+                                                &emsp;{ listing.total_reviews } { /* Display the total reviews */ }
                                             </span>
                                             </div>
                                             <Button
                                                 className="title"
-                                                onClick={() => navigateToListing(listing.listing_id, navigate)}
+                                                onClick={ () => navigateToListing(listing.listing_id, navigate) }
                                             >
-                                                {listing.title_short} {/* Display the listing title */}
+                                                { listing.title_short } { /* Display the listing title */ }
                                             </Button>
-                                            <h2 className="price">${listing.buy_now_price}</h2> {/* Display the price */}
+                                            <h2 className="price">${ listing.buy_now_price }</h2> { /* Display the price */ }
                                         </div>
                                     </div>
                                 ))}
@@ -208,26 +200,26 @@ const Category = () => {
                         </div>
                     ))}
 
-                    {/* Pagination Controls */}
+                    { /* Pagination Controls */ }
                     <div className="pagination">
                         <Button
                             className="previousPagination"
-                            style={filters.page === "1" ? {opacity: 0.5, cursor: "default"} : {opacity: 1, cursor: "pointer"}}
-                            disabled={filters.page === "1"}
-                            onClick={() => pagination(-1)}
+                            style={ filters.page === "1" ? { opacity: 0.5, cursor: "default"  } : { opacity: 1, cursor: "pointer" } }
+                            disabled={ filters.page === "1" }
+                            onClick={ () => pagination(-1) }
                         >
                             <MdArrowBackIosNew className="icon" />&ensp;Previous
                         </Button>
                         <Button
-                            style={{marginLeft: "25px"}}
-                            onClick={() => pagination(1)}
+                            style={ { marginLeft: "25px" } }
+                            onClick={ () => pagination(1) }
                         >
                             Next&ensp;<MdArrowForwardIos className="icon" />
                         </Button>
                     </div>
                 </div>
             </div>
-            {/* Right-side Navigation */}
+            { /* Right-side Navigation */ }
             <RightNav />
         </div>
     );

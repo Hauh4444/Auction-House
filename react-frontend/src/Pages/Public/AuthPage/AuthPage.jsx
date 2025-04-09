@@ -24,7 +24,7 @@ import "./AuthPage.scss";
  * - Integrates authentication functions from `AuthProvider` context.
  * - Navigates to the home page upon successful login or registration.
  *
- * @returns {JSX.Element} The rendered authentication page component.
+ * @returns { JSX.Element } The rendered authentication page component.
  */
 const AuthPage = () => {
     const navigate = useNavigate(); // Navigate hook for routing
@@ -48,7 +48,7 @@ const AuthPage = () => {
      * - Calls the login function from AuthProvider.
      * - Navigates to the home page if login is successful.
      *
-     * @param {Event} e - Form submission event.
+     * @param { Event } e - Form submission event.
      */
     const handleSubmitLogin = async (e) => {
         e.preventDefault(); // Prevents default form submission behavior
@@ -72,7 +72,7 @@ const AuthPage = () => {
      * - Calls the createAccount function from AuthProvider.
      * - Navigates to the home page if registration is successful.
      *
-     * @param {Event} e - Form submission event.
+     * @param { Event } e - Form submission event.
      */
     const handleSubmitCreateAccount = async (e) => {
         e.preventDefault(); // Prevents default form submission behavior
@@ -104,15 +104,15 @@ const AuthPage = () => {
     return (
         <div className="authPage page" data-testid="authPage">
             <div className="authForm">
-                {/* Main container for authentication form */}
+                { /* Main container for authentication form */ }
                 <Card className="card">
-                    {/* Card header with dynamic title (Login or Create Account) */}
-                    <CardHeader title={isLogin ? "Login" : "Create Account"} data-testid="title" />
+                    { /* Card header with dynamic title (Login or Create Account) */ }
+                    <CardHeader title={ isLogin ? "Login" : "Create Account" } data-testid="title" />
 
                     <CardContent className="content">
-                        {/* Authentication form */}
-                        <form onSubmit={isLogin ? handleSubmitLogin : handleSubmitCreateAccount} className="form">
-                            {/* Username Input Field */}
+                        { /* Authentication form */ }
+                        <form onSubmit={ isLogin ? handleSubmitLogin : handleSubmitCreateAccount } className="form">
+                            { /* Username Input Field */ }
                             <TextField
                                 className="input"
                                 data-testid="usernameInput"
@@ -120,42 +120,42 @@ const AuthPage = () => {
                                 type="text"
                                 variant="outlined"
                                 fullWidth
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
+                                value={ username }
+                                onChange={ (e) => setUsername(e.target.value) }
                                 required
                             />
 
-                            {/* Registration-specific input fields (only displayed when creating an account) */}
+                            { /* Registration-specific input fields (only displayed when creating an account) */ }
                             {!isLogin && (
                                 <>
-                                    {/* First Name Input */}
+                                    { /* First Name Input */ }
                                     <TextField
                                         className="nameInput"
                                         data-testid="firstNameInput"
-                                        style={{ float: "left" }}
+                                        style={ { float: "left" } }
                                         label="First Name"
                                         type="text"
                                         variant="outlined"
                                         fullWidth
-                                        value={first_name}
-                                        onChange={(e) => set_first_name(e.target.value)}
+                                        value={ first_name }
+                                        onChange={ (e) => set_first_name(e.target.value) }
                                         required
                                     />
 
-                                    {/* Last Name Input */}
+                                    { /* Last Name Input */ }
                                     <TextField
                                         className="nameInput"
                                         data-testid="lastNameInput"
-                                        style={{ float: "right" }}
+                                        style={ { float: "right" } }
                                         label="Last Name"
                                         type="text"
                                         variant="outlined"
                                         fullWidth
-                                        value={last_name}
-                                        onChange={(e) => set_last_name(e.target.value)}
+                                        value={ last_name }
+                                        onChange={ (e) => set_last_name(e.target.value) }
                                     />
 
-                                    {/* Email Input */}
+                                    { /* Email Input */ }
                                     <TextField
                                         className="input"
                                         data-testid="emailInput"
@@ -163,14 +163,14 @@ const AuthPage = () => {
                                         type="email"
                                         variant="outlined"
                                         fullWidth
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
+                                        value={ email }
+                                        onChange={ (e) => setEmail(e.target.value) }
                                         required
                                     />
                                 < />
                             )}
 
-                            {/* Password Input Field */}
+                            { /* Password Input Field */ }
                             <TextField
                                 className="input"
                                 data-testid="passwordInput"
@@ -178,12 +178,12 @@ const AuthPage = () => {
                                 type="password"
                                 variant="outlined"
                                 fullWidth
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
+                                value={ password }
+                                onChange={ (e) => setPassword(e.target.value) }
                                 required
                             />
 
-                            {/* Confirm Password Field (Only for account creation) */}
+                            { /* Confirm Password Field (Only for account creation) */ }
                             {!isLogin && (
                                 <TextField
                                     className="input"
@@ -192,22 +192,22 @@ const AuthPage = () => {
                                     type="password"
                                     variant="outlined"
                                     fullWidth
-                                    value={confirmPassword}
-                                    onChange={(e) => setConfirmPassword(e.target.value)}
+                                    value={ confirmPassword }
+                                    onChange={ (e) => setConfirmPassword(e.target.value) }
                                     required
                                 />
                             )}
 
-                            {/* Error message display for password mismatch */}
-                            {loginError && <div className="errorMessage" data-testid="errorMessage">{loginError}</div>}
+                            { /* Error message display for password mismatch */ }
+                            { loginError && <div className="errorMessage" data-testid="errorMessage">{ loginError  }</div>}
 
-                            {/* Submit Button (Dynamically labeled based on form mode) */}
+                            { /* Submit Button (Dynamically labeled based on form mode) */ }
                             <Button className="btn" data-testid="submit" type="submit" variant="contained" color="primary" fullWidth>
-                                {isLogin ? "Login" : "Create Account"}
+                                { isLogin ? "Login" : "Create Account" }
                             </Button>
                         </form>
 
-                        {/* Toggle button for switching between login and registration */}
+                        { /* Toggle button for switching between login and registration */ }
                         <Button
                             className="toggleBtn"
                             onClick={() => {
@@ -217,7 +217,7 @@ const AuthPage = () => {
                             variant="text"
                             fullWidth
                         >
-                            {isLogin ? "Don't have an account? Create one" : "Already have an account? Login"}
+                            { isLogin ? "Don't have an account? Create one" : "Already have an account? Login" }
                         </Button>
                     </CardContent>
                 </Card>

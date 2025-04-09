@@ -4,12 +4,10 @@
 
 ### React Frontend
 
-1. Analytics & Reports
-2. Admin Account
-3. Manage Users
-4. Site Settings
-5. Logs
-6. Other UI
+1. Analytics & Reports 
+2. Manage Users 
+3. Site Settings 
+4. Other UI
    1. Stripe Payments
    2. Friend
    3. View Profile
@@ -20,8 +18,9 @@
 1. MySQL
    1. Foreign Keys
    2. Payment Info Table
-   3. Direct Transaction to Payment Info ID
-   4. Listings Should Have Count
+   3. Models Table 
+   4. Direct Transaction to Payment Info ID 
+   5. Listings Should Have Count
 2. Logging
 3. Analytics & Reports
 4. 3D Showcase API

@@ -1,8 +1,8 @@
 // External Libraries
-import {useEffect, useRef, useState} from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
 import { Button, TextField } from "@mui/material";
+import axios from "axios";
 
 // Internal Modules
 import SocketProvider from "@/ContextAPI/SocketProvider";
@@ -43,10 +43,8 @@ const Support = () => {
     };
 
     const getMessages = () => {
-        axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/ticket/messages/${currentSupportTicket.ticket_id}/`, {
-            headers: {
-                "Content-Type": "application/json",
-            },
+        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/ticket/messages/${ currentSupportTicket.ticket_id }/`, {
+            headers: { "Content-Type": "application/json" },
             withCredentials: true, // Ensures cookies are sent with requests
         })
             .then((res) => {
@@ -80,10 +78,8 @@ const Support = () => {
         setSubject(key.charAt(5).toUpperCase() + key.slice(6));
 
         if (key.slice(5) === "tickets") {
-            axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/support/tickets/`, {
-                headers: {
-                    "Content-Type": "application/json",
-                },
+            axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/support/tickets/`, {
+                headers: { "Content-Type": "application/json" },
                 withCredentials: true, // Ensures cookies are sent with requests
             })
                 .then((res) => {
@@ -95,15 +91,13 @@ const Support = () => {
     }
 
     const handleSubmitTicket = () => {
-        axios.post(`${import.meta.env.VITE_BACKEND_API_URL}/support/tickets/`,
+        axios.post(`${ import.meta.env.VITE_BACKEND_API_URL }/support/tickets/`,
             {
                 subject: subject,
                 message: message,
             },
             {
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                headers: { "Content-Type": "application/json" },
                 withCredentials: true,
             })
             .then(() => navigate("/"))
@@ -116,14 +110,12 @@ const Support = () => {
 
     const handleSendMessage = () => {
         if (!newTicketMessage.trim()) return;
-        axios.post(`${import.meta.env.VITE_BACKEND_API_URL}/ticket/messages/${currentSupportTicket.ticket_id}/`,
+        axios.post(`${ import.meta.env.VITE_BACKEND_API_URL }/ticket/messages/${ currentSupportTicket.ticket_id }/`,
             {
                 message: newTicketMessage
             },
             {
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                headers: { "Content-Type": "application/json" },
                 withCredentials: true,
             })
             .then(() => {
@@ -143,7 +135,7 @@ const Support = () => {
         <SocketProvider>
             <div className="supportPage page">
                 <div className="mainPage">
-                    {/* Page Header */}
+                    { /* Page Header */ }
                     <Header />
 
                     {filters.nav === undefined ? (
@@ -153,10 +145,10 @@ const Support = () => {
                                 {Object.keys(cardInfo).map((key, index) => (
                                     <Button
                                         className="navBtn"
-                                        onClick={() => handleSelectSubject(key)}
-                                        key={index}
+                                        onClick={ () => handleSelectSubject(key) }
+                                        key={ index }
                                     >
-                                        <h2>{cardInfo[key]}</h2>
+                                        <h2>{ cardInfo[key] }</h2>
                                     </Button>
                                 ))}
                             </div>
@@ -166,31 +158,31 @@ const Support = () => {
                                 <div className="supportTickets">
                                     {supportTickets && supportTickets.map((ticket, index) => (
                                         <Button
-                                            className={`ticket${currentSupportTicket === ticket ? " selected" : ""}`}
-                                            key={index}
-                                            onClick={() => handleSelectTicket(ticket)}
+                                            className={ `ticket${ currentSupportTicket === ticket ? " selected" : ""  }`}
+                                            key={ index }
+                                            onClick={ () => handleSelectTicket(ticket) }
                                         >
-                                            {ticket.subject}
+                                            { ticket.subject }
                                         </Button>
                                     ))}
                                 </div>
                                 <div className="main">
                                     <div className="messages">
                                         {ticketMessages && ticketMessages.map((ticketMessage, index) => (
-                                            <div className={`message${auth.user.user_id === ticketMessage.sender_id ? " thisUser" : ""}`} key={index}>
-                                                {ticketMessage.message}
+                                            <div className={ `message${ auth.user.user_id === ticketMessage.sender_id ? " thisUser" : ""  }`} key={ index }>
+                                                { ticketMessage.message }
                                             </div>
                                         ))}
-                                        <div ref={messagesEndRef} />
+                                        <div ref={ messagesEndRef } />
                                     </div>
                                     <div className="newMessage">
                                         <TextField
                                             className="input"
-                                            value={newTicketMessage}
+                                            value={ newTicketMessage }
                                             label="Message"
                                             type="text"
-                                            onChange={(e) => setNewTicketMessage(e.target.value)}
-                                            onKeyDown={handleKeyPress}
+                                            onChange={ (e) => setNewTicketMessage(e.target.value) }
+                                            onKeyDown={ handleKeyPress }
                                             variant="outlined"
                                             sx={{
                                                 '& .MuiOutlinedInput-root': {
@@ -198,7 +190,7 @@ const Support = () => {
                                                 },
                                             }}
                                         />
-                                        <Button className="btn" onClick={() => handleSendMessage()}>Send</Button>
+                                        <Button className="btn" onClick={ () => handleSendMessage() }>Send</Button>
                                     </div>
                                 </div>
                             </div>
@@ -208,7 +200,7 @@ const Support = () => {
                                 <div className="supportTicket">
                                     <TextField
                                         className="subject"
-                                        value={subject}
+                                        value={ subject }
                                         label="Subject"
                                         type="text"
                                         onChange={(e) => {
@@ -218,24 +210,24 @@ const Support = () => {
                                     />
                                     <TextField
                                         className="message"
-                                        value={message}
+                                        value={ message }
                                         label="Message"
                                         type="text"
                                         onChange={(e) => {
                                             setMessage(e.target.value)
                                         }}
                                         variant="outlined"
-                                        multiline={true}
-                                        rows={5}
-                                        maxrows={10}
+                                        multiline={ true }
+                                        rows={ 5 }
+                                        maxrows={ 10 }
                                     />
-                                    <Button className="submitBtn" onClick={() => handleSubmitTicket()}>Submit</Button>
+                                    <Button className="submitBtn" onClick={ () => handleSubmitTicket() }>Submit</Button>
                                 </div>
                             </>
                         )
                     )}
                 </div>
-                {/* Right-side Navigation */}
+                { /* Right-side Navigation */ }
                 <RightNav />
             </div>
         </SocketProvider>

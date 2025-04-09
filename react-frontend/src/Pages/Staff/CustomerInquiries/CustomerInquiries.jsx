@@ -1,7 +1,7 @@
 // External Libraries
-import {useState, useEffect, useRef} from 'react';
-import axios from "axios";
+import { useState, useEffect, useRef } from 'react';
 import { Button, TextField } from "@mui/material";
+import axios from "axios";
 
 // Internal Modules
 import SocketProvider from "@/ContextAPI/SocketProvider";
@@ -25,10 +25,8 @@ const CustomerInquiries = () => {
     const messagesEndRef = useRef(null); // Reference to scroll to the bottom of the messages div
 
     useEffect(() => {
-        axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/support/tickets/`, {
-            headers: {
-                "Content-Type": "application/json",
-            },
+        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/support/tickets/`, {
+            headers: { "Content-Type": "application/json" },
             withCredentials: true, // Ensures cookies are sent with requests
         })
             .then((res) => {
@@ -39,10 +37,8 @@ const CustomerInquiries = () => {
     }, []);
 
     const getMessages = () => {
-        axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/ticket/messages/${currentSupportTicket.ticket_id}/`, {
-            headers: {
-                "Content-Type": "application/json",
-            },
+        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/ticket/messages/${ currentSupportTicket.ticket_id }/`, {
+            headers: { "Content-Type": "application/json" },
             withCredentials: true, // Ensures cookies are sent with requests
         })
             .then((res) => {
@@ -77,14 +73,12 @@ const CustomerInquiries = () => {
 
     const handleSendMessage = () => {
         if (!newTicketMessage.trim()) return;
-        axios.post(`${import.meta.env.VITE_BACKEND_API_URL}/ticket/messages/${currentSupportTicket.ticket_id}/`,
+        axios.post(`${ import.meta.env.VITE_BACKEND_API_URL }/ticket/messages/${ currentSupportTicket.ticket_id }/`,
             {
                 message: newTicketMessage
             },
             {
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                headers: { "Content-Type": "application/json" },
                 withCredentials: true,
             })
             .then(() => {
@@ -104,34 +98,34 @@ const CustomerInquiries = () => {
         <SocketProvider>
             <div className="customerInquiriesPage page">
                 <div className="mainPage">
-                    {/* Page Header */}
+                    { /* Page Header */ }
                     <Header />
 
                     <div className="content">
                         <div className="supportTickets">
                             {supportTickets && supportTickets.map((ticket, index) => (
-                                <Button className={`ticket${currentSupportTicket === ticket ? " selected" : ""}`} key={index} onClick={() => handleSelectTicket(ticket)}>
-                                    {ticket.subject}
+                                <Button className={ `ticket${ currentSupportTicket === ticket ? " selected" : ""  }`} key={ index } onClick={ () => handleSelectTicket(ticket) }>
+                                    { ticket.subject }
                                 </Button>
                             ))}
                         </div>
                         <div className="main">
                             <div className="messages">
                                 {ticketMessages && ticketMessages.map((ticketMessage, index) => (
-                                    <div className={`message${auth.user.user_id === ticketMessage.sender_id ? " thisUser" : ""}`} key={index}>
-                                        {ticketMessage.message}
+                                    <div className={ `message${ auth.user.user_id === ticketMessage.sender_id ? " thisUser" : ""  }`} key={ index }>
+                                        { ticketMessage.message }
                                     </div>
                                 ))}
-                                <div ref={messagesEndRef} />
+                                <div ref={ messagesEndRef } />
                             </div>
                             <div className="newMessage">
                                 <TextField
                                     className="input"
-                                    value={newTicketMessage}
+                                    value={ newTicketMessage }
                                     label="Message"
                                     type="text"
-                                    onChange={(e) => setNewTicketMessage(e.target.value)}
-                                    onKeyDown={handleKeyPress}
+                                    onChange={ (e) => setNewTicketMessage(e.target.value) }
+                                    onKeyDown={ handleKeyPress }
                                     variant="outlined"
                                     sx={{
                                         '& .MuiOutlinedInput-root': {
@@ -139,12 +133,12 @@ const CustomerInquiries = () => {
                                         },
                                     }}
                                 />
-                                <Button className="btn" onClick={() => handleSendMessage()}>Send</Button>
+                                <Button className="btn" onClick={ () => handleSendMessage() }>Send</Button>
                             </div>
                         </div>
                     </div>
                 </div>
-                {/* Right-side Navigation */}
+                { /* Right-side Navigation */ }
                 <RightNav />
             </div>
         </SocketProvider>

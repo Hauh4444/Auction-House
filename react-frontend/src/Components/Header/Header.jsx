@@ -27,7 +27,7 @@ import { variables } from "@/assets/variables.modules";
  * - Search bar supports both button click and Enter key for initiating search.
  * - A category navigation bar (`CategoryNav`), displayed on all pages except the homepage.
  *
- * @returns {JSX.Element} The header section with navigation and search functionalities.
+ * @returns { JSX.Element } The header section with navigation and search functionalities.
  */
 const Header = () => {
     const navigate = useNavigate(); // Navigate hook for routing
@@ -71,35 +71,35 @@ const Header = () => {
         <>
             <div className="header">
                 <div className="headNav">
-                    {/* Navigation Buttons */}
-                    <Button className="btn" onClick={() => navigate("/")}>
+                    { /* Navigation Buttons */ }
+                    <Button className="btn" onClick={ () => navigate("/") }>
                         Home
                     </Button>
-                    <Button className="btn" onClick={() => navigate("/search")}>
+                    <Button className="btn" onClick={ () => navigate("/search") }>
                         Shop All
                     </Button>
-                    <Button className="btn" onClick={() => navigate("/about")}>
+                    <Button className="btn" onClick={ () => navigate("/about") }>
                         About
                     </Button>
-                    <Button className="btn" onClick={() => navigate("/contact")}>
+                    <Button className="btn" onClick={ () => navigate("/contact") }>
                         Contact
                     </Button>
 
-                    {/* Categories Button (Hidden on Homepage) */}
+                    { /* Categories Button (Hidden on Homepage) */ }
                     {location.pathname !== "/" && (
-                        <Button className="btn categoriesBtn" onClick={toggleCategoriesDisplay}>
+                        <Button className="btn categoriesBtn" onClick={ toggleCategoriesDisplay }>
                             Categories&ensp;<BsGrid3X3GapFill className="icon" />
                         </Button>
                     )}
                 </div>
 
                 <div className="searchBar">
-                    {/* Input field for the search query */}
+                    { /* Input field for the search query */ }
                     <TextField
                         className="input"
-                        value={query} // Bind the input value to the query state
+                        value={ query } // Bind the input value to the query state
                         placeholder="Search" // Placeholder text
-                        onChange={(e) => setQuery(e.target.value)} // Update query on input change
+                        onChange={ (e) => setQuery(e.target.value) } // Update query on input change
                         onKeyDown={(e) => {
                             if (e.key === "Enter") {
                                 navigateSearch() // Trigger search when Enter key is pressed
@@ -116,25 +116,25 @@ const Header = () => {
                             },
                         }}
                     />
-                    {/* Search button with an icon */}
-                    <Button className="btn" data-testid="searchBtn" onClick={navigateSearch}>
+                    { /* Search button with an icon */ }
+                    <Button className="btn" data-testid="searchBtn" onClick={ navigateSearch }>
                         <svg width="0" height="0">
                             <defs>
-                                {/* Gradient definition for the search icon */}
+                                { /* Gradient definition for the search icon */ }
                                 <linearGradient id="gradient" x1="0%" y1="50%" x2="100%" y2="50%">
-                                    <stop stopColor={variables.accentColor1} offset="0%" />
-                                    <stop stopColor={variables.accentColor2} offset="100%" />
+                                    <stop stopColor={ variables.accentColor1 } offset="0%" />
+                                    <stop stopColor={ variables.accentColor2 } offset="100%" />
                                 </linearGradient>
                             </defs>
                         </svg>
-                        {/* Search icon with applied gradient color */}
-                        <FaSearch className="icon" style={{fill: "url(#gradient)"}} />
+                        { /* Search icon with applied gradient color */ }
+                        <FaSearch className="icon" style={ { fill: "url(#gradient)" } } />
                     </Button>
                 </div>
             </div>
 
-            {/* Category Navigation (Hidden on Homepage) */}
-            {location.pathname !== "/" && <CategoryNav />}
+            { /* Category Navigation (Hidden on Homepage) */ }
+            { location.pathname !== "/" && <CategoryNav /> }
         </>
     );
 }

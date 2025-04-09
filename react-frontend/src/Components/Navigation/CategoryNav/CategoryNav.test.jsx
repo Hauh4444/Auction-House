@@ -41,7 +41,7 @@ describe("CategoryNav Component", () => {
     it("fetches and displays categories", async () => {
         await act(async () => {
             render(
-                <MemoryRouter initialEntries={["/some-page"]}>
+                <MemoryRouter initialEntries={ ["/some-page"] }>
                     <CategoryNav />
                 </MemoryRouter>
             );
@@ -56,7 +56,7 @@ describe("CategoryNav Component", () => {
     it("navigates to the correct category when a category button is clicked", async () => {
         await act(async () => {
             render(
-                <MemoryRouter initialEntries={["/some-page"]}>
+                <MemoryRouter initialEntries={ ["/some-page"] }>
                     <CategoryNav />
                 </MemoryRouter>
             );
@@ -71,7 +71,7 @@ describe("CategoryNav Component", () => {
     it("renders category list and not category navigation on the homepage", async () => {
         await act(async () => {
             render(
-                <MemoryRouter initialEntries={["/"]}>
+                <MemoryRouter initialEntries={ ["/"] }>
                     <CategoryNav />
                 </MemoryRouter>
             );
@@ -87,7 +87,7 @@ describe("CategoryNav Component", () => {
     it("renders category navigation and not category list on non-homepage", async () => {
         await act(async () => {
             render(
-                <MemoryRouter initialEntries={["/some-page"]}>
+                <MemoryRouter initialEntries={ ["/some-page"] }>
                     <CategoryNav />
                 </MemoryRouter>
             );
@@ -103,7 +103,7 @@ describe("CategoryNav Component", () => {
     it("renders category image when image_encoded exists", async () => {
         await act(async () => {
             render(
-                <MemoryRouter initialEntries={["/"]}>
+                <MemoryRouter initialEntries={ ["/"] }>
                     <CategoryNav />
                 </MemoryRouter>
             );
@@ -117,7 +117,7 @@ describe("CategoryNav Component", () => {
     it("shows fallback text when image_encoded is null", async () => {
         await act(async () => {
             render(
-                <MemoryRouter initialEntries={["/"]}>
+                <MemoryRouter initialEntries={ ["/"] }>
                     <CategoryNav />
                 </MemoryRouter>
             );

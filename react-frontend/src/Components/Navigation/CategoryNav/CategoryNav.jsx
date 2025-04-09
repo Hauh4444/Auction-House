@@ -15,7 +15,7 @@ import "./CategoryNav.scss";
  * - Displays categories in a popup or a grid layout depending on the current page.
  * - Allows users to navigate to specific category pages using query parameters.
  *
- * @returns {JSX.Element} A section displaying categories with navigation buttons.
+ * @returns { JSX.Element } A section displaying categories with navigation buttons.
  */
 const CategoryNav = () => {
     const navigate = useNavigate(); // To navigate between pages
@@ -25,10 +25,8 @@ const CategoryNav = () => {
 
     // Fetch categories from API on component mount
     useEffect(() => {
-        axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/categories/`, {
-            headers: {
-                "Content-Type": "application/json",
-            }
+        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/categories/`, {
+            headers: { "Content-Type": "application/json" },
         })
             .then((res) => setCategories(res.data.categories)) // Set the fetched categories into the state
             .catch(err => console.log(err)); // Log errors if any
@@ -40,19 +38,19 @@ const CategoryNav = () => {
         if (location.pathname !== "/") {
             document.querySelector(".categoryNav").style.maxHeight = "0";
         }
-        navigate(`/category?category_id=${id}&page=1`); // Navigate to the category page with the category ID and page number
+        navigate(`/category?category_id=${ id }&page=1`); // Navigate to the category page with the category ID and page number
     }
 
     return (
         <>
-            {/* Check if the current page is not the homepage */}
+            { /* Check if the current page is not the homepage */ }
             {location.pathname !== "/" ? (
                 <nav className="categoryNav" data-testid="categoryNav">
                     {categories.map((category, index) => (
-                        <div className="categoryContainer" key={index}>
-                            <Button className="categoryBtn" onClick={() => navigateToCategory(category.category_id)}
-                                    key={index}>
-                                {category.name} {/* Display category name */}
+                        <div className="categoryContainer" key={ index }>
+                            <Button className="categoryBtn" onClick={ () => navigateToCategory(category.category_id) }
+                                    key={ index }>
+                                { category.name } { /* Display category name */ }
                             </Button>
                         </div>
                     ))}
@@ -60,19 +58,19 @@ const CategoryNav = () => {
             ) : (
                 <div className="categoryList" data-testid="categoryList">
                     {categories.map((category, index) => (
-                        <div className="category" key={index}>
+                        <div className="category" key={ index }>
                             <div className="image">
-                                {/* Check if category has an image, if yes, display it, otherwise show a fallback */}
+                                { /* Check if category has an image, if yes, display it, otherwise show a fallback */ }
                                 {category.image_encoded ? (
-                                    <img src={`data:image/jpg;base64,${category.image_encoded}`} alt={category.name} />
+                                    <img src={ `data:image/jpg;base64,${ category.image_encoded  }`} alt={ category.name } />
                                 ) : (
                                     <div>No image available</div>
                                 )}
                             </div>
                             <div className="categoryBtn">
-                                <Button className="btn" onClick={() => navigateToCategory(category.category_id)}
-                                        key={index}>
-                                    {category.name} {/* Display category name */}
+                                <Button className="btn" onClick={ () => navigateToCategory(category.category_id) }
+                                        key={ index }>
+                                    { category.name } { /* Display category name */ }
                                 </Button>
                             </div>
                         </div>

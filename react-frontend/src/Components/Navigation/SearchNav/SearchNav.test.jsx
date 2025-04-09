@@ -1,14 +1,14 @@
 // External Libraries
 import { MemoryRouter } from "react-router-dom";
+import axios from "axios";
 
 // Testing Libraries
-import {vi, describe, it, expect, beforeEach} from "vitest";
-import {render, screen, fireEvent, waitFor, act} from "@testing-library/react";
+import { vi, describe, it, expect, beforeEach } from "vitest";
+import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
 import "@testing-library/jest-dom";
 
 // Internal Modules
 import SearchNav from "./SearchNav";
-import axios from "axios"; // Adjust the import according to your file structure
 
 // Mock axios request
 vi.mock("axios");
@@ -53,7 +53,7 @@ describe("SearchNav Component", () => {
     it("highlights the correct button based on query parameters", async () => {
         await act(async () => {
             render(
-                <MemoryRouter initialEntries={["/search?nav=best-sellers"]}>
+                <MemoryRouter initialEntries={ ["/search?nav=best-sellers"] }>
                     <SearchNav/>
                 </MemoryRouter>
             );

@@ -15,8 +15,8 @@ const AuthProvider = ({ children }) => {
 
     const checkAuthStatus = async () => {
         try {
-            const res = await axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/auth/auth_status/`);
-            setUser(res.data.authenticated ? {"user_id": res.data.id, "role": res.data.role} : null);
+            const res = await axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/auth/auth_status/`);
+            setUser(res.data.authenticated ? { "user_id": res.data.id, "role": res.data.role } : null);
         } catch (err) {
             console.log(err);
             setUser(null);
@@ -25,7 +25,7 @@ const AuthProvider = ({ children }) => {
 
     const login = async (credentials) => {
         try {
-            await axios.post(`${import.meta.env.VITE_BACKEND_API_URL}/auth/login/`, credentials);
+            await axios.post(`${ import.meta.env.VITE_BACKEND_API_URL }/auth/login/`, credentials);
             await checkAuthStatus();
             return true;
         } catch (err) {
@@ -37,7 +37,7 @@ const AuthProvider = ({ children }) => {
 
     const createAccount = async (credentials) => {
         try {
-            await axios.post(`${import.meta.env.VITE_BACKEND_API_URL}/auth/register/`, credentials);
+            await axios.post(`${ import.meta.env.VITE_BACKEND_API_URL }/auth/register/`, credentials);
             await login(credentials);
             return true;
         } catch (err) {
@@ -49,7 +49,7 @@ const AuthProvider = ({ children }) => {
 
     const logout = async () => {
         try {
-            await axios.post(`${import.meta.env.VITE_BACKEND_API_URL}/auth/logout/`);
+            await axios.post(`${ import.meta.env.VITE_BACKEND_API_URL }/auth/logout/`);
             setUser(null);
         } catch (err) {
             console.log(err);
@@ -58,8 +58,8 @@ const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, error, createAccount, login, logout }}>
-            {children}
+        <AuthContext.Provider value={ { user, error, createAccount, login, logout } }>
+            { children }
         </AuthContext.Provider>
     );
 };

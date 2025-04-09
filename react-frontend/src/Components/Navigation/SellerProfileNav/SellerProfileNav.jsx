@@ -42,10 +42,10 @@ const SellerProfileNav = () => {
         <>
             <nav className="sellerProfileNav">
                 {["manage", "upload"].map((item, index) => (
-                    <Button className={`navBtn ${item}`} data-testid={`${item}Btn`} key={index} onClick={(e) => {
+                    <Button className={ `navBtn ${ item  }`} data-testid={ `${ item  }Btn`} key={ index } onClick={(e) => {
                         handleNavClick(e, item);
                     }}>
-                        {String(item).charAt(0).toUpperCase() + String(item).slice(1)}
+                        { String(item).charAt(0).toUpperCase() + String(item).slice(1) }
                     </Button>
                 ))}
             </nav>

@@ -25,7 +25,7 @@ import "./Popup.scss";
  * The filters update the URL query parameters and reflect the current
  * state of the filters applied.
  *
- * @returns {JSX.Element} A filter popup component with various filtering options.
+ * @returns { JSX.Element } A filter popup component with various filtering options.
  */
 const Popup = () => {
     const navigate = useNavigate(); // Navigate hook for routing
@@ -42,10 +42,8 @@ const Popup = () => {
 
     // Effect hook to fetch categories from the API on component mount
     useEffect(() => {
-        axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/categories/`, {
-            headers: {
-                "Content-Type": "application/json",
-            }
+        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/categories/`, {
+            headers: { "Content-Type": "application/json" },
         })
             .then((res) => setCategories(res.data.categories)) // Update state with fetched data
             .catch(err => console.log(err)); // Log errors if any
@@ -53,8 +51,8 @@ const Popup = () => {
 
     /**
      * Updates the URL search parameters and state when a filter is changed.
-     * @param {string} key The name of the filter being updated.
-     * @param {string} value The value of the filter.
+     * @param { string } key The name of the filter being updated.
+     * @param { string } value The value of the filter.
      */
     function updateFilter(key, value) {
         // Handle sorting filter separately, as it involves both "sort" and "order" parameters
@@ -110,8 +108,8 @@ const Popup = () => {
 
     /**
      * Updates the state of a specific filter based on the filter type.
-     * @param {string} filter The name of the filter being updated.
-     * @param {string} value The value of the filter.
+     * @param { string } filter The name of the filter being updated.
+     * @param { string } value The value of the filter.
      */
     function setFilterState(filter, value) {
         if (filter === "category_id") {
@@ -127,8 +125,8 @@ const Popup = () => {
 
     return (
         <div className="filtersPopup" data-testid="filtersPopup">
-            <div style={{ height: "20px" }} /> {/* Spacer */}
-            {/* Sort By Filter */}
+            <div style={ { height: "20px" } } /> { /* Spacer */ }
+            { /* Sort By Filter */ }
             <FormControl size="small">
                 <InputLabel id="sortByLabel">Sort By</InputLabel>
                 <Select
@@ -136,7 +134,7 @@ const Popup = () => {
                     labelId="sortByLabel"
                     aria-labelledby="sortByLabel"
                     className="sortBy"
-                    value={sortBy}
+                    value={ sortBy }
                     label="Sort By"
                     onChange={(e) => {
                         updateFilter("sort", e.target.value)
@@ -156,7 +154,7 @@ const Popup = () => {
                 </Select>
             </FormControl>
 
-            {/* Category Filter */}
+            { /* Category Filter */ }
             <FormControl size="small">
                 <InputLabel id="categoryLabel">Category</InputLabel>
                 <Select
@@ -164,7 +162,7 @@ const Popup = () => {
                     labelId="categoryLabel"
                     aria-labelledby="categoryLabel"
                     className="category"
-                    value={category}
+                    value={ category }
                     label="Category"
                     onChange={(e) => {
                         updateFilter("category_id", e.target.value)
@@ -173,12 +171,12 @@ const Popup = () => {
                 >
                     <MenuItem value="All">All</MenuItem>
                     {categories.map((category, index) => (
-                        <MenuItem value={category.category_id} key={index}>{category.name}</MenuItem>
+                        <MenuItem value={ category.category_id } key={ index }>{ category.name }</MenuItem>
                     ))}
                 </Select>
             </FormControl>
 
-            {/* Listing Type Filter */}
+            { /* Listing Type Filter */ }
             <FormControl size="small">
                 <InputLabel id="listingTypeLabel">Listing Type</InputLabel>
                 <Select
@@ -186,7 +184,7 @@ const Popup = () => {
                     labelId="listingTypeLabel"
                     aria-labelledby="listingTypeLabel"
                     className="listingType"
-                    value={listingType}
+                    value={ listingType }
                     label="Listing Type"
                     onChange={(e) => {
                         updateFilter("listing_type", e.target.value)
@@ -199,10 +197,10 @@ const Popup = () => {
                 </Select>
             </FormControl>
 
-            {/* Minimum Price Filter */}
+            { /* Minimum Price Filter */ }
             <TextField
                 className="minPrice"
-                value={minPrice}
+                value={ minPrice }
                 label="Min Price"
                 type="number"
                 onChange={(e) => {
@@ -211,10 +209,10 @@ const Popup = () => {
                 variant="outlined"
             />
 
-            {/* Maximum Price Filter */}
+            { /* Maximum Price Filter */ }
             <TextField
                 className="maxPrice"
-                value={maxPrice}
+                value={ maxPrice }
                 label="Max Price"
                 type="number"
                 onChange={(e) => {

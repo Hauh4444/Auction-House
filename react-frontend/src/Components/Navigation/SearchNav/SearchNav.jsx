@@ -26,7 +26,7 @@ import "@/Components/Navigation/Navigation/Navigation.scss";
  * selected navigation option and maintains the selected state
  * for the navigation buttons to enhance user experience.
  *
- * @returns {JSX.Element} A navigation component for the search page
+ * @returns { JSX.Element } A navigation component for the search page
  *                        with buttons for different result categories
  *                        and a filter popup.
  */
@@ -81,40 +81,40 @@ const SearchNav = () => {
     return (
         <>
             <nav className="searchNav">
-                {/* Button for Best Results */}
+                { /* Button for Best Results */ }
                 <Button className="navBtn best-results" data-testid="bestResultsBtn" onClick={(e) => {
-                    handleNavClick(e, {page: null, start: 0, range: 10, nav: "best-results"});
+                    handleNavClick(e, { page: null, start: 0, range: 10, nav: "best-results" });
                     document.querySelector(".filtersPopup").style.maxHeight = "0px"; // Hide filters when clicked
                 }}>
                     Best Results
                 </Button>
-                {/* Button for Best Sellers */}
+                { /* Button for Best Sellers */ }
                 <Button className="navBtn best-sellers" data-testid="bestSellersBtn" onClick={(e) => {
-                    handleNavClick(e, {page: null, start: 0, range: 10, nav: "best-sellers"});
+                    handleNavClick(e, { page: null, start: 0, range: 10, nav: "best-sellers" });
                     document.querySelector(".filtersPopup").style.maxHeight = "0px"; // Hide filters when clicked
                 }}>
                     Best Sellers
                 </Button>
-                {/* Button for New Products */}
+                { /* Button for New Products */ }
                 <Button className="navBtn new" data-testid="newBtn" onClick={(e) => {
-                    handleNavClick(e, {page: null, start: 0, range: 10, nav: "new"});
+                    handleNavClick(e, { page: null, start: 0, range: 10, nav: "new" });
                     document.querySelector(".filtersPopup").style.maxHeight = "0px"; // Hide filters when clicked
                 }}>
                     New
                 </Button>
-                {/* Button for View All Products */}
+                { /* Button for View All Products */ }
                 <Button className="navBtn view-all" data-testid="viewAllBtn" onClick={(e) => {
-                    handleNavClick(e, {page: 1, start: 0, range: 10, nav: "view-all"});
+                    handleNavClick(e, { page: 1, start: 0, range: 10, nav: "view-all" });
                     document.querySelector(".filtersPopup").style.maxHeight = "0px"; // Hide filters when clicked
                 }}>
                     View All
                 </Button>
-                {/* Button to toggle the filter popup */}
-                <Button className="navBtn filtersBtn" data-testid="filtersBtn" onClick={toggleFiltersDisplay}>
+                { /* Button to toggle the filter popup */ }
+                <Button className="navBtn filtersBtn" data-testid="filtersBtn" onClick={ toggleFiltersDisplay }>
                     Filters&ensp;<MdFilterAlt className="icon" />
                 </Button>
             </nav>
-            {/* Filter Popup */}
+            { /* Filter Popup */ }
             <Popup />
         </>
     );

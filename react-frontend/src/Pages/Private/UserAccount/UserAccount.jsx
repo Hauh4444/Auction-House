@@ -21,7 +21,7 @@ import "./UserAccount.scss";
  * - Shows the user's account navigation.
  * - Includes a right-side navigation menu (`RightNav`) for additional options.
  *
- * @returns {JSX.Element} The rendered UserAccount page component.
+ * @returns { JSX.Element } The rendered UserAccount page component.
  */
 const UserAccount = () => {
     const navigate = useNavigate(); // Navigate hook for routing
@@ -41,26 +41,26 @@ const UserAccount = () => {
     return (
         <div className="userAccountPage page" data-testid="userAccountPage">
             <div className="mainPage">
-                {/* Page Header */}
+                { /* Page Header */ }
                 <Header />
 
                 <h1>Your Account</h1>
-                {/* Account Navigation Cards */}
+                { /* Account Navigation Cards */ }
                 <div className="accountNav">
-                    {/* Map Dictionary to Cards */}
+                    { /* Map Dictionary to Cards */ }
                     {Object.keys(cardInfo).map((key, index) => (
                         <Button
-                            className={"navBtn"}
-                            onClick={() => {navigate("/user/" + key)}}
-                            key={index}
+                            className={ "navBtn" }
+                            onClick={ () => { navigate("/user/" + key) } }
+                            key={ index }
                         >
-                            <h2>{cardInfo[key][0]}</h2>
-                            <p>{cardInfo[key][1]}</p>
+                            <h2>{ cardInfo[key][0] }</h2>
+                            <p>{ cardInfo[key][1] }</p>
                         </Button>
                     ))}
                 </div>
             </div>
-            {/* Right-side Navigation */}
+            { /* Right-side Navigation */ }
             <RightNav />
         </div>
     )

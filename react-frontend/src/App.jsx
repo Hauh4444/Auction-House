@@ -31,7 +31,7 @@ const lightTheme = createTheme({
  * - Determines the user's system preference for dark mode and applies the appropriate theme.
  * - Listens for changes in the system's color scheme preference to update the theme dynamically.
  *
- * @returns {JSX.Element}
+ * @returns { JSX.Element }
  * - Renders the `ThemeProvider` with the selected theme (light theme currently).
  * - Contains the `PublicRoutes` component, which defines the application"s routing for public pages.
  */
@@ -54,7 +54,7 @@ function App() {
 
     // Need to replace !isDarkMode with isDarkMode
     return (
-        <ThemeProvider theme={!isDarkMode ? darkTheme : lightTheme}>
+        <ThemeProvider theme={ !isDarkMode ? darkTheme : lightTheme }>
             <PublicRoutes />
         </ThemeProvider>
     );
