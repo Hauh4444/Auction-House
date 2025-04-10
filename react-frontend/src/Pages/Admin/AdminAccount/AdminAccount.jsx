@@ -33,7 +33,7 @@ const AdminAccount = () => {
                     {Object.keys(cardInfo).map((key, index) => (
                         <Button
                             className={ "navBtn" }
-                            onClick={ () => { navigate(key) } }
+                            onClick={ () => navigate(key) }
                             key={ index }
                         >
                             <h2>{ cardInfo[key][0] }</h2>

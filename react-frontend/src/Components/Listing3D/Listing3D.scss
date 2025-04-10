@@ -1,0 +1,15 @@
+// Built In Modules
+@use "sass:map";
+// Custom Variables
+@use "@/assets/variables.modules.scss" as *;
+
+.listingShowcase {
+    width: calc(100% - 50px);
+    height: 100%;
+    backdrop-filter: blur(5px);
+    border-radius: 15px;
+    position: fixed;
+    left: calc(50% - 25px);
+    top: 50%;
+    transform: translate(-50%, -50%);
+}

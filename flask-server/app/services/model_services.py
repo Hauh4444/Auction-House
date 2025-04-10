@@ -1,145 +1,150 @@
-import os
-from app.database.connection import get_db
-from app.entities.model import Model
+from flask import jsonify, Response, send_from_directory
 
-MODELS_DIR = os.path.join(os.getcwd(), 'app/models/3d_models')
+from dotenv import load_dotenv
+import os
+
+from ..data_mappers import ModelMapper
+
+load_dotenv()
+
 
 class ModelService:
     @staticmethod
-    def get_model_metadata(model_id):
-        """
-        Retrieve metadata for a specific 3D model by its ID.
-
-        Args:
-            model_id (int): The ID of the model.
-
-        Returns:
-            dict: Metadata for the model, or None if not found.
-        """
-        conn = get_db()
-        cursor = conn.cursor()
-        cursor.execute("SELECT * FROM models WHERE model_id = %s", (model_id,))
-        result = cursor.fetchone()
-        cursor.close()
-        conn.close()
-
-        if not result:
-            return None
-
-        model = Model(
-            model_id=result[0],
-            name=result[1],
-            file_reference=result[2],
-            file_size=result[3],
-            listing_id=result[4],
-            created_at=result[5],
-            updated_at=result[6]
-        )
-        return model.to_dict()
-
-    @staticmethod
-    def list_models():
+    def get_all_models(db_session=None):
         """
         List all 3D models with their metadata.
 
-        Returns:
-            list: A list of metadata for all models.
-        """
-        conn = get_db()
-        cursor = conn.cursor()
-        cursor.execute("SELECT * FROM models")
-        results = cursor.fetchall()
-        cursor.close()
-        conn.close()
-
-        models = [
-            Model(
-                model_id=row[0],
-                name=row[1],
-                file_reference=row[2],
-                file_size=row[3],
-                listing_id=row[4],
-                created_at=row[5],
-                updated_at=row[6]
-            ).to_dict()
-            for row in results
-        ]
-        return models
-
-    @staticmethod
-    def add_model(name, file_reference, file_size, listing_id):
-        """
-        Add a new 3D model to the database.
-
         Args:
-            name (str): The name of the model.
-            file_reference (str): The file path or reference to the model.
-            file_size (float): The size of the model file in megabytes.
-            listing_id (int): The ID of the associated listing.
+            db_session: Optional database session to be used in tests.
 
         Returns:
-            int: The ID of the newly created model.
+            Response: A JSON response containing the list of models.
+                Returns status code 404 if no models are found.
         """
-        conn = get_db()
-        cursor = conn.cursor()
-        cursor.execute(
-            "INSERT INTO models (name, file_reference, file_size, listing_id) VALUES (%s, %s, %s, %s)",
-            (name, file_reference, file_size, listing_id)
-        )
-        conn.commit()
-        model_id = cursor.lastrowid
-        cursor.close()
-        conn.close()
-        return model_id
+        models = ModelMapper.get_all_models(db_session=db_session)
+        if not models:
+            response_data = {"error": "No models found"}
+            return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
+
+        response_data = {"message": "Models found", "models": models}
+        return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
+
 
     @staticmethod
-    def delete_model(model_id):
-        """
-        Delete a 3D model by its ID.
-
-        Args:
-            model_id (int): The ID of the model to delete.
-
-        Returns:
-            bool: True if the model was deleted, False otherwise.
-        """
-        conn = get_db()
-        cursor = conn.cursor()
-        cursor.execute("DELETE FROM models WHERE model_id = %s", (model_id,))
-        conn.commit()
-        deleted = cursor.rowcount > 0
-        cursor.close()
-        conn.close()
-        return deleted
-
-    @staticmethod
-    def get_model_by_listing_id(listing_id):
+    def get_model_by_listing_id(listing_id, db_session=None):
         """
         Retrieve the model ID and metadata for a specific listing ID.
 
         Args:
             listing_id (int): The ID of the listing.
+            db_session: Optional database session to be used in tests.
 
         Returns:
-            dict: Metadata for the model, or None if not found.
+            Response: A JSON response containing the model data if found.
+                Returns status code 404 if the model is not found.
         """
-        conn = get_db()
-        cursor = conn.cursor()
-        cursor.execute("SELECT * FROM models WHERE listing_id = %s", (listing_id,))
-        result = cursor.fetchone()
-        cursor.close()
-        conn.close()
+        model = ModelMapper.get_model_by_listing_id(listing_id=listing_id, db_session=db_session)
+        if not model:
+            response_data = {"error": "Model not found"}
+            return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
-        if not result:
-            return None
+        model.update(file_reference=f"{os.getenv("BACKEND_MODEL_URL")}/{model.get("file_reference")}")
 
-        model = {
-            "model_id": result[0],
-            "name": result[1],
-            "file_reference": result[2],
-            "file_size": result[3],
-            "listing_id": result[4],
-            "created_at": result[5],
-            "updated_at": result[6]
-        }
-        return model
+        response_data = {"message": "Model found", "model": model}
+        return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
+
+
+    @staticmethod
+    def get_model_by_model_id(model_id, db_session=None):
+        """
+        Serve a 3D model file by its ID.
+
+        Args:
+            model_id (int): The ID of the model.
+            db_session: Optional database session to be used in tests.
+
+        Returns:
+            Response: A JSON response containing the model file if found.
+                Returns status code 404 if the model is not found.
+        """
+        model = ModelMapper.get_model_by_model_id(model_id=model_id, db_session=db_session)
+        if not model:
+            response_data = {"error": "Model not found"}
+            return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
+
+        model.update(file_reference=f"{os.getenv("BACKEND_URL")}/api/models/{model.get("file_reference")}")
+
+        response_data = {"message": "Model found", "model": model}
+        return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
+
+
+    @staticmethod
+    def download_model(model_id, db_session=None):
+        """
+        Serve a 3D model file by its ID.
+
+        Args:
+            model_id (int): The ID of the model.
+            db_session: Optional database session to be used in tests.
+
+        Returns:
+            Response: A JSON response containing the model file if found.
+                Returns status code 404 if the model is not found.
+        """
+        model = ModelMapper.get_model_by_model_id(model_id=model_id, db_session=db_session)
+        if not model:
+            response_data = {"error": "Model not found"}
+            return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
+
+        models_directory = os.path.join(os.getcwd(), 'models/')
+        model_file = send_from_directory(models_directory, model.get("file_reference"))
+        if not model_file:
+            response_data = {"error": "Model not found"}
+            return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
+
+        response_data = {"message": "Model found", "model": model_file}
+        return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
+
+
+    @staticmethod
+    def create_model(data, db_session=None):
+        """
+        Add a new 3D model to the database.
+
+        Args:
+            data (dict): A dictionary containing the model details (e.g., name).
+            db_session: Optional database session to be used in tests.
+
+        Returns:
+            Response: A JSON response with the success message and newly created model ID.
+                Returns status code 409 if there was an error creating the model.
+        """
+        model_id = ModelMapper.create_model(data=data, db_session=db_session)
+        if not model_id:
+            response_data = {"error": "Error creating model"}
+            return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
+
+        response_data = {"message": "Model created", "model_id": model_id}
+        return Response(response=jsonify(response_data).get_data(), status=201, mimetype="application/json")
+
+
+    @staticmethod
+    def delete_model(model_id, db_session=None):
+        """
+        Delete a 3D model by its ID.
+
+        Args:
+            model_id (int): The ID of the model to delete.
+            db_session: Optional database session to be used in tests.
+
+        Returns:
+            Response: A JSON response with a success message if the model was deleted.
+                Returns status code 404 if the model was not found.
+        """
+        deleted_rows = ModelMapper.delete_model(model_id=model_id, db_session=db_session)
+        if not deleted_rows:
+            response_data = {"error": "Model not found"}
+            return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
+
+        response_data = {"message": "Model deleted", "deleted_rows": deleted_rows}
+        return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")

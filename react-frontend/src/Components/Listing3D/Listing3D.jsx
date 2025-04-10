@@ -1,17 +1,15 @@
 // External Libraries
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Environment, ContactShadows, useGLTF, useProgress, Html } from '@react-three/drei';
 import { Suspense } from 'react';
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls, Environment, ContactShadows, useProgress, Html } from '@react-three/drei';
 import PropTypes from 'prop-types';
+
+// Internal Modules
+import GLBModel from "./GLB/GLB"
+import OBJModel from "./OBJ/OBJ"
 
 // Stylesheets
 import "./Listing3D.scss"
-
-const Model = ({ url }) => {
-    const { scene } = useGLTF(url);
-    // eslint-disable-next-line react/no-unknown-property
-    return <primitive object={ scene } />;
-};
 
 const Loader = () => {
     const { progress } = useProgress();
@@ -27,7 +25,14 @@ const Listing3D = ({ modelPath }) => {
                     <ambientLight intensity={ 0.5 } />
                     { /* eslint-disable-next-line react/no-unknown-property */ }
                     <directionalLight position={ [5, 5, 5] } intensity={ 1 } />
-                    <Model url={ modelPath } />
+
+                    {modelPath.toLowerCase().endsWith(".glb") ? (
+                        <GLBModel modelPath={ modelPath } />
+                    ) : modelPath.toLowerCase().endsWith(".obj") ? (
+                        <OBJModel modelPath={ modelPath } />
+                    ) : (
+                        <div>Unsupported model format: { modelPath }</div>
+                    )}
                     <Environment preset="sunset" />
                     <ContactShadows position={ [0, -1.4, 0] } opacity={ 0.4 } scale={ 10 } blur={ 1.5 } far={ 4.5 } />
                     <OrbitControls enablePan enableZoom enableRotate />
@@ -35,10 +40,6 @@ const Listing3D = ({ modelPath }) => {
             </Canvas>
         </div>
     );
-};
-
-Model.propTypes = {
-    url: PropTypes.string.isRequired,
 };
 
 Listing3D.propTypes = {

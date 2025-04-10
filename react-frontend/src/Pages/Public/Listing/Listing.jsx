@@ -3,6 +3,7 @@ import { useEffect, useState } from  "react";
 import { useLocation } from "react-router-dom";
 import { FacebookIcon, FacebookShareButton, PinterestIcon, PinterestShareButton, TwitterShareButton, XIcon } from "react-share";
 import { IoMdCube } from "react-icons/io";
+import { ImCross } from "react-icons/im";
 import { Button } from "@mui/material";
 import axios from "axios";
 
@@ -37,7 +38,7 @@ const Listing = () => {
 
     const [listing, setListing] = useState({}); // State to store the listing data
     const [reviews, setReviews] = useState([]);
-    const [modelPath, setModelPath] = useState("");
+    const [model, setModel] = useState(null);
     const [showModel, setShowModel] = useState(false);
 
     /**
@@ -73,11 +74,34 @@ const Listing = () => {
             .then((res) => setReviews(res.data.reviews)) // Update state with fetched data
             .catch(() => setReviews([])); // Clear review state on error
 
-        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/models/${ id }`, {
+        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/models/listing/${ id }`, {
             headers: { "Content-Type": "application/json" },
         })
-            .then((res) => setModelPath(res.data.model)) // Update state with fetched data
-            .catch(() => setModelPath("")); // Clear model state on error
+            .then((res) => setModel(res.data.model)) // Update state with fetched data
+            .catch(() => setModel(null)); // Clear model state on error
+    }
+
+    const openModel = () => {
+        setShowModel(true);
+
+        // Add event listener for Escape key press when model is opened
+        const handleEscapeKey = (event) => {
+            if (event.key === "Escape") {
+                closeModel(); // Close model when Escape is pressed
+            }
+        };
+
+        // Add event listener to the window object
+        window.addEventListener("keydown", handleEscapeKey);
+
+        // Clean up function to remove the event listener when the model is closed
+        return () => {
+            window.removeEventListener("keydown", handleEscapeKey);
+        };
+    }
+
+    const closeModel = () => {
+        setShowModel(false);
     }
 
     return (
@@ -132,10 +156,10 @@ const Listing = () => {
                                         This will be replaced with a seperate call to get the model
                                         instead of expecting the listing attribute model
                                     */}
-                                    {listing.model && (
+                                    {model && (
                                         <Button
                                             className="modelBtn"
-                                            onClick={ () => setShowModel(true) }
+                                            onClick={ () => openModel() }
                                         >
                                             <IoMdCube className="icon" />
                                         </Button>
@@ -215,8 +239,13 @@ const Listing = () => {
                         </div>
                     </div>
                 </div>
-                {showModel && (
-                    <Listing3D modelPath={ modelPath } />
+                {showModel && model && (
+                    <>
+                        <Listing3D modelPath={model.file_reference} />
+                        <Button className="closeShowcaseBtn" onClick={ () => closeModel() }>
+                            <ImCross size={ 24 } />
+                        </Button>
+                    </>
                 )}
             </div>
             { /* Right-side navigation */ }

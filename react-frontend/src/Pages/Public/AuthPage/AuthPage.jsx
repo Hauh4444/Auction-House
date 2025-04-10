@@ -210,7 +210,7 @@ const AuthPage = () => {
                         { /* Toggle button for switching between login and registration */ }
                         <Button
                             className="toggleBtn"
-                            onClick={() => {
+                            onClick={ () => {
                                 setIsLogin(!isLogin);
                                 setLoginError("");
                             }}

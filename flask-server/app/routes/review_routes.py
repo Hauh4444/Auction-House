@@ -21,7 +21,6 @@ def get_all_reviews(db_session=None):
     """
     args = request.args
 
-    print(args)
     return ReviewService.get_all_reviews(args=args, db_session=db_session)
 
 

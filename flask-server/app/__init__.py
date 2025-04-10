@@ -35,7 +35,7 @@ def create_app():
     """
     load_dotenv()
 
-    app = Flask(__name__)
+    app = Flask(__name__, static_folder="static", static_url_path='/static')
     config_class = os.getenv("FLASK_CONFIG")
     app.config.from_object(config_class)
 
@@ -46,7 +46,9 @@ def create_app():
     session.init_app(app)
     socketio.init_app(app, cors_allowed_origins=os.getenv("FRONTEND_URL"), transports=["websocket", "polling"])
     scheduler.start()
-    CORS(app, supports_credentials=True, resources={r"/api/*": {"origins": os.getenv("FRONTEND_URL")}, r"/socket.io/*": {"origins": os.getenv("FRONTEND_URL")}})
+    CORS(app, supports_credentials=True, resources={r"/api/*": {"origins": os.getenv("FRONTEND_URL")},
+                                                    r"/static/*": {"origins": os.getenv("FRONTEND_URL")},
+                                                    r"/socket.io/*": {"origins": os.getenv("FRONTEND_URL")}})
 
     # Register routes
     for _, module_name, _ in pkgutil.iter_modules(routes.__path__):
