@@ -12,4 +12,12 @@
     left: calc(50% - 25px);
     top: 50%;
     transform: translate(-50%, -50%);
+
+    .loader {
+        display: inline;
+        text-wrap: nowrap;
+        color: map.get($theme-colors, mainColor1);
+        font-size: 32px;
+        font-weight: bold;
+    }
 }

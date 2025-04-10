@@ -13,7 +13,7 @@ import "./Listing3D.scss"
 
 const Loader = () => {
     const { progress } = useProgress();
-    return <Html center>{ progress.toFixed(0) } % loaded</Html>;
+    return <Html className="loader" center>{ progress.toFixed(0) }%</Html>;
 };
 
 const Listing3D = ({ modelPath }) => {
