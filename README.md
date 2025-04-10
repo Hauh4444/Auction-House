@@ -4,28 +4,27 @@
 
 ### React Frontend
 
-1. Analytics & Reports 
-2. Manage Users 
-3. Site Settings 
+1. Analytics & Reports
+2. Manage Users
+3. Site Settings
 4. Other UI
-   1. Stripe Payments
-   2. Friend
-   3. View Profile
-   4. Live Auction
+    1. Stripe Payments
+    2. Friend
+    3. View Profile
+    4. Live Auction
 
 ### Flask Server
 
 1. MySQL
-   1. Foreign Keys
-   2. Payment Info Table
-   3. Models Table 
-   4. Direct Transaction to Payment Info ID 
-   5. Listings Should Have Count
+    1. Foreign Keys
+    2. Payment Info Table
+    3. Models Table
+    4. Direct Transaction to Payment Info ID
+    5. Listings Should Have Count
 2. Logging
 3. Analytics & Reports
-4. 3D Showcase API
-5. Order & Delivery API
-6. Payment API
+4. Order & Delivery API
+5. Payment API
 
 ## Setup
 
