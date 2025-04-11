@@ -1,5 +1,6 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify
 from flask_login import login_required
+import stripe
 
 from ..services import PurchaseService
 
@@ -20,3 +21,22 @@ def purchase(db_session=None):
     """
     data = request.json
     return PurchaseService.process_purchase(data=data, db_session=db_session)
+
+
+@bp.route('/stripe-session-status', methods=['POST'])
+def stripe_session_status():
+    session_id = request.args.get('session_id')
+    if not session_id:
+        return jsonify({"error": "Missing session_id parameter"}), 400
+    
+    try:
+        session = stripe.checkout.Session.retrieve(session_id)
+
+        return jsonify({
+            "status": session.status,
+            "customer_email": session.customer_details.email if session.customer_details else None
+        })
+    except stripe.error.StripeError as e:
+        return jsonify({"error": str(e)}), 400
+    except Exception as e:
+        return jsonify({"error": "Internal server error", "details": str(e)}), 500

@@ -1,10 +1,14 @@
-from flask import Response, jsonify
-from flask_login import current_user
+from flask import Response, jsonify, session
 
 from datetime import date, datetime, timedelta
+from dotenv import load_dotenv
+import stripe, os
 
 from ..services import ProfileService
 from ..data_mappers import OrderMapper, TransactionMapper, DeliveryMapper, ListingMapper
+
+load_dotenv()
+stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 
 
 class PurchaseService:
@@ -39,6 +43,49 @@ class PurchaseService:
             "profile": profile,
         }
         return PurchaseService.create_order(data=data, db_session=db_session)
+    
+    @staticmethod
+    def process_payment(data, db_session=None):
+        try:
+            amount = int(float(data.get("amount")) * 100)
+            currency = data.get("currency")
+            success_url = data.get("success_url")
+            cancel_url = data.get("cancel_url")
+
+            if amount <= 0:
+                return Response(response=jsonify({"error": "Invalid amount"}).get_data(), status=400, mimetype="application/json")
+            
+            intent = stripe.PaymentIntent.create(
+                amount=amount,
+                currency=currency,
+                metadata={"integration_check": "accept_a_payment"},
+            )
+
+            session = stripe.checkout.Session.create(
+                payment_method_types = ["card"],
+                line_items = [{
+                    "price_data": {
+                        "currency": currency,
+                        "product_data": {
+                            "name": "Purchase from Marketplace",
+                        },
+                        "unit_amount": amount,
+                    },
+                    "quantity": 1,
+                }],
+                mode = "payment",
+                success_url = success_url,
+                cancel_url = cancel_url,
+            )
+
+            return Response(response=jsonify({
+                "client_secret": intent.client_secret
+            }).get_data(), status=200, mimetype="application/json")
+        
+        except stripe.error.StripeError as e:
+            return Response(response=jsonify({"error": str(e)}).get_data(), status=400, mimetype="application/json")
+        except Exception as e:
+            return Response(response=jsonify({"error": "Internal server error", "details": str(e)}).get_data(), status=500, mimetype="application/json")
 
 
     @staticmethod
