@@ -16,7 +16,7 @@ const StaffAccount = () => {
         "/staff/messages": ["Customer Inquiries", "View and respond to customer messages and inquiries."],
         "/staff/profile": ["Profile", "Update personal details, preferences, and account settings."],
         "/staff/manage-listings": ["Manage Listings", "Manage product listings and auctions."],
-        "/staff/user-info": ["User Info", "View, create, edit, and manage user information."],
+        "/staff/user-info": ["Manage Users", "View, create, edit, and manage user information."],
         "/staff/reports": ["Reports", "View sales, performance, and analytical reports."]
     };
 

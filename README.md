@@ -5,17 +5,17 @@
 ### React Frontend
 
 1. Analytics & Reports
-2. Manage Users
+2. Manage Users (Edit & Delete)
 3. Site Settings
 4. Stripe Payments
 5. Live Auction UI
 
 ### Flask Server
 
-1. Logging 
-2. Analytics & Reports 
-3. Order & Delivery API 
-4. Payment API
+1. Logging
+2. Analytics & Reports
+3. Order & Delivery API
+4. Fix Payment API
 
 ### MySQL Database
 

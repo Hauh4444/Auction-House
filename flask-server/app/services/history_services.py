@@ -45,7 +45,7 @@ class HistoryService:
         if current_user.role not in ["staff", "admin"]:
             data.update(user_id=current_user.id)
 
-        listings = ListingMapper.get_all_listings(data=data, db_session=db_session)
+        listings = ListingMapper.get_all_listings(args=data, db_session=db_session)
 
         if not listings:
             response_data = {"error": "Listings not found"}

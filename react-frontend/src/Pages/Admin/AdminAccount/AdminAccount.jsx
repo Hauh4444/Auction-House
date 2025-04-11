@@ -16,7 +16,7 @@ const AdminAccount = () => {
         "/admin/settings": ["Site Settings", "Manage and customize site settings."],
         "/admin/logs": ["View Logs", "View and monitor system activity logs and events."],
         "/staff/manage-listings": ["Manage Listings", "Manage product listings and auctions."],
-        "/staff/user-info": ["User Info", "View, create, edit, and manage user information."],
+        "/staff/user-info": ["Manage Users", "View, create, edit, and manage user information."],
         "/staff/reports": ["Reports", "View sales, performance, and analytical reports."]
     };
 

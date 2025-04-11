@@ -8,9 +8,9 @@ import Header from "@/Components/Header/Header";
 import RightNav from "@/Components/Navigation/RightNav/RightNav";
 
 // Stylesheets
-import "./UserInfo.scss";
+import "./ManageUsers.scss";
 
-const UserInfo = () => {
+const ManageUsers = () => {
     const [currentRoute, setCurrentRoute] = useState("user");
     const [userIdInput, setUserIdInput] = useState("");
     const [userData, setUserData] = useState(null);
@@ -43,7 +43,7 @@ const UserInfo = () => {
             <div className="mainPage">
                 <Header />
 
-                <h1>User Info</h1>
+                <h1>Users</h1>
                 <div className="content">
                     <div className="filters">
                         <FormControl>
@@ -92,9 +92,8 @@ const UserInfo = () => {
                                                 key={ colIndex }
                                                 onClick={ () => handleCopy(item[key]) }
                                                 style={ { cursor: "pointer", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }
-                                                title={ item[key] }
                                             >
-                                                { item[key] }
+                                                { item[key] !== null ? String(item[key]) : "" }
                                             </td>
                                         ))}
                                     </tr>
@@ -118,9 +117,8 @@ const UserInfo = () => {
                                                 key={ index }
                                                 onClick={ () => handleCopy(userData[key]) }
                                                 style={ { cursor: "pointer", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }
-                                                title={ userData[key] }
                                             >
-                                                { userData[key] }
+                                                { userData[key] !== null ? String(userData[key]) : "" }
                                             </td>
                                         ))}
                                     </tr>
@@ -136,4 +134,4 @@ const UserInfo = () => {
     );
 };
 
-export default UserInfo;
+export default ManageUsers;

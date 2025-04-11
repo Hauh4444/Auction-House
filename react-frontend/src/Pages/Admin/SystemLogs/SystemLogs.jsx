@@ -12,7 +12,7 @@ import "./SystemLogs.scss";
 
 const SystemLogs = () => {
     const [currentLog, setCurrentLog] = useState("");
-    const [logData, setLogData] = useState(null);
+    const [logData, setLogData] = useState([]);
 
     const logs = ["admin"];
 
@@ -39,6 +39,7 @@ const SystemLogs = () => {
                 <Header />
 
                 <h1>System Logs</h1>
+                
                 <div className="content">
                     <div className="filters">
                         <FormControl>
@@ -63,7 +64,9 @@ const SystemLogs = () => {
                     </div>
                     {logData && (
                         <div className="log">
-
+                            {logData.map((line, index) => (
+                                <div key={index}>{line}</div>
+                            ))}
                         </div>
                     )}
                 </div>

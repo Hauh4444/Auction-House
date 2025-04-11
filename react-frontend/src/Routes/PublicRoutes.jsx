@@ -39,7 +39,7 @@ import CustomerInquiries from "@/Pages/Staff/CustomerInquiries/CustomerInquiries
 import ManageListings from "@/Pages/Staff/ManageListings/ManageListings";
 import StaffAccount from "@/Pages/Staff/StaffAccount/StaffAccount";
 import StaffReports from "@/Pages/Staff/StaffReports/StaffReports";
-import UserInfo from "@/Pages/Staff/UserInfo/UserInfo";
+import ManageUsers from "@/Pages/Staff/ManageUsers/ManageUsers.jsx";
 
 // Admin Internal Modules
 import AdminAccount from "@/Pages/Admin/AdminAccount/AdminAccount";
@@ -98,7 +98,7 @@ const PublicRoutes = () => {
                     <Route path="/staff/manage-listings" element={ <ManageListings /> } />
                     <Route path="/staff/account" element={ <StaffAccount /> } />
                     <Route path="/staff/reports" element={ <StaffReports /> } />
-                    <Route path="/staff/user-info" element={ <UserInfo /> } />
+                    <Route path="/staff/user-info" element={ <ManageUsers /> } />
                 </Route>
 
                 { /* Protected Routes for Admin Users */ }

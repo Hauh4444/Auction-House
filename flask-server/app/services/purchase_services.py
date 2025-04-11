@@ -1,4 +1,5 @@
-from flask import Response, jsonify, session
+from flask import Response, jsonify
+from flask_login import current_user
 
 from datetime import date, datetime, timedelta
 from dotenv import load_dotenv
