@@ -1,6 +1,7 @@
 // External Libraries
 import { useEffect, useState } from "react";
-import {Button, TextField} from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { Button, TextField } from "@mui/material";
 import axios from "axios";
 
 // Internal Modules
@@ -49,15 +50,17 @@ const defaultSettings = {
     require_email_verification: true,
     two_factor_auth: false,
     max_login_attempts: 5,
-    password_expiration_days: 90,
+    password_expiration_days: 365,
 
     // Localization
-    supported_currencies: "USD,EUR,GBP",
-    supported_languages: "en,es,fr",
+    supported_currencies: "USD",
+    supported_languages: "en",
     measurement_unit: "kg",
 };
 
 const SiteSettings = () => {
+    const navigate = useNavigate();
+
     const [settings, setSettings] = useState(defaultSettings);
     const [loading, setLoading] = useState(true);
 
@@ -77,9 +80,16 @@ const SiteSettings = () => {
     };
 
     const handleSubmit = () => {
-        axios.post("/api/site-settings", settings).then(() => {
-            alert("Settings saved.");
-        });
+        axios.post(`${ import.meta.env.VITE_BACKEND_API_URL }/auth/site-settings/`,
+        {
+            settings: settings,
+        },
+        {
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true,
+        })
+            .then(() => navigate("/admin/account"))
+            .catch(err => console.log(err));
     };
 
     if (loading) return <div className="loading">Loading...</div>;
@@ -121,61 +131,61 @@ const SiteSettings = () => {
                 <div className="content">
                     <div className="section">
                         <h2>Store Settings</h2>
-                        {renderInput("Site Name", "site_name")}
-                        {renderInput("Store Description", "store_description")}
-                        {renderInput("Default Currency", "default_currency")}
-                        {renderInput("Default Language", "default_language")}
-                        {renderInput("Timezone", "timezone")}
-                        {renderInput("Business Email", "business_email")}
-                        {renderInput("Support Email", "support_email")}
+                        { renderInput("Site Name", "site_name") }
+                        { renderInput("Store Description", "store_description") }
+                        { renderInput("Default Currency", "default_currency") }
+                        { renderInput("Default Language", "default_language") }
+                        { renderInput("Timezone", "timezone") }
+                        { renderInput("Business Email", "business_email") }
+                        { renderInput("Support Email", "support_email") }
                     </div>
 
                     <div className="section">
                         <h2>Payment & Pricing</h2>
-                        {renderInput("Tax Rate (%)", "tax_rate", "number")}
-                        {renderInput("Discounts Enabled", "discounts_enabled", "checkbox")}
-                        {renderInput("Free Shipping Threshold", "free_shipping_threshold", "number")}
-                        {renderInput("Accepted Payment Methods", "accepted_payment_methods")}
-                        {renderInput("Default Shipping Fee", "default_shipping_fee", "number")}
+                        { renderInput("Tax Rate (%)", "tax_rate", "number") }
+                        { renderInput("Discounts Enabled", "discounts_enabled", "checkbox") }
+                        { renderInput("Free Shipping Threshold", "free_shipping_threshold", "number") }
+                        { renderInput("Accepted Payment Methods", "accepted_payment_methods") }
+                        { renderInput("Default Shipping Fee", "default_shipping_fee", "number") }
                     </div>
 
                     <div className="section">
                         <h2>Maintenance & Control</h2>
-                        {renderInput("Maintenance Mode", "maintenance_mode", "checkbox")}
-                        {renderInput("Maintenance Message", "maintenance_message")}
-                        {renderInput("Admin Preview Mode", "admin_preview_mode", "checkbox")}
-                        {renderInput("Allow New Registrations", "allow_new_registrations", "checkbox")}
-                        {renderInput("Checkout Enabled", "checkout_enabled", "checkbox")}
+                        { renderInput("Maintenance Mode", "maintenance_mode", "checkbox") }
+                        { renderInput("Maintenance Message", "maintenance_message") }
+                        { renderInput("Admin Preview Mode", "admin_preview_mode", "checkbox") }
+                        { renderInput("Allow New Registrations", "allow_new_registrations", "checkbox") }
+                        { renderInput("Checkout Enabled", "checkout_enabled", "checkbox") }
                     </div>
 
                     <div className="section">
                         <h2>Inventory & Orders</h2>
-                        {renderInput("Low Stock Threshold", "low_stock_threshold", "number")}
-                        {renderInput("Auto Restock Notifications", "auto_restock_notifications", "checkbox")}
-                        {renderInput("Max Order Quantity", "max_order_quantity", "number")}
+                        { renderInput("Low Stock Threshold", "low_stock_threshold", "number") }
+                        { renderInput("Auto Restock Notifications", "auto_restock_notifications", "checkbox") }
+                        { renderInput("Max Order Quantity", "max_order_quantity", "number") }
                     </div>
 
                     <div className="section">
                         <h2>Notifications</h2>
-                        {renderInput("Order Confirmation Email", "order_confirmation_email", "checkbox")}
-                        {renderInput("Abandoned Cart Email", "abandoned_cart_email", "checkbox")}
-                        {renderInput("Newsletter Signup Enabled", "newsletter_signup_enabled", "checkbox")}
-                        {renderInput("Admin Notification Email", "admin_notification_email")}
+                        { renderInput("Order Confirmation Email", "order_confirmation_email", "checkbox") }
+                        { renderInput("Abandoned Cart Email", "abandoned_cart_email", "checkbox") }
+                        { renderInput("Newsletter Signup Enabled", "newsletter_signup_enabled", "checkbox") }
+                        { renderInput("Admin Notification Email", "admin_notification_email") }
                     </div>
 
                     <div className="section">
                         <h2>Security</h2>
-                        {renderInput("Require Email Verification", "require_email_verification", "checkbox")}
-                        {renderInput("Two-Factor Auth", "two_factor_auth", "checkbox")}
-                        {renderInput("Max Login Attempts", "max_login_attempts", "number")}
-                        {renderInput("Password Expiration (Days)", "password_expiration_days", "number")}
+                        { renderInput("Require Email Verification", "require_email_verification", "checkbox") }
+                        { renderInput("Two-Factor Auth", "two_factor_auth", "checkbox") }
+                        { renderInput("Max Login Attempts", "max_login_attempts", "number") }
+                        { renderInput("Password Expiration (Days)", "password_expiration_days", "number") }
                     </div>
 
                     <div className="section">
                         <h2>Localization</h2>
-                        {renderInput("Supported Currencies", "supported_currencies")}
-                        {renderInput("Supported Languages", "supported_languages")}
-                        {renderInput("Measurement Unit", "measurement_unit")}
+                        { renderInput("Supported Currencies", "supported_currencies") }
+                        { renderInput("Supported Languages", "supported_languages") }
+                        { renderInput("Measurement Unit", "measurement_unit") }
                     </div>
 
                     <div className="section"></div>

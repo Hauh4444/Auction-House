@@ -6,21 +6,19 @@
 
 1. Analytics & Reports
 2. Manage Users (Edit & Delete)
-3. Site Settings
-4. Stripe Payments
-5. Live Auction UI
+3. Live Auction UI
 
 ### Flask Server
 
 1. Logging
-2. Analytics & Reports
-3. Order & Delivery API
-4. Fix Payment API
+2. Analytics & Reports 
+3. Payment API
+   1. Adjust functions to work together as opposed to having to submit multiple HTTP requests
 
 ### MySQL Database
 
-1. Payment Info Table
-2. Listings Need Quantity
+1. Listings Need Quantity
+2. Payment Info Table
 
 ## Setup
 

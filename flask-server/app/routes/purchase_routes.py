@@ -23,7 +23,15 @@ def purchase(db_session=None):
     return PurchaseService.process_purchase(data=data, db_session=db_session)
 
 
+@bp.route('/create-stripe-session', methods=['POST'])
+@login_required
+def create_stripe_session():
+    data = request.json
+    return PurchaseService.process_payment(data)
+
+
 @bp.route('/stripe-session-status', methods=['POST'])
+@login_required
 def stripe_session_status():
     session_id = request.args.get('session_id')
     if not session_id:

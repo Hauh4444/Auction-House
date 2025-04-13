@@ -55,12 +55,6 @@ class PurchaseService:
 
             if amount <= 0:
                 return Response(response=jsonify({"error": "Invalid amount"}).get_data(), status=400, mimetype="application/json")
-            
-            intent = stripe.PaymentIntent.create(
-                amount=amount,
-                currency=currency,
-                metadata={"integration_check": "accept_a_payment"},
-            )
 
             session = stripe.checkout.Session.create(
                 payment_method_types = ["card"],
@@ -79,14 +73,15 @@ class PurchaseService:
                 cancel_url = cancel_url,
             )
 
-            return Response(response=jsonify({
-                "client_secret": intent.client_secret
-            }).get_data(), status=200, mimetype="application/json")
-        
+            response_data = {"message": "Stripe session created", "id": session.id}
+            return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
+
         except stripe.error.StripeError as e:
-            return Response(response=jsonify({"error": str(e)}).get_data(), status=400, mimetype="application/json")
+            response_data = {"error": str(e)}
+            return Response(response=jsonify(response_data).get_data(), status=400, mimetype="application/json")
         except Exception as e:
-            return Response(response=jsonify({"error": "Internal server error", "details": str(e)}).get_data(), status=500, mimetype="application/json")
+            response_data = {"error": "Internal server error", "details": str(e)}
+            return Response(response=jsonify(response_data).get_data(), status=500, mimetype="application/json")
 
 
     @staticmethod

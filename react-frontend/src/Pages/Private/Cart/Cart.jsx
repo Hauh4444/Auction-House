@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiPlus, FiMinus } from "react-icons/fi";
 import { BsTrash3Fill } from "react-icons/bs";
+import { loadStripe } from "@stripe/stripe-js";
 import { Button } from "@mui/material";
 import axios from "axios";
 
@@ -35,25 +36,50 @@ const Cart = () => {
         return cartItems.reduce((total, item) => total + item.quantity, 0);
     }
 
+    const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
+
     const purchaseCart = async () => {
-        if (!cartItems.length) {
-            return;
-        }
-        axios.post(`${ import.meta.env.VITE_BACKEND_API_URL }/purchase/`,
+        if (!cartItems.length) return;
+
+        axios.post(`${ import.meta.env.VITE_BACKEND_API_URL }/purchase/create-stripe-session`,
             {
-                listings: cartItems,
-                total_amount: getCartTotal(),
-            },
-            {
+                amount: getCartTotal(),
+                currency: "usd",
+                success_url: `${import.meta.env.VITE_FRONTEND_URL}/`,
+                cancel_url: `${import.meta.env.VITE_FRONTEND_URL}/cart`,
+            }, {
                 headers: { "Content-Type": "application/json" },
-                withCredentials: true, // Ensure cookies are sent
+                withCredentials: true,
             })
-            .then(async () => {
-                await clearCart();
-                setCartItems([]);
+            .then(async (res) => {
+                const stripe = await stripePromise;
+                await stripe.redirectToCheckout({ sessionId: res.data.id });
             })
-            .catch(err => console.log(err)); // Log errors if any
-    }
+            .catch((e) => console.error(e));
+    };
+
+    useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const session_id = urlParams.get("session_id");
+
+        if (session_id) {
+            axios.post(`${ import.meta.env.VITE_BACKEND_API_URL }/purchase/stripe-session-status`,
+                {
+                    session_id: session_id,
+                },
+                {
+                    headers: { "Content-Type": "application/json" },
+                    withCredentials: true,
+                })
+                .then(async (res) => {
+                    if (res.data.status === "complete") {
+                        await clearCart();
+                        setCartItems([]);
+                    }
+                })
+                .catch(err => console.log(err));
+        }
+    }, []);
 
     return (
         <div className="cartPage page">
