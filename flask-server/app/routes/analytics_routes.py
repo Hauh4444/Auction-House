@@ -1,23 +1,12 @@
-from flask import Blueprint, render_template, jsonify
+# FILE: app/routes/analytics_routes.py
 
-analytics_bp = Blueprint('analytics', __name__)
+from flask import Blueprint, render_template
+from app.models.event_log import EventLog
+from app.database import db_session
 
-@analytics_bp.route('/analytics')
+analytics_bp = Blueprint("analytics", __name__)
+
+@analytics_bp.route("/analytics")
 def analytics_dashboard():
-    """
-    Render a simple HTML page with a link to the PostHog dashboard.
-    Useful for admins to review user behavior analytics.
-    """
-    return render_template('analytics.html')
-
-
-@analytics_bp.route('/api/summary')
-def summary():
-    """
-    API endpoint that returns a basic summary message.
-    This can be expanded to return real-time metrics later.
-    """
-    return jsonify({
-        'message': 'Analytics are tracked via PostHog.',
-        'dashboard_link': 'https://us.posthog.com/project/145970' #this is a link associated with Posthog
-    })
+    logs = db_session.query(EventLog).order_by(EventLog.timestamp.desc()).limit(100).all()
+    return render_template("analytics.html", logs=logs)
