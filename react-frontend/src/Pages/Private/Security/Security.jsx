@@ -16,12 +16,13 @@ const Security = () => {
 
     // Fetch user data from the backend API
     useEffect(() => {
-        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/user/`, {
-            headers: { "Content-Type": "application/json" },
-            withCredentials: true, // Ensures cookies are sent with requests
-        })
+        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/user/`,
+            {
+                headers: { "Content-Type": "application/json" },
+                withCredentials: true, // Ensures cookies are sent with requests
+            })
             .then((res) => setUser(res.data.user)) // Set the user state
-            .catch(err => console.log(err)); // Log errors if any
+            .catch(err => console.error(err)); // Log errors if any
     }, []);
 
     const password_reset_request = () => {
@@ -30,7 +31,7 @@ const Security = () => {
             withCredentials: true,
         })
             .then(() => alert("Password reset request email sent to: " + user["email"]))
-            .catch(err => console.log(err));
+            .catch(err => console.error(err));
     }
 
     return (

@@ -18,7 +18,7 @@ const AuthProvider = ({ children }) => {
             const res = await axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/auth/auth_status/`);
             setUser(res.data.authenticated ? { "user_id": res.data.id, "role": res.data.role } : null);
         } catch (err) {
-            console.log(err);
+            console.error(err);
             setUser(null);
         }
     };
@@ -29,7 +29,7 @@ const AuthProvider = ({ children }) => {
             await checkAuthStatus();
             return true;
         } catch (err) {
-            console.log(err);
+            console.error(err);
             setError("Login failed. Please check your credentials.");
             return false;
         }
@@ -41,7 +41,7 @@ const AuthProvider = ({ children }) => {
             await login(credentials);
             return true;
         } catch (err) {
-            console.log(err);
+            console.error(err);
             setError("Failed to create account.");
             return false;
         }
@@ -52,7 +52,7 @@ const AuthProvider = ({ children }) => {
             await axios.post(`${ import.meta.env.VITE_BACKEND_API_URL }/auth/logout/`);
             setUser(null);
         } catch (err) {
-            console.log(err);
+            console.error(err);
             setError("Logout failed. Please try again.");
         }
     };

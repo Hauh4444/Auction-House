@@ -41,8 +41,9 @@ const Cart = () => {
     const purchaseCart = async () => {
         if (!cartItems.length) return;
 
-        axios.post(`${ import.meta.env.VITE_BACKEND_API_URL }/purchase/create-stripe-session`,
+        axios.post(`${ import.meta.env.VITE_BACKEND_API_URL }/purchase/`,
             {
+                listings: cartItems,
                 amount: getCartTotal(),
                 currency: "usd",
                 success_url: `${import.meta.env.VITE_FRONTEND_URL}/`,
@@ -63,7 +64,7 @@ const Cart = () => {
         const session_id = urlParams.get("session_id");
 
         if (session_id) {
-            axios.post(`${ import.meta.env.VITE_BACKEND_API_URL }/purchase/stripe-session-status`,
+            axios.post(`${ import.meta.env.VITE_BACKEND_API_URL }/purchase/status`,
                 {
                     session_id: session_id,
                 },
@@ -77,7 +78,7 @@ const Cart = () => {
                         setCartItems([]);
                     }
                 })
-                .catch(err => console.log(err));
+                .catch(err => console.error(err));
         }
     }, []);
 

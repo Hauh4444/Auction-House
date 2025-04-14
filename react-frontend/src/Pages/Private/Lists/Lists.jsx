@@ -24,10 +24,11 @@ const Lists = () => {
 
     // Fetch user list data from the backend API
     useEffect(() => {
-        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/user/lists/`, {
-            headers: { "Content-Type": "application/json" },
-            withCredentials: true, // Ensures cookies are sent with requests
-        })
+        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/user/lists/`,
+            {
+                headers: { "Content-Type": "application/json" },
+                withCredentials: true, // Ensures cookies are sent with requests
+            })
             .then((res) => {
                 setLists(res.data.lists);
                 goToList(res.data.lists[0]);
@@ -38,10 +39,11 @@ const Lists = () => {
     const goToList = (list) => {
         setList(list);
 
-        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/user/lists/${ list.list_id }/`, {
-            headers: { "Content-Type": "application/json" },
-            withCredentials: true,
-        })
+        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/user/lists/${ list.list_id }/`,
+            {
+                headers: { "Content-Type": "application/json" },
+                withCredentials: true,
+            })
             .then((res) => setListItems(res.data.list_items))
             .catch(() => setListItems([]));
     }

@@ -9,7 +9,7 @@ bp = Blueprint("purchase_bp", __name__, url_prefix="/api/purchase")
 
 @bp.route('/', methods=['POST'])
 @login_required
-def purchase(db_session=None):
+def process_purchase(db_session=None):
     """
     Process a purchase request.
 
@@ -23,28 +23,8 @@ def purchase(db_session=None):
     return PurchaseService.process_purchase(data=data, db_session=db_session)
 
 
-@bp.route('/create-stripe-session', methods=['POST'])
+@bp.route('/status', methods=['GET'])
 @login_required
-def create_stripe_session():
-    data = request.json
-    return PurchaseService.process_payment(data)
-
-
-@bp.route('/stripe-session-status', methods=['POST'])
-@login_required
-def stripe_session_status():
-    session_id = request.args.get('session_id')
-    if not session_id:
-        return jsonify({"error": "Missing session_id parameter"}), 400
-    
-    try:
-        session = stripe.checkout.Session.retrieve(session_id)
-
-        return jsonify({
-            "status": session.status,
-            "customer_email": session.customer_details.email if session.customer_details else None
-        })
-    except stripe.error.StripeError as e:
-        return jsonify({"error": str(e)}), 400
-    except Exception as e:
-        return jsonify({"error": "Internal server error", "details": str(e)}), 500
+def get_stripe_session_status():
+    args = request.args
+    return PurchaseService.get_stripe_session_status(args=args)

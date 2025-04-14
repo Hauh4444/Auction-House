@@ -26,20 +26,22 @@ const SellerProfile = () => {
     const tempImage = useState("") // State to hold blank encoded image
 
     useEffect(() => {
-        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/user/listings/`, {
-            headers: { "Content-Type": "application/json" },
-        })
+        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/user/listings/`,
+            {
+                headers: { "Content-Type": "application/json" },
+            })
             .then((res) => setListings(res.data.listings))
-            .catch(err => console.log(err)); // Log errors if any
+            .catch(err => console.error(err)); // Log errors if any
     }, []);
 
     useEffect(() => {
         // Fetch categories from the backend API when the component mounts
-        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/categories/`, {
-            headers: { "Content-Type": "application/json" },
-        })
+        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/categories/`,
+            {
+                headers: { "Content-Type": "application/json" },
+            })
             .then((res) => setCategories(res.data.categories)) // Update state with fetched data
-            .catch(err => console.log(err)); // Log errors if any
+            .catch(err => console.error(err)); // Log errors if any
     }, []); // Empty dependency array ensures this effect runs only once
 
     const handleImageChange = (e) => {
@@ -66,7 +68,7 @@ const SellerProfile = () => {
                 withCredentials: true, // Ensure cookies are sent
             })
             .then(() => navigate("/user/seller-profile?nav=manage"))
-            .catch(err => console.log(err)); // Log errors if any
+            .catch(err => console.error(err)); // Log errors if any
     }
 
     return (

@@ -20,12 +20,13 @@ const PaymentInfo = () => {
 
     useEffect(() => {
         // Fetch listings from the API with the specified filters
-        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/user/${ filters.nav }/`, {
-            headers: { "Content-Type": "application/json" },
-            withCredentials: true,
-        })
+        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/user/${ filters.nav }/`,
+            {
+                headers: { "Content-Type": "application/json" },
+                withCredentials: true,
+            })
             .then((res) => setTransactions(res.data.transactions))
-            .catch(err => console.log(err)); // Log errors if any
+            .catch(err => console.error(err)); // Log errors if any
     }, [location.search]);
 
     return (

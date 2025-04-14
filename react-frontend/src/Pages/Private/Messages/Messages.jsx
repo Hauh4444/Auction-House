@@ -25,22 +25,24 @@ const Messages = () => {
     const messagesEndRef = useRef(null); // Reference to scroll to the bottom of the messages div
 
     useEffect(() => {
-        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/user/chats/`, {
-            headers: { "Content-Type": "application/json" },
-            withCredentials: true, // Ensures cookies are sent with requests
-        })
+        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/user/chats/`,
+            {
+                headers: { "Content-Type": "application/json" },
+                withCredentials: true, // Ensures cookies are sent with requests
+            })
             .then((res) => {
                 setChats(res.data.chats); // Set the chats state
                 setCurrentChat(res.data.chats[0]) // Set the first chat as the current chat
             })
-            .catch(err => console.log(err)); // Log errors if any
+            .catch(err => console.error(err)); // Log errors if any
     }, []);
 
     const getMessages = () => {
-        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/user/messages/${ currentChat.chat_id }/`, {
-            headers: { "Content-Type": "application/json" },
-            withCredentials: true, // Ensures cookies are sent with requests
-        })
+        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/user/messages/${ currentChat.chat_id }/`,
+            {
+                headers: { "Content-Type": "application/json" },
+                withCredentials: true, // Ensures cookies are sent with requests
+            })
             .then((res) => {
                 setMessages(res.data.messages); // Set the messages state
                 // Scroll to the bottom of the messages container after the messages are updated

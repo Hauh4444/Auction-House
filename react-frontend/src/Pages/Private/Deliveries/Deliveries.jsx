@@ -14,12 +14,13 @@ const Deliveries = () => {
     const [deliveries, setDeliveries] = useState([]);
 
     useEffect(() => {
-        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/user/deliveries/`, {
-            headers: { "Content-Type": "application/json" },
-            withCredentials: true, // Ensures cookies are sent with requests
-        })
+        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/user/deliveries/`,
+            {
+                headers: { "Content-Type": "application/json" },
+                withCredentials: true, // Ensures cookies are sent with requests
+            })
             .then((res) => setDeliveries(res.data.deliveries))
-            .catch(err => console.log(err)); // Log errors if any
+            .catch(err => console.error(err)); // Log errors if any
     }, []);
 
     return (

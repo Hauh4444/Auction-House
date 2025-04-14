@@ -89,7 +89,7 @@ const SiteSettings = () => {
             withCredentials: true,
         })
             .then(() => navigate("/admin/account"))
-            .catch(err => console.log(err));
+            .catch(err => console.error(err));
     };
 
     if (loading) return <div className="loading">Loading...</div>;

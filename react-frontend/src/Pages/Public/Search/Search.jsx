@@ -79,10 +79,11 @@ const Search = () => {
         }
 
         // Fetch listings from the API with the specified filters
-        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/listings/`, {
-            headers: { "Content-Type": "application/json" },
-            params: createSearchParams(filters), // Convert filters to query parameters
-        })
+        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/listings/`,
+            {
+                headers: { "Content-Type": "application/json" },
+                params: createSearchParams(filters), // Convert filters to query parameters
+            })
             .then((res) => setListings(res.data.listings)) // Set the fetched listings into state
             .catch(() => setListings([]));
     }, [location.search]);

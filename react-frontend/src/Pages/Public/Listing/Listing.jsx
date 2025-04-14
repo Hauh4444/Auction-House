@@ -46,14 +46,15 @@ const Listing = () => {
      * The effect runs every time `location.search` changes.
      */
     useEffect(() => {
-        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/listings/${ filters.key }/`, {
-            headers: { "Content-Type": "application/json" },
-        })
+        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/listings/${ filters.key }/`,
+            {
+                headers: { "Content-Type": "application/json" },
+            })
             .then((res) => {
                 setListing(res.data.listing)
                 getListingObjects(res.data.listing.listing_id)
             }) // Update state with fetched data
-            .catch(err => console.log(err)); // Log errors if any
+            .catch(err => console.error(err)); // Log errors if any
     }, [location.search]); // Call on update of URL filters
 
     /**
@@ -61,22 +62,24 @@ const Listing = () => {
      * The effect runs every time `location.search` changes.
      */
     const getListingObjects = (id) => {
-        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/reviews/`, {
-            headers: { "Content-Type": "application/json" },
-            params: {
-                listing_id: id, // Apply listing_id parameter
-                sort: "stars", // Sort by number of stars
-                order: "desc", // Order in descending order
-                start: 0, // Start from the first item
-                range: 3, // Limit to 3 items
-            },
-        })
+        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/reviews/`,
+            {
+                headers: { "Content-Type": "application/json" },
+                params: {
+                    listing_id: id, // Apply listing_id parameter
+                    sort: "stars", // Sort by number of stars
+                    order: "desc", // Order in descending order
+                    start: 0, // Start from the first item
+                    range: 3, // Limit to 3 items
+                },
+            })
             .then((res) => setReviews(res.data.reviews)) // Update state with fetched data
             .catch(() => setReviews([])); // Clear review state on error
 
-        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/models/listing/${ id }`, {
-            headers: { "Content-Type": "application/json" },
-        })
+        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/models/listing/${ id }`,
+            {
+                headers: { "Content-Type": "application/json" },
+            })
             .then((res) => setModel(res.data.model)) // Update state with fetched data
             .catch(() => setModel(null)); // Clear model state on error
     }

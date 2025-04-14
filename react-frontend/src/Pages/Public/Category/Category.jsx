@@ -56,41 +56,44 @@ const Category = () => {
 
     useEffect(() => {
         // API call to access the category data
-        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/categories/${ filters.category_id }/`, {
-            headers: { "Content-Type": "application/json" },
-        })
+        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/categories/${ filters.category_id }/`,
+            {
+                headers: { "Content-Type": "application/json" },
+            })
             .then((res) => setCategory(res.data.category)) // Update state with fetched data
-            .catch(err => console.log(err)); // Log errors if any
+            .catch(err => console.error(err)); // Log errors if any
     }, [location.search]);
 
     useEffect(() => {
         // Fetch bestsellers from the backend API
-        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/listings/`, {
-            headers: { "Content-Type": "application/json" },
-            params: {
-                category_id: filters.category_id, // Apply category filter
-                sort: "purchases", // Sort by number of purchases
-                order: "desc", // Order in descending order
-                start: 0, // Start from the first item
-                range: 8, // Limit to 8 items
-            }
-        })
+        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/listings/`,
+            {
+                headers: { "Content-Type": "application/json" },
+                params: {
+                    category_id: filters.category_id, // Apply category filter
+                    sort: "purchases", // Sort by number of purchases
+                    order: "desc", // Order in descending order
+                    start: 0, // Start from the first item
+                    range: 8, // Limit to 8 items
+                }
+            })
             .then((res) => setBestSellers(res.data.listings)) // Update state with fetched data
             .catch(() => setBestSellers([]));
     }, [location.search])
 
     useEffect(() => {
         // Fetch new listings from the backend API
-        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/listings/`, {
-            headers: { "Content-Type": "application/json" },
-            params: {
-                category_id: filters.category_id, // Filter by category ID
-                sort: "created_at", // Sort by creation date
-                order: "desc", // Order by descending (newest first)
-                start: 0, // Starting position
-                range: 8, // Number of listings to fetch
-            }
-        })
+        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/listings/`,
+            {
+                headers: { "Content-Type": "application/json" },
+                params: {
+                    category_id: filters.category_id, // Filter by category ID
+                    sort: "created_at", // Sort by creation date
+                    order: "desc", // Order by descending (newest first)
+                    start: 0, // Starting position
+                    range: 8, // Number of listings to fetch
+                }
+            })
             .then((res) => setNewListings(res.data.listings)) // Update state with fetched data
             .catch(() => setNewListings([]));
     }, [location.search]);
@@ -103,14 +106,15 @@ const Category = () => {
         }
 
         // Fetch listings from the backend API
-        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/listings/`, {
-            headers: { "Content-Type": "application/json" },
-            params: {
-                category_id: filters.category_id, // Filter by category ID
-                start: filters.start, // Starting position
-                range: filters.range, // Number of listings to fetch
-            }
-        })
+        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/listings/`,
+            {
+                headers: { "Content-Type": "application/json" },
+                params: {
+                    category_id: filters.category_id, // Filter by category ID
+                    start: filters.start, // Starting position
+                    range: filters.range, // Number of listings to fetch
+                }
+            })
             .then((res) => setListings(res.data.listings)) // Update state with fetched data
             .catch(() => setListings([]));
     }, [location.search]); // Call on update of URL filters

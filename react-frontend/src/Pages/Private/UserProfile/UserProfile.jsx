@@ -46,12 +46,13 @@ const UserProfile = () => {
 
     // Fetch profile data from the backend API
     useEffect(() => {
-        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/user/profile/`, {
-            headers: { "Content-Type": "application/json" },
-            withCredentials: true, // Ensures cookies are sent with requests
-        })
+        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/user/profile/`,
+            {
+                headers: { "Content-Type": "application/json" },
+                withCredentials: true, // Ensures cookies are sent with requests
+            })
             .then((res) => setProfile(res.data.profile)) // Set the user state
-            .catch(err => console.log(err)); // Log errors if any
+            .catch(err => console.error(err)); // Log errors if any
     }, []); 
 
     const handleImageChange = (e) => {
@@ -76,7 +77,7 @@ const UserProfile = () => {
                 withCredentials: true, // Ensure cookies are sent if needed
             })
             .then(() => { setEdit(false) }) // Turn edit mode off if no errors
-            .catch(err => console.log(err)); // Log errors if any
+            .catch(err => console.error(err)); // Log errors if any
     }
 
     return (

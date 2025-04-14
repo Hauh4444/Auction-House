@@ -5,15 +5,15 @@
 ### React Frontend
 
 1. Analytics & Reports
-2. Manage Users (Edit & Delete)
-3. Live Auction UI
+2. Manage Users (Edit & Delete Functionality)
+5. Live Auction UI
+4. System Logs (Functionality Neeeded)
+3. Manage Listings 
 
 ### Flask Server
 
 1. Logging
 2. Analytics & Reports 
-3. Payment API
-   1. Adjust functions to work together as opposed to having to submit multiple HTTP requests
 
 ### MySQL Database
 

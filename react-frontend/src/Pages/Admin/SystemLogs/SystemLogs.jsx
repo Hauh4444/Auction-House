@@ -17,10 +17,11 @@ const SystemLogs = () => {
     const logs = ["admin"];
 
     const handleSubmit = () => {
-        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/logs/${ currentLog }/`, {
-            headers: { "Content-Type": "application/json" },
-            withCredentials: true,
-        })
+        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/logs/${ currentLog }/`,
+            {
+                headers: { "Content-Type": "application/json" },
+                withCredentials: true,
+            })
             .then((res) => {
                 setLogData(res.data.log);
             })
