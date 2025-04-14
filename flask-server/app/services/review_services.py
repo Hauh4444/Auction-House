@@ -1,6 +1,10 @@
 from flask import jsonify, Response
+from flask_login import current_user
 
 from ..data_mappers import ReviewMapper
+from ..utils.logger import setup_logger
+
+review_logger = setup_logger("review", "logs/review.log")
 
 
 class ReviewService:
@@ -20,9 +24,11 @@ class ReviewService:
 
         if not reviews:
             response_data = {"error": "No reviews found"}
+            review_logger.error("Data " + args + " was invalid and submitted by user " + current_user.id + ". No reviews found.")
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
         response_data = {"message": "Reviews found", "reviews": reviews}
+        review_logger.info("Successfully got all reviews. " + reviews + ". User ID: " + current_user.id)
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
             
 
@@ -42,9 +48,11 @@ class ReviewService:
 
         if not review:
             response_data = {"error": "Review not found"}
+            review_logger.error("Data " + review_id + " was invalid and submitted by user " + current_user.id + ". Review not found.")
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
         response_data = {"message": "Review found", "review": review}
+        review_logger.info("Review " + review_id + " was found by user " + current_user.id + ". Data: " + review)
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
 
@@ -66,9 +74,11 @@ class ReviewService:
 
         if not review_id:
             response_data = {"error": "Error creating review"}
+            review_logger.error("Data " + data + " was invalid and submitted by user " + current_user.id + ". Failed to create review.")
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
 
         response_data = {"message": "Review created", "review_id": review_id}
+        review_logger.info("Review " + review_id + " was successfully created by user " + current_user.id)
         return Response(response=jsonify(response_data).get_data(), status=201, mimetype="application/json")
             
 
@@ -90,9 +100,11 @@ class ReviewService:
 
         if not updated_rows:
             response_data = {"error": "Review not found"}
+            review_logger.error("Data " + data + " was invalid and submitted by user " + current_user.id + ". No review found.")
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
         response_data = {"message": "Review updated", "updated_rows": updated_rows}
+        review_logger.info("Review with id " + review_id + " was successfully updated by user " + current_user.id + ". Contents: " + updated_rows)
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
 
@@ -114,8 +126,10 @@ class ReviewService:
 
         if not deleted_rows:
             response_data = {"error": "Review not found"}
+            review_logger.error("Data " + review_id + " was invalid and submitted by user " + current_user.id + ". No review found.")
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
         response_data = {"message": "Review deleted", "deleted_rows": deleted_rows}
+        review_logger.info("Review with id " + review_id + " was successfully deleted by user " + current_user.id + ". Contents: " + deleted_rows)
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 

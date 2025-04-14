@@ -1,6 +1,10 @@
 from flask import jsonify, Response, session
+from flask_login import current_user
 
 from ..data_mappers import UserMapper, ProfileMapper
+from ..utils.logger import setup_logger
+
+user_logger = setup_logger("user", "logs/user.log")
 
 
 class UserService:
@@ -23,9 +27,11 @@ class UserService:
 
         if not user:
             response_data = {"error": "User not found"}
+            user_logger.error(data + "was not found. Searched by " + current_user.id)
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
         response_data = {"message": "User found", "user": user}
+        user_logger.info("Successfully got user " + user + ". Searched by " + current_user.id)
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
 
@@ -49,9 +55,11 @@ class UserService:
 
         if not updated_rows:
             response_data = {"error": "User not found"}
+            user_logger.error(data + "was not found. Searched by " + current_user.id)
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
         response_data = {"message": "User updated", "updated_rows": updated_rows}
+        user_logger.info("Successfully updated user: " + updated_rows + ". Updated by " + current_user.id)
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
 
@@ -75,6 +83,7 @@ class UserService:
 
         if not deleted_rows:
             response_data = {"error": "Profile not found"}
+            user_logger.error(data + "was not found. Searched by " + current_user.id)
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
         if session.get("role") in ["staff", "admin"]:
@@ -84,7 +93,9 @@ class UserService:
 
         if not deleted_rows:
             response_data = {"error": "User not found"}
+            user_logger.error(data + "was not found. Searched by " + current_user.id)
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
         response_data = {"message": "User and Profile deleted", "deleted_rows": deleted_rows}
+        user_logger.info("Profile and user were successfully deleted by " + current_user.id + ". Contents: " + deleted_rows)
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")

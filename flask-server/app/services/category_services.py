@@ -1,4 +1,5 @@
 from flask import jsonify, Response
+from flask_login import current_user
 
 from ..data_mappers import CategoryMapper
 from ..utils.logger import setup_logger
@@ -23,10 +24,11 @@ class CategoryService:
 
         if not categories:
             response_data = {"error": "No categories found"}
-            category_logger.error("Failed to pull all categories")
+            category_logger.error("Failed to pull all categories. User ID: " + current_user.id)
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
         response_data = {"message": "Categories found", "categories": categories}
+        category_logger.info("Successfully pulled all categories. User ID: " + current_user.id)
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
     @staticmethod
@@ -46,10 +48,11 @@ class CategoryService:
 
         if not category:
             response_data = {"error": "Category not found"}
-            category_logger.error("Category " + category + " not found")
+            category_logger.error("Category " + category_id + " not found. User ID: " + current_user.id)
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
         response_data = {"message": "Category found", "category": category}
+        category_logger.info("Category " + category + " found by user: " + current_user.id)
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
     @staticmethod
@@ -69,11 +72,11 @@ class CategoryService:
 
         if not category_id:
             response_data = {"error": "Error creating category"}
-            category_logger.error("Failed to create a category")
+            category_logger.error("Failed to create a category with the given data: " + data)
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
 
         response_data = {"message": "Category created", "category_id": category_id}
-        category_logger.info("Category with id " + category_id + " created successfully")
+        category_logger.info("Category with id " + category_id + " created successfully by user: " + current_user.id)
         return Response(response=jsonify(response_data).get_data(), status=201, mimetype="application/json")
 
     @staticmethod
@@ -94,11 +97,11 @@ class CategoryService:
 
         if not updated_rows:
             response_data = {"error": "Category not found"}
-            category_logger.error("Failed to update category " + category_id)
+            category_logger.error("Failed to update category with the following data: " + data)
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
         response_data = {"message": "Category updated", "updated_rows": updated_rows}
-        category_logger.info("Successfully updated category " + category_id)
+        category_logger.info("Successfully updated category " + category_id + " by user: " +current_user.id)
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
     @staticmethod
@@ -122,5 +125,5 @@ class CategoryService:
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
         response_data = {"message": "Category deleted", "deleted_rows": deleted_rows}
-        category_logger.info("Category " + category_id + " deleted successfully")
+        category_logger.info("Category " + category_id + " deleted successfully by user: " + current_user.id)
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")

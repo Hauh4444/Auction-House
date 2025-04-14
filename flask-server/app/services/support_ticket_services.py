@@ -1,6 +1,10 @@
 from flask import jsonify, Response, session
+from flask_login import current_user
 
 from ..data_mappers import SupportTicketMapper, TicketMessageMapper
+from ..utils.logger import setup_logger
+
+support_ticket_logger = setup_logger("support_ticket", "logs/support_ticket.log")
 
 
 class SupportTicketService:
@@ -22,9 +26,11 @@ class SupportTicketService:
 
         if not support_tickets:
             response_data = {"error": "No support tickets found"}
+            support_ticket_logger.error("No support tickets found by user " + current_user.id)
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype='application/json')
 
         response_data = {"message": "Support tickets retrieved", "support_tickets": support_tickets}
+        support_ticket_logger.info("Support tickets " + support_tickets + " retrieved by " + current_user.id)
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype='application/json')
 
 
@@ -44,9 +50,11 @@ class SupportTicketService:
 
         if not ticket:
             response_data = {"error": "Support ticket not found"}
+            support_ticket_logger.error("Supoort ticket " + ticket_id + " not found.  User: " + current_user.id)
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype='application/json')
 
         response_data = {"message": "Support ticket retrieved", "ticket": ticket}
+        support_ticket_logger.info("Support ticket " + ticket + " retrieved by " + current_user.id)
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype='application/json')
 
 
@@ -73,6 +81,7 @@ class SupportTicketService:
 
         if not ticket_id:
             response_data = {"error": "Error creating support ticket"}
+            support_ticket_logger.error("Error creating support ticket. Data: " + data + " submitted by " + current_user.id)
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype='application/json')
 
         ticket_message_data = {
@@ -84,9 +93,12 @@ class SupportTicketService:
 
         if not ticket_message_id:
             response_data = {"error": "Error creating support ticket message"}
+            support_ticket_logger.error("Error creating support ticket message. Data: " + data + " submitted by " + current_user.id)
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype='application/json')
 
         response_data = {"message": "Support ticket and message created", "ticket_id": ticket_id, "ticket_message_id": ticket_message_id}
+        support_ticket_logger.info("Successfully created support ticket and message. Ticket ID: " + ticket_id + ". Message ID: " 
+                                   + ticket_message_id + ". User ID: " + current_user.id)
         return Response(response=jsonify(response_data).get_data(), status=201, mimetype='application/json')
 
 
@@ -107,9 +119,11 @@ class SupportTicketService:
 
         if not updated_rows:
             response_data = {"error": "Support ticket not found or update failed"}
+            support_ticket_logger.error("Error updating support ticket. Data: " + data + " submitted by " + current_user.id)
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
         response_data = {"message": "Support ticket updated", "updated_rows": updated_rows}
+        support_ticket_logger.info("Successfully updated ticket " + ticket_id + ". Updated content: " + updated_rows + ". User ID: " + current_user.id)
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
 
@@ -129,7 +143,9 @@ class SupportTicketService:
 
         if not deleted_rows:
             response_data = {"error": "Support ticket not found"}
+            support_ticket_logger.error("Error deleting support ticket. Ticket not found. Submitted by " + current_user.id)
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
         response_data = {"message": "Support ticket deleted", "deleted_rows": deleted_rows}
+        support_ticket_logger.info("Successfully deleted ticket " + ticket_id + ". Deleted content: " + deleted_rows + ". User ID: " + current_user.id)
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")

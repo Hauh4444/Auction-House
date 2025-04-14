@@ -1,8 +1,12 @@
 from flask import jsonify, session, Response
+from flask_login import current_user
 
 from datetime import datetime, timedelta
 
 from ..data_mappers import SessionMapper
+from ..utils.logger import setup_logger
+
+session_logger = setup_logger("session", "logs/session.log")
 
 
 class SessionService:
@@ -27,7 +31,9 @@ class SessionService:
 
         if not session_id:
             response_data = {"error": "Error creating session"}
+            session_logger.error("Failed to create a session for " + current_user.id + ".")
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
 
         response_data = {"message": "Session created", "session_id": session_id}
+        session_logger.info("Successfully created session for " + current_user.id + " with ID: " + session_id)
         return Response(response=jsonify(response_data).get_data(), status=201, mimetype="application/json")

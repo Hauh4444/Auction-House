@@ -1,4 +1,5 @@
 from flask import jsonify, Response
+from flask_login import current_user
 
 import socketio
 
@@ -25,7 +26,7 @@ class BidService:
         # Validation to check if required fields are present
         if not data.get("user") or not data.get("amount"):
             data = {"error": "User and amount are required"}
-            bid_logger.error("User " + data.get("user") + " failed to post a bid")
+            bid_logger.error("User " + current_user.id + " failed to post a bid")
             return Response(response=jsonify(data).get_data(), status=400, mimetype='application/json')
 
         # Save the bid using the BidMapper to interact with the DB
@@ -38,7 +39,7 @@ class BidService:
 
         # Return the success message with the bid ID and data
         data = {"message": "Bid posted", "bid_id": bid_id, "bid": data}
-        bid_logger.info("User " + data.get("user") + " posted a bid")
+        bid_logger.info("User " + current_user.id + " posted a bid of " + data)
         return Response(response=jsonify(data).get_data(), status=201, mimetype='application/json')
 
 
@@ -61,10 +62,12 @@ class BidService:
         if bid:
             # If found, return the bid data in a Response object
             data = {"message": "Bid found", "bid": bid}
+            bid_logger.info("Bid " + bid_id + " successfully found by user " + current_user.id)
             return Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')
 
         # If the bid is not found, return an error message
         data = {"error": "Bid not found"}
+        bid_logger.error("Bid " + bid_id + " wasn't found. Searched by user " + current_user.id)
         return Response(response=jsonify(data).get_data(), status=404, mimetype='application/json')
 
 
@@ -84,4 +87,5 @@ class BidService:
 
         # Return the list of bids in the response
         data = {"message": "Bids found", "bids": bids}
+        bid_logger.info("Bids found by user " + current_user.id)
         return Response(response=jsonify(data).get_data(), status=200, mimetype='application/json')

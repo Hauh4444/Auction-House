@@ -43,6 +43,7 @@ class PurchaseService:
             "total_amount": total_amount,
             "profile": profile,
         }
+        purchase_logger.info("Purchase of " + data + " was successfully placed by user " + current_user.id)
         return PurchaseService.create_order(data=data, db_session=db_session)
 
     @staticmethod
@@ -65,9 +66,11 @@ class PurchaseService:
         order_id = OrderMapper.create_order(data=order_data, db_session=db_session)
         if not order_id:
             response_data = {"error": "Error creating order"}
+            purchase_logger.error("Data " + data + " was invalid and submitted by user " + current_user.id + ". Error creating order.")
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
 
         data.update(order_id=order_id)
+        purchase_logger.info("Order " + order_id + " was successfully created by user " + current_user.id)
         return PurchaseService.create_transaction(data=data, db_session=db_session)
 
     @staticmethod
@@ -96,9 +99,11 @@ class PurchaseService:
         transaction_id = TransactionMapper.create_transaction(data=transaction_data, db_session=db_session)
         if not transaction_id:
             response_data = {"error": "Error creating transaction"}
+            purchase_logger.error("Transaction data " + data + " was invalid and submitted by user " + current_user.id)
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
 
         data.update(transaction_id=transaction_id)
+        purchase_logger.info("Transaction " + transaction_id + " was successfully placed by user " + current_user.id)
         return PurchaseService.handle_items(data=data, db_session=db_session)
 
     @staticmethod
@@ -117,6 +122,7 @@ class PurchaseService:
         for listing in data.get("listings"):
             if listing.get("status") != 'active':
                 response_data = {"error": "Listing is not available for purchase"}
+                purchase_logger.error(data + " was invalid. Listing is not available for purchase. Submitted by user " + current_user.id)
                 return Response(response=jsonify(response_data).get_data(), status=400, mimetype="application/json")
             # TODO: sold functionality requires new data/logic of total items available for purchase
             # listing.update(status="sold")
@@ -128,6 +134,7 @@ class PurchaseService:
                                                         db_session=db_session)
             if not updated_rows:
                 response_data = {"error": "Error updating listing"}
+                purchase_logger.error(data + " was invalid. Error updating listing. Submitted by user " + current_user.id)
                 return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
 
             # Create order item
@@ -141,6 +148,7 @@ class PurchaseService:
             order_item_id = OrderMapper.create_order_item(data=order_item_data, db_session=db_session)
             if not order_item_id:
                 response_data = {"error": "Error creating order item"}
+                purchase_logger.error(data + " was invalid. Error creating order item. Submitted by user " + current_user.id)
                 return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
 
             # Create delivery for order item
@@ -159,7 +167,10 @@ class PurchaseService:
             delivery_id = DeliveryMapper.create_delivery(data=delivery_data, db_session=db_session)
             if not delivery_id:
                 response_data = {"error": "Error creating delivery"}
+                purchase_logger.error(data + " was invalid. Error creating delivery. Submitted by user " + current_user.id)
                 return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
 
         response_data = {"message": "Purchase successful"}
+        purchase_logger.info("Purchase successful! Listing: " + listing_data + " Order ID:" + order_item_id + ". Delivery ID: " 
+                             + delivery_id + ". Created by user " + current_user.id)
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")

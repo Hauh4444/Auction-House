@@ -1,6 +1,10 @@
 from flask import jsonify, Response, session
+from flask_login import current_user
 
 from ..data_mappers import TicketMessageMapper, SupportTicketMapper
+from ..utils.logger import setup_logger
+
+ticket_message_logger = setup_logger("ticket_message", "logs/ticket_message.log")
 
 
 class TicketMessageService:
@@ -20,9 +24,11 @@ class TicketMessageService:
 
         if not messages:
             response_data = {"error": "No messages found for this ticket"}
+            ticket_message_logger.error("No messages found for ticket " + ticket_id + ". Submitted by user " + current_user.id)
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype='application/json')
 
         response_data = {"message": "Messages found", "ticket_messages": messages}
+        ticket_message_logger.info("Message found. Contents: " + messages + "n/ User: "+ current_user.id)
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype='application/json')
 
 
@@ -42,15 +48,18 @@ class TicketMessageService:
 
         if not message_id:
             response_data = {"error": "Error creating message"}
+            ticket_message_logger.error("Error creating message with data " + data + ". Submitted by user " + current_user.id)
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype='application/json')
 
         updated_rows = SupportTicketMapper.update_ticket_timestamp(ticket_id=data.get("ticket_id"), db_session=db_session)
 
         if not updated_rows:
             response_data = {"error": "Error updating ticket timestamp"}
+            ticket_message_logger.error("Error updating ticket timestamp with data " + data + ". Submitted by user " + current_user.id)
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype='application/json')
 
         response_data = {"message": "Message created", "message_id": message_id}
+        ticket_message_logger.info("Message created with id " + message_id + ". Created by: "+ current_user.id)
         return Response(response=jsonify(response_data).get_data(), status=201, mimetype='application/json')
 
 
@@ -71,9 +80,11 @@ class TicketMessageService:
 
         if not updated_rows:
             response_data = {"error": "Message not found or no changes made"}
+            ticket_message_logger.error("Error updating message with data " + updates + ". Submitted by user " + current_user.id)
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype='application/json')
 
         response_data = {"message": "Message updated", "updated_rows": updated_rows}
+        ticket_message_logger.info("Message updated with id " + message_id + ". Contents: " + updated_rows + "n/ Updated by: "+ current_user.id)
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype='application/json')
 
 
@@ -93,7 +104,9 @@ class TicketMessageService:
 
         if not deleted_rows:
             response_data = {"error": "Message not found"}
+            ticket_message_logger.error("Error deleting message " + message_id + ". Submitted by user " + current_user.id)
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype='application/json')
 
         response_data = {"message": "Message deleted", "deleted_rows": deleted_rows}
+        ticket_message_logger.info("Message deleted with id " + message_id + ". Contents: " + deleted_rows + "n/ Deleted by: "+ current_user.id)
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype='application/json')

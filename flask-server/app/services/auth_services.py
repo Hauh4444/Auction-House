@@ -25,11 +25,11 @@ class AuthService:
         """
         if not current_user.is_authenticated:
             response_data = {"error": "Error user is not authenticated", "authenticated": False}
-            auth_logger.error("User " + current_user + " is not authenticated")
+            auth_logger.error("User " + current_user.id + " is not authenticated")
             return Response(response=jsonify(response_data).get_data(), status=401, mimetype="application/json")
 
         response_data = {"message": "User is authenticated", "authenticated": True, "id": current_user.id, "role": current_user.role}
-        auth_logger.info("User " + current_user + " is authenticated")
+        auth_logger.info("User " + current_user.id + " is authenticated")
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
 
@@ -48,6 +48,7 @@ class AuthService:
         """
         if not data.get("username") or not data.get("password") or not data.get("email"):
             response_data = {"error": "Username, password, and email are required"}
+            auth_logger.error("Error: Username and password required. Attempted creation by " + current_user.id)
             return Response(response=jsonify(response_data).get_data(), status=400, mimetype="application/json")
 
         user_data = {"username": data.get("username"), "password_hash": hash_password(password=data.get("password")), "email": data.get("email")}
@@ -55,6 +56,7 @@ class AuthService:
 
         if not user_id:
             response_data = {"error": "Error creating user"}
+            auth_logger.error("Error creating user. Attempted creation by " + current_user.id)
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
 
         profile_data = {"user_id": user_id, "first_name": data.get("first_name"), "last_name": data.get("last_name")}
@@ -62,9 +64,11 @@ class AuthService:
 
         if not profile_id:
             response_data = {"error": "Error creating profile"}
+            auth_logger.error("Error creating profile. Attempted creation by " + current_user.id)
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
 
         response_data = {"message": "User registered successfully", "user_id": user_id, "profile_id": profile_id}
+        auth_logger.info("Successfully registered user with id " + user_id + ". Registered by " + current_user.id)
         return Response(response=jsonify(response_data).get_data(), status=201, mimetype="application/json")
 
 
@@ -82,13 +86,14 @@ class AuthService:
                 Returns 400 if username or password is missing, 422 if credentials are invalid.
         """
         if not data.get("username") or not data.get("password"):
+            auth_logger.error("Error: Username and password required. Input data: " + data)
             return jsonify({"error": "Username and password are required"}), 400
 
         user = AuthMapper.get_user_by_username(data.get("username"), db_session)
 
         if not user or not user.password_hash == hash_password(data.get("password")):
             response_data = {"error": "Invalid username or password"}
-            auth_logger.error("User " + login_user + " failed login attempt")
+            auth_logger.error("User failed to login. Data: " + data)
             return Response(response=jsonify(response_data).get_data(), status=422, mimetype="application/json")
 
         session.update(user_id=user.id, role=user.role)
@@ -143,20 +148,24 @@ class AuthService:
         profile = ProfileMapper.get_profile(user_id=session.get("user_id"), db_session=db_session)
         if not profile:
             response_data = {"error": "Profile not found"}
+            auth_logger.error("Error: Profile not found. Current user id: " + current_user.id)
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
         user = UserMapper.get_user(user_id=session.get("user_id"), db_session=db_session)
         if not user:
             response_data = {"error": "User not found"}
+            auth_logger.error("Error: User not found. Current user id: " + current_user.id)
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
         # Use EmailService to send the email
         mail_response = EmailService.send_email(subject, [user.get("email")], body)
         if not mail_response:
             response_data = {"error": "HTTP error sending email"}
+            auth_logger.error("Error: HTTP error sending email")
             return Response(response=jsonify(response_data).get_data(), status=400, mimetype="application/json")
 
         response_data = {"message": "Password reset email sent"}
+        auth_logger.info("Successfully sent password reset email to " + current_user.id)
         return Response(response=jsonify(response_data).get_data(), status=202, mimetype="application/json")
 
 
@@ -188,6 +197,7 @@ class AuthService:
 
         if not user:
             response_data = {"error": "User not found"}
+            auth_logger.error("Error: User not found. Current user id: " + current_user.id)
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
         # Update the user's password
@@ -198,7 +208,9 @@ class AuthService:
 
         if not updated_rows:
             response_data = {"error": "User not found"}
+            auth_logger.error("Error: User not found. Current user id: " + current_user.id)
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
         response_data = {"message": "Password has been reset"}
+        auth_logger.info("Password has been reset by " + current_user.id)
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")

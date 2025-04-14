@@ -1,4 +1,5 @@
 from flask import jsonify, Response, session
+from flask_login import current_user
 
 from ..data_mappers import ListMapper, ListingMapper
 from ..utils.logger import setup_logger
@@ -22,11 +23,11 @@ class ListService:
 
         if not lists:
             response_data = {"error": "Lists not found"}
-            list_logger.error("All lists not found!")
+            list_logger.error("All lists not found! User ID: " + current_user.id)
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype='application/json')
 
         response_data = {"message": "Lists found", "lists": lists}
-        list_logger.info("Lists found!")
+        list_logger.info("Lists found by user: " + current_user.id)
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype='application/json')
 
 
@@ -46,14 +47,14 @@ class ListService:
 
         if not list_items:
             response_data = {"error": "List items not found"}
-            list_logger.error("List item " + list_items + " was not found")
+            list_logger.error("List item with id " + list_id + " was not found. User: " + current_user.id)
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype='application/json')
 
         for i in range(len(list_items)):
             list_items[i] = ListingMapper.get_listing_by_id(listing_id=list_items[i].get("listing_id"), db_session=db_session)
 
         response_data = {"message": "List items found", "list_items": list_items}
-        list_logger.info("List item " + list_items + " was not found")
+        list_logger.info("List item with id " + list_id + " not found. User: " + current_user.id)
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype='application/json')
 
 
@@ -74,11 +75,11 @@ class ListService:
 
         if not list_id:
             response_data = {"error": "Error creating list"}
-            list_logger.error("Error creating list " + list_id + " by user " + session.get("user_id"))
+            list_logger.error("Error creating list using data " + data + " by user " + current_user.id)
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype='application/json')
 
         response_data = {"message": "List created", "list_id": list_id}
-        list_logger.info("Successfully created list " + list_id + " by user " + session.get("user_id"))
+        list_logger.info("Successfully created list " + list_id + " by user " + current_user.id)
         return Response(response=jsonify(response_data).get_data(), status=201, mimetype='application/json')
 
 
@@ -107,11 +108,11 @@ class ListService:
 
         if not list_item_id:
             response_data = {"error": "Error creating list item"}
-            list_logger.error("Error creating list item by user " + session.get("user_id"))
+            list_logger.error("Error creating list item by user " + current_user.id)
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype='application/json')
 
         response_data = {"message": "List item created", "list_item_id": list_item_id}
-        list_logger.info("Successfully created list item " + list_item_id + " by user " + session.get("user_id"))
+        list_logger.info("Successfully created list item " + list_item_id + " by user " + current_user.id)
         return Response(response=jsonify(response_data).get_data(), status=201, mimetype='application/json')
 
 
@@ -133,7 +134,7 @@ class ListService:
 
         if current_list_items == updated_list_items and not data.get("title"):
             response_data = {"error": "Error updating list"}
-            list_logger.error("Error updating list " + current_list_items)
+            list_logger.error("Error updating list with data: " + data + "\nUser: " + current_user.id)
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
 
         if current_list_items != updated_list_items:
@@ -143,7 +144,7 @@ class ListService:
 
                 if not deleted_rows:
                     response_data = {"error": "List item not found"}
-                    list_logger.error("Error: List item " + list_id + " not found")
+                    list_logger.error("Error: List item " + list_id + " not found by user: " + current_user.id)
                     return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
             new_list_items = updated_list_items - current_list_items
@@ -152,10 +153,11 @@ class ListService:
 
                 if not created_rows:
                     response_data = {"error": "Error creating list item"}
-                    list_logger.error("Error creating list item")
+                    list_logger.error("Error creating list item using data: " + data + "\nUser: " + current_user.id)
                     return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
 
             response_data = {"message": "List items updated"}
+            list_logger.info("List successfully updated: " + updated_rows + "\nUser: " + current_user.id)
             return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
         else:
@@ -167,7 +169,7 @@ class ListService:
                 return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
             response_data = {"message": "List updated", "updated_rows": updated_rows}
-            list_logger.info("List successfully updated: " + updated_rows)
+            list_logger.info("List successfully updated: " + updated_rows + "\nUser: " + current_user.id)
             return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
 
@@ -187,9 +189,9 @@ class ListService:
 
         if not deleted_rows:
             response_data = {"error": "List not found"}
-            list_logger.error("List id " + list_id + " not found")
+            list_logger.error("List id " + list_id + " not found by user: " + current_user.id)
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
         response_data = {"message": "List deleted", "deleted_rows": deleted_rows}
-        list_logger.info("List successfully deleted: " + deleted_rows)
+        list_logger.info("List successfully deleted " + deleted_rows + " by user: " + current_user.id)
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
