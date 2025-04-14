@@ -1,8 +1,12 @@
 from flask import Response, jsonify, session
+from flask_login import current_user
 from datetime import date, datetime, timedelta
 
 from ..services import ProfileService
 from ..data_mappers import OrderMapper, TransactionMapper, DeliveryMapper, ListingMapper
+from ..utils.logger import setup_logger
+
+purchase_logger = setup_logger("purchase", "logs/purchase.log")
 
 
 class PurchaseService:
@@ -23,12 +27,14 @@ class PurchaseService:
         user_id, listings, total_amount = session.get("user_id"), data.get('listings'), data.get("total_amount")
         if not listings or not total_amount:
             response_data = {"error": "Required data not provided"}
+            purchase_logger.error("Data " + data + " was invalid and submitted by user " + current_user.id)
             return Response(response=jsonify(response_data).get_data(), status=400, mimetype="application/json")
 
         # Retrieve the user's profile
         profile = ProfileService.get_profile(db_session=db_session).json.get("profile")
         if not profile:
             response_data = {"error": "Profile not found"}
+            purchase_logger.error("Data " + data + " was invalid and submitted by user " + current_user.id + ". Profile not found")
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
         data = {

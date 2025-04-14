@@ -21,10 +21,10 @@ class ChatService:
         chats = ChatMapper.get_chats_by_user_id(user_id=session.get("user_id"), db_session=db_session)
 
         if not chats:
-            chat_logger.error("No chats found for user " + user_id)
+            chat_logger.error("No chats found for user " + session.get("user_id"))
             return Response(response=jsonify({"error": "No chats found"}).get_data(), status=404, mimetype='application/json')
 
-        chat_logger.info("Chats for user " + user_id + " retrieved successfully.")
+        chat_logger.info("Chats for user " + session.get("user_id") + " retrieved successfully.")
         return Response(response=jsonify({"message": "Chats retrieved", "chats": chats}).get_data(), status=200, mimetype='application/json')
 
 

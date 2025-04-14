@@ -1,6 +1,9 @@
 from flask import jsonify, Response, session
 
 from ..data_mappers import ListingMapper
+from ..utils.logger import setup_logger
+
+listings_logger = setup_logger("listings", "logs/listings.log")
 
 
 class ListingService:
@@ -20,9 +23,11 @@ class ListingService:
 
         if not listings:
             response_data = {"error": "No listings found"}
+            listings_logger.error("Error: No listings found.")
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
         response_data = {"message": "Listings found", "listings": listings}
+        listings_logger.info("Listings found by user " + session.get("user_id") + " and contains: " + listings)
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
         
 
@@ -42,9 +47,11 @@ class ListingService:
 
         if not listing:
             response_data = {"error": "Listing not found"}
+            listings_logger.error("Listing not found")
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
         response_data = {"message": "Listing found", "listing": listing}
+        listings_logger.info("Listing found by user " + session.get("user_id") + " and contains: " + listing)
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
 
@@ -68,9 +75,11 @@ class ListingService:
 
         if not listing_id:
             response_data = {"error": "Error creating listing"}
+            listings_logger.error("Error creating listing")
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
 
         response_data = {"message": "Listing created", "listing_id": listing_id}
+        listings_logger.info("Listing created by " + session.get("user_id") + ". Listing ID: " + listing_id)
         return Response(response=jsonify(response_data).get_data(), status=201, mimetype="application/json")
         
 
@@ -91,9 +100,11 @@ class ListingService:
 
         if not updated_rows:
             response_data = {"error": "Listing not found"}
+            listings_logger.error("Failed to update listing. Listing not found")
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
         response_data = {"message": "Listing updated", "updated_rows": updated_rows}
+        listings_logger.info("Listing updated by " + session.get("user_id") + ". Updated data: " + updated_rows)
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
 
@@ -114,8 +125,10 @@ class ListingService:
 
         if not deleted_rows:
             response_data = {"message": "Listing not found"}
+            listings_logger.error("Error deleting listing. Listing not found")
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
         response_data = {"message": "Listing deleted", "deleted_rows": deleted_rows}
+        listings_logger.info("Listing deleted by " + session.get("user_id") + ". Deleted data: " + deleted_rows)
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 

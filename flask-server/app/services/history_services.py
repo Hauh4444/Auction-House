@@ -26,9 +26,11 @@ class HistoryService:
 
         if not orders:
             response_data = {"error": "Orders not found"}
+            history_logger.error("Failed to pull orders")
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype='application/json')
 
         response_data = {"message": "Orders found", "orders": orders}
+        history_logger.info("Orders pulled successfully!")
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype='application/json')
 
 
@@ -51,9 +53,11 @@ class HistoryService:
 
         if not listings:
             response_data = {"error": "Listings not found"}
+            history_logger.error("Failed to pull listings")
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype='application/json')
 
         response_data = {"message": "Listings found", "listings": listings}
+        history_logger.info("Listings pulled successfully!")
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype='application/json')
 
 
@@ -76,9 +80,11 @@ class HistoryService:
 
         if not transactions:
             response_data = {"error": "Transactions not found"}
+            history_logger.error("Transactions not found.")
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype='application/json')
 
         response_data = {"message": "Transactions found", "transactions": transactions}
+        history_logger.info("Successfully pulled transactions!")
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype='application/json')
 
 
@@ -101,9 +107,11 @@ class HistoryService:
 
         if not deliveries:
             response_data = {"error": "Deliveries not found"}
+            history_logger.error("Failed to pull deliveries")
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype='application/json')
 
         response_data = {"message": "Deliveries found", "deliveries": deliveries}
+        history_logger.info("Deliveries pulled successfully!")
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype='application/json')
 
 
@@ -126,9 +134,11 @@ class HistoryService:
 
         if not tickets:
             response_data = {"error": "Support tickets not found"}
+            history_logger.error("Failed to pull support tickets")
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype='application/json')
 
         response_data = {"message": "Support tickets found", "support_tickets": tickets}
+        history_logger.info("Successfully pulled support tickets!")
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype='application/json')
 
 
@@ -151,7 +161,9 @@ class HistoryService:
 
         if not reviews:
             response_data = {"error": "Reviews not found"}
+            history_logger.error("Failed to pull reviews. User: " + session.get("user_id"))
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype='application/json')
 
         response_data = {"message": "Reviews found", "reviews": reviews}
+        history_logger.info("Reviews pulled successfully! User: " + session.get("user_id"))
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype='application/json')
