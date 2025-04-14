@@ -39,6 +39,10 @@ def create_app():
     config_class = os.getenv("FLASK_CONFIG")
     app.config.from_object(config_class)
 
+    #THIS could be wrong suppose to be for login anayltics - dan
+    app.config['SECRET_KEY'] = 'your_secret_key_here'  # Set your secret key for session management
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///auction_house.db'  # Update with your DB URI
+
     # Initialize extensions
     limiter.init_app(app)
     login_manager.init_app(app)
@@ -52,6 +56,10 @@ def create_app():
 
 
     # Register routes
+    from app.routes import auth_routes, analytics_routes
+    app.register_blueprint(auth_routes.bp)
+    app.register_blueprint(analytics_routes.bp)
+    
     for _, module_name, _ in pkgutil.iter_modules(routes.__path__):
         module = importlib.import_module(f".{module_name}", package="app.routes")
         if hasattr(module, "bp"):
