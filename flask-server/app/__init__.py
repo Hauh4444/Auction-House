@@ -2,7 +2,7 @@ from flask import Flask
 from flask_cors import CORS
 from dotenv import load_dotenv
 import os, pkgutil, importlib
-import posthog
+from app.routes.analytics_routes import analytics_bp
 
 
 from .utils.limiter import limiter
@@ -47,12 +47,9 @@ def create_app():
     scheduler.start()
     CORS(app, supports_credentials=True, resources={r"/api/*": {"origins": "http://localhost:5173"}})
 
-    # PostHog for Analytics
-    posthog.project_api_key = 'phc_CQazMsvnORt3xmDYd9XrWnx6NtGZH9qSLKggFoe51LC'  # PostHog API KEY
-    posthog.host = 'https://us.posthog.com/project/145970'  # Or your self-hosted instance URL May 
-
-    # Register analytics routes
+    # Analytics BP
     app.register_blueprint(analytics_bp)
+
 
     # Register routes
     for _, module_name, _ in pkgutil.iter_modules(routes.__path__):
