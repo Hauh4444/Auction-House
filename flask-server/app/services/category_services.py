@@ -1,6 +1,9 @@
 from flask import jsonify, Response
 
 from ..data_mappers import CategoryMapper
+from ..utils.logger import setup_logger
+
+category_logger = setup_logger("category", "logs/category.log")
 
 
 class CategoryService:
@@ -20,6 +23,7 @@ class CategoryService:
 
         if not categories:
             response_data = {"error": "No categories found"}
+            category_logger.error("Failed to pull all categories")
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
         response_data = {"message": "Categories found", "categories": categories}
@@ -42,6 +46,7 @@ class CategoryService:
 
         if not category:
             response_data = {"error": "Category not found"}
+            category_logger.error("Category " + category + " not found")
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
         response_data = {"message": "Category found", "category": category}
@@ -64,9 +69,11 @@ class CategoryService:
 
         if not category_id:
             response_data = {"error": "Error creating category"}
+            category_logger.error("Failed to create a category")
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
 
         response_data = {"message": "Category created", "category_id": category_id}
+        category_logger.info("Category with id " + category_id + " created successfully")
         return Response(response=jsonify(response_data).get_data(), status=201, mimetype="application/json")
 
     @staticmethod
@@ -87,9 +94,11 @@ class CategoryService:
 
         if not updated_rows:
             response_data = {"error": "Category not found"}
+            category_logger.error("Failed to update category " + category_id)
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
         response_data = {"message": "Category updated", "updated_rows": updated_rows}
+        category_logger.info("Successfully updated category " + category_id)
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
     @staticmethod
@@ -109,7 +118,9 @@ class CategoryService:
 
         if not deleted_rows:
             response_data = {"error": "Category not found"}
+            category_logger.error("Could not delete category. Category not found.")
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
         response_data = {"message": "Category deleted", "deleted_rows": deleted_rows}
+        category_logger.info("Category " + category_id + " deleted successfully")
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")

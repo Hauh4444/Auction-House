@@ -1,6 +1,9 @@
 from flask import jsonify, Response, session
 
 from ..data_mappers import OrderMapper, ListingMapper, TransactionMapper, DeliveryMapper, SupportTicketMapper, ReviewMapper
+from ..utils.logger import setup_logger
+
+history_logger = setup_logger("history", "logs/history.log")
 
 
 class HistoryService:

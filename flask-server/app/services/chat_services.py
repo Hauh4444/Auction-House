@@ -1,6 +1,9 @@
 from flask import jsonify, Response, session
 
 from ..data_mappers import ChatMapper, ChatMessageMapper
+from ..utils.logger import setup_logger
+
+chat_logger = setup_logger("chat", "logs/chat.log")
 
 
 class ChatService:
@@ -18,8 +21,10 @@ class ChatService:
         chats = ChatMapper.get_chats_by_user_id(user_id=session.get("user_id"), db_session=db_session)
 
         if not chats:
+            chat_logger.error("No chats found for user " + user_id)
             return Response(response=jsonify({"error": "No chats found"}).get_data(), status=404, mimetype='application/json')
 
+        chat_logger.info("Chats for user " + user_id + " retrieved successfully.")
         return Response(response=jsonify({"message": "Chats retrieved", "chats": chats}).get_data(), status=200, mimetype='application/json')
 
 
@@ -38,8 +43,10 @@ class ChatService:
         chat = ChatMapper.get_chat_by_id(chat_id=chat_id, db_session=db_session)
 
         if not chat:
+            chat_logger.error("No chats found for chat id " + chat_id)
             return Response(response=jsonify({"error": "Chat not found"}).get_data(), status=404, mimetype='application/json')
 
+        chat_logger.info("Chats for id " + chat_id + " retrieved successfully.")
         return Response(response=jsonify({"message": "Chat retrieved", "chat": chat}).get_data(), status=200, mimetype='application/json')
 
 
@@ -58,8 +65,10 @@ class ChatService:
         chat_id = ChatMapper.create_chat(data=data, db_session=db_session)
 
         if not chat_id:
+            chat_logger.error("Failed to create chat")
             return Response(response=jsonify({"error": "Error creating Chat"}).get_data(), status=409, mimetype='application/json')
 
+        chat_logger.info("Successfully created chat with id " + chat_id)
         return Response(response=jsonify({"message": "Chat and message created", "chat_id": chat_id}).get_data(), status=201, mimetype='application/json')
 
 
@@ -79,8 +88,10 @@ class ChatService:
         updated_rows = ChatMapper.update_chat(chat_id=chat_id, data=data, db_session=db_session)
 
         if not updated_rows:
+            chat_logger.error("Failed to update chat with id " + chat_id)
             return Response(response=jsonify({"error": "Chat not found or update failed"}).get_data(), status=404, mimetype="application/json")
 
+        chat_logger.info("Successfully updated chat with id " + chat_id)
         return Response(response=jsonify({"message": "Chat updated", "updated_rows": updated_rows}).get_data(), status=200, mimetype="application/json")
 
 
@@ -99,6 +110,8 @@ class ChatService:
         deleted_rows = ChatMapper.delete_chat(chat_id=chat_id, db_session=db_session)
 
         if not deleted_rows:
+            chat_logger.error("Failed to delete chat with id " + chat_id)
             return Response(response=jsonify({"error": "Chat not found"}).get_data(), status=404, mimetype="application/json")
 
+        chat_logger.info("Successfully deleted chat with id " + chat_id)
         return Response(response=jsonify({"message": "Chat deleted", "deleted_rows": deleted_rows}).get_data(), status=200, mimetype="application/json")

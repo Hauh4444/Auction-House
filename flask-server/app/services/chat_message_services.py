@@ -1,6 +1,9 @@
 from flask import jsonify, Response, session
 
 from ..data_mappers import ChatMessageMapper, ChatMapper
+from ..utils.logger import setup_logger
+
+message_logger = setup_logger("message", "logs/message.log")
 
 
 class ChatMessageService:
@@ -20,9 +23,11 @@ class ChatMessageService:
 
         if not messages:
             response_data = {"error": "No messages found for this chat"}
+            message_logger.error("No messages found for chat id " + chat_id)
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype='application/json')
 
         response_data = {"message": "Messages found", "messages": messages}
+        message_logger.info("Successfully got message: " + chat_id)
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype='application/json')
 
 
@@ -42,15 +47,18 @@ class ChatMessageService:
 
         if not message_id:
             response_data = {"error": "Error creating message"}
+            message_logger.error("Failed to create message")
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype='application/json')
 
         updated_rows = ChatMapper.update_chat_timestamp(chat_id=data.get("chat_id"), db_session=db_session)
 
         if not updated_rows:
             response_data = {"error": "Error updating chat timestamp"}
+            message_logger.error("Failed to update chat timestamp")
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype='application/json')
 
         response_data = {"message": "Message created", "message_id": message_id}
+        message_logger.info("Message successfully created with id " + message_id)
         return Response(response=jsonify(response_data).get_data(), status=201, mimetype='application/json')
 
 
@@ -71,9 +79,11 @@ class ChatMessageService:
 
         if not updated_rows:
             response_data = {"error": "Message not found or no changes made"}
+            message_logger.error("Failed to update message " + message_id)
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype='application/json')
 
         response_data = {"message": "Message updated", "updated_rows": updated_rows}
+        message_logger.info("Successfully updated message " + message_id)
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype='application/json')
 
 
@@ -93,7 +103,9 @@ class ChatMessageService:
 
         if not deleted_rows:
             response_data = {"error": "Message not found"}
+            message_logger.error("Failed to delete. Message not found.")
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype='application/json')
 
         response_data = {"message": "Message deleted", "deleted_rows": deleted_rows}
+        message_logger.info("Message with id " + message_id + " successfully deleted")
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype='application/json')
