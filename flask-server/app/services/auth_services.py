@@ -1,17 +1,15 @@
 from flask import jsonify, session, Response
 from flask_login import login_user, logout_user, current_user
-
 from datetime import datetime, timedelta
 import os, jwt
-
 from .profile_services import ProfileService
 from .session_services import SessionService
 from .email_services import EmailService
 from ..data_mappers import AuthMapper, ProfileMapper, UserMapper
 from ..utils.password import hash_password
 
-
 class AuthService:
+    
     @staticmethod
     def check_auth_status():
         """
@@ -22,12 +20,11 @@ class AuthService:
                 Status code 200 if authenticated, 401 if not.
         """
         if not current_user.is_authenticated:
-            response_data = {"error": "Error user is not authenticated", "authenticated": False}
+            response_data = {"error": "User is not authenticated", "authenticated": False}
             return Response(response=jsonify(response_data).get_data(), status=401, mimetype="application/json")
 
         response_data = {"message": "User is authenticated", "authenticated": True, "id": current_user.id, "role": current_user.role}
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
-
 
     @staticmethod
     def create_user(data, db_session=None):
@@ -46,7 +43,12 @@ class AuthService:
             response_data = {"error": "Username, password, and email are required"}
             return Response(response=jsonify(response_data).get_data(), status=400, mimetype="application/json")
 
-        user_data = {"username": data.get("username"), "password_hash": hash_password(password=data.get("password")), "email": data.get("email")}
+        user_data = {
+            "username": data.get("username"),
+            "password_hash": hash_password(password=data.get("password")),
+            "email": data.get("email")
+        }
+
         user_id = AuthMapper.create_user(data=user_data, db_session=db_session)
 
         if not user_id:
@@ -62,7 +64,6 @@ class AuthService:
 
         response_data = {"message": "User registered successfully", "user_id": user_id, "profile_id": profile_id}
         return Response(response=jsonify(response_data).get_data(), status=201, mimetype="application/json")
-
 
     @staticmethod
     def login(data, db_session=None):
@@ -97,7 +98,6 @@ class AuthService:
         response_data = {"message": "Login successful", "user": user}
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
-
     @staticmethod
     def logout():
         """
@@ -113,7 +113,6 @@ class AuthService:
 
         response_data = {"message": "Logout successful"}
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
-
 
     @staticmethod
     def password_reset_request(db_session=None):
@@ -151,7 +150,6 @@ class AuthService:
 
         response_data = {"message": "Password reset email sent"}
         return Response(response=jsonify(response_data).get_data(), status=202, mimetype="application/json")
-
 
     @staticmethod
     def reset_user_password(reset_token, new_password, db_session=None):
