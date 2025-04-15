@@ -49,5 +49,5 @@ class ChatMessage:
             "sender_id": self.sender_id,
             "chat_id": self.chat_id,
             "message": self.message,
-            "sent_at": self.sent_at
+            "created_at": self.sent_at.strftime("%Y-%m-%d %H:%M:%S") if isinstance(self.sent_at, datetime) else self.sent_at,
         }

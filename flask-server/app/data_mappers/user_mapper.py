@@ -1,4 +1,5 @@
 from pymysql import cursors
+from datetime import datetime
 
 from ..database.connection import get_db
 from ..entities import User
@@ -39,9 +40,12 @@ class UserMapper:
         """
         db = db_session or get_db()
         cursor = db.cursor(cursors.DictCursor) # type: ignore
-        conditions = [f"{key} = %s" for key in data.keys()]
-        statement = f"UPDATE users SET {', '.join(conditions)} WHERE user_id = %s"
-        cursor.execute(statement, tuple(data.values()) + (user_id,))
+        set_clause = ", ".join([f"{key} = %s" for key in data if key not in ["user_id", "updated_at"]])
+        values = [data.get(key) for key in data if key not in ["user_id", "updated_at"]]
+        values.append(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+        values.append(user_id)
+        statement = f"UPDATE users SET {set_clause}, updated_at = %s WHERE user_id = %s"
+        cursor.execute(statement, values)
         db.commit()
         return cursor.rowcount
 

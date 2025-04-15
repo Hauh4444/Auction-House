@@ -44,8 +44,8 @@ class Order:
         return {
             "order_id": self.order_id,
             "user_id": self.user_id,
-            "order_date": self.order_date,
+            "order_date": self.order_date.strftime("%Y-%m-%d %H:%M:%S"),
             "status": self.status,
-            "created_at": self.created_at,
-            "updated_at": self.updated_at
+            "created_at": self.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+            "updated_at": self.updated_at.strftime("%Y-%m-%d %H:%M:%S")
         }

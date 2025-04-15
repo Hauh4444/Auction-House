@@ -46,6 +46,6 @@ class SupportTicket:
             "status": self.status,
             "priority": self.priority,
             "assigned_to": self.assigned_to,
-            "created_at": self.created_at,
-            "updated_at": self.updated_at
+            "created_at": self.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+            "updated_at": self.updated_at.strftime("%Y-%m-%d %H:%M:%S")
         }

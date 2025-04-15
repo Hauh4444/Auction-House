@@ -100,6 +100,23 @@
                         font-size: 12px;
                         text-align: center;
                     }
+
+                    .btnCell {
+                        max-width: 32px;
+                        padding: 0;
+
+                        .btn {
+                            width: 35px;
+                            min-width: 35px;
+                            height: 35px;
+                            min-height: 35px;
+
+                            svg {
+                                width: 100%;
+                                height: 100%;
+                            }
+                        }
+                    }
                 }
             }
         }

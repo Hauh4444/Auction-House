@@ -1,5 +1,7 @@
 // External Libraries
 import { useState } from "react";
+import { FaEdit, FaCheck } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
 import { FormControl, Button, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import axios from "axios";
 
@@ -14,71 +16,74 @@ import "./ManageUsers.scss";
 const ManageUsers = () => {
     const auth = useAuth();
 
-    const [currentRoute, setCurrentRoute] = useState("user");
-    const [userIdInput, setUserIdInput] = useState("");
-    const [userData, setUserData] = useState(null);
-    const [edit, setEdit] = useState(false);
+    const [ currentRoute, setCurrentRoute ] = useState("user");
+    const [ userIdInput, setUserIdInput ] = useState("");
+    const [ userData, setUserData ] = useState(null);
+    const [ editingRow, setEditingRow ] = useState(null);
 
-    const routes = ["user", "profile", "orders", "listings", "transactions", "deliveries", "reviews"];
-    const ids = ["user_id", "profile_id", "order_id", "listing_id", "transaction_id", "delivery_id", "review_id"];
+    const routes = [ "user", "profile", "orders", "listings", "transactions", "deliveries", "reviews" ];
+    const ids = [ "user_id", "profile_id", "order_id", "listing_id", "transaction_id", "delivery_id", "review_id" ];
 
     const handleSubmit = () => {
-        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/user/${ currentRoute !== "user" ? currentRoute : "" }/`,
-            {
-                params: { user_id: userIdInput },
-                headers: { "Content-Type": "application/json" },
-                withCredentials: true,
-            })
+        axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/user/${currentRoute !== "user" ? currentRoute + "/" : ""}`, {
+            params: { user_id: userIdInput },
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true,
+        })
             .then((res) => {
                 setUserData(res.data[currentRoute]);
+                setEditingRow(null);
             })
             .catch(() => setUserData([]));
     };
 
-    const handleCopy = (text) => {
+    const handleCopy = (text, rowIndex) => {
+        if (editingRow === rowIndex) return;
         navigator.clipboard.writeText(text).then(() => {
             alert("Copied to clipboard: " + text);
         });
     };
 
-    const handleChangeMode = (bool, item) => {
-        setEdit(bool);
-        if (bool) return;
-        let id = item[ids[currentRoute.findIndex(route => route === currentRoute)]];
-        axios.update(`${ import.meta.env.VITE_BACKEND_API_URL }/user/${ currentRoute !== "user" ? currentRoute : "" }/${ id }`,
-            {
-
-            },
-            {
+    const handleChangeMode = (rowId, item) => {
+        if (editingRow === rowId) {
+            let id = item[ids[routes.findIndex(route => route === currentRoute)]];
+            axios.put(`${import.meta.env.VITE_BACKEND_API_URL}/user/${currentRoute !== "user" ? currentRoute + "/" : ""}${id}/`, item, {
                 headers: { "Content-Type": "application/json" },
                 withCredentials: true,
             })
-            .then(() => handleSubmit())
-            .catch((err) => console.error(err));
-    }
+                .then(() => {
+                    handleSubmit();
+                })
+                .catch((err) => console.error(err));
+        } else {
+            setEditingRow(rowId);
+        }
+    };
 
-    const handleEdit = (key, val) => {
-        let data = userData;
-        data[key] = val;
-        setUserData(data);
-    }
+    const handleEdit = (key, val, index) => {
+        const updatedData = Array.isArray(userData) ? [ ...userData ] : { ...userData };
+        if (Array.isArray(updatedData)) {
+            updatedData[index][key] = val;
+        } else {
+            updatedData[key] = val;
+        }
+        setUserData(updatedData);
+    };
 
     const handleDelete = (item) => {
-        let id = item[ids[currentRoute.findIndex(route => route === currentRoute)]];
-        axios.delete(`${ import.meta.env.VITE_BACKEND_API_URL }/user/${ currentRoute !== "user" ? currentRoute : "" }/${ id }`,
-            {
-                headers: { "Content-Type": "application/json" },
-                withCredentials: true,
-            })
+        let id = item[ids[routes.findIndex(route => route === currentRoute)]];
+        axios.delete(`${import.meta.env.VITE_BACKEND_API_URL}/user/${currentRoute !== "user" ? currentRoute + "/" : ""}${id}/`, {
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true,
+        })
             .then(() => handleSubmit())
             .catch((err) => console.error(err));
-    }
+    };
 
     return (
         <div className="userInfoPage page">
             <div className="mainPage">
                 <Header />
-
                 <h1>Users</h1>
                 <div className="content">
                     <div className="filters">
@@ -87,11 +92,10 @@ const ManageUsers = () => {
                             <Select
                                 id="routeInput"
                                 labelId="routeLabel"
-                                aria-labelledby="routeLabel"
-                                className="routeInput"
                                 value={ currentRoute }
                                 onChange={ (e) => setCurrentRoute(e.target.value) }
                                 variant="outlined"
+                                className="routeInput"
                             >
                                 {routes.map((filterRoute, index) => (
                                     <MenuItem value={ filterRoute } key={ index }>
@@ -104,12 +108,12 @@ const ManageUsers = () => {
                             className="input"
                             value={ userIdInput }
                             label="User ID"
-                            type="text"
                             onChange={ (e) => setUserIdInput(e.target.value) }
                             variant="outlined"
                         />
                         <Button className="submitBtn" onClick={ handleSubmit }>Submit</Button>
                     </div>
+
                     <table className="data">
                         {Array.isArray(userData) && userData.length > 0 ? (
                             <>
@@ -118,40 +122,50 @@ const ManageUsers = () => {
                                     {Object.keys(userData[0]).map((key, index) => (
                                         <th key={ index }>{ key }</th>
                                     ))}
+                                    {auth.user.role === "admin" && (
+                                        <>
+                                            <th>Edit</th>
+                                            <th>Delete</th>
+                                        </>
+                                    )}
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {userData.map((item, rowIndex) => (
-                                    <>
-                                        <tr className="item" key={ rowIndex }>
-                                            {Object.keys(item).map((key, colIndex) => (
-                                                <td
-                                                    key={ colIndex }
-                                                    onClick={ () => handleCopy(item[key]) }
-                                                    style={ { cursor: "pointer", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }
-                                                >
-                                                    {edit ? (
-                                                        <TextField
-                                                            className="input"
-                                                            value={ item[key] !== null ? String(item[key]) : "" }
-                                                            label=""
-                                                            type="text"
-                                                            onChange={ (e) => handleEdit(key, e.target.value) }
-                                                            variant="outlined"
-                                                        />
-                                                    ) : (
-                                                        item[key] !== null ? String(item[key]) : ""
-                                                    )}
-                                                </td>
-                                            ))}
-                                        </tr>
+                                    <tr className="item" key={ rowIndex }>
+                                        {Object.keys(item).map((key, colIndex) => (
+                                            <td
+                                                key={ colIndex }
+                                                onClick={ () => handleCopy(item[key], rowIndex) }
+                                                style={{ cursor: editingRow === rowIndex ? "default" : "pointer", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}
+                                            >
+                                                {editingRow === rowIndex ? (
+                                                    <TextField
+                                                        className="input"
+                                                        value={ item[key] !== null ? String(item[key]) : "" }
+                                                        onChange={ (e) => handleEdit(key, e.target.value, rowIndex) }
+                                                        variant="outlined"
+                                                    />
+                                                ) : (
+                                                    item[key] !== null ? String(item[key]) : ""
+                                                )}
+                                            </td>
+                                        ))}
                                         {auth.user.role === "admin" && (
                                             <>
-                                                <Button className="btn" onClick={ () => handleChangeMode(!edit, item) }>{ edit ? "Edit" : "Submit" }</Button>
-                                                <Button className="btn" onClick={ () => handleDelete(item) }>Delete</Button>
+                                                <td className="btnCell">
+                                                    <Button className="btn" onClick={ () => handleChangeMode(rowIndex, item) }>
+                                                        {editingRow === rowIndex ? <FaCheck /> : <FaEdit />}
+                                                    </Button>
+                                                </td>
+                                                <td className="btnCell">
+                                                    <Button className="btn" onClick={ () => handleDelete(item) }>
+                                                        <MdDelete />
+                                                    </Button>
+                                                </td>
                                             </>
                                         )}
-                                    </>
+                                    </tr>
                                 ))}
                                 </tbody>
                             </>
@@ -163,6 +177,12 @@ const ManageUsers = () => {
                                         {Object.keys(userData).map((key, index) => (
                                             <th key={ index }>{ key }</th>
                                         ))}
+                                        {auth.user.role === "admin" && (
+                                            <>
+                                                <th>Edit</th>
+                                                <th>Delete</th>
+                                            </>
+                                        )}
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -170,16 +190,14 @@ const ManageUsers = () => {
                                         {Object.keys(userData).map((key, index) => (
                                             <td
                                                 key={ index }
-                                                onClick={ () => handleCopy(userData[key]) }
-                                                style={ { cursor: "pointer", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }
+                                                onClick={ () => handleCopy(userData[key], 0) }
+                                                style={{ cursor: editingRow === 0 ? "default" : "pointer", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}
                                             >
-                                                {edit ? (
+                                                {editingRow === 0 ? (
                                                     <TextField
                                                         className="input"
                                                         value={ userData[key] !== null ? String(userData[key]) : "" }
-                                                        label=""
-                                                        type="text"
-                                                        onChange={ (e) => handleEdit(key, e.target.value) }
+                                                        onChange={ (e) => handleEdit(key, e.target.value, 0) }
                                                         variant="outlined"
                                                     />
                                                 ) : (
@@ -189,8 +207,16 @@ const ManageUsers = () => {
                                         ))}
                                         {auth.user.role === "admin" && (
                                             <>
-                                                <Button className="btn" onClick={ () => handleChangeMode(!edit, userData) }>{ edit ? "Edit" : "Submit" }</Button>
-                                                <Button className="btn" onClick={ () => handleDelete(userData) }>Delete</Button>
+                                                <td className="btnCell">
+                                                    <Button className="btn" onClick={ () => handleChangeMode(0, userData) }>
+                                                        {editingRow === 0 ? <FaCheck /> : <FaEdit />}
+                                                    </Button>
+                                                </td>
+                                                <td className="btnCell">
+                                                    <Button className="btn" onClick={ () => handleDelete(userData) }>
+                                                        <MdDelete />
+                                                    </Button>
+                                                </td>
                                             </>
                                         )}
                                     </tr>

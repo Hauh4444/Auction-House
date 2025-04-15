@@ -1,4 +1,5 @@
 from pymysql import cursors
+from datetime import datetime
 
 from ..database.connection import get_db
 from ..entities import Listing
@@ -122,10 +123,11 @@ class ListingMapper:
         """
         db = db_session or get_db()
         cursor = db.cursor(cursors.DictCursor) # type: ignore
-        set_clause = ", ".join([f"{key} = %s" for key in data if key not in ["listing_id", "created_at"]])
-        values = [data.get(key) for key in data if key not in ["listing_id", "created_at"]]
+        set_clause = ", ".join([f"{key} = %s" for key in data if key not in ["listing_id", "created_at", "updated_at"]])
+        values = [data.get(key) for key in data if key not in ["listing_id", "created_at", "updated_at"]]
+        values.append(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
         values.append(listing_id)
-        statement = f"UPDATE listings SET {set_clause} WHERE listing_id = %s"
+        statement = f"UPDATE listings SET {set_clause}, updated_at = %s WHERE listing_id = %s"
         cursor.execute(statement, values)
         db.commit()
         return cursor.rowcount

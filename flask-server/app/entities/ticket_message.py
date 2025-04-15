@@ -35,5 +35,5 @@ class TicketMessage:
             "ticket_id": self.ticket_id,
             "sender_id": self.sender_id,
             "message": self.message,
-            "sent_at": self.sent_at
+            "sent_at": self.sent_at.strftime("%Y-%m-%d %H:%M:%S")
         }

@@ -27,18 +27,19 @@ def get_profile(db_session=None):
     return ProfileService.get_profile(data=data, db_session=db_session)
 
 
-# PUT /api/user/profile/
-@bp.route("/", methods=["PUT"])
+# PUT /api/user/profile/{id}/
+@bp.route("/<int:profile_id>/", methods=["PUT"])
 @login_required
-def update_profile(db_session=None):
+def update_profile(profile_id, db_session=None):
     """
     Update an existing profile.
 
     Args:
+        profile_id (int): The id of the profile to update
         db_session: Optional database session to be used in tests.
 
     Returns:
         Response: JSON response with updated profile details.
     """
     data = request.json
-    return ProfileService.update_profile(data=data, db_session=db_session)
+    return ProfileService.update_profile(profile_id=profile_id, data=data, db_session=db_session)

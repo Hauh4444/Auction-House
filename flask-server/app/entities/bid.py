@@ -35,6 +35,6 @@ class Bid:
             "listing_id": self.listing_id,
             "user_id": self.user_id,
             "amount": self.amount,
-            "created_at": self.created_at,
+            "created_at": self.created_at.strftime("%Y-%m-%d %H:%M:%S")
         }
 

@@ -25,5 +25,5 @@ class List:
             "list_id": self.list_id,
             "user_id": self.user_id,
             "title": self.title,
-            "created_at": self.created_at
+            "created_at": self.created_at.strftime("%Y-%m-%d %H:%M:%S")
         }

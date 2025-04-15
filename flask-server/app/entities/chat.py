@@ -47,6 +47,6 @@ class Chat:
             "chat_id": self.chat_id,
             "user1_id": self.user1_id,
             "user2_id": self.user2_id,
-            "created_at": self.created_at,
-            "updated_at": self.updated_at,
+            "created_at": self.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+            "updated_at": self.updated_at.strftime("%Y-%m-%d %H:%M:%S")
         }

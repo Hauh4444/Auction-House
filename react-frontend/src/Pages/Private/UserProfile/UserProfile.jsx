@@ -68,10 +68,8 @@ const UserProfile = () => {
 
     // On submit, post updated profile data to the backend API
     const handleSubmit = () => {
-        axios.put(`${ import.meta.env.VITE_BACKEND_API_URL }/user/profile/`,
-            {
-                profile: profile,
-            },
+        // TODO All put and post requests need to be setup to send arguments like this
+        axios.put(`${ import.meta.env.VITE_BACKEND_API_URL }/user/profile/${profile.profile_id}/`, profile,
             {
                 headers: { "Content-Type": "application/json" },
                 withCredentials: true, // Ensure cookies are sent if needed

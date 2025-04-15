@@ -26,10 +26,11 @@ const Security = () => {
     }, []);
 
     const password_reset_request = () => {
-        axios.post(`${ import.meta.env.VITE_BACKEND_API_URL }/auth/password_reset_request/`, {
-            headers: { "Content-Type": "application/json" },
-            withCredentials: true,
-        })
+        axios.post(`${ import.meta.env.VITE_BACKEND_API_URL }/auth/password_reset_request/`,
+                {
+                headers: { "Content-Type": "application/json" },
+                withCredentials: true,
+            })
             .then(() => alert("Password reset request email sent to: " + user["email"]))
             .catch(err => console.error(err));
     }

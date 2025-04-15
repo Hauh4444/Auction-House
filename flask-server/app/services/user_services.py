@@ -32,19 +32,21 @@ class UserService:
 
 
     @staticmethod
-    def update_user(data=None, db_session=None):
+    def update_user(user_id, data=None, db_session=None):
         """
         Updates user information.
 
         Args:
+            user_id (int): The id of the user to update
             data: A dictionary containing the request arguments.
             db_session: Optional database session to be used in tests.
 
         Returns:
             A Response object indicating success or an error message if the user is not found.
         """
+        del data["created_at"], data["last_login"]
         if current_user.role in ["staff", "admin"]:
-            updated_rows = UserMapper.update_user(user_id=data.get("user_id"), data=data, db_session=db_session)
+            updated_rows = UserMapper.update_user(user_id=user_id, data=data, db_session=db_session)
         else:
             updated_rows = UserMapper.update_user(user_id=current_user.id, data=data, db_session=db_session)
 
@@ -58,11 +60,12 @@ class UserService:
 
 
     @staticmethod
-    def delete_user(data=None, db_session=None):
+    def delete_user(user_id, db_session=None):
         """
         Deletes a user by their ID.
 
         Args:
+            user_id (int): The id of the user to delete
             data: A dictionary containing the request arguments.
             db_session: Optional database session to be used in tests.
 
@@ -70,7 +73,7 @@ class UserService:
             A Response object with a success message if the user was deleted, or a 404 error if the user was not found.
         """
         if current_user.role in ["staff", "admin"]:
-            deleted_rows = ProfileMapper.delete_profile(user_id=data.get("user_id"), db_session=db_session)
+            deleted_rows = ProfileMapper.delete_profile(user_id=user_id, db_session=db_session)
         else:
             deleted_rows = ProfileMapper.delete_profile(user_id=current_user.id, db_session=db_session)
 
@@ -79,7 +82,7 @@ class UserService:
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
         if current_user.role in ["staff", "admin"]:
-            deleted_rows = UserMapper.delete_user(user_id=data.get("user_id"), db_session=db_session)
+            deleted_rows = UserMapper.delete_user(user_id=user_id, db_session=db_session)
         else:
             deleted_rows = UserMapper.delete_user(user_id=current_user.id, db_session=db_session)
 

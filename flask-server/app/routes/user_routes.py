@@ -27,14 +27,15 @@ def get_user(db_session=None):
     return UserService.get_user(data=data, db_session=db_session)
 
 
-# PUT /api/user/
-@bp.route("/", methods=["PUT"])
+# PUT /api/user/{id}/
+@bp.route("/<int:user_id>", methods=["PUT"])
 @login_required
-def update_user(db_session=None):
+def update_user(user_id, db_session=None):
     """
     Updates a user.
 
     Args:
+        user_id (int): The id of the user to update
         db_session: Optional database session to be used in tests.
 
     Expects:
@@ -44,24 +45,21 @@ def update_user(db_session=None):
         JSON response indicating the updated profile.
     """
     data = request.json
-    return UserService.update_user(data=data, db_session=db_session)
+    return UserService.update_user(user_id=user_id, data=data, db_session=db_session)
 
 
-# DELETE /api/user/
-@bp.route("/", methods=["DELETE"])
+# DELETE /api/user/{id}/
+@bp.route("/<int:user_id>", methods=["DELETE"])
 @login_required
-def delete_user(db_session=None):
+def delete_user(user_id, db_session=None):
     """
     Delete the user login credentials and profile.
 
     Args:
+        user_id (int): The id of the user to delete
         db_session: Optional database session to be used in tests.
 
     Returns:
         JSON response indicating the deletion status.
     """
-    data = None
-    if current_user.role in ["staff", "admin"]:
-        data = request.json
-
-    return UserService.delete_user(data=data, db_session=db_session)
+    return UserService.delete_user(user_id=user_id, db_session=db_session)

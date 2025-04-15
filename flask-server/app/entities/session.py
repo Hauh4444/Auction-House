@@ -27,6 +27,7 @@ class Session:
             "user_id": self.user_id,
             "role": self.role,
             "token": self.token,
-            "created_at": self.created_at,
-            "expires_at": self.expires_at
+            # TODO All datetime instances need to have this check
+            "created_at": self.created_at.strftime("%Y-%m-%d %H:%M:%S") if isinstance(self.created_at, datetime) else self.created_at,
+            "expires_at": self.expires_at.strftime("%Y-%m-%d %H:%M:%S")
         }

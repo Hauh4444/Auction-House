@@ -10,7 +10,7 @@ const SocketProvider = ({ children }) => {
     const [socket, setSocket] = useState(null);
 
     useEffect(() => {
-        const socketInstance = io(import.meta.env.VITE_BACKEND_API_URL, {
+        const socketInstance = io(import.meta.env.VITE_BACKEND_URL, {
             transports: ['websocket'],
             withCredentials: true,
         });

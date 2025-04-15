@@ -100,11 +100,7 @@ const Header = () => {
                         value={ query } // Bind the input value to the query state
                         placeholder="Search" // Placeholder text
                         onChange={ (e) => setQuery(e.target.value) } // Update query on input change
-                        onKeyDown={(e) => {
-                            if (e.key === "Enter") {
-                                navigateSearch() // Trigger search when Enter key is pressed
-                            }
-                        }}
+                        onKeyDown={ (e) => { if (e.key === "Enter") navigateSearch() } }
                         variant="outlined"
                         size="small"
                         type="text"

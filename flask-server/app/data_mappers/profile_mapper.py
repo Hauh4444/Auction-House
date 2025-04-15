@@ -1,4 +1,5 @@
 from pymysql import cursors
+from datetime import datetime
 
 from ..database.connection import get_db
 from ..entities import Profile
@@ -50,12 +51,12 @@ class ProfileMapper:
 
 
     @staticmethod
-    def update_profile(user_id, data, db_session=None):
+    def update_profile(profile_id, data, db_session=None):
         """
         Update an existing profile.
 
         Args:
-            user_id (int): The ID of the user whose profile to update.
+            profile_id (int): The ID of the profile to update.
             data (dict): Dictionary of fields to update.
             db_session: Optional database session to be used in tests.
 
@@ -64,18 +65,11 @@ class ProfileMapper:
         """
         db = db_session or get_db()
         cursor = db.cursor(cursors.DictCursor) # type: ignore
-
-        # Filter out the keys you don't want to update
-        filtered_data = {key: value for key, value in data.items() if key not in ["user_id", "created_at"]}
-
-        # Build the condition placeholders (SET part)
-        conditions = [f"{key} = %s" for key in filtered_data]
-        statement = "UPDATE profiles SET " + ", ".join(conditions) + " WHERE user_id = %s"
-
-        # Create the values list (filtered data values + user_id for WHERE clause)
-        values = list(filtered_data.values()) + [user_id]
-
-        # Execute the statement
+        conditions = [f"{key} = %s" for key in data if key not in ["profile_id", "updated_at"]]
+        values = [data.get(key) for key in data if key not in ["transaction_id", "updated_at"]]
+        values.append(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+        values.append(profile_id)
+        statement = f"UPDATE profiles SET {', '.join(conditions)}, updated_at = %s WHERE profile_id = %s"
         cursor.execute(statement, values)
         db.commit()
 

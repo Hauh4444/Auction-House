@@ -51,21 +51,20 @@ class ProfileService:
         return Response(response=jsonify(response_data).get_data(), status=201, mimetype="application/json")
 
     @staticmethod
-    def update_profile(data=None, db_session=None):
+    def update_profile(profile_id, data=None, db_session=None):
         """
         Updates an existing profile by its ID with the provided data.
 
         Args:
+            profile_id (int): The id of the profile to update
             data: A dictionary containing the request arguments.
             db_session: Optional database session to be used in tests.
 
         Returns:
             A Response object with a success message if the profile was updated, or a 404 error if the profile was not found.
         """
-        if current_user.role in ["staff", "admin"]:
-            updated_rows = ProfileMapper.update_profile(user_id=data.get("user_id"), data=data, db_session=db_session)
-        else:
-            updated_rows = ProfileMapper.update_profile(user_id=current_user.id, data=data, db_session=db_session)
+        del data["profile_id"]
+        updated_rows = ProfileMapper.update_profile(profile_id=profile_id, data=data, db_session=db_session)
 
         if not updated_rows:
             response_data = {"error": "Error updating profile"}

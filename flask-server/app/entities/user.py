@@ -53,9 +53,9 @@ class User(UserMixin):
             "username": self.username,
             "password_hash": self.password_hash,
             "email": self.email,
-            "created_at": self.created_at,
-            "updated_at": self.updated_at,
-            "last_login": self.last_login,
+            "created_at": self.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+            "updated_at": self.updated_at.strftime("%Y-%m-%d %H:%M:%S"),
+            "last_login": self.last_login.strftime("%Y-%m-%d %H:%M:%S"),
             "is_active": self.is_active
         }
 

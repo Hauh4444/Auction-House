@@ -43,6 +43,7 @@ class HistoryService:
         Returns:
             Response: A JSON response indicating success or failure.
         """
+        del data["created_at"]
         updated_rows = OrderMapper.update_order(order_id=order_id, data=data, db_session=db_session)
         if not updated_rows:
             response_data = {"error": "Order not found"}
@@ -111,6 +112,7 @@ class HistoryService:
         Returns:
             Response: A JSON response indicating success or failure.
         """
+        del data["created_at"]
         updated_rows = ListingMapper.update_listing(listing_id=listing_id, data=data, db_session=db_session)
         if not updated_rows:
             response_data = {"error": "Listing not found"}
@@ -179,6 +181,7 @@ class HistoryService:
         Returns:
             Response: A JSON response indicating success or failure.
         """
+        del data["created_at"]
         updated_rows = TransactionMapper.update_transaction(transaction_id=transaction_id, data=data, db_session=db_session)
         if not updated_rows:
             response_data = {"error": "Transaction not found"}
@@ -247,6 +250,7 @@ class HistoryService:
         Returns:
             Response: A JSON response indicating success or failure.
         """
+        del data["created_at"]
         updated_rows = DeliveryMapper.update_delivery(delivery_id=delivery_id, data=data, db_session=db_session)
         if not updated_rows:
             response_data = {"error": "Delivery not found"}
@@ -315,6 +319,7 @@ class HistoryService:
         Returns:
             Response: A JSON response indicating success or failure.
         """
+        del data["created_at"]
         updated_rows = SupportTicketMapper.update_support_ticket(ticket_id=ticket_id, data=data, db_session=db_session)
         if not updated_rows:
             response_data = {"error": "Support ticket not found"}
@@ -383,6 +388,7 @@ class HistoryService:
         Returns:
             Response: A JSON response indicating success or failure.
         """
+        del data["created_at"]
         updated_rows = ReviewMapper.update_review(review_id=review_id, data=data, db_session=db_session)
         if not updated_rows:
             response_data = {"error": "Review not found"}

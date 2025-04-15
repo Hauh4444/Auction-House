@@ -62,12 +62,12 @@ class Transaction:
             "transaction_id": self.transaction_id,
             "order_id": self.order_id,
             "user_id": self.user_id,
-            "transaction_date": self.transaction_date,
+            "transaction_date": self.transaction_date.strftime("%Y-%m-%d %H:%M:%S"),
             "transaction_type": self.transaction_type,
             "amount": self.amount,
             "shipping_cost": self.shipping_cost,
             "payment_method": self.payment_method,
             "payment_status": self.payment_status,
-            "created_at": self.created_at,
-            "updated_at": self.updated_at
+            "created_at": self.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+            "updated_at": self.updated_at.strftime("%Y-%m-%d %H:%M:%S")
         }
