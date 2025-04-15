@@ -27,6 +27,27 @@ def get_user_orders(db_session=None):
     return HistoryService.get_user_orders(data=data, db_session=db_session)
 
 
+# PUT /api/user/orders/<int:order_id>
+@bp.route('/orders/<int:order_id>', methods=['PUT'])
+@login_required
+def update_user_order(order_id, db_session=None):
+    """
+    Update a specific order in the user's history.
+    """
+    data = request.json
+    return HistoryService.update_user_order(order_id=order_id, data=data, db_session=db_session)
+
+
+# DELETE /api/user/orders/<int:order_id>
+@bp.route('/orders/<int:order_id>', methods=['DELETE'])
+@login_required
+def delete_user_order(order_id, db_session=None):
+    """
+    Delete a specific order from the user's history.
+    """
+    return HistoryService.delete_user_order(order_id=order_id, db_session=db_session)
+
+
 # GET /api/user/listings/
 @bp.route('/listings/', methods=['GET'])
 @login_required
@@ -45,6 +66,27 @@ def get_user_listings(db_session=None):
         data = request.args.to_dict()
 
     return HistoryService.get_user_listings(data=data, db_session=db_session)
+
+
+# PUT /api/user/listings/<int:listing_id>
+@bp.route('/listings/<int:listing_id>', methods=['PUT'])
+@login_required
+def update_user_listing(listing_id, db_session=None):
+    """
+    Update a specific listing in the user's history.
+    """
+    data = request.json
+    return HistoryService.update_user_listing(listing_id=listing_id, data=data, db_session=db_session)
+
+
+# DELETE /api/user/listings/<int:listing_id>
+@bp.route('/listings/<int:listing_id>', methods=['DELETE'])
+@login_required
+def delete_user_listing(listing_id, db_session=None):
+    """
+    Delete a specific listing from the user's history.
+    """
+    return HistoryService.delete_user_listing(listing_id=listing_id, db_session=db_session)
 
 
 # GET /api/user/transactions/
@@ -67,6 +109,27 @@ def get_user_transactions(db_session=None):
     return HistoryService.get_user_transactions(data=data, db_session=db_session)
 
 
+# PUT /api/user/transactions/<int:transaction_id>
+@bp.route('/transactions/<int:transaction_id>', methods=['PUT'])
+@login_required
+def update_user_transaction(transaction_id, db_session=None):
+    """
+    Update a specific transaction in the user's history.
+    """
+    data = request.json
+    return HistoryService.update_user_transaction(transaction_id=transaction_id, data=data, db_session=db_session)
+
+
+# DELETE /api/user/transactions/<int:transaction_id>
+@bp.route('/transactions/<int:transaction_id>', methods=['DELETE'])
+@login_required
+def delete_user_transaction(transaction_id, db_session=None):
+    """
+    Delete a specific transaction from the user's history.
+    """
+    return HistoryService.delete_user_transaction(transaction_id=transaction_id, db_session=db_session)
+
+
 # GET /api/user/deliveries/
 @bp.route('/deliveries/', methods=['GET'])
 @login_required
@@ -85,6 +148,27 @@ def get_user_deliveries(db_session=None):
         data = request.args.to_dict()
 
     return HistoryService.get_user_deliveries(data=data, db_session=db_session)
+
+
+# PUT /api/user/deliveries/<int:delivery_id>
+@bp.route('/deliveries/<int:delivery_id>', methods=['PUT'])
+@login_required
+def update_user_delivery(delivery_id, db_session=None):
+    """
+    Update a specific delivery in the user's history.
+    """
+    data = request.json
+    return HistoryService.update_user_delivery(delivery_id=delivery_id, data=data, db_session=db_session)
+
+
+# DELETE /api/user/deliveries/<int:delivery_id>
+@bp.route('/deliveries/<int:delivery_id>', methods=['DELETE'])
+@login_required
+def delete_user_delivery(delivery_id, db_session=None):
+    """
+    Delete a specific delivery from the user's history.
+    """
+    return HistoryService.delete_user_delivery(delivery_id=delivery_id, db_session=db_session)
 
 
 # GET /api/user/support-tickets/
@@ -107,6 +191,27 @@ def get_user_support_tickets(db_session=None):
     return HistoryService.get_user_support_tickets(data=data, db_session=db_session)
 
 
+# PUT /api/user/support-tickets/<int:ticket_id>
+@bp.route('/support-tickets/<int:ticket_id>', methods=['PUT'])
+@login_required
+def update_user_support_ticket(ticket_id, db_session=None):
+    """
+    Update a specific support ticket in the user's history.
+    """
+    data = request.json
+    return HistoryService.update_user_support_ticket(ticket_id=ticket_id, data=data, db_session=db_session)
+
+
+# DELETE /api/user/support-tickets/<int:ticket_id>
+@bp.route('/support-tickets/<int:ticket_id>', methods=['DELETE'])
+@login_required
+def delete_user_support_ticket(ticket_id, db_session=None):
+    """
+    Delete a specific support ticket from the user's history.
+    """
+    return HistoryService.delete_user_support_ticket(ticket_id=ticket_id, db_session=db_session)
+
+
 # GET /api/user/reviews/
 @bp.route('/reviews/', methods=['GET'])
 @login_required
@@ -125,3 +230,24 @@ def get_user_reviews(db_session=None):
         data = request.args.to_dict()
 
     return HistoryService.get_user_reviews(data=data, db_session=db_session)
+
+
+# PUT /api/user/reviews/<int:review_id>
+@bp.route('/reviews/<int:review_id>', methods=['PUT'])
+@login_required
+def update_user_review(review_id, db_session=None):
+    """
+    Update a specific review in the user's history.
+    """
+    data = request.json
+    return HistoryService.update_user_review(review_id=review_id, data=data, db_session=db_session)
+
+
+# DELETE /api/user/reviews/<int:review_id>
+@bp.route('/reviews/<int:review_id>', methods=['DELETE'])
+@login_required
+def delete_user_review(review_id, db_session=None):
+    """
+    Delete a specific review from the user's history.
+    """
+    return HistoryService.delete_user_review(review_id=review_id, db_session=db_session)
