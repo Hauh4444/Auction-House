@@ -40,7 +40,7 @@ class ChatMessage:
         self.sender_id = sender_id
         self.chat_id = chat_id
         self.message = message
-        self.sent_at = sent_at or datetime.now()
+        self.sent_at = sent_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     def to_dict(self):
         """Converts the chat message object to a dictionary representation."""

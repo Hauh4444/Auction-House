@@ -84,7 +84,10 @@ const Search = () => {
                 headers: { "Content-Type": "application/json" },
                 params: createSearchParams(filters), // Convert filters to query parameters
             })
-            .then((res) => setListings(res.data.listings)) // Set the fetched listings into state
+            .then((res) => {
+                setListings(res.data.listings);
+                console.log(res.data.listings[0]);
+            }) // Set the fetched listings into state
             .catch(() => setListings([]));
     }, [location.search]);
 

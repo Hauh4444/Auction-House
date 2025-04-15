@@ -33,8 +33,8 @@ class Model:
         self.model_id = model_id
         self.listing_id = listing_id
         self.file_reference = file_reference
-        self.created_at = created_at or datetime.now()
-        self.updated_at = updated_at or datetime.now()
+        self.created_at = created_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.updated_at = updated_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     def to_dict(self):
         """Converts the model object to a dictionary representation."""

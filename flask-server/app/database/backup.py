@@ -27,7 +27,7 @@ def backup_db():
     try:
         os.makedirs(BACKUP_DIRECTORY, exist_ok=True)
 
-        today = datetime.now().strftime("%Y-%m-%d")
+        today = datetime.now().strftime("%Y-%m-%d %H:%M:%S").strftime("%Y-%m-%d")
         backup_file = f"auctionhouse_backup_{today}.sql"
         backup_path = os.path.join(BACKUP_DIRECTORY, backup_file)
 

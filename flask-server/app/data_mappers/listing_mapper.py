@@ -77,6 +77,7 @@ class ListingMapper:
         cursor = db.cursor(cursors.DictCursor) # type: ignore
         cursor.execute("SELECT * FROM listings WHERE listing_id = %s", (listing_id,))
         listing = cursor.fetchone()
+        print(Listing(**listing).to_dict())
         return Listing(**listing).to_dict() if listing else None
 
 

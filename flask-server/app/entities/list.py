@@ -17,7 +17,7 @@ class List:
         self.list_id = list_id
         self.user_id = user_id
         self.title = title
-        self.created_at = created_at or datetime.now()
+        self.created_at = created_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     def to_dict(self):
         """Converts the list object to a dictionary representation."""

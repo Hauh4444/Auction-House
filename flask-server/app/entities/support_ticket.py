@@ -34,8 +34,8 @@ class SupportTicket:
         self.status = status
         self.priority = priority
         self.assigned_to = assigned_to
-        self.created_at = created_at or datetime.now()
-        self.updated_at = updated_at or datetime.now()
+        self.created_at = created_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.updated_at = updated_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     def to_dict(self):
         """Converts the support ticket object to a dictionary representation."""

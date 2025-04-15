@@ -1,6 +1,5 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request
 from flask_login import login_required
-import stripe
 
 from ..services import PurchaseService
 
@@ -20,10 +19,10 @@ def process_purchase(db_session=None):
         JSON response indicating the success or failure of the purchase.
     """
     data = request.json
-    return PurchaseService.process_purchase(data=data, db_session=db_session)
+    return PurchaseService.process_payment(data=data, db_session=db_session)
 
 
-@bp.route('/status', methods=['GET'])
+@bp.route('/status/', methods=['GET'])
 @login_required
 def get_stripe_session_status():
     args = request.args

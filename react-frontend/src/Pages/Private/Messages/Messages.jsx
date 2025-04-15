@@ -59,12 +59,26 @@ const Messages = () => {
     }, [currentChat]);
 
     useEffect(() => {
-        if (!socket.current || !currentChat) return; // Return if socket or currentChat is not available
-        socket.current.on("new_message", getMessages); // Fetch messages on new_message event
+        if (socket) {
+            socket.on('connect', () => {
+                console.log('Socket connected:', socket.id);
+            });
+        }
 
         return () => {
-            if (socket.current) {
-                socket.current.off("new_message", getMessages); // Clean up the event listener on component unmount
+            if (socket) {
+                socket.off('connect');
+            }
+        };
+    }, [socket]);
+
+    useEffect(() => {
+        if (!socket || !currentChat) return; // Return if socket or currentChat is not available
+        socket.on("new_message", getMessages); // Fetch messages on new_message event
+
+        return () => {
+            if (socket) {
+                socket.off("new_message", getMessages); // Clean up the event listener on component unmount
             }
         };
     }, [socket, currentChat]);

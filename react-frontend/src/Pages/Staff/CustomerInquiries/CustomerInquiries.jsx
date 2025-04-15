@@ -59,12 +59,12 @@ const CustomerInquiries = () => {
     }, [currentSupportTicket]);
 
     useEffect(() => {
-        if (!socket.current || !currentSupportTicket) return; // Return if socket or currentSupportTicket is not available
-        socket.current.on("new_ticket_message", getMessages); // Fetch ticket messages on new_ticket_message event
+        if (!socket || !currentSupportTicket) return; // Return if socket or currentSupportTicket is not available
+        socket.on("new_ticket_message", getMessages); // Fetch ticket messages on new_ticket_message event
 
         return () => {
-            if (socket.current) {
-                socket.current.off("new_message", getMessages); // Clean up the event listener on component unmount
+            if (socket) {
+                socket.off("new_message", getMessages); // Clean up the event listener on component unmount
             }
         };
     }, [socket, currentSupportTicket]);

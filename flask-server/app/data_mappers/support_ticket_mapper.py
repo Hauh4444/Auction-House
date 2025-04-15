@@ -103,7 +103,7 @@ class SupportTicketMapper:
         cursor = db.cursor(cursors.DictCursor) # type: ignore
         update_clause = ", ".join(f"{key} = %s" for key in updates.keys())
         values = list(updates.values()) + [ticket_id]
-        cursor.execute(f"UPDATE support_tickets SET {update_clause}, updated_at = %s WHERE ticket_id = %s", (*values, datetime.now()))
+        cursor.execute(f"UPDATE support_tickets SET {update_clause}, updated_at = %s WHERE ticket_id = %s", (*values, datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
         db.commit()
         return cursor.rowcount
 
@@ -122,7 +122,7 @@ class SupportTicketMapper:
         """
         db = db_session or get_db()
         cursor = db.cursor(cursors.DictCursor) # type: ignore
-        cursor.execute(f"UPDATE support_tickets SET updated_at = %s WHERE ticket_id = %s", (datetime.now(), ticket_id))
+        cursor.execute(f"UPDATE support_tickets SET updated_at = %s WHERE ticket_id = %s", (datetime.now().strftime("%Y-%m-%d %H:%M:%S"), ticket_id))
         db.commit()
         return cursor.rowcount
 

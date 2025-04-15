@@ -105,7 +105,7 @@ class PurchaseService:
         Returns:
             dict: {"status": 200} on success, or {"error": str, "status": int} on failure.
         """
-        order_data = {"user_id": data.get("user_id"), "order_date": datetime.now(), "status": "processing"}
+        order_data = {"user_id": data.get("user_id"), "order_date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "status": "processing"}
         order_id = OrderMapper.create_order(data=order_data, db_session=db_session)
         if not order_id:
             return {"error": "Error creating order", "status": 409}
@@ -126,7 +126,7 @@ class PurchaseService:
         Returns:
             dict: {"status": 200} on success, or {"error": str, "status": int} on failure.
         """
-        transaction_data = {"order_id": data.get("order_id"), "user_id": data.get("user_id"), "transaction_date": datetime.now(), "transaction_type": "buy_now",
+        transaction_data = {"order_id": data.get("order_id"), "user_id": data.get("user_id"), "transaction_date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "transaction_type": "buy_now",
                             "amount": data.get("amount"), "shipping_cost": 0, "payment_method": "credit_card", "payment_status": "completed"}
         transaction_id = TransactionMapper.create_transaction(data=transaction_data, db_session=db_session)
         if not transaction_id:
@@ -156,7 +156,7 @@ class PurchaseService:
 
             listing.update(purchases=(listing.get("purchases") + listing.get("quantity")))
 
-            listing_data = {key: val for key, val in listing.items() if key != "quantity"}
+            listing_data = {key: val for key, val in listing.items() if key != "quantity" and key != "updated_at"}
             updated_rows = ListingMapper.update_listing(listing_id=listing.get("listing_id"), data=listing_data, db_session=db_session)
             if not updated_rows:
                 return {"error": "Error updating listing", "status": 409}

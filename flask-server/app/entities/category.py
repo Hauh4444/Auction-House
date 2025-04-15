@@ -44,8 +44,8 @@ class Category:
         self.name = name
         self.description = description
         self.image_encoded = image_encoded
-        self.created_at = created_at or datetime.now()
-        self.updated_at = updated_at or datetime.now()
+        self.created_at = created_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.updated_at = updated_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     def to_dict(self):
         """Converts the category object to a dictionary representation."""

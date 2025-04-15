@@ -64,7 +64,7 @@ const Cart = () => {
         const session_id = urlParams.get("session_id");
 
         if (session_id) {
-            axios.post(`${ import.meta.env.VITE_BACKEND_API_URL }/purchase/status`,
+            axios.post(`${ import.meta.env.VITE_BACKEND_API_URL }/purchase/status/`,
                 {
                     session_id: session_id,
                 },

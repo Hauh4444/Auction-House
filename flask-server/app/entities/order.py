@@ -36,8 +36,8 @@ class Order:
         self.user_id = user_id
         self.order_date = order_date
         self.status = status
-        self.created_at = created_at or datetime.now()
-        self.updated_at = updated_at or datetime.now()
+        self.created_at = created_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.updated_at = updated_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     def to_dict(self):
         """Converts the order object to a dictionary representation."""

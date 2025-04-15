@@ -38,8 +38,8 @@ class Chat:
         self.chat_id = chat_id
         self.user1_id = user1_id
         self.user2_id = user2_id
-        self.created_at = created_at or datetime.now()
-        self.updated_at = created_at or datetime.now()
+        self.created_at = created_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.updated_at = created_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     def to_dict(self):
         """Converts the chat object to a dictionary representation."""

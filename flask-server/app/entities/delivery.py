@@ -88,8 +88,8 @@ class Delivery:
         self.courier = courier
         self.estimated_delivery_date = estimated_delivery_date
         self.delivered_at = delivered_at
-        self.created_at = created_at or datetime.now()
-        self.updated_at = updated_at or datetime.now()
+        self.created_at = created_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.updated_at = updated_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     def to_dict(self):
         """Converts the delivery object to a dictionary representation."""

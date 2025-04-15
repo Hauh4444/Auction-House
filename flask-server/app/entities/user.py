@@ -40,9 +40,9 @@ class User(UserMixin):
         self.username = username
         self.password_hash = password_hash
         self.email = email
-        self.created_at = created_at or datetime.now()
-        self.updated_at = updated_at or datetime.now()
-        self.last_login = last_login or datetime.now()
+        self.created_at = created_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.updated_at = updated_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.last_login = last_login or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self.is_active = bool(is_active)
 
     def to_dict(self):
