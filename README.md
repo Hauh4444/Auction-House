@@ -58,7 +58,7 @@
 
 1. In a terminal, change to the `flask-server` directory.
 2. Run the `.venv/Scripts/activate` command to activate the virtual environment.
-3. Run the `flask run --debug` command to run the Flask server.
+3. Run the `python -m app.main` command to run the Flask server.
 
 ### Flask Testing
 

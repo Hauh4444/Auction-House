@@ -48,7 +48,7 @@ class ChatMessageService:
             response_data = {"error": "Error updating chat timestamp"}
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype='application/json')
 
-        socketio.emit('new_message', {"message_id": message_id})
+        socketio.emit("new_message")
 
         response_data = {"message": "Message created", "message_id": message_id}
         return Response(response=jsonify(response_data).get_data(), status=201, mimetype='application/json')

@@ -1,3 +1,6 @@
+from gevent import monkey
+monkey.patch_all()
+
 from flask import Flask
 from flask_cors import CORS
 
@@ -44,7 +47,7 @@ def create_app():
     login_manager.init_app(app)
     mysql.init_app(app)
     session.init_app(app)
-    socketio.init_app(app, cors_allowed_origins=os.getenv("FRONTEND_URL"), transports=["websocket", "polling"])
+    socketio.init_app(app, transports=["websocket", "polling"])
     scheduler.start()
     CORS(app, supports_credentials=True, resources={r"/api/*": {"origins": os.getenv("FRONTEND_URL")},
                                                     r"/static/*": {"origins": os.getenv("FRONTEND_URL")},

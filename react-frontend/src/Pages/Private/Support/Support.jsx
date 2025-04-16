@@ -1,15 +1,14 @@
 // External Libraries
-import { useEffect, useRef, useState } from "react";
+import {useEffect, useLayoutEffect, useRef, useState} from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { io } from "socket.io-client";
 import { Button, TextField } from "@mui/material";
 import axios from "axios";
 
 // Internal Modules
-import SocketProvider from "@/ContextAPI/SocketProvider";
 import Header from "@/Components/Header/Header";
 import RightNav from "@/Components/Navigation/RightNav/RightNav";
 import { useAuth } from "@/ContextAPI/AuthContext";
-import { useSocket } from "@/ContextAPI/SocketContext";
 
 // Stylesheets
 import './Support.scss';
@@ -19,7 +18,6 @@ const Support = () => {
     const navigate = useNavigate(); // Navigate hook for routing
     const location = useLocation(); // Hook to access the current location (URL)
     const filters = Object.fromEntries(new URLSearchParams(location.search).entries()); // Extract query parameters from URL
-    const socket = useSocket();
 
     const [subject, setSubject] = useState(null);
     const [message, setMessage] = useState("");
@@ -48,13 +46,7 @@ const Support = () => {
                 headers: { "Content-Type": "application/json" },
                 withCredentials: true, // Ensures cookies are sent with requests
             })
-            .then((res) => {
-                setTicketMessages(res.data.ticket_messages);
-                // Scroll to the bottom of the messages container after the messages are updated
-                if (messagesEndRef.current) {
-                    messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
-                }
-            })
+            .then((res) => setTicketMessages(res.data.ticket_messages))
             .catch(() => setTicketMessages([]));
     }
 
@@ -63,16 +55,27 @@ const Support = () => {
         getMessages();
     }, [currentSupportTicket]);
 
+    // Scroll to the bottom of the messages list after new messages are loaded or after sending a new message
+    useLayoutEffect(() => {
+        if (messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+        }
+    }, [ticketMessages]); // This will trigger scroll whenever messages change
+
     useEffect(() => {
-        if (!socket.current || !currentSupportTicket) return; // Return if socket or currentSupportTicket is not available
-        socket.current.on("new_ticket_message", getMessages); // Fetch ticket messages on new_ticket_message event
+        const socket = io(import.meta.env.VITE_BACKEND_URL, {
+            transports: ["polling"],
+            withCredentials: true,
+        });
+
+        if (!socket) return;
+
+        socket.on("new_ticket_message", getMessages);
 
         return () => {
-            if (socket.current) {
-                socket.current.off("new_message", getMessages); // Clean up the event listener on component unmount
-            }
+            socket.off("new_ticket_message", getMessages);
         };
-    }, [socket, currentSupportTicket]);
+    }, []);
 
     const handleSelectSubject = (key) => {
         navigate("/user/support" + key);
@@ -106,10 +109,6 @@ const Support = () => {
             .catch(err => console.error(err));
     }
 
-    const handleSelectTicket = (chat) => {
-        setCurrentSupportTicket(chat);
-    }
-
     const handleSendMessage = () => {
         if (!newTicketMessage.trim()) return;
         axios.post(`${ import.meta.env.VITE_BACKEND_API_URL }/ticket/messages/${ currentSupportTicket.ticket_id }/`,
@@ -134,105 +133,103 @@ const Support = () => {
     };
 
     return (
-        <SocketProvider>
-            <div className="supportPage page">
-                <div className="mainPage">
-                    { /* Page Header */ }
-                    <Header />
+        <div className="supportPage page">
+            <div className="mainPage">
+                { /* Page Header */ }
+                <Header />
 
-                    {filters.nav === undefined ? (
-                        <>
-                            <h1>Support</h1>
-                            <div className="supportNav">
-                                {Object.keys(cardInfo).map((key, index) => (
+                {filters.nav === undefined ? (
+                    <>
+                        <h1>Support</h1>
+                        <div className="supportNav">
+                            {Object.keys(cardInfo).map((key, index) => (
+                                <Button
+                                    className="navBtn"
+                                    onClick={ () => handleSelectSubject(key) }
+                                    key={ index }
+                                >
+                                    <h2>{ cardInfo[key] }</h2>
+                                </Button>
+                            ))}
+                        </div>
+                    </>
+                ) : (filters.nav === "tickets" ? (
+                        <div className="content">
+                            <div className="supportTickets">
+                                {supportTickets && supportTickets.map((ticket, index) => (
                                     <Button
-                                        className="navBtn"
-                                        onClick={ () => handleSelectSubject(key) }
+                                        className={ `ticket${ currentSupportTicket === ticket ? " selected" : ""  }`}
                                         key={ index }
+                                        onClick={ () => setCurrentSupportTicket(ticket) }
                                     >
-                                        <h2>{ cardInfo[key] }</h2>
+                                        { ticket.subject }
                                     </Button>
                                 ))}
                             </div>
-                        </>
-                    ) : (filters.nav === "tickets" ? (
-                            <div className="content">
-                                <div className="supportTickets">
-                                    {supportTickets && supportTickets.map((ticket, index) => (
-                                        <Button
-                                            className={ `ticket${ currentSupportTicket === ticket ? " selected" : ""  }`}
-                                            key={ index }
-                                            onClick={ () => handleSelectTicket(ticket) }
-                                        >
-                                            { ticket.subject }
-                                        </Button>
+                            <div className="main">
+                                <div className="messages">
+                                    {ticketMessages && ticketMessages.map((ticketMessage, index) => (
+                                        <div className={ `message${ auth.user.user_id === ticketMessage.sender_id ? " thisUser" : ""  }`} key={ index }>
+                                            { ticketMessage.message }
+                                        </div>
                                     ))}
+                                    <div ref={ messagesEndRef } />
                                 </div>
-                                <div className="main">
-                                    <div className="messages">
-                                        {ticketMessages && ticketMessages.map((ticketMessage, index) => (
-                                            <div className={ `message${ auth.user.user_id === ticketMessage.sender_id ? " thisUser" : ""  }`} key={ index }>
-                                                { ticketMessage.message }
-                                            </div>
-                                        ))}
-                                        <div ref={ messagesEndRef } />
-                                    </div>
-                                    <div className="newMessage">
-                                        <TextField
-                                            className="input"
-                                            value={ newTicketMessage }
-                                            label="Message"
-                                            type="text"
-                                            onChange={ (e) => setNewTicketMessage(e.target.value) }
-                                            onKeyDown={ handleKeyPress }
-                                            variant="outlined"
-                                            sx={{
-                                                '& .MuiOutlinedInput-root': {
-                                                    borderRadius: '25px',
-                                                },
-                                            }}
-                                        />
-                                        <Button className="btn" onClick={ () => handleSendMessage() }>Send</Button>
-                                    </div>
-                                </div>
-                            </div>
-                        ) : (
-                            <>
-                                <h1>Support</h1>
-                                <div className="supportTicket">
+                                <div className="newMessage">
                                     <TextField
-                                        className="subject"
-                                        value={ subject }
-                                        label="Subject"
-                                        type="text"
-                                        onChange={(e) => {
-                                            setSubject(e.target.value)
-                                        }}
-                                        variant="outlined"
-                                    />
-                                    <TextField
-                                        className="message"
-                                        value={ message }
+                                        className="input"
+                                        value={ newTicketMessage }
                                         label="Message"
                                         type="text"
-                                        onChange={(e) => {
-                                            setMessage(e.target.value)
-                                        }}
+                                        onChange={ (e) => setNewTicketMessage(e.target.value) }
+                                        onKeyDown={ handleKeyPress }
                                         variant="outlined"
-                                        multiline={ true }
-                                        rows={ 5 }
-                                        maxrows={ 10 }
+                                        sx={{
+                                            '& .MuiOutlinedInput-root': {
+                                                borderRadius: '25px',
+                                            },
+                                        }}
                                     />
-                                    <Button className="submitBtn" onClick={ () => handleSubmitTicket() }>Submit</Button>
+                                    <Button className="btn" onClick={ () => handleSendMessage() }>Send</Button>
                                 </div>
-                            </>
-                        )
-                    )}
-                </div>
-                { /* Right-side Navigation */ }
-                <RightNav />
+                            </div>
+                        </div>
+                    ) : (
+                        <>
+                            <h1>Support</h1>
+                            <div className="supportTicket">
+                                <TextField
+                                    className="subject"
+                                    value={ subject }
+                                    label="Subject"
+                                    type="text"
+                                    onChange={(e) => {
+                                        setSubject(e.target.value)
+                                    }}
+                                    variant="outlined"
+                                />
+                                <TextField
+                                    className="message"
+                                    value={ message }
+                                    label="Message"
+                                    type="text"
+                                    onChange={(e) => {
+                                        setMessage(e.target.value)
+                                    }}
+                                    variant="outlined"
+                                    multiline={ true }
+                                    rows={ 5 }
+                                    maxrows={ 10 }
+                                />
+                                <Button className="submitBtn" onClick={ () => handleSubmitTicket() }>Submit</Button>
+                            </div>
+                        </>
+                    )
+                )}
             </div>
-        </SocketProvider>
+            { /* Right-side Navigation */ }
+            <RightNav />
+        </div>
     )
 }
 
