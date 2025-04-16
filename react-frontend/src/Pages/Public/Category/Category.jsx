@@ -1,5 +1,5 @@
 // External Libraries
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
 import { MdArrowBackIosNew, MdArrowForwardIos } from "react-icons/md";
 import { Button } from "@mui/material";
@@ -53,6 +53,8 @@ const Category = () => {
             listings: listings,
         },
     ]
+
+    const scrollRef = useRef(null); // Reference to scroll to the bottom of the messages div
 
     useEffect(() => {
         // API call to access the category data
@@ -144,6 +146,12 @@ const Category = () => {
         }, 100);
     }
 
+    useLayoutEffect(() => {
+        if (scrollRef.current) {
+            scrollRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+    }, [filters.page]);
+
     return (
         <div className="categoryPage page">
             <div className="mainPage">
@@ -172,6 +180,9 @@ const Category = () => {
                     { /* Category Sections */ }
                     {sections.map((section, index) => (
                         <div key={ index }>
+                            {section.identifier === "Listings" && (
+                                <div ref={scrollRef} />
+                            )}
                             <h1 className={ `categoryHead` }>{ section.title }</h1>
                             <div className={ `category${ section.identifier  }`}>
                                 { /* Map through the bestsellers and display them */ }

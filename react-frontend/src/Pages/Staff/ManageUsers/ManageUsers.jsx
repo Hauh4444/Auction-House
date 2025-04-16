@@ -110,6 +110,7 @@ const ManageUsers = () => {
                             value={ userIdInput }
                             label="User ID"
                             onChange={ (e) => setUserIdInput(e.target.value) }
+                            onKeyDown={ (e) => { if (e.key === "Enter") handleSubmit() } }
                             variant="outlined"
                         />
                         <Button className="submitBtn" onClick={ handleSubmit }>Submit</Button>
@@ -132,7 +133,7 @@ const ManageUsers = () => {
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {userData.map((item, rowIndex) => (
+                                {userData && userData.map((item, rowIndex) => (
                                     <tr className="item" key={ rowIndex }>
                                         {Object.keys(item).map((key, colIndex) => (
                                             <td

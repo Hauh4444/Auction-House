@@ -75,6 +75,7 @@
 
                 .backBtn {
                     width: 56px;
+                    min-width: 56px;
                     height: 56px;
                     background: map.get($theme-colors, mainColor1);
                     box-shadow: 0 1px 2px map.get($theme-colors, mainColor4);
@@ -108,7 +109,7 @@
                 }
 
                 .levelSelect {
-                    width: 100px;
+                    width: 125px;
                     height: 56px;
                 }
             }
@@ -117,6 +118,10 @@
                 width: calc(100% - 60px);
                 margin: 0 auto;
                 padding: 0 50px;
+
+                .line {
+                    margin: 15px 0;
+                }
             }
         }
     }

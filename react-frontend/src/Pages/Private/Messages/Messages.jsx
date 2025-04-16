@@ -44,9 +44,7 @@ const Messages = () => {
                 headers: { "Content-Type": "application/json" },
                 withCredentials: true, // Ensures cookies are sent with requests
             })
-            .then((res) => {
-                setMessages(res.data.messages); // Set the messages state
-            })
+            .then((res) => setMessages(res.data.messages))
             .catch(() => setMessages([]));
     };
 
@@ -132,11 +130,11 @@ const Messages = () => {
                         <div className="newMessage">
                             <TextField
                                 className="input"
-                                value={newMessage}
+                                value={ newMessage }
                                 label="Message"
                                 type="text"
-                                onChange={(e) => setNewMessage(e.target.value)}
-                                onKeyDown={handleKeyPress}
+                                onChange={ (e) => setNewMessage(e.target.value) }
+                                onKeyDown={ () => handleKeyPress() }
                                 variant="outlined"
                                 sx={{
                                     "& .MuiOutlinedInput-root": {
@@ -144,7 +142,7 @@ const Messages = () => {
                                     },
                                 }}
                             />
-                            <Button className="btn" onClick={handleSendMessage}>Send</Button>
+                            <Button className="btn" onClick={ () => handleSendMessage() }>Send</Button>
                         </div>
                     </div>
                 </div>

@@ -118,7 +118,7 @@ const SystemLogs = () => {
 
                             <div className="logData">
                                 {logData.map((line, index) => (
-                                    <div key={ index }>{ line }</div>
+                                    <div className="line" key={ index }>{ line }</div>
                                 ))}
                             </div>
                         </>
