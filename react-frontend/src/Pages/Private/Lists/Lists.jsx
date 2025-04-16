@@ -1,7 +1,7 @@
 // External Libraries
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, MenuItem, Select } from "@mui/material";
+import { Button, InputLabel, MenuItem, Select, FormControl } from "@mui/material";
 import axios from "axios";
 
 // Internal Modules
@@ -64,27 +64,31 @@ const Lists = () => {
                 <div className="listListings">
                     {lists && list && (
                         <div className="listHead">
-                            <Select
-                                className="listsInput"
-                                value={ list.list_id }
-                                label="List"
-                                onChange={ (e) => goToList(lists.find(l => l.list_id === e.target.value)) }
-                                sx={{
-                                    backgroundColor: "transparent",
-                                    "& .MuiSelect-select": {
-                                        display: "flex",
-                                        alignItems: "center",
-                                        paddingTop: "0",
-                                        paddingBottom: "0",
-                                    },
-                                    "&:before, &:after": { display: "none" },
-                                }}
-                                variant="filled"
-                            >
-                                {lists.map((list, index) => (
-                                    <MenuItem value={ list.list_id } key={ index }>{ list.title }</MenuItem>
-                                ))}
-                            </Select>
+                            <FormControl>
+                                <InputLabel className="listsLabel">List</InputLabel>
+                                <Select
+                                    className="listsInput"
+                                    value={ list.list_id }
+                                    labelId="listsLabel"
+                                    label="List"
+                                    onChange={ (e) => goToList(lists.find(l => l.list_id === e.target.value)) }
+                                    sx={{
+                                        backgroundColor: "transparent",
+                                        "& .MuiSelect-select": {
+                                            display: "flex",
+                                            alignItems: "center",
+                                            paddingTop: "0",
+                                            paddingBottom: "0",
+                                        },
+                                        "&:before, &:after": { display: "none" },
+                                    }}
+                                    variant="filled"
+                                >
+                                    {lists.map((list, index) => (
+                                        <MenuItem value={ list.list_id } key={ index }>{ list.title }</MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
                         </div>
                     )}
                     {listItems ? (

@@ -32,7 +32,7 @@ const StaffAccount = () => {
                     { /* Map Dictionary to Cards */ }
                     {Object.keys(cardInfo).map((key, index) => (
                         <Button
-                            className={ "navBtn" }
+                            className="navBtn"
                             onClick={ () => { navigate(key) } }
                             key={ index }
                         >

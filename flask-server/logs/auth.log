@@ -1,0 +1,12 @@
+2025-04-16 08:34:16,928 - INFO - Login successful for user: 1
+2025-04-16 08:34:16,969 - INFO - User: 1 is authenticated as: user
+2025-04-16 08:34:27,694 - INFO - Login successful for user: 1
+2025-04-16 08:34:27,734 - INFO - User: 1 is authenticated as: user
+2025-04-16 08:34:32,816 - INFO - Login successful for user: 3
+2025-04-16 08:34:32,854 - INFO - User: 3 is authenticated as: staff
+2025-04-16 08:34:38,218 - INFO - Login successful for user: 4
+2025-04-16 08:34:38,254 - INFO - User: 4 is authenticated as: admin
+2025-04-16 09:24:28,106 - INFO - Login successful for user: 4
+2025-04-16 09:24:28,106 - INFO - Login successful for user: 4
+2025-04-16 09:24:28,125 - INFO - User: 4 is authenticated as: admin
+2025-04-16 09:24:28,125 - INFO - User: 4 is authenticated as: admin

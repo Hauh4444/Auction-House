@@ -92,6 +92,7 @@ const ManageUsers = () => {
                             <Select
                                 id="routeInput"
                                 labelId="routeLabel"
+                                label="Info"
                                 value={ currentRoute }
                                 onChange={ (e) => setCurrentRoute(e.target.value) }
                                 variant="outlined"

@@ -24,10 +24,11 @@ const Messages = () => {
 
     // Fetch chats and set the first chat as current chat
     useEffect(() => {
-        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/user/chats/`, {
-            headers: { "Content-Type": "application/json" },
-            withCredentials: true, // Ensures cookies are sent with requests
-        })
+        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/user/chats/`,
+            {
+                headers: { "Content-Type": "application/json" },
+                withCredentials: true, // Ensures cookies are sent with requests
+            })
             .then((res) => {
                 setChats(res.data.chats); // Set the chats state
                 setCurrentChat(res.data.chats[0]) // Set the first chat as the current chat
@@ -38,10 +39,11 @@ const Messages = () => {
     // Fetch messages for the current chat
     const getMessages = () => {
         if (!currentChat) return;
-        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/user/messages/${ currentChat.chat_id }/`, {
-            headers: { "Content-Type": "application/json" },
-            withCredentials: true, // Ensures cookies are sent with requests
-        })
+        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/user/messages/${ currentChat.chat_id }/`,
+            {
+                headers: { "Content-Type": "application/json" },
+                withCredentials: true, // Ensures cookies are sent with requests
+            })
             .then((res) => {
                 setMessages(res.data.messages); // Set the messages state
             })

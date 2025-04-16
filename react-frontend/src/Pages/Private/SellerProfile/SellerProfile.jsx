@@ -183,6 +183,7 @@ const SellerProfile = () => {
                                 <Select
                                     className="categorySelect"
                                     labelId="categorySelectLabel"
+                                    label="Category"
                                     name="category_id"
                                     variant="outlined"
                                     value={ listingCategory }
@@ -201,6 +202,7 @@ const SellerProfile = () => {
                                 <Select
                                     className="listingType"
                                     labelId="listingTypeLabel"
+                                    label="Listing Type"
                                     name="listing_type"
                                     variant="outlined"
                                     value={ listing.listing_type }
