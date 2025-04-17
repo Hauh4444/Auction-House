@@ -1,24 +1,5 @@
 # Dinkleberg's Auction House
 
-## TODO
-
-### React Frontend
-
-1. Analytics & Reports 
-2. System Logs (Functionality Neeeded)
-3. Manage Listings 
-
-### Flask Server
-
-1. Logging
-2. Analytics & Reports 
-3. Consistency
-
-### MySQL Database
-
-1. Listings Need Quantity
-2. Payment Info Table
-
 ## Setup
 
 ### React Frontend
