@@ -1,4 +1,5 @@
 from pymysql import cursors
+from datetime import datetime
 
 from ..database.connection import get_db
 from ..entities import Transaction
@@ -11,7 +12,7 @@ class TransactionMapper:
         Retrieve all transactions from the database.
 
         Args:
-            user_id: Id of the user to retrieve transactions of
+            user_id: ID of the user to retrieve transactions of
             db_session: Optional database session to be used in tests.
 
         Returns:
@@ -83,10 +84,11 @@ class TransactionMapper:
         """
         db = db_session or get_db()
         cursor = db.cursor(cursors.DictCursor) # type: ignore
-        conditions = [f"{key} = %s" for key in data if key not in ["transaction_id", "created_at"]]
-        values = [data.get(key) for key in data if key not in ["transaction_id", "created_at"]]
+        conditions = [f"{key} = %s" for key in data if key not in ["transaction_id", "created_at", "updated_at"]]
+        values = [data.get(key) for key in data if key not in ["transaction_id", "created_at", "updated_at"]]
+        values.append(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
         values.append(transaction_id)
-        statement = f"UPDATE transactions SET {', '.join(conditions)}, updated_at = CURRENT_TIMESTAMP WHERE transaction_id = %s"
+        statement = f"UPDATE transactions SET {', '.join(conditions)}, updated_at = %s WHERE transaction_id = %s"
         cursor.execute(statement, values)
         db.commit()
         return cursor.rowcount

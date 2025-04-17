@@ -69,7 +69,7 @@ describe("PublicRoutes Component", () => {
         await act(async () => {
             render(
                 <AuthProvider>
-                    <MemoryRouter initialEntries={["/"]}>
+                    <MemoryRouter initialEntries={ ["/"] }>
                         <PublicRoutes />
                     </MemoryRouter>
                 </AuthProvider>
@@ -85,7 +85,7 @@ describe("PublicRoutes Component", () => {
         await act(async () => {
             render(
                 <AuthProvider>
-                    <MemoryRouter initialEntries={["/user/account"]}>
+                    <MemoryRouter initialEntries={ ["/user/account"] }>
                         <PublicRoutes />
                     </MemoryRouter>
                 </AuthProvider>
@@ -101,7 +101,7 @@ describe("PublicRoutes Component", () => {
         await act(async () => {
             render(
                 <AuthProvider>
-                    <MemoryRouter initialEntries={["/user/account"]}>
+                    <MemoryRouter initialEntries={ ["/user/account"] }>
                         <PublicRoutes />
                     </MemoryRouter>
                 </AuthProvider>
@@ -117,7 +117,7 @@ describe("PublicRoutes Component", () => {
         await act(async () => {
             render(
                 <AuthProvider>
-                    <MemoryRouter initialEntries={["/staff/account"]}>
+                    <MemoryRouter initialEntries={ ["/staff/account"] }>
                         <PublicRoutes />
                     </MemoryRouter>
                 </AuthProvider>
@@ -133,7 +133,7 @@ describe("PublicRoutes Component", () => {
         await act(async () => {
             render(
                 <AuthProvider>
-                    <MemoryRouter initialEntries={["/staff/account"]}>
+                    <MemoryRouter initialEntries={ ["/staff/account"] }>
                         <PublicRoutes />
                     </MemoryRouter>
                 </AuthProvider>
@@ -149,7 +149,7 @@ describe("PublicRoutes Component", () => {
         await act(async () => {
             render(
                 <AuthProvider>
-                    <MemoryRouter initialEntries={["/staff/account"]}>
+                    <MemoryRouter initialEntries={ ["/staff/account"] }>
                         <PublicRoutes />
                     </MemoryRouter>
                 </AuthProvider>
@@ -165,7 +165,7 @@ describe("PublicRoutes Component", () => {
         await act(async () => {
             render(
                 <AuthProvider>
-                    <MemoryRouter initialEntries={["/admin/account"]}>
+                    <MemoryRouter initialEntries={ ["/admin/account"] }>
                         <PublicRoutes />
                     </MemoryRouter>
                 </AuthProvider>
@@ -181,7 +181,7 @@ describe("PublicRoutes Component", () => {
         await act(async () => {
             render(
                 <AuthProvider>
-                    <MemoryRouter initialEntries={["/admin/account"]}>
+                    <MemoryRouter initialEntries={ ["/admin/account"] }>
                         <PublicRoutes />
                     </MemoryRouter>
                 </AuthProvider>
@@ -197,7 +197,7 @@ describe("PublicRoutes Component", () => {
         await act(async () => {
             render(
                 <AuthProvider>
-                    <MemoryRouter initialEntries={["/admin/account"]}>
+                    <MemoryRouter initialEntries={ ["/admin/account"] }>
                         <PublicRoutes />
                     </MemoryRouter>
                 </AuthProvider>

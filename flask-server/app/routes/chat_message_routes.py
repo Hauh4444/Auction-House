@@ -1,4 +1,4 @@
-from flask import Blueprint, request, session
+from flask import Blueprint, request
 from flask_login import login_required, current_user
 
 from ..services import ChatMessageService
@@ -42,7 +42,7 @@ def create_message(chat_id, db_session=None):
         JSON response indicating the creation status of the message.
     """
     data = request.json
-    data.update(sender_id=session.get("user_id"), chat_id=chat_id)
+    data.update(sender_id=current_user.id, chat_id=chat_id)
     return ChatMessageService.create_message(data=data, db_session=db_session)
 
 

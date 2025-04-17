@@ -1,3 +1,10 @@
 from .base import Config
-from .development import DevelopmentConfig
-from .production import ProductionConfig
+
+
+class DevelopmentConfig(Config):
+    DEBUG = True
+
+
+class ProductionConfig(Config):
+    DEBUG = False
+    SESSION_COOKIE_SECURE = True

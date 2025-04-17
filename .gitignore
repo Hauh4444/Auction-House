@@ -1,14 +1,13 @@
-.idea/
+**/__pycache__/
+**/*.pyc
+**/.idea/
 
-flask-server/app/__pycache__/
-flask-server/app/routes/__pycache__/
-flask-server/app/entities/__pycache__/
-flask-server/app/data_mappers/__pycache__/
-flask-server/app/services/__pycache__/
-flask-server/flask_session/
-flask-server/.env
+/react-frontend/node_modules/
+/react-frontend/coverage/
+/react-frontend/dist/
+/react-frontend/.env
 
-react-frontend/coverage/
-react-frontend/node_modules/
-
-*.pyc
+/flask-server/.venv/
+/flask-server/flask_session/
+/flask-server/database_backups/
+/flask-server/.env

@@ -1,0 +1,102 @@
+// Built In Modules
+@use "sass:map";
+// Custom Variables
+@use "@/assets/variables.modules.scss" as *;
+
+.siteSettingsPage {
+    .mainPage {
+        h1 {
+            text-align: center;
+            font-weight: lighter;
+        }
+
+        .content {
+            width: 70%;
+            margin: 50px auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+
+            .section {
+                padding: 20px 2.5%;
+                box-shadow: inset 0 4px 4px -4px map.get($theme-colors, mainColor4);
+                flex-basis: 45%;
+
+                h2 {
+                    margin: 25px 0;
+                    font-size: 20px;
+                    text-align: center;
+                }
+
+                .form-group {
+                    height: 40px;
+                    margin: 10px 0;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+
+                    label {
+                        height: 100%;
+                        display: block;
+                        font-weight: bold;
+                        flex-basis: 250px;
+                        align-content: center;
+                    }
+
+                    input[type="checkbox"] {
+                        height: 20px;
+                        align-content: flex-start;
+                        flex-basis: calc(100% - 250px);
+                    }
+
+                    .textField {
+                        vertical-align: top;
+                        flex-basis: calc(100% - 250px);
+                    }
+                }
+            }
+
+            .endSection {
+                width: 100%;
+                box-shadow: inset 0 4px 4px -4px map.get($theme-colors, mainColor4);
+                display: flex;
+                justify-content: center;
+
+                .saveBtn {
+                    height: 40px;
+                    margin: 20px;
+                    padding: 0 15px;
+                    border: none;
+                    border-radius: 25px;
+                    overflow: hidden;
+                    color: map.get($theme-colors, accentColor1);
+                    font-size: 18px;
+                    font-weight: bold;
+                    text-transform: none;
+                    transition: all 0.5s ease;
+
+                    &::after {
+                        background: linear-gradient(to right, map.get($theme-colors, accentColor1), map.get($theme-colors, accentColor2)) no-repeat;
+                        position: absolute;
+                        z-index: -1;
+                        opacity: 0;
+                        inset: 0;
+                        content: "";
+                        transition: opacity 0.5s ease;
+                    }
+
+                    &:hover::after {
+                        opacity: 1;
+                    }
+
+                    &:hover {
+                        border: none;
+                        background-color: transparent;
+                        color: map.get($theme-colors, mainColor1) !important;
+                    }
+                }
+            }
+        }
+    }
+}

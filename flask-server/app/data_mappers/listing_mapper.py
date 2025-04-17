@@ -1,29 +1,11 @@
 from pymysql import cursors
+from datetime import datetime
 
 from ..database.connection import get_db
 from ..entities import Listing
 
 
 class ListingMapper:
-    @staticmethod
-    def get_all_user_listings(user_id, db_session=None):
-        """
-        Retrieve all listings by user id.
-
-        Args:
-            user_id (int): ID of the user whos listings to retrieve
-            db_session: Optional database session to be used in tests.
-
-        Returns:
-            list: A list of listing dictionaries matching the query conditions.
-        """
-        db = db_session or get_db()
-        cursor = db.cursor(cursors.DictCursor) # type: ignore
-        cursor.execute("SELECT * FROM listings WHERE user_id = %s", (user_id,))
-        listings = cursor.fetchall()
-        return [Listing(**listing).to_dict() for listing in listings]
-
-
     @staticmethod
     def get_all_listings(args, db_session=None):
         """
@@ -43,6 +25,9 @@ class ListingMapper:
         values = []
 
         # Add conditions
+        if "user_id" in args:
+            conditions.append("user_id = %s")
+            values.append(args.get("user_id"))
         if "category_id" in args:
             conditions.append("category_id = %s")
             values.append(args.get("category_id"))
@@ -137,10 +122,11 @@ class ListingMapper:
         """
         db = db_session or get_db()
         cursor = db.cursor(cursors.DictCursor) # type: ignore
-        set_clause = ", ".join([f"{key} = %s" for key in data if key not in ["listing_id", "created_at"]])
-        values = [data.get(key) for key in data if key not in ["listing_id", "created_at"]]
+        set_clause = ", ".join([f"{key} = %s" for key in data if key not in ["listing_id", "created_at", "updated_at"]])
+        values = [data.get(key) for key in data if key not in ["listing_id", "created_at", "updated_at"]]
+        values.append(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
         values.append(listing_id)
-        statement = f"UPDATE listings SET {set_clause} WHERE listing_id = %s"
+        statement = f"UPDATE listings SET {set_clause}, updated_at = %s WHERE listing_id = %s"
         cursor.execute(statement, values)
         db.commit()
         return cursor.rowcount

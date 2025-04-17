@@ -1,4 +1,5 @@
 from pymysql import cursors
+from datetime import datetime
 
 from ..database.connection import get_db
 from ..entities import Review
@@ -112,10 +113,11 @@ class ReviewMapper:
         """
         db = db_session or get_db()
         cursor = db.cursor(cursors.DictCursor) # type: ignore
-        conditions = [f"{key} = %s" for key in data if key != "review_id"]
-        values = list(data.values())
+        set_clause = ", ".join([f"{key} = %s" for key in data if key not in ["review_id", "updated_at"]])
+        values = [data.get(key) for key in data if key not in ["review_id", "updated_at"]]
+        values.append(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
         values.append(review_id)
-        statement = "UPDATE reviews SET " + ", ".join(conditions) + " WHERE review_id = %s"
+        statement = f"UPDATE reviews SET {set_clause}, updated_at = %s WHERE review_id = %s"
         cursor.execute(statement, values)
         db.commit()
         return cursor.rowcount

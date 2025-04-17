@@ -21,11 +21,11 @@ describe("PrivateRoute Component", () => {
         useAuth.mockReturnValue({ user: null });
 
         render(
-            <MemoryRouter initialEntries={["/user/account"]}>
+            <MemoryRouter initialEntries={ ["/user/account"] }>
                 <Routes>
-                    <Route path="/auth-page" element={<div>Auth Page</div>} />
-                    <Route element={<PrivateRoute />}>
-                        <Route path="/user/account" element={<div>Account Page</div>} />
+                    <Route path="/auth-page" element={ <div>Auth Page</div> } />
+                    <Route element={ <PrivateRoute /> }>
+                        <Route path="/user/account" element={ <div>Account Page</div> } />
                     </Route>
                 </Routes>
             </MemoryRouter>
@@ -40,11 +40,11 @@ describe("PrivateRoute Component", () => {
         useAuth.mockReturnValue({ user: { id: 1, name: "John Doe" } });
 
         render(
-            <MemoryRouter initialEntries={["/user/account"]}>
+            <MemoryRouter initialEntries={ ["/user/account"] }>
                 <Routes>
-                    <Route path="/auth-page" element={<div>Auth Page</div>} />
-                    <Route element={<PrivateRoute />}>
-                        <Route path="/user/account" element={<div>Account Page</div>} />
+                    <Route path="/auth-page" element={ <div>Auth Page</div> } />
+                    <Route element={ <PrivateRoute /> }>
+                        <Route path="/user/account" element={ <div>Account Page</div> } />
                     </Route>
                 </Routes>
             </MemoryRouter>

@@ -65,12 +65,12 @@ def test_create_ticket(mock_db_session):
 def test_update_ticket(mock_db_session):
     mock_cursor = mock_db_session.cursor.return_value
     mock_cursor.rowcount = 1
-    updates = {
+    data = {
         "status": "resolved",
         "priority": "low"
     }
 
-    rows_updated = SupportTicketMapper.update_ticket(ticket_id=1, updates=updates, db_session=mock_db_session)
+    rows_updated = SupportTicketMapper.update_ticket(ticket_id=1, data=data, db_session=mock_db_session)
 
     assert rows_updated == 1
 
@@ -123,11 +123,11 @@ def test_update_ticket_invalid_id(mock_db_session):
     mock_cursor = mock_db_session.cursor.return_value
     mock_cursor.rowcount = 0  # Simulate no rows were updated
 
-    updates = {
+    data = {
         "status": "closed", "priority": "high", "assigned_to": "senior_support_agent"
     }
 
-    rows_updated = SupportTicketMapper.update_ticket(ticket_id=999, updates=updates, db_session=mock_db_session)  # Invalid ID
+    rows_updated = SupportTicketMapper.update_ticket(ticket_id=999, data=data, db_session=mock_db_session)  # Invalid ID
 
     assert rows_updated == 0  # Expecting no rows to be updated
 

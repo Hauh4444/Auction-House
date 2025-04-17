@@ -16,42 +16,40 @@ const Security = () => {
 
     // Fetch user data from the backend API
     useEffect(() => {
-        axios.get("http://127.0.0.1:5000/api/user/", {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            withCredentials: true, // Ensures cookies are sent with requests
-        })
+        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/user/`,
+            {
+                headers: { "Content-Type": "application/json" },
+                withCredentials: true, // Ensures cookies are sent with requests
+            })
             .then((res) => setUser(res.data.user)) // Set the user state
-            .catch(err => console.log(err)); // Log errors if any
+            .catch(err => console.error(err)); // Log errors if any
     }, []);
 
     const password_reset_request = () => {
-        axios.post("http://127.0.0.1:5000/api/auth/password_reset_request/", {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            withCredentials: true,
-        })
+        axios.post(`${ import.meta.env.VITE_BACKEND_API_URL }/auth/password_reset_request/`,
+                {
+                headers: { "Content-Type": "application/json" },
+                withCredentials: true,
+            })
             .then(() => alert("Password reset request email sent to: " + user["email"]))
-            .catch(err => console.log(err));
+            .catch(err => console.error(err));
     }
 
     return (
         <div className="securityPage page">
             <div className="mainPage">
-                {/* Page Header */}
+                { /* Page Header */ }
                 <Header />
 
                 <h1>Login & Security</h1>
                 <div className="card">
                     <div className="info">
                         <h2>Username</h2>
-                        <p>{user["username"]}</p>
+                        <p>{ user["username"] }</p>
                     </div>
                     <Button
                         className="editBtn"
-                        onClick={() => {}}
+                        onClick={ () => {} }
                     >
                         Edit
                     </Button>
@@ -59,11 +57,11 @@ const Security = () => {
                 <div className="card">
                     <div className="info">
                         <h2>Email</h2>
-                        <p>{user["email"]}</p>
+                        <p>{ user["email"] }</p>
                     </div>
                     <Button
                         className="editBtn"
-                        onClick={() => {}}
+                        onClick={ () => {} }
                     >
                         Edit
                     </Button>
@@ -75,13 +73,13 @@ const Security = () => {
                     </div>
                     <Button
                         className="editBtn"
-                        onClick={() => password_reset_request()}
+                        onClick={ () => password_reset_request() }
                     >
                         Reset
                     </Button>
                 </div>
             </div>
-            {/* Right-side Navigation */}
+            { /* Right-side Navigation */ }
             <RightNav />
         </div>
     )

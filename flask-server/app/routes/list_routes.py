@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from flask_login import login_required
+from flask_login import login_required, current_user
 
 from ..services import ListService
 
@@ -54,6 +54,7 @@ def create_list(db_session=None):
         JSON response containing the newly created list details.
     """
     data = request.json
+    data.update(user_id=current_user.id)
     return ListService.create_list(data=data, db_session=db_session)
 
 
@@ -72,8 +73,7 @@ def create_list_item(list_id, db_session=None):
         JSON response confirming the addition of the item to the list.
     """
     data = request.json
-    listing_id = data.get("listing_id")
-    return ListService.create_list_item(list_id=list_id, listing_id=listing_id, db_session=db_session)
+    return ListService.create_list_item(list_id=list_id, listing_id=data.get("listing_id"), db_session=db_session)
 
 
 # PUT /api/user/lists/{id}/

@@ -4,7 +4,6 @@ import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
 import { MdArrowBackIosNew, MdArrowForwardIos } from "react-icons/md";
 import { Button } from "@mui/material";
 import axios from "axios";
-import PropTypes from "prop-types";
 
 // Internal Modules
 import Header from "@/Components/Header/Header";
@@ -27,7 +26,7 @@ import "./Search.scss"
  * - Displays search results with filters.
  * - Provides pagination buttons when "view-all" mode is enabled.
  *
- * @returns {JSX.Element} The rendered homepage containing the header, navigation, and conditionally rendered category navigation.
+ * @returns { JSX.Element } The rendered homepage containing the header, navigation, and conditionally rendered category navigation.
  */
 const Search = () => {
     const navigate = useNavigate(); // Navigate hook for routing
@@ -45,7 +44,7 @@ const Search = () => {
             filters.start = ((filters.page - 1) * 10).toString();
             filters.range = "10";
         }
-        // Apply sorting logic based on filter (new or best-sellers)
+        // Apply sorting logic based on filter (new or bestsellers)
         if (filters.nav === "new") {
             filters.sort = "created_at";
             filters.order = "desc";
@@ -63,15 +62,15 @@ const Search = () => {
                 <div className="pagination">
                     <Button
                         className="previousPagination"
-                        style={filters.page === "1" ? {opacity: 0.5, cursor: "default"} : {opacity: 1, cursor: "pointer"}}
-                        disabled={filters.page === "1"}
-                        onClick={() => pagination(-1)}
+                        style={ filters.page === "1" ? { opacity: 0.5, cursor: "default"  } : { opacity: 1, cursor: "pointer" } }
+                        disabled={ filters.page === "1" }
+                        onClick={ () => pagination(-1) }
                     >
                         <MdArrowBackIosNew className="icon" />&ensp;Previous
                     </Button>
                     <Button
-                        style={{marginLeft: "25px"}}
-                        onClick={() => pagination(1)}
+                        style={ { marginLeft: "25px" } }
+                        onClick={ () => pagination(1) }
                     >
                         Next&ensp;<MdArrowForwardIos className="icon" />
                     </Button>
@@ -80,21 +79,23 @@ const Search = () => {
         }
 
         // Fetch listings from the API with the specified filters
-        axios.get("http://127.0.0.1:5000/api/listings/", {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            params: createSearchParams(filters), // Convert filters to query parameters
-        })
-            .then((res) => setListings(res.data.listings)) // Set the fetched listings into state
-            .catch(() => setListings([])); // Log errors if any
+        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/listings/`,
+            {
+                headers: { "Content-Type": "application/json" },
+                params: createSearchParams(filters), // Convert filters to query parameters
+            })
+            .then((res) => {
+                setListings(res.data.listings);
+                console.log(res.data.listings[0]);
+            }) // Set the fetched listings into state
+            .catch(() => setListings([]));
     }, [location.search]);
 
     /**
      * Handles pagination for search results.
      * Adjusts the `page` parameter in the URL and reloads results.
      *
-     * @param {number} n - Increment or decrement for pagination.
+     * @param { number } n - Increment or decrement for pagination.
      */
     function pagination(n) {
         // Update URL filter
@@ -114,65 +115,53 @@ const Search = () => {
     return (
         <div className="searchPage page">
             <div className="mainPage">
-                {/* Page Header */}
+                { /* Page Header */ }
                 <Header />
-                {/* Search Navigation */}
+                { /* Search Navigation */ }
                 <SearchNav />
-                {/* Search Listings */}
+                { /* Search Listings */ }
                 <div className="searchListings">
                     {listings.map((listing, index) => (
                         <div
-                            className={`listing ${index === listings.length - 1 && filters.nav !== "view-all" ? "last" : ""}`}
-                            key={index}
+                            className={ `listing ${ index === listings.length - 1 && filters.nav !== "view-all" ? "last" : ""  }`}
+                            key={ index }
                         >
                             <div className="image">
-                                {/* Display the product image */}
-                                <img src={`data:image/jpg;base64,${listing.image_encoded}`} alt="" />
+                                { /* Display the product image */ }
+                                <img src={ `data:image/jpg;base64,${ listing.image_encoded  }`} alt="" />
                             </div>
                             <div className="info">
-                                {/* Button to navigate to the detailed listing view */}
-                                <Button className="title" onClick={() => navigateToListing(listing.listing_id, navigate)}>
-                                    {listing.title}
+                                { /* Button to navigate to the detailed listing view */ }
+                                <Button className="title" onClick={ () => navigateToListing(listing.listing_id, navigate) }>
+                                    { listing.title }
                                 </Button>
                                 <div className="review">
-                                    {/* Render the star rating based on the average review */}
-                                    {renderStars(listing.average_review)}
-                                    {/* Display the total number of reviews */}
-                                    <span className="totalReviews" style={{left: -16 * Math.ceil(listing.average_review) + "px"}}>
-                                        &emsp;{listing.total_reviews}
+                                    { /* Render the star rating based on the average review */ }
+                                    { renderStars(listing.average_review) }
+                                    { /* Display the total number of reviews */ }
+                                    <span className="totalReviews" style={ { left: -16 * Math.ceil(listing.average_review) + "px" } }>
+                                        &emsp;{ listing.total_reviews }
                                     </span>
                                 </div>
                                 <h2 className="price">
-                                    ${listing.buy_now_price} {/* Display the product price */}
+                                    ${ listing.buy_now_price } { /* Display the product price */ }
                                 </h2>
                             </div>
                             <div className="btns">
-                                <Button className="addToListBtn" onClick={() => addToList(1, listing.listing_id)}>Add To List</Button>
-                                {/* Button to add the product to the cart */}
-                                <Button className="addCartBtn" onClick={() => addToCart(listing)}>Add to Cart</Button>
+                                <Button className="addToListBtn" onClick={ () => addToList(1, listing.listing_id) }>Add To List</Button>
+                                { /* Button to add the product to the cart */ }
+                                <Button className="addCartBtn" onClick={ () => addToCart(listing) }>Add to Cart</Button>
                             </div>
                         </div>
                     ))}
-                    {/* Pagination Controls */}
-                    {paginationButtons}
+                    { /* Pagination Controls */ }
+                    { paginationButtons }
                 </div>
             </div>
-            {/* Right-side Navigation */}
+            { /* Right-side Navigation */ }
             <RightNav />
         </div>
     );
 }
-
-// Define the expected shape of the listings prop
-Search.propTypes = {
-    listing: PropTypes.shape({
-        listing_id: PropTypes.number,
-        title_short: PropTypes.string,
-        buy_now_price: PropTypes.number,
-        image_encoded: PropTypes.string,
-        average_review: PropTypes.number,
-        total_reviews: PropTypes.number,
-    }),
-};
 
 export default Search;

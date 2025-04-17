@@ -27,7 +27,7 @@ def backup_db():
     try:
         os.makedirs(BACKUP_DIRECTORY, exist_ok=True)
 
-        today = datetime.now().strftime("%Y-%m-%d")
+        today = datetime.now().strftime("%Y-%m-%d %H:%M:%S").strftime("%Y-%m-%d")
         backup_file = f"auctionhouse_backup_{today}.sql"
         backup_path = os.path.join(BACKUP_DIRECTORY, backup_file)
 
@@ -111,7 +111,7 @@ def recover_db():
         )
         cursor = conn.cursor()
 
-        with open(latest_backup, "r", encoding="utf-8") as f:
+        with open(latest_backup, encoding="utf-8") as f:
             sql_script = f.read()
 
         for statement in sql_script.split(';'):

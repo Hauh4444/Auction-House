@@ -1,6 +1,7 @@
-from flask import jsonify, Response, session
+from flask import jsonify, Response
 
 from ..data_mappers import ChatMessageMapper, ChatMapper
+from ..utils.socketio import socketio
 
 
 class ChatMessageService:
@@ -17,7 +18,6 @@ class ChatMessageService:
             Response: A JSON response containing the chat messages if found, otherwise a 404 error.
         """
         messages = ChatMessageMapper.get_messages_by_chat_id(chat_id=chat_id, db_session=db_session)
-
         if not messages:
             response_data = {"error": "No messages found for this chat"}
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype='application/json')
@@ -39,16 +39,16 @@ class ChatMessageService:
             Response: A JSON response with the success message and message ID, or a 409 error if the message could not be created.
         """
         message_id = ChatMessageMapper.create_message(data=data, db_session=db_session)
-
         if not message_id:
             response_data = {"error": "Error creating message"}
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype='application/json')
 
         updated_rows = ChatMapper.update_chat_timestamp(chat_id=data.get("chat_id"), db_session=db_session)
-
         if not updated_rows:
             response_data = {"error": "Error updating chat timestamp"}
-            return Response(response=jsonify(response_data).get_data(), status=404, mimetype='application/json')
+            return Response(response=jsonify(response_data).get_data(), status=409, mimetype='application/json')
+
+        socketio.emit("new_message")
 
         response_data = {"message": "Message created", "message_id": message_id}
         return Response(response=jsonify(response_data).get_data(), status=201, mimetype='application/json')
@@ -68,10 +68,9 @@ class ChatMessageService:
             Response: A JSON response with a success message if the message was updated, or a 404 error if the message was not found or no changes were made.
         """
         updated_rows = ChatMessageMapper.update_message(message_id=message_id, data=data, db_session=db_session)
-
         if not updated_rows:
-            response_data = {"error": "Message not found or no changes made"}
-            return Response(response=jsonify(response_data).get_data(), status=404, mimetype='application/json')
+            response_data = {"error": "Error updating chat message"}
+            return Response(response=jsonify(response_data).get_data(), status=409, mimetype='application/json')
 
         response_data = {"message": "Message updated", "updated_rows": updated_rows}
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype='application/json')
@@ -90,7 +89,6 @@ class ChatMessageService:
             Response: A JSON response with the success message if the message was deleted, or a 404 error if the message was not found.
         """
         deleted_rows = ChatMessageMapper.delete_message(message_id=message_id, db_session=db_session)
-
         if not deleted_rows:
             response_data = {"error": "Message not found"}
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype='application/json')

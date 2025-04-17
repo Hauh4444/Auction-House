@@ -20,6 +20,7 @@ def get_all_reviews(db_session=None):
         JSON response containing a list of all reviews.
     """
     args = request.args
+
     return ReviewService.get_all_reviews(args=args, db_session=db_session)
 
 

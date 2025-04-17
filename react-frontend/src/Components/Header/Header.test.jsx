@@ -60,7 +60,7 @@ describe("Header Component", () => {
     it("renders the 'Categories' button when not on the homepage", async () => {
         await act(async () => {
             render(
-                <MemoryRouter initialEntries={["/some-page"]}>
+                <MemoryRouter initialEntries={ ["/some-page"] }>
                     <Header/>
                 </MemoryRouter>
             );
@@ -73,7 +73,7 @@ describe("Header Component", () => {
     it("does not render the 'Categories' button on the homepage", async () => {
         await act(async () => {
             render(
-                <MemoryRouter initialEntries={["/"]}>
+                <MemoryRouter initialEntries={ ["/"] }>
                     <Header/>
                 </MemoryRouter>
             );
@@ -86,7 +86,7 @@ describe("Header Component", () => {
     it("toggles categories popup when Categories button is clicked", async () => {
         await act(async () => {
             render(
-                <MemoryRouter initialEntries={["/some-page"]}>
+                <MemoryRouter initialEntries={ ["/some-page"] }>
                     <Header/>
                 </MemoryRouter>
             );

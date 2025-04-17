@@ -90,6 +90,6 @@ class AuthMapper:
 
         statement = "UPDATE users SET last_login = %s WHERE user_id = %s"
 
-        cursor.execute(statement, (datetime.now(), user_id))
+        cursor.execute(statement, (datetime.now().strftime("%Y-%m-%d %H:%M:%S"), user_id))
         db.commit()
         return cursor.rowcount

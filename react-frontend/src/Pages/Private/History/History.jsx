@@ -21,20 +21,19 @@ const History = () => {
 
     useEffect(() => {
         // Fetch listings from the API with the specified filters
-        axios.get(`http://127.0.0.1:5000/api/user/${filters.nav}/`, {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            withCredentials: true,
-        })
+        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/user/${ filters.nav }/`,
+            {
+                headers: { "Content-Type": "application/json" },
+                withCredentials: true,
+            })
             .then((res) => setHistory(res.data[filters.nav]))
-            .catch(err => console.log(err)); // Log errors if any
+            .catch(err => console.error(err)); // Log errors if any
     }, [location.search]);
 
     return (
         <div className="userHistoryPage page">
             <div className="mainPage">
-                {/* Page Header */}
+                { /* Page Header */ }
                 <Header />
 
                 <HistoryNav />
@@ -42,19 +41,19 @@ const History = () => {
                 <div className="historyItems">
                     {history && history.map((item, index) => (
                         <>
-                            <Card className="historyCard" key={index}>
+                            <Card className="historyCard" key={ index }>
                                 <CardContent className="cardContent">
                                     {filters.nav === "orders" ? (
                                         <>
-                                            <p><strong>Date:</strong> {item.order_date}</p>
-                                            <p><strong>Status:</strong> {item.status}</p>
+                                            <p><strong>Date:</strong> { item.order_date }</p>
+                                            <p><strong>Status:</strong> { item.status }</p>
                                         </>
                                     ) : filters.nav === "reviews" && (
                                         <>
-                                            <p><strong>Title:</strong> {item.title}</p>
-                                            <p><strong>Description:</strong> {item.description}</p>
+                                            <p><strong>Title:</strong> { item.title }</p>
+                                            <p><strong>Description:</strong> { item.description }</p>
                                             <div className="review">
-                                                {renderStars(item.stars)}
+                                                { renderStars(item.stars) }
                                             </div>
                                         </>
                                     )}
@@ -64,7 +63,7 @@ const History = () => {
                     ))}
                 </div>
             </div>
-            {/* Right-side Navigation */}
+            { /* Right-side Navigation */ }
             <RightNav />
         </div>
     );

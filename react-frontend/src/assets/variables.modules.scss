@@ -12,6 +12,6 @@ $theme-colors: (
 
 :export {
     @each $color, $value in theme-colors {
-        #{$color}: #{$value};
+        #{ $color }: #{ $value };
     }
 }
