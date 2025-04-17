@@ -4,28 +4,27 @@
 
 ### React Frontend
 
-1. Analytics & Reports 
-2. System Logs (Functionality Neeeded)
-3. Manage Listings 
+1. Analytics & Reports
+2. Manage Listings
+3. Implement Feedback UI
+4. Friend UI
+5. Live Auction UI
 
 ### Flask Server
 
 1. Logging
-2. Analytics & Reports 
-3. Consistency
-
-### MySQL Database
-
-1. Listings Need Quantity
-2. Payment Info Table
+2. Fix Tests
+3. Analytics & Reports
+4. Order & Delivery API
+5. Text Notifications
 
 ## Setup
 
 ### React Frontend
 
-1. Ensure you have [Node.js](https://nodejs.org/en/download) installed on your machine.
-1. In a terminal, change to the `react-frontend` directory.
-2. Run the `npm install` command to install node modules and required packages within the `package.json` file.
+1. Ensure you have [Node.js](https://nodejs.org/en/download) installed on your machine. 
+2. In a terminal, change to the `react-frontend` directory. 
+3. Run the `npm install` command to install node modules and required packages within the `package.json` file.
 
 ### Flask Server
 
