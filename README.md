@@ -1,31 +1,12 @@
 # Dinkleberg's Auction House
 
-## TODO
-
-### React Frontend
-
-1. Analytics & Reports 
-2. System Logs (Functionality Neeeded)
-3. Manage Listings 
-
-### Flask Server
-
-1. Logging
-2. Analytics & Reports 
-3. Consistency
-
-### MySQL Database
-
-1. Listings Need Quantity
-2. Payment Info Table
-
 ## Setup
 
 ### React Frontend
 
-1. Ensure you have [Node.js](https://nodejs.org/en/download) installed on your machine.
-1. In a terminal, change to the `react-frontend` directory.
-2. Run the `npm install` command to install node modules and required packages within the `package.json` file.
+1. Ensure you have [Node.js](https://nodejs.org/en/download) installed on your machine. 
+2. In a terminal, change to the `react-frontend` directory. 
+3. Run the `npm install` command to install node modules and required packages within the `package.json` file.
 
 ### Flask Server
 
