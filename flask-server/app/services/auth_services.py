@@ -50,14 +50,14 @@ class AuthService:
         user_id = AuthMapper.create_user(data=user_data, db_session=db_session)
         if not user_id:
             response_data = {"error": "Error creating user"}
-            logger.error(msg=f"Failed creating user with data: {user_data}")
+            logger.error(msg=f"Failed creating user with data: {', '.join(f'{k}={v!r}' for k, v in user_data.items())}")
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
 
         profile_data = {"user_id": user_id, "first_name": data.get("first_name"), "last_name": data.get("last_name")}
         profile_id = ProfileMapper.create_profile(data=profile_data, db_session=db_session).get_json().get("profile_id")
         if not profile_id:
             response_data = {"error": "Error creating profile"}
-            logger.error(msg=f"Failed creating profile with data: {profile_data}")
+            logger.error(msg=f"Failed creating profile with data: {', '.join(f'{k}={v!r}' for k, v in profile_data.items())}")
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
 
         response_data = {"message": "User registered successfully", "user_id": user_id, "profile_id": profile_id}

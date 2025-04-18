@@ -68,11 +68,11 @@ class CategoryService:
         category_id = CategoryMapper.create_category(data=data, db_session=db_session)
         if not category_id:
             response_data = {"error": "Error creating category"}
-            logger.error(msg=f"Failed creating category with data: {data}")
+            logger.error(msg=f"Failed creating category with data: {', '.join(f'{k}={v!r}' for k, v in data.items())}")
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
 
         response_data = {"message": "Category created", "category_id": category_id}
-        logger.info(msg=f"Category: {category_id} created successfully with data: {data}")
+        logger.info(msg=f"Category: {category_id} created successfully with data: {', '.join(f'{k}={v!r}' for k, v in data.items())}")
         return Response(response=jsonify(response_data).get_data(), status=201, mimetype="application/json")
 
     @staticmethod
@@ -92,11 +92,11 @@ class CategoryService:
         updated_rows = CategoryMapper.update_category(category_id=category_id, data=data, db_session=db_session)
         if not updated_rows:
             response_data = {"error": "Error updating category"}
-            logger.error(msg=f"Failed updating category: {category_id} with data: {data}")
+            logger.error(msg=f"Failed updating category: {category_id} with data: {', '.join(f'{k}={v!r}' for k, v in data.items())}")
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
 
         response_data = {"message": "Category updated", "updated_rows": updated_rows}
-        logger.info(msg=f"Category: {category_id} updated successfully with data: {data}")
+        logger.info(msg=f"Category: {category_id} updated successfully with data: {', '.join(f'{k}={v!r}' for k, v in data.items())}")
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
     @staticmethod

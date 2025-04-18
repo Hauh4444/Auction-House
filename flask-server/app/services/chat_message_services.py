@@ -2,6 +2,9 @@ from flask import jsonify, Response
 
 from ..data_mappers import ChatMessageMapper, ChatMapper
 from ..utils.socketio import socketio
+from ..utils.logger import setup_logger
+
+logger = setup_logger(name="chat_message_logger", log_file="logs/chat_message.log")
 
 
 class ChatMessageService:
@@ -20,9 +23,11 @@ class ChatMessageService:
         messages = ChatMessageMapper.get_messages_by_chat_id(chat_id=chat_id, db_session=db_session)
         if not messages:
             response_data = {"error": "No messages found for this chat"}
+            logger.error(msg=f"No messages found for chat: {chat_id}")
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype='application/json')
 
         response_data = {"message": "Messages found", "messages": messages}
+        logger.info(msg=f"Messages found: {[message.get('message') for message in messages]}")
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype='application/json')
 
 
@@ -41,16 +46,19 @@ class ChatMessageService:
         message_id = ChatMessageMapper.create_message(data=data, db_session=db_session)
         if not message_id:
             response_data = {"error": "Error creating message"}
+            logger.error(msg=f"Failed creating message with data: {', '.join(f'{k}={v!r}' for k, v in data.items())}")
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype='application/json')
 
         updated_rows = ChatMapper.update_chat_timestamp(chat_id=data.get("chat_id"), db_session=db_session)
         if not updated_rows:
             response_data = {"error": "Error updating chat timestamp"}
+            logger.error(msg=f"Failed updating timestamp of chat: {data.get('chat_id')}")
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype='application/json')
 
         socketio.emit("new_message")
 
         response_data = {"message": "Message created", "message_id": message_id}
+        logger.info(msg=f"Message: {message_id} created successfully with data: {', '.join(f'{k}={v!r}' for k, v in data.items())}")
         return Response(response=jsonify(response_data).get_data(), status=201, mimetype='application/json')
 
 
@@ -70,9 +78,11 @@ class ChatMessageService:
         updated_rows = ChatMessageMapper.update_message(message_id=message_id, data=data, db_session=db_session)
         if not updated_rows:
             response_data = {"error": "Error updating chat message"}
+            logger.error(msg=f"Failed updating message: {message_id} with data: {', '.join(f'{k}={v!r}' for k, v in data.items())}")
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype='application/json')
 
         response_data = {"message": "Message updated", "updated_rows": updated_rows}
+        logger.info(msg=f"Message: {message_id} updated successfully with data: {', '.join(f'{k}={v!r}' for k, v in data.items())}")
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype='application/json')
 
 
@@ -91,7 +101,9 @@ class ChatMessageService:
         deleted_rows = ChatMessageMapper.delete_message(message_id=message_id, db_session=db_session)
         if not deleted_rows:
             response_data = {"error": "Message not found"}
+            logger.error(msg=f"Message: {message_id} not found")
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype='application/json')
 
         response_data = {"message": "Message deleted", "deleted_rows": deleted_rows}
+        logger.info(msg=f"Message: {message_id} deleted successfully")
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype='application/json')

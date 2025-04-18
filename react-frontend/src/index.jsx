@@ -2,6 +2,8 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
+import posthog from "posthog-js";
+import { PostHogProvider } from 'posthog-js/react';
 
 // Internal Modules
 import CartProvider from "@/ContextAPI/CartProvider";
@@ -10,24 +12,36 @@ import App from "@/App";
 // Stylesheets
 import "./index.scss";
 
+posthog.init(
+    import.meta.env.VITE_PUBLIC_POSTHOG_KEY,
+    {
+        api_host: import.meta.env.VITE_PUBLIC_POSTHOG_HOST,
+    }
+);
+
 /**
  * Entry Point of the Application
  *
  * This file serves as the main entry point for the React application. It sets up the root rendering of
- * the app, wrapping it in `StrictMode` for detecting potential problems and `BrowserRouter`
- * for enabling client-side routing.
+ * the app, wrapping it in `StrictMode` for detecting potential problems, `PostHogProvider` to handle web
+ * analytics, and `BrowserRouter` for enabling client-side routing.
  *
  * Features:
  * - Renders the root React component using `createRoot` from `react-dom/client`.
  * - Utilizes `StrictMode` to highlight potential issues in the application.
- * - Employs `BrowserRouter` to facilitate client-side routing within the app.
+ * - Uses `PostHogProvider` to handle web analytics of the application.
+ * - Employs `BrowserRouter` to facilitate client-side routing within the application.
  */
 createRoot(document.getElementById("root")).render(
     <StrictMode>
-        <BrowserRouter>
-            <CartProvider>
-                <App />
-            </CartProvider>
-        </BrowserRouter>
+        <PostHogProvider
+            client={ posthog }
+        >
+            <BrowserRouter>
+                <CartProvider>
+                    <App />
+                </CartProvider>
+            </BrowserRouter>
+        </PostHogProvider>
     </StrictMode>
 );

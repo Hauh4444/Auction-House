@@ -2,9 +2,12 @@ from flask import Blueprint, request, jsonify, Response
 from flask_login import login_required
 
 from ..services import AuthService
+from ..utils.logger import setup_logger
 
 # Blueprint for user login-related routes
 bp = Blueprint("auth_bp", __name__, url_prefix="/api/auth")
+
+logger = setup_logger(name="auth_logger", log_file="logs/auth.log")
 
 
 # GET /api/auth/auth_status/
@@ -39,6 +42,7 @@ def create_user(db_session=None):
 
     if not data.get("username") or not data.get("password") or not data.get("email"):
         response_data = {"error": "Username, password, and email are required"}
+        logger.error(msg=f"Failed creating user with data: {', '.join(f'{k}={v!r}' for k, v in data.items())}")
         return Response(response=jsonify(response_data).get_data(), status=400, mimetype="application/json")
 
     return AuthService.create_user(data=data, db_session=db_session)
@@ -62,7 +66,9 @@ def login(db_session=None):
     data = request.json
 
     if not data.get("username") or not data.get("password"):
-        return jsonify({"error": "Username and password are required"}), 400
+        response_data = {"error": "Username and password are required"}
+        logger.error(msg=f"Failed logging in with data: {', '.join(f'{k}={v!r}' for k, v in data.items())}")
+        return Response(response=jsonify(response_data).get_data(), status=400, mimetype="application/json")
 
     return AuthService.login(data=data, db_session=db_session)
 
@@ -118,6 +124,7 @@ def password_reset(db_session=None):
 
     if not data.get("token") or not data.get("new_password"):
         response_data = {"error": "Token and new password are required"}
+        logger.error(msg=f"Failed resetting password with data: {', '.join(f'{k}={v!r}' for k, v in data.items())}")
         return Response(response=jsonify(response_data).get_data(), status=400, mimetype="application/json")
 
     return AuthService.reset_user_password(reset_token=data.get("token"), new_password=data.get("new_password"), db_session=db_session)
