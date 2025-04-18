@@ -4,19 +4,40 @@
 
 ### React Frontend
 
-1. Analytics & Reports
-2. Manage Listings
-3. Implement Feedback UI
-4. Friend UI
-5. Live Auction UI
+- Documentation
+- Analytics & Reports 
+- Manage Listings 
+- Implement Feedback UI 
+- Friend UI 
+- Live Auction UI
 
 ### Flask Server
 
-1. Logging
-2. Fix Tests
-3. Analytics & Reports
-4. Order & Delivery API
-5. Text Notifications
+- Logging
+  - Services
+    - Email -> User
+  - Routes
+    - Initial Data Checks
+  - Database
+    - Backup & Recover & Connect
+  - Init & Utils
+    - Try/Catch
+- Code Review
+  - Routes
+    - Write Checks for if Data Contains all Necessary Values
+  - Data Mappers
+    - SQL Statement Consistency
+    - SQL Injection Vulnerabilities
+  - Entities
+    - Setters & Getters
+    - Value & Type Checks for Setters
+- Documentation
+  - Utils
+  - Check Everything
+- Fix Tests 
+- Analytics & Reports 
+- Order & Delivery API 
+- Text Notifications
 
 ## Setup
 

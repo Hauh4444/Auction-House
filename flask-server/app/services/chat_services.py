@@ -2,6 +2,9 @@ from flask import jsonify, Response
 from flask_login import current_user
 
 from ..data_mappers import ChatMapper
+from ..utils.logger import setup_logger
+
+logger = setup_logger(name="chat_logger", log_file="logs/chat.log")
 
 
 class ChatService:
@@ -18,9 +21,13 @@ class ChatService:
         """
         chats = ChatMapper.get_chats_by_user_id(user_id=current_user.id, db_session=db_session)
         if not chats:
-            return Response(response=jsonify({"error": "No chats found"}).get_data(), status=404, mimetype='application/json')
+            response_data = {"error": "No chats found"}
+            logger.error(msg=f"No chats found")
+            return Response(response=jsonify(response_data).get_data(), status=404, mimetype='application/json')
 
-        return Response(response=jsonify({"message": "Chats retrieved", "chats": chats}).get_data(), status=200, mimetype='application/json')
+        response_data = {"message": "Chats retrieved", "chats": chats}
+        logger.info(msg=f"Chats found: {[chat.get('chat_id') for chat in chats]}")
+        return Response(response=jsonify(response_data).get_data(), status=200, mimetype='application/json')
 
 
     @staticmethod
@@ -37,9 +44,13 @@ class ChatService:
         """
         chat = ChatMapper.get_chat_by_id(chat_id=chat_id, db_session=db_session)
         if not chat:
-            return Response(response=jsonify({"error": "Chat not found"}).get_data(), status=404, mimetype='application/json')
+            response_data = {"error": "Chat not found"}
+            logger.error(msg=f"Chat: {chat_id} not found")
+            return Response(response=jsonify(response_data).get_data(), status=404, mimetype='application/json')
 
-        return Response(response=jsonify({"message": "Chat retrieved", "chat": chat}).get_data(), status=200, mimetype='application/json')
+        response_data = {"message": "Chat retrieved", "chat": chat}
+        logger.info(msg=f"Chat: {chat_id} found")
+        return Response(response=jsonify(response_data).get_data(), status=200, mimetype='application/json')
 
 
     @staticmethod
@@ -56,9 +67,13 @@ class ChatService:
         """
         chat_id = ChatMapper.create_chat(data=data, db_session=db_session)
         if not chat_id:
-            return Response(response=jsonify({"error": "Error creating Chat"}).get_data(), status=409, mimetype='application/json')
+            response_data = {"error": "Error creating chat"}
+            logger.error(msg=f"Failed creating chat with data: {', '.join(f'{k}={v!r}' for k, v in data.items())}")
+            return Response(response=jsonify(response_data).get_data(), status=409, mimetype='application/json')
 
-        return Response(response=jsonify({"message": "Chat and message created", "chat_id": chat_id}).get_data(), status=201, mimetype='application/json')
+        response_data = {"message": "Chat and message created", "chat_id": chat_id}
+        logger.info(msg=f"Chat: {chat_id} created successfully with data: {', '.join(f'{k}={v!r}' for k, v in data.items())}")
+        return Response(response=jsonify(response_data).get_data(), status=201, mimetype='application/json')
 
 
     @staticmethod
@@ -76,9 +91,13 @@ class ChatService:
         """
         updated_rows = ChatMapper.update_chat(chat_id=chat_id, data=data, db_session=db_session)
         if not updated_rows:
-            return Response(response=jsonify({"error": "Error updating chat"}).get_data(), status=409, mimetype="application/json")
+            response_data = {"error": "Error updating chat"}
+            logger.error(msg=f"Failed updating chat: {chat_id} with data: {', '.join(f'{k}={v!r}' for k, v in data.items())}")
+            return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
 
-        return Response(response=jsonify({"message": "Chat updated", "updated_rows": updated_rows}).get_data(), status=200, mimetype="application/json")
+        response_data = {"message": "Chat updated", "updated_rows": updated_rows}
+        logger.info(msg=f"Chat: {chat_id} updated successfully with data: {', '.join(f'{k}={v!r}' for k, v in data.items())}")
+        return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
 
     @staticmethod
@@ -95,6 +114,10 @@ class ChatService:
         """
         deleted_rows = ChatMapper.delete_chat(chat_id=chat_id, db_session=db_session)
         if not deleted_rows:
-            return Response(response=jsonify({"error": "Chat not found"}).get_data(), status=404, mimetype="application/json")
+            response_data = {"error": "Chat not found"}
+            logger.error(msg=f"Chat: {chat_id} not found")
+            return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
-        return Response(response=jsonify({"message": "Chat deleted", "deleted_rows": deleted_rows}).get_data(), status=200, mimetype="application/json")
+        response_data = {"message": "Chat deleted", "deleted_rows": deleted_rows}
+        logger.info(msg=f"Chat: {chat_id} deleted successfully")
+        return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")

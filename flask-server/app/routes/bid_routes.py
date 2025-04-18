@@ -1,9 +1,12 @@
 from flask import Blueprint, request, jsonify, Response
 
 from ..services import BidService
+from ..utils.logger import setup_logger
 
 # Blueprint for bid-related routes
 bp = Blueprint('bid_routes', __name__, url_prefix='/api/bids')
+
+logger = setup_logger(name="bid_logger", log_file="logs/bid.log")
 
 
 @bp.route('/', methods=['GET'])
@@ -53,6 +56,7 @@ def create_bid(db_session=None):
 
     if not data.get("user") or not data.get("amount"):
         response_data = {"error": "User and amount are required"}
+        logger.error(msg=f"Failed creating bid with data: {', '.join(f'{k}={v!r}' for k, v in data.items())}")
         return Response(response=jsonify(response_data).get_data(), status=400, mimetype="application/json")
 
     return BidService.create_bid(data=data, db_session=db_session)

@@ -30,3 +30,21 @@
 2025-04-16 14:27:28,771 - INFO - Login successful for user: 4
 2025-04-16 14:27:28,816 - INFO - User: 4 is authenticated as: admin
 2025-04-16 14:27:28,816 - INFO - User: 4 is authenticated as: admin
+2025-04-18 08:07:28,029 - ERROR - Invalid username: user or password: password
+2025-04-18 08:07:28,029 - ERROR - Invalid username: user or password: password
+2025-04-18 08:07:28,029 - ERROR - Invalid username: user or password: password
+2025-04-18 08:07:31,897 - ERROR - Invalid username: user or password: password
+2025-04-18 08:07:31,897 - ERROR - Invalid username: user or password: password
+2025-04-18 08:07:31,897 - ERROR - Invalid username: user or password: password
+2025-04-18 08:08:33,610 - INFO - Login successful for user: 1
+2025-04-18 08:08:33,610 - INFO - Login successful for user: 1
+2025-04-18 08:08:33,610 - INFO - Login successful for user: 1
+2025-04-18 08:08:33,631 - INFO - User: 1 is authenticated as: user
+2025-04-18 08:08:33,631 - INFO - User: 1 is authenticated as: user
+2025-04-18 08:08:33,631 - INFO - User: 1 is authenticated as: user
+2025-04-18 08:23:14,745 - INFO - Login successful for user: 4
+2025-04-18 08:23:14,745 - INFO - Login successful for user: 4
+2025-04-18 08:23:14,745 - INFO - Login successful for user: 4
+2025-04-18 08:23:14,765 - INFO - User: 4 is authenticated as: admin
+2025-04-18 08:23:14,765 - INFO - User: 4 is authenticated as: admin
+2025-04-18 08:23:14,765 - INFO - User: 4 is authenticated as: admin
