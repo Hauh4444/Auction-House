@@ -2,6 +2,7 @@ from flask import Blueprint
 
 from ..services import ModelService
 
+# Blueprint for model-related routes
 bp = Blueprint('models', __name__, url_prefix='/api/models')
 
 

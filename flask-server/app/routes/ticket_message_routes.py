@@ -1,10 +1,13 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify, Response
 from flask_login import login_required, current_user
 
 from ..services import TicketMessageService
+from ..utils.logger import setup_logger
 
 # Blueprint for ticket message-related routes
 bp = Blueprint("ticket_message_bp", __name__, url_prefix="/api/ticket/messages")
+
+logger = setup_logger(name="ticket_message_logger", log_file="logs/ticket_message.log")
 
 
 # GET /api/ticket/messages/{ticket_id}/
@@ -63,6 +66,11 @@ def update_message(message_id, db_session=None):
     Returns:
         JSON response indicating the status of the message update.
     """
+    if current_user.role not in ["staff", "admin"]:
+        response_data = {"error": "Unauthorized access"}
+        logger.error(msg=f"Unauthorized access attempt to update ticket message by user {current_user.id}")
+        return Response(response=jsonify(response_data).get_data(), status=401, mimetype="application/json")
+
     data = request.json
     return TicketMessageService.update_message(message_id=message_id, updates=data, db_session=db_session)
 
@@ -81,4 +89,9 @@ def delete_message(message_id, db_session=None):
     Returns:
         JSON response indicating the status of the deletion.
     """
+    if current_user.role not in ["staff", "admin"]:
+        response_data = {"error": "Unauthorized access"}
+        logger.error(msg=f"Unauthorized access attempt to delete ticket message by user {current_user.id}")
+        return Response(response=jsonify(response_data).get_data(), status=401, mimetype="application/json")
+
     return TicketMessageService.delete_message(message_id=message_id, db_session=db_session)

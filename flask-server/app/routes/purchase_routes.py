@@ -3,6 +3,7 @@ from flask_login import login_required
 
 from ..services import PurchaseService
 
+# Blueprint for purchase-related routes
 bp = Blueprint("purchase_bp", __name__, url_prefix="/api/purchase")
 
 

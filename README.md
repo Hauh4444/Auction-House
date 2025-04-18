@@ -15,9 +15,15 @@
 
 - Logging
   - Services
-    - Email -> User
+    - Profile
+    - Purchase
+    - Review
+    - Session
+    - Support Ticket
+    - Ticket Message
+    - User
   - Routes
-    - Initial Data Checks
+    - Data Checks
   - Database
     - Backup & Recover & Connect
   - Init & Utils

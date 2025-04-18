@@ -4,7 +4,7 @@ import os, re
 
 from ..utils.logger import setup_logger
 
-auth_logger = setup_logger(name="auth_logger", log_file="logs/auth.log")
+logger = setup_logger(name="log_logger", log_file="logs/log.log")
 
 
 class LogService:
@@ -13,6 +13,7 @@ class LogService:
         logs = [f for f in os.listdir("logs") if f.endswith(".log")]
 
         response_data = {"message": "Logs successfully retrieved", "logs": logs}
+        logger.info(msg=f"Logs found: {[log for log in logs]}")
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
 
@@ -23,11 +24,13 @@ class LogService:
 
         if ".." in filename or not filename.endswith(".log"):
             response_data = {"error": "Invalid filename"}
+            logger.error(msg=f"Invalid filename: {filename}")
             return Response(response=jsonify(response_data).get_data(), status=400, mimetype="application/json")
 
         filepath = f"logs/{filename}"
         if not os.path.isfile(filepath):
             response_data = {"error": "File not found"}
+            logger.error(msg=f"Log: {filename} not found")
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
         with open(filepath, "r") as f:
@@ -42,4 +45,5 @@ class LogService:
             log = [line for line in log if date_pattern.match(line)]
 
         response_data = {"message": "Log file successfully retrieved", "log": log}
+        logger.info(msg=f"Log: {log} found")
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")

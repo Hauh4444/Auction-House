@@ -1,10 +1,13 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify, Response
 from flask_login import login_required, current_user
 
 from ..services import UserService
+from ..utils.logger import setup_logger
 
 # Blueprint for user login-related routes
 bp = Blueprint("user_bp", __name__, url_prefix="/api/user")
+
+logger = setup_logger(name="user_logger", log_file="logs/user.log")
 
 
 # GET /api/user/
@@ -44,6 +47,11 @@ def update_user(user_id, db_session=None):
     Returns:
         JSON response indicating the updated profile.
     """
+    if current_user.role not in ["staff", "admin"] and user_id != current_user.id:
+        response_data = {"error": "Unauthorized access"}
+        logger.error(msg=f"Unauthorized access attempt to update user by user {current_user.id}")
+        return Response(response=jsonify(response_data).get_data(), status=401, mimetype="application/json")
+
     data = request.json
     return UserService.update_user(user_id=user_id, data=data, db_session=db_session)
 
@@ -62,4 +70,9 @@ def delete_user(user_id, db_session=None):
     Returns:
         JSON response indicating the deletion status.
     """
+    if current_user.role not in ["staff", "admin"] and user_id != current_user.id:
+        response_data = {"error": "Unauthorized access"}
+        logger.error(msg=f"Unauthorized access attempt to delete user by user {current_user.id}")
+        return Response(response=jsonify(response_data).get_data(), status=401, mimetype="application/json")
+
     return UserService.delete_user(user_id=user_id, db_session=db_session)

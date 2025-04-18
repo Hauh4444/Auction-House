@@ -1,10 +1,13 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify, Response
 from flask_login import login_required, current_user
 
 from ..services import SupportTicketService
+from ..utils.logger import setup_logger
 
 # Blueprint for support ticket routes
 bp = Blueprint("support_ticket_bp", __name__, url_prefix="/api/support/tickets")
+
+logger = setup_logger(name="support_ticket_logger", log_file="logs/support_ticket.log")
 
 
 # GET /api/support/tickets/
@@ -72,6 +75,11 @@ def update_ticket(ticket_id, db_session=None):
     Returns:
         JSON response confirming the successful update of the ticket.
     """
+    if current_user.role not in ["staff", "admin"]:
+        response_data = {"error": "Unauthorized access"}
+        logger.error(msg=f"Unauthorized access attempt to update support ticket by user {current_user.id}")
+        return Response(response=jsonify(response_data).get_data(), status=401, mimetype="application/json")
+
     data = request.json
     return SupportTicketService.update_ticket(ticket_id=ticket_id, data=data, db_session=db_session)
 
@@ -90,4 +98,9 @@ def delete_ticket(ticket_id, db_session=None):
     Returns:
         JSON response confirming the deletion of the ticket.
     """
+    if current_user.role not in ["staff", "admin"]:
+        response_data = {"error": "Unauthorized access"}
+        logger.error(msg=f"Unauthorized access attempt to delete support ticket by user {current_user.id}")
+        return Response(response=jsonify(response_data).get_data(), status=401, mimetype="application/json")
+
     return SupportTicketService.delete_ticket(ticket_id=ticket_id, db_session=db_session)

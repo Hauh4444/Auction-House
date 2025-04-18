@@ -2,6 +2,9 @@ from flask import jsonify, Response
 from flask_login import current_user
 
 from ..data_mappers import ListingMapper
+from ..utils.logger import setup_logger
+
+logger = setup_logger(name="listing_logger", log_file="logs/listing.log")
 
 
 class ListingService:
@@ -20,9 +23,11 @@ class ListingService:
         listings = ListingMapper.get_all_listings(args=args, db_session=db_session)
         if not listings:
             response_data = {"error": "No listings found"}
+            logger.error(msg=f"No listings found")
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
         response_data = {"message": "Listings found", "listings": listings}
+        logger.info(msg=f"Listings found: {[listing.get('listing_id') for listing in listings]}")
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
         
 
@@ -41,9 +46,11 @@ class ListingService:
         listing = ListingMapper.get_listing_by_id(listing_id=listing_id, db_session=db_session)
         if not listing:
             response_data = {"error": "Listing not found"}
+            logger.error(msg=f"Listing: {listing_id} not found")
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
         response_data = {"message": "Listing found", "listing": listing}
+        logger.info(msg=f"Listing: {listing_id} found")
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
 
@@ -66,9 +73,11 @@ class ListingService:
         listing_id = ListingMapper.create_listing(data=listing_data, db_session=db_session)
         if not listing_id:
             response_data = {"error": "Error creating listing"}
+            logger.error(msg=f"Failed creating listing with data: {', '.join(f'{k}={v!r}' for k, v in data.items())}")
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
 
         response_data = {"message": "Listing created", "listing_id": listing_id}
+        logger.info(msg=f"Listing: {listing_id} created successfully with data: {', '.join(f'{k}={v!r}' for k, v in data.items())}")
         return Response(response=jsonify(response_data).get_data(), status=201, mimetype="application/json")
         
 
@@ -88,9 +97,11 @@ class ListingService:
         updated_rows = ListingMapper.update_listing(listing_id=listing_id, data=data, db_session=db_session)
         if not updated_rows:
             response_data = {"error": "Error updating listing"}
+            logger.error(msg=f"Failed updating listing: {listing_id} with data: {', '.join(f'{k}={v!r}' for k, v in data.items())}")
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
 
         response_data = {"message": "Listing updated", "updated_rows": updated_rows}
+        logger.info(msg=f"Listing: {listing_id} updated successfully with data: {', '.join(f'{k}={v!r}' for k, v in data.items())}")
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
 
@@ -110,8 +121,10 @@ class ListingService:
         deleted_rows = ListingMapper.delete_listing(listing_id=listing_id, db_session=db_session)
         if not deleted_rows:
             response_data = {"message": "Listing not found"}
+            logger.error(msg=f"Listing: {listing_id} not found")
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
         response_data = {"message": "Listing deleted", "deleted_rows": deleted_rows}
+        logger.info(msg=f"Listing: {listing_id} deleted successfully")
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 

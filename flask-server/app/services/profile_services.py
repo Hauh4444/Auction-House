@@ -17,10 +17,8 @@ class ProfileService:
         Returns:
             A Response object with the profile data if found, otherwise a 404 error with a message.
         """
-        if current_user.role in ["staff", "admin"]:
-            profile = ProfileMapper.get_profile(user_id=data.get("user_id"), db_session=db_session)
-        else:
-            profile = ProfileMapper.get_profile(user_id=current_user.id, db_session=db_session)
+        user_id = data.get("user_id") if current_user.role in ["staff", "admin"] else current_user.id
+        profile = ProfileMapper.get_profile(user_id=user_id, db_session=db_session)
 
         if not profile:
             response_data = {"error": "Profile not found"}
@@ -63,7 +61,6 @@ class ProfileService:
         Returns:
             A Response object with a success message if the profile was updated, or a 404 error if the profile was not found.
         """
-        del data["profile_id"]
         updated_rows = ProfileMapper.update_profile(profile_id=profile_id, data=data, db_session=db_session)
 
         if not updated_rows:
@@ -85,10 +82,8 @@ class ProfileService:
         Returns:
             A Response object with a success message if the profile was deleted, or a 404 error if the profile was not found.
         """
-        if current_user.role in ["staff", "admin"]:
-            deleted_rows = ProfileMapper.delete_profile(user_id=data.get("user_id"), db_session=db_session)
-        else:
-            deleted_rows = ProfileMapper.delete_profile(user_id=current_user.id, db_session=db_session)
+        user_id = data.get("user_id") if current_user.role in ["staff", "admin"] else current_user.id
+        deleted_rows = ProfileMapper.delete_profile(user_id=user_id, db_session=db_session)
 
         if not deleted_rows:
             response_data = {"error": "Profile not found"}

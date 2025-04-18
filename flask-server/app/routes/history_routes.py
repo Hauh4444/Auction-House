@@ -1,10 +1,13 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify, Response
 from flask_login import login_required, current_user
 
 from ..services import HistoryService
+from ..utils.logger import setup_logger
 
 # Blueprint for history-related routes
 bp = Blueprint("history_bp", __name__, url_prefix="/api/user")
+
+logger = setup_logger(name="history_logger", log_file="logs/history.log")
 
 
 # GET /api/user/orders/
@@ -34,6 +37,11 @@ def update_user_order(order_id, db_session=None):
     """
     Update a specific order in the user's history.
     """
+    if current_user.role not in ["staff", "admin"]:
+        response_data = {"error": "Unauthorized access"}
+        logger.error(msg=f"Unauthorized access attempt to update order by user {current_user.id}")
+        return Response(response=jsonify(response_data).get_data(), status=401, mimetype="application/json")
+
     data = request.json
     return HistoryService.update_user_order(order_id=order_id, data=data, db_session=db_session)
 
@@ -45,6 +53,11 @@ def delete_user_order(order_id, db_session=None):
     """
     Delete a specific order from the user's history.
     """
+    if current_user.role not in ["staff", "admin"]:
+        response_data = {"error": "Unauthorized access"}
+        logger.error(msg=f"Unauthorized access attempt to delete order by user {current_user.id}")
+        return Response(response=jsonify(response_data).get_data(), status=401, mimetype="application/json")
+
     return HistoryService.delete_user_order(order_id=order_id, db_session=db_session)
 
 
@@ -116,6 +129,11 @@ def update_user_transaction(transaction_id, db_session=None):
     """
     Update a specific transaction in the user's history.
     """
+    if current_user.role not in ["staff", "admin"]:
+        response_data = {"error": "Unauthorized access"}
+        logger.error(msg=f"Unauthorized access attempt to update transaction by user {current_user.id}")
+        return Response(response=jsonify(response_data).get_data(), status=401, mimetype="application/json")
+
     data = request.json
     return HistoryService.update_user_transaction(transaction_id=transaction_id, data=data, db_session=db_session)
 
@@ -127,6 +145,11 @@ def delete_user_transaction(transaction_id, db_session=None):
     """
     Delete a specific transaction from the user's history.
     """
+    if current_user.role not in ["staff", "admin"]:
+        response_data = {"error": "Unauthorized access"}
+        logger.error(msg=f"Unauthorized access attempt to delete transaction by user {current_user.id}")
+        return Response(response=jsonify(response_data).get_data(), status=401, mimetype="application/json")
+
     return HistoryService.delete_user_transaction(transaction_id=transaction_id, db_session=db_session)
 
 
@@ -157,6 +180,11 @@ def update_user_delivery(delivery_id, db_session=None):
     """
     Update a specific delivery in the user's history.
     """
+    if current_user.role not in ["staff", "admin"]:
+        response_data = {"error": "Unauthorized access"}
+        logger.error(msg=f"Unauthorized access attempt to update delivery by user {current_user.id}")
+        return Response(response=jsonify(response_data).get_data(), status=401, mimetype="application/json")
+
     data = request.json
     return HistoryService.update_user_delivery(delivery_id=delivery_id, data=data, db_session=db_session)
 
@@ -168,6 +196,11 @@ def delete_user_delivery(delivery_id, db_session=None):
     """
     Delete a specific delivery from the user's history.
     """
+    if current_user.role not in ["staff", "admin"]:
+        response_data = {"error": "Unauthorized access"}
+        logger.error(msg=f"Unauthorized access attempt to delete delivery by user {current_user.id}")
+        return Response(response=jsonify(response_data).get_data(), status=401, mimetype="application/json")
+
     return HistoryService.delete_user_delivery(delivery_id=delivery_id, db_session=db_session)
 
 
@@ -198,6 +231,11 @@ def update_user_support_ticket(ticket_id, db_session=None):
     """
     Update a specific support ticket in the user's history.
     """
+    if current_user.role not in ["staff", "admin"]:
+        response_data = {"error": "Unauthorized access"}
+        logger.error(msg=f"Unauthorized access attempt to update support ticket by user {current_user.id}")
+        return Response(response=jsonify(response_data).get_data(), status=401, mimetype="application/json")
+
     data = request.json
     return HistoryService.update_user_support_ticket(ticket_id=ticket_id, data=data, db_session=db_session)
 
@@ -209,6 +247,11 @@ def delete_user_support_ticket(ticket_id, db_session=None):
     """
     Delete a specific support ticket from the user's history.
     """
+    if current_user.role not in ["staff", "admin"]:
+        response_data = {"error": "Unauthorized access"}
+        logger.error(msg=f"Unauthorized access attempt to delete support ticket by user {current_user.id}")
+        return Response(response=jsonify(response_data).get_data(), status=401, mimetype="application/json")
+
     return HistoryService.delete_user_support_ticket(ticket_id=ticket_id, db_session=db_session)
 
 

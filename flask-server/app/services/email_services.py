@@ -1,10 +1,13 @@
 from mailersend import emails
 from dotenv import load_dotenv
 from cryptography.fernet import Fernet
-
 import os
 
+from ..utils.logger import setup_logger
+
 load_dotenv()  # Load environment variables from .env file
+
+logger = setup_logger(name="email_logger", log_file="logs/email.log")
 
 
 class EmailService:
@@ -32,7 +35,9 @@ class EmailService:
 
         try:
             response = mailer.send(email_data)
+            logger.info(msg=f"Mail data: {email_data} sent successfully")
             return response
         except Exception as e:
             print(f"Unexpected error sending mail: {e}")
+            logger.error(msg=f"Mail data: {email_data} failed to send: {e}")
             return False

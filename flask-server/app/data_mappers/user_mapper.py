@@ -40,8 +40,8 @@ class UserMapper:
         """
         db = db_session or get_db()
         cursor = db.cursor(cursors.DictCursor) # type: ignore
-        set_clause = ", ".join([f"{key} = %s" for key in data if key not in ["user_id", "updated_at"]])
-        values = [data.get(key) for key in data if key not in ["user_id", "updated_at"]]
+        set_clause = ", ".join([f"{key} = %s" for key in data if key not in ["user_id", "updated_at", "last_login"]])
+        values = [data.get(key) for key in data if key not in ["user_id", "updated_at", "last_login"]]
         values.append(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
         values.append(user_id)
         statement = f"UPDATE users SET {set_clause}, updated_at = %s WHERE user_id = %s"

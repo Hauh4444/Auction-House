@@ -54,7 +54,7 @@ class SupportTicketMapper:
             db_session: Optional database session to be used in tests.
 
         Returns:
-            dict: StaffSupport ticket details if found, otherwise None.
+            dict: Staff support ticket details if found, otherwise None.
         """
         db = db_session or get_db()
         cursor = db.cursor(cursors.DictCursor) # type: ignore
@@ -101,9 +101,12 @@ class SupportTicketMapper:
         """
         db = db_session or get_db()
         cursor = db.cursor(cursors.DictCursor) # type: ignore
-        update_clause = ", ".join(f"{key} = %s" for key in data.keys())
-        values = list(data.values()) + [ticket_id]
-        cursor.execute(f"UPDATE support_tickets SET {update_clause}, updated_at = %s WHERE ticket_id = %s", (*values, datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
+        set_clause = ", ".join([f"{key} = %s" for key in data if key not in ["ticket_id", "created_at", "updated_at"]])
+        values = [data.get(key) for key in data if key not in ["ticket_id", "created_at", "updated_at"]]
+        values.append(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+        values.append(ticket_id)
+        statement = f"UPDATE support_tickets SET {set_clause}, updated_at = %s WHERE ticket_id = %s"
+        cursor.execute(statement, values)
         db.commit()
         return cursor.rowcount
 
