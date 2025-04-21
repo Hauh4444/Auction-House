@@ -8,7 +8,7 @@ from ..utils.logger import setup_logger
 
 load_dotenv()
 
-logger = setup_logger(name="category_logger", log_file="logs/category.log")
+logger = setup_logger(name="model_logger", log_file="logs/model.log")
 
 
 class ModelService:

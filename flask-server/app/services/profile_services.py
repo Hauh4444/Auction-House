@@ -2,6 +2,9 @@ from flask import jsonify, Response
 from flask_login import current_user
 
 from ..data_mappers import ProfileMapper
+from ..utils.logger import setup_logger
+
+logger = setup_logger(name="profile_logger", log_file="logs/profile.log")
 
 
 class ProfileService:
@@ -22,13 +25,15 @@ class ProfileService:
 
         if not profile:
             response_data = {"error": "Profile not found"}
+            logger.error(msg=f"Profile not found for user: {user_id}")
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
         response_data = {"message": "Profile found", "profile": profile}
+        logger.info(msg=f"Profile found for user: {user_id}")
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
     @staticmethod
-    def create_profile(data=None, db_session=None):
+    def create_profile(data, db_session=None):
         """
         Creates a new profile with the provided data.
 
@@ -43,13 +48,15 @@ class ProfileService:
 
         if not profile_id:
             response_data = {"error": "Error creating profile"}
+            logger.error(msg=f"Failed creating profile with data: {', '.join(f'{k}={v!r}' for k, v in data.items())}")
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
 
         response_data = {"message": "Profile created", "profile_id": profile_id}
+        logger.info(msg=f"Profile: {profile_id} created successfully with data: {', '.join(f'{k}={v!r}' for k, v in data.items())}")
         return Response(response=jsonify(response_data).get_data(), status=201, mimetype="application/json")
 
     @staticmethod
-    def update_profile(profile_id, data=None, db_session=None):
+    def update_profile(profile_id, data, db_session=None):
         """
         Updates an existing profile by its ID with the provided data.
 
@@ -65,9 +72,11 @@ class ProfileService:
 
         if not updated_rows:
             response_data = {"error": "Error updating profile"}
+            logger.error(msg=f"Failed updating profile: {profile_id} with data: {', '.join(f'{k}={v!r}' for k, v in data.items())}")
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
 
         response_data = {"message": "Profile updated", "updated_rows": updated_rows}
+        logger.info(msg=f"Profile: {profile_id} updated successfully with data: {', '.join(f'{k}={v!r}' for k, v in data.items())}")
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
     @staticmethod
@@ -87,7 +96,9 @@ class ProfileService:
 
         if not deleted_rows:
             response_data = {"error": "Profile not found"}
+            logger.error(msg=f"Profile not found for user: {user_id}")
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
         response_data = {"message": "Profile deleted", "deleted_rows": deleted_rows}
+        logger.info(msg=f"Profile for user: {user_id} deleted successfully")
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")

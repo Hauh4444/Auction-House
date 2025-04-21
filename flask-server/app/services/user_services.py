@@ -2,6 +2,9 @@ from flask import jsonify, Response
 from flask_login import current_user
 
 from ..data_mappers import UserMapper, ProfileMapper
+from ..utils.logger import setup_logger
+
+logger = setup_logger(name="user_logger", log_file="logs/user.log")
 
 
 class UserService:
@@ -22,15 +25,17 @@ class UserService:
 
         if not user:
             response_data = {"error": "User not found"}
+            logger.error(msg=f"User: {user_id} not found")
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
         response_data = {"message": "User found", "user": user}
+        logger.error(msg=f"User: {user_id} found")
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
 
 
     @staticmethod
-    def update_user(user_id, data=None, db_session=None):
+    def update_user(user_id, data, db_session=None):
         """
         Updates user information.
 
@@ -47,9 +52,11 @@ class UserService:
 
         if not updated_rows:
             response_data = {"error": "Error updating user"}
+            logger.error(msg=f"Failed updating user: {user_id} with data: {', '.join(f'{k}={v!r}' for k, v in data.items())}")
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
 
         response_data = {"message": "User updated", "updated_rows": updated_rows}
+        logger.info(msg=f"User: {user_id} updated successfully with data: {', '.join(f'{k}={v!r}' for k, v in data.items())}")
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
 
@@ -71,16 +78,17 @@ class UserService:
 
         if not deleted_rows:
             response_data = {"error": "Profile not found"}
+            logger.error(msg=f"Profile not found for user: {user_id}")
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
-        if current_user.role in ["staff", "admin"]:
-            deleted_rows = UserMapper.delete_user(user_id=user_id, db_session=db_session)
-        else:
-            deleted_rows = UserMapper.delete_user(user_id=current_user.id, db_session=db_session)
+        user_id = user_id if current_user.role in ["staff", "admin"] else current_user.id
+        deleted_rows = UserMapper.delete_user(user_id=user_id, db_session=db_session)
 
         if not deleted_rows:
             response_data = {"error": "User not found"}
+            logger.error(msg=f"User: {user_id} not found")
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
-        response_data = {"message": "User and Profile deleted", "deleted_rows": deleted_rows}
+        response_data = {"message": "User and profile deleted", "deleted_rows": deleted_rows}
+        logger.info(msg=f"User: {user_id} deleted successfully")
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")

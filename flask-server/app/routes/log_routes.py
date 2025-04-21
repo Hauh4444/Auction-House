@@ -7,7 +7,7 @@ from ..utils.logger import setup_logger
 # Blueprint for log-related routes
 bp = Blueprint("log_bp", __name__, url_prefix="/api/logs")
 
-logger = setup_logger(name="history_logger", log_file="logs/history.log")
+logger = setup_logger(name="log_logger", log_file="logs/log.log")
 
 
 # GET /api/logs/

@@ -5,52 +5,44 @@
 ### React Frontend
 
 - Documentation
-- Analytics & Reports 
-- Manage Listings 
-- Implement Feedback UI 
-- Friend UI 
+- Analytics & Reports
+- Manage Listings
+- Implement Feedback UI
+- Friend UI
 - Live Auction UI
 
 ### Flask Server
 
-- Logging
-  - Services
-    - Profile
-    - Purchase
-    - Review
-    - Session
-    - Support Ticket
-    - Ticket Message
-    - User
-  - Routes
-    - Data Checks
-  - Database
-    - Backup & Recover & Connect
-  - Init & Utils
-    - Try/Catch
 - Code Review
-  - Routes
-    - Write Checks for if Data Contains all Necessary Values
-  - Data Mappers
-    - SQL Statement Consistency
-    - SQL Injection Vulnerabilities
-  - Entities
-    - Setters & Getters
-    - Value & Type Checks for Setters
+    - Routes
+        - Write Checks for if Data Contains all Necessary Values
+    - Data Mappers
+        - SQL Statement Consistency
+        - SQL Injection Vulnerabilities
+    - Entities
+        - Setters & Getters
+        - Value & Type Checks for Setters
 - Documentation
-  - Utils
-  - Check Everything
-- Fix Tests 
-- Analytics & Reports 
-- Order & Delivery API 
+    - Utils
+    - Check Everything
+- Logging
+    - Routes
+        - Data Checks
+    - Database
+        - Backup & Recover & Connect
+    - Init & Utils
+        - Try/Catch
+- Fix Tests
+- Analytics & Reports
+- Order & Delivery API
 - Text Notifications
 
 ## Setup
 
 ### React Frontend
 
-1. Ensure you have [Node.js](https://nodejs.org/en/download) installed on your machine. 
-2. In a terminal, change to the `react-frontend` directory. 
+1. Ensure you have [Node.js](https://nodejs.org/en/download) installed on your machine.
+2. In a terminal, change to the `react-frontend` directory.
 3. Run the `npm install` command to install node modules and required packages within the `package.json` file.
 
 ### Flask Server
@@ -63,10 +55,13 @@
 ### MySQL Database
 
 1. Ensure you have [MySQL Workbench 8.0](https://dev.mysql.com/downloads/installer/) installed on your machine or any other MySQL database management tool.
-2. Create a new database named `auctionhouse`.
-3. In MySQL Workbench, click on `File` → `Open SQL Script`.
-4. Select the required SQL file located in `mysql-database/Data Dumps/`.
-5. Press `Ctrl` + `Shift` + `Enter` to run the script and import all tables and data into the database.
+2. Create a new database.
+3. Use the name of this database in the .env file as `DB`.
+4. In MySQL Workbench, click on `File` → `Open SQL Script`.
+5. Select the required SQL file located in `mysql-database/Data Dumps/`.
+6. Press `Ctrl` + `Shift` + `Enter` to run the script and import all tables and data into the database.
+7. In MySQL Workbench, click on `Administration` → `Users and Privelages` → `Add Account`.
+8. Use the credentials of this account in the .env file as `DB_USER` and `DB_PASSWORD`.
 
 ## Usage
 

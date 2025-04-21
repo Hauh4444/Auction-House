@@ -22,7 +22,7 @@ class ChatMessageService:
         """
         messages = ChatMessageMapper.get_messages_by_chat_id(chat_id=chat_id, db_session=db_session)
         if not messages:
-            response_data = {"error": "No messages found for this chat"}
+            response_data = {"error": "No messages found"}
             logger.error(msg=f"No messages found for chat: {chat_id}")
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype='application/json')
 

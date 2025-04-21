@@ -3,6 +3,9 @@ from flask import jsonify, session, Response
 from datetime import datetime, timedelta
 
 from ..data_mappers import SessionMapper
+from ..utils.logger import setup_logger
+
+logger = setup_logger(name="session_logger", log_file="logs/session.log")
 
 
 class SessionService:
@@ -26,7 +29,9 @@ class SessionService:
         session_id = SessionMapper.create_session(data=session_data, db_session=db_session)
         if not session_id:
             response_data = {"error": "Error creating session"}
+            logger.error(msg=f"Failed creating session with data: {', '.join(f'{k}={v!r}' for k, v in session_data.items())}")
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
 
         response_data = {"message": "Session created", "session_id": session_id}
+        logger.info(msg=f"Session: {session_id} created successfully with data: {', '.join(f'{k}={v!r}' for k, v in session_data.items())}")
         return Response(response=jsonify(response_data).get_data(), status=201, mimetype="application/json")

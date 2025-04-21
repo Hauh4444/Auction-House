@@ -5,7 +5,7 @@ import os
 
 from ..utils.logger import setup_logger
 
-load_dotenv()  # Load environment variables from .env file
+load_dotenv()
 
 logger = setup_logger(name="email_logger", log_file="logs/email.log")
 
