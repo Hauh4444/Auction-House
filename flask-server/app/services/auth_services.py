@@ -9,6 +9,7 @@ from .email_services import EmailService
 from ..data_mappers import AuthMapper, ProfileMapper, UserMapper
 from ..utils.password import hash_password
 from ..utils.logger import setup_logger
+from ozekilibsrest import Configuration, Message, MessageApi
 
 logger = setup_logger(name="auth_logger", log_file="logs/auth.log")
 
