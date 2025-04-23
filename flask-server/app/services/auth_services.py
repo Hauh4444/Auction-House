@@ -10,6 +10,7 @@ from ..data_mappers import AuthMapper, ProfileMapper, UserMapper
 from ..utils.password import hash_password
 from ..utils.logger import setup_logger
 from ozekilibsrest import Configuration, Message, MessageApi
+from .sms_services import SMSService
 
 logger = setup_logger(name="auth_logger", log_file="logs/auth.log")
 
@@ -150,6 +151,13 @@ class AuthService:
             response_data = {"error": "HTTP error sending email"}
             logger.error(msg=f"HTTP failure sending email to: {user.get('email')} body: {body}")
             return Response(response=jsonify(response_data).get_data(), status=400, mimetype="application/json")
+        
+        phone_number = profile.get("phone_number")
+        if phone_number:
+            sms_text = f"Reset your password: {reset_link}"
+            sms_response = SMSService.send_sms(phone_number, sms_text)
+            if int(sms_response) != 200:
+                logger.warning(f"SMS failed for {phone_number}, response code: {sms_response}")
 
         response_data = {"message": "Password reset email sent"}
         logger.info(msg=f"Password reset email sent to: {user.get('email')}")
