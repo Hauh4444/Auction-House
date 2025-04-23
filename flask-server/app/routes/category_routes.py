@@ -27,7 +27,7 @@ def get_all_categories(db_session=None):
 
 # GET /api/categories/{id}/
 @bp.route("/<int:category_id>/", methods=["GET"])
-def get_category(category_id, db_session=None):
+def get_category(category_id: int, db_session=None):
     """
     Retrieve a single category by its ID.
 
@@ -69,7 +69,7 @@ def create_category(db_session=None):
 # PUT /api/categories/{id}/
 @bp.route("/<int:category_id>/", methods=["PUT"])
 @login_required
-def update_category(category_id, db_session=None):
+def update_category(category_id: int, db_session=None):
     """
     Update an existing category by its ID.
 
@@ -95,7 +95,7 @@ def update_category(category_id, db_session=None):
 # DELETE /api/categories/{id}/
 @bp.route("/<int:category_id>/", methods=["DELETE"])
 @login_required
-def delete_category(category_id, db_session=None):
+def delete_category(category_id: int, db_session=None):
     """
     Delete a category by its ID.
 

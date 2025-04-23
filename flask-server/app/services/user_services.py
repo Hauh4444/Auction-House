@@ -35,7 +35,7 @@ class UserService:
 
 
     @staticmethod
-    def update_user(user_id, data, db_session=None):
+    def update_user(user_id: int, data: dict, db_session=None):
         """
         Updates user information.
 
@@ -62,7 +62,7 @@ class UserService:
 
 
     @staticmethod
-    def delete_user(user_id, db_session=None):
+    def delete_user(user_id: int, db_session=None):
         """
         Deletes a user by their ID.
 

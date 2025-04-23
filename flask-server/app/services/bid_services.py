@@ -14,7 +14,7 @@ class BidService:
         Retrieves a list of all bids.
 
         Args:
-            db_session (Optional[Session]): An optional database session to be used in tests.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response containing the list of all bids.
@@ -31,13 +31,13 @@ class BidService:
 
 
     @staticmethod
-    def get_bid_by_id(bid_id, db_session=None):
+    def get_bid_by_id(bid_id: int, db_session=None):
         """
         Retrieves a specific bid by its ID.
 
         Args:
             bid_id (int): The ID of the bid to retrieve.
-            db_session (Optional[Session]): An optional database session to be used in tests.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response containing the bid data if found.
@@ -56,13 +56,13 @@ class BidService:
 
 
     @staticmethod
-    def create_bid(data, db_session=None):
+    def create_bid(data: dict, db_session=None):
         """
         Creates a new bid and emits an event through a socket.
 
         Args:
             data (dict): A dictionary containing the bid details (e.g., user, amount).
-            db_session (Optional[Session]): An optional database session used for testing.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response containing the success message, bid ID, and bid data if successful.

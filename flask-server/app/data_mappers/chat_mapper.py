@@ -1,13 +1,13 @@
 from pymysql import cursors
 from datetime import datetime
 
-from ..database.connection import get_db
+from ..database import get_db
 from ..entities import Chat
 
 
 class ChatMapper:
     @staticmethod
-    def get_chats_by_user_id(user_id, db_session=None):
+    def get_chats_by_user_id(user_id: int, db_session=None):
         """
         Retrieve all chats for a given user.
 
@@ -45,7 +45,7 @@ class ChatMapper:
 
 
     @staticmethod
-    def get_chat_by_id(chat_id, db_session=None):
+    def get_chat_by_id(chat_id: int, db_session=None):
         """
         Retrieve a chat by its ID.
 
@@ -64,7 +64,7 @@ class ChatMapper:
 
 
     @staticmethod
-    def create_chat(data, db_session=None):
+    def create_chat(data: dict, db_session=None):
         """
         Create a new chat in the database.
 
@@ -87,7 +87,7 @@ class ChatMapper:
 
 
     @staticmethod
-    def update_chat_timestamp(chat_id, db_session=None):
+    def update_chat_timestamp(chat_id: int, db_session=None):
         """
         Update a chat's timestamp.
 
@@ -100,13 +100,13 @@ class ChatMapper:
         """
         db = db_session or get_db()
         cursor = db.cursor(cursors.DictCursor) # type: ignore
-        cursor.execute(f"UPDATE chats SET updated_at = %s WHERE chat_id = %s", (datetime.now().strftime("%Y-%m-%d %H:%M:%S"), chat_id))
+        cursor.execute(f"UPDATE chats SET updated_at = %s WHERE chat_id = %s", (datetime.now(), chat_id))
         db.commit()
         return cursor.rowcount
 
 
     @staticmethod
-    def delete_chat(chat_id, db_session=None):
+    def delete_chat(chat_id: int, db_session=None):
         """
         Delete a chat by its ID.
 

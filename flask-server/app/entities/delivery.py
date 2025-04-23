@@ -1,8 +1,6 @@
-from dataclasses import dataclass
 from datetime import datetime, date
 
 
-@dataclass
 class Delivery:
     """
     Represents a delivery record in the system.
@@ -88,8 +86,8 @@ class Delivery:
         self.courier = courier
         self.estimated_delivery_date = estimated_delivery_date
         self.delivered_at = delivered_at
-        self.created_at = created_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        self.updated_at = updated_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.created_at = created_at or datetime.now()
+        self.updated_at = updated_at or datetime.now()
 
     def to_dict(self):
         """Converts the delivery object to a dictionary representation."""
@@ -104,8 +102,8 @@ class Delivery:
             "delivery_status": self.delivery_status,
             "tracking_number": self.tracking_number,
             "courier": self.courier,
-            "estimated_delivery_date": self.estimated_delivery_date.strftime("%Y-%m-%d %H:%M:%S"),
+            "estimated_delivery_date": self.estimated_delivery_date,
             "delivered_at": self.delivered_at,
-            "created_at": self.created_at.strftime("%Y-%m-%d %H:%M:%S"),
-            "updated_at": self.updated_at.strftime("%Y-%m-%d %H:%M:%S")
+            "created_at": self.created_at,
+            "updated_at": self.updated_at
         }

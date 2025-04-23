@@ -33,7 +33,7 @@ def get_user(db_session=None):
 # PUT /api/user/{id}/
 @bp.route("/<int:user_id>/", methods=["PUT"])
 @login_required
-def update_user(user_id, db_session=None):
+def update_user(user_id: int, db_session=None):
     """
     Updates a user.
 
@@ -59,7 +59,7 @@ def update_user(user_id, db_session=None):
 # DELETE /api/user/{id}/
 @bp.route("/<int:user_id>/", methods=["DELETE"])
 @login_required
-def delete_user(user_id, db_session=None):
+def delete_user(user_id: int, db_session=None):
     """
     Delete the user login credentials and profile.
 

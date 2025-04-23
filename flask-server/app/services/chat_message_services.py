@@ -9,13 +9,13 @@ logger = setup_logger(name="chat_message_logger", log_file="logs/chat_message.lo
 
 class ChatMessageService:
     @staticmethod
-    def get_messages_by_chat_id(chat_id, db_session=None):
+    def get_messages_by_chat_id(chat_id: int, db_session=None):
         """
         Retrieve all messages for a given chat.
 
         Args:
             chat_id (int): The ID of the chat for which messages are to be retrieved.
-            db_session (Session, optional): A database session for testing or direct queries.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response containing the chat messages if found, otherwise a 404 error.
@@ -32,13 +32,13 @@ class ChatMessageService:
 
 
     @staticmethod
-    def create_message(data, db_session=None):
+    def create_message(data: dict, db_session=None):
         """
         Create a new message for a chat.
 
         Args:
             data (dict): A dictionary containing the message data (e.g., chat_id, message content).
-            db_session (Session, optional): A database session for testing or direct queries.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response with the success message and message ID, or a 409 error if the message could not be created.
@@ -63,14 +63,14 @@ class ChatMessageService:
 
 
     @staticmethod
-    def update_message(message_id, data, db_session=None):
+    def update_message(message_id: int, data: dict, db_session=None):
         """
         Update an existing chat message.
 
         Args:
             message_id (int): The ID of the message to be updated.
             data (dict): A dictionary containing the updates to be applied to the message.
-            db_session (Session, optional): A database session for testing or direct queries.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response with a success message if the message was updated, or a 404 error if the message was not found or no changes were made.
@@ -87,13 +87,13 @@ class ChatMessageService:
 
 
     @staticmethod
-    def delete_message(message_id, db_session=None):
+    def delete_message(message_id: int, db_session=None):
         """
         Delete a chat message by its ID.
 
         Args:
             message_id (int): The ID of the message to be deleted.
-            db_session (Session, optional): A database session for testing or direct queries.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response with the success message if the message was deleted, or a 404 error if the message was not found.

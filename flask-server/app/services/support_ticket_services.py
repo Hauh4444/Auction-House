@@ -14,7 +14,7 @@ class SupportTicketService:
         Retrieve all support tickets for the authenticated user.
 
         Args:
-            db_session (optional): A database session for testing or direct queries.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response containing the user's support tickets if found, otherwise a 404 error.
@@ -35,13 +35,13 @@ class SupportTicketService:
 
 
     @staticmethod
-    def get_ticket_by_id(ticket_id, db_session=None):
+    def get_ticket_by_id(ticket_id: int, db_session=None):
         """
         Retrieve a specific support ticket.
 
         Args:
             ticket_id (int): The ID of the support ticket.
-            db_session (optional): A database session for testing or direct queries.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response containing the support ticket details or an error message.
@@ -58,13 +58,13 @@ class SupportTicketService:
 
 
     @staticmethod
-    def create_ticket(data, db_session=None):
+    def create_ticket(data: dict, db_session=None):
         """
         Create a new support ticket.
 
         Args:
             data (dict): The data required to create the support ticket.
-            db_session (optional): A database session for testing or direct queries.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response containing the newly created ticket ID or an error message.
@@ -99,14 +99,14 @@ class SupportTicketService:
 
 
     @staticmethod
-    def update_ticket(ticket_id, data, db_session=None):
+    def update_ticket(ticket_id: int, data: dict, db_session=None):
         """
         Update an existing support ticket.
 
         Args:
             ticket_id (int): The ID of the support ticket.
             data (dict): The update data containing new ticket details.
-            db_session (optional): A database session for testing or direct queries.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response indicating success or an error message.
@@ -123,13 +123,13 @@ class SupportTicketService:
 
 
     @staticmethod
-    def delete_ticket(ticket_id, db_session=None):
+    def delete_ticket(ticket_id: int, db_session=None):
         """
         Delete a support ticket.
 
         Args:
             ticket_id (int): The ID of the support ticket.
-            db_session (optional): A database session for testing or direct queries.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response indicating success or an error message.

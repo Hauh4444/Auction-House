@@ -1,8 +1,6 @@
-from dataclasses import dataclass
 from datetime import datetime
 
 
-@dataclass
 class Bid:
     """
     Represents a bid in the system.
@@ -26,7 +24,7 @@ class Bid:
         self.listing_id = listing_id
         self.user_id = user_id
         self.amount = amount
-        self.created_at = created_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.created_at = created_at or datetime.now()
 
     def to_dict(self):
         """Converts the bid object to a dictionary representation."""
@@ -35,6 +33,6 @@ class Bid:
             "listing_id": self.listing_id,
             "user_id": self.user_id,
             "amount": self.amount,
-            "created_at": self.created_at.strftime("%Y-%m-%d %H:%M:%S")
+            "created_at": self.created_at
         }
 

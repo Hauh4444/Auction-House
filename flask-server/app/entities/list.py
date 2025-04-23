@@ -1,8 +1,6 @@
-from dataclasses import dataclass
 from datetime import datetime
 
 
-@dataclass
 class List:
     """
     Represents a list in the system.
@@ -17,7 +15,7 @@ class List:
         self.list_id = list_id
         self.user_id = user_id
         self.title = title
-        self.created_at = created_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.created_at = created_at or datetime.now()
 
     def to_dict(self):
         """Converts the list object to a dictionary representation."""
@@ -25,5 +23,5 @@ class List:
             "list_id": self.list_id,
             "user_id": self.user_id,
             "title": self.title,
-            "created_at": self.created_at.strftime("%Y-%m-%d %H:%M:%S")
+            "created_at": self.created_at
         }

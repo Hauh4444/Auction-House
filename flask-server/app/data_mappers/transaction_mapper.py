@@ -1,13 +1,13 @@
 from pymysql import cursors
 from datetime import datetime
 
-from ..database.connection import get_db
+from ..database import get_db
 from ..entities import Transaction
 
 
 class TransactionMapper:
     @staticmethod
-    def get_all_transactions(user_id, db_session=None):
+    def get_all_transactions(user_id: int, db_session=None):
         """
         Retrieve all transactions from the database.
 
@@ -26,7 +26,7 @@ class TransactionMapper:
 
 
     @staticmethod
-    def get_transaction_by_id(transaction_id, db_session=None):
+    def get_transaction_by_id(transaction_id: int, db_session=None):
         """
         Retrieve a transaction by its ID.
 
@@ -45,7 +45,7 @@ class TransactionMapper:
 
 
     @staticmethod
-    def create_transaction(data, db_session=None):
+    def create_transaction(data: dict, db_session=None):
         """
         Create a new transaction in the database.
 
@@ -70,7 +70,7 @@ class TransactionMapper:
 
 
     @staticmethod
-    def update_transaction(transaction_id, data, db_session=None):
+    def update_transaction(transaction_id: int, data: dict, db_session=None):
         """
         Update an existing transaction.
 
@@ -86,7 +86,7 @@ class TransactionMapper:
         cursor = db.cursor(cursors.DictCursor) # type: ignore
         conditions = [f"{key} = %s" for key in data if key not in ["transaction_id", "created_at", "updated_at"]]
         values = [data.get(key) for key in data if key not in ["transaction_id", "created_at", "updated_at"]]
-        values.append(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+        values.append(datetime.now())
         values.append(transaction_id)
         statement = f"UPDATE transactions SET {', '.join(conditions)}, updated_at = %s WHERE transaction_id = %s"
         cursor.execute(statement, values)
@@ -95,7 +95,7 @@ class TransactionMapper:
 
 
     @staticmethod
-    def delete_transaction(transaction_id, db_session=None):
+    def delete_transaction(transaction_id: int, db_session=None):
         """
         Delete a transaction by its ID.
 

@@ -1,6 +1,6 @@
 from pymysql import cursors
 
-from ..database.connection import get_db
+from ..database import get_db
 from ..entities import Model
 
 
@@ -24,7 +24,7 @@ class ModelMapper:
 
 
     @staticmethod
-    def get_model_by_listing_id(listing_id, db_session=None):
+    def get_model_by_listing_id(listing_id: int, db_session=None):
         """
         Retrieve all models.
 
@@ -43,7 +43,7 @@ class ModelMapper:
 
 
     @staticmethod
-    def get_model_by_model_id(model_id, db_session=None):
+    def get_model_by_model_id(model_id: int, db_session=None):
         """
         Retrieve all models.
 

@@ -58,7 +58,6 @@ const SellerProfile = () => {
 
     // On submit, post new listing to the backend API
     const handleSubmit = () => {
-        console.log(listing)
         axios.post(`${ import.meta.env.VITE_BACKEND_API_URL }/listings/`,
             {
                 listing: listing,

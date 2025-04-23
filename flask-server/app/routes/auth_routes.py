@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify, Response
-from flask_login import login_required
+from flask_login import login_required, current_user
 
 from ..services import AuthService
 from ..utils.logger import setup_logger
@@ -13,14 +13,17 @@ logger = setup_logger(name="auth_logger", log_file="logs/auth.log")
 # GET /api/auth/auth_status/
 @bp.route("/auth_status/", methods=["GET"])
 @login_required
-def check_auth_status():
+def check_auth_status(db_session=None):
     """
     Check the authentication status of the current user.
+
+    Args:
+        db_session: Optional database session to be used in tests.
 
     Returns:
         Response: A JSON response indicating whether the user is logged in or not.
     """
-    return AuthService.check_auth_status()
+    return AuthService.check_auth_status(db_session=db_session)
 
 
 # POST /api/auth/register/
@@ -30,7 +33,7 @@ def create_user(db_session=None):
     Register a new user.
 
     Args:
-        db_session (Session, optional): A database session for testing or direct queries.
+        db_session: Optional database session to be used in tests.
 
     Expects:
         JSON payload with user details (e.g., username, password, email, etc.).
@@ -55,7 +58,7 @@ def login(db_session=None):
     Login a user by verifying their username and password.
 
     Args:
-        db_session (Session, optional): A database session for testing or direct queries.
+        db_session: Optional database session to be used in tests.
 
     Expects:
         JSON payload with "username" and "password" keys.
@@ -76,16 +79,17 @@ def login(db_session=None):
 # POST /api/auth/logout/
 @bp.route("/logout/", methods=["POST"])
 @login_required
-def logout():
+def logout(db_session=None):
     """
     Log out the current user.
 
-    This will invalidate the session or token.
+    Args:
+        db_session: Optional database session to be used in tests.
 
     Returns:
         Response: A JSON response indicating the logout status.
     """
-    return AuthService.logout()
+    return AuthService.logout(user_id=current_user.id, db_session=db_session)
 
 
 # POST /api/auth/password_reset_request/
@@ -96,7 +100,7 @@ def password_reset_request(db_session=None):
     Request a password reset email.
 
     Args:
-        db_session (Session, optional): A database session for testing or direct queries.
+        db_session: Optional database session to be used in tests.
 
     Returns:
         Response: A JSON response indicating the status of the reset request.
@@ -112,7 +116,7 @@ def password_reset(db_session=None):
     Reset the user password.
 
     Args:
-        db_session (Session, optional): A database session for testing or direct queries.
+        db_session: Optional database session to be used in tests.
 
     Expects:
         JSON payload with "reset_token" and "new_password" keys.

@@ -1,7 +1,7 @@
 from flask import Response, jsonify
 from flask_login import current_user
 
-from datetime import date, datetime, timedelta
+from datetime import date, timedelta
 from dotenv import load_dotenv
 import stripe, os
 
@@ -17,13 +17,13 @@ logger = setup_logger(name="purchase_logger", log_file="logs/purchase.log")
 class PurchaseService:
     """For now, we mock most of the external data."""
     @staticmethod
-    def process_payment(data, db_session=None):
+    def process_payment(data: dict, db_session=None):
         """
         Process Stripe Payment
 
         Args:
             data (dict): Payment data including amount, currency, success_url, cancel_url, and listings.
-            db_session (optional): Database session for transactional operations.
+            db_session: Database session for transactional operations.
 
         Returns:
             Response: JSON response containing either the Stripe session ID on success,
@@ -70,13 +70,13 @@ class PurchaseService:
 
 
     @staticmethod
-    def process_purchase(data, db_session=None):
+    def process_purchase(data: dict, db_session=None):
         """
         Process Purchase Request
 
         Args:
             data (dict): Purchase data including listings and amount.
-            db_session (optional): Database session for transactional operations.
+            db_session: Database session for transactional operations.
 
         Returns:
             dict: {"status": 200} on success, or {"error": str, "status": int} on failure.
@@ -96,18 +96,18 @@ class PurchaseService:
 
 
     @staticmethod
-    def create_order(data, db_session=None):
+    def create_order(data: dict, db_session=None):
         """
         Create a New Order
 
         Args:
             data (dict): Includes user_id, listings, amount, and profile.
-            db_session (optional): Database session for transactional operations.
+            db_session: Database session for transactional operations.
 
         Returns:
             dict: {"status": 200} on success, or {"error": str, "status": int} on failure.
         """
-        order_data = {"user_id": data.get("user_id"), "order_date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "status": "processing"}
+        order_data = {"user_id": data.get("user_id"), "status": "processing"}
         order_id = OrderMapper.create_order(data=order_data, db_session=db_session)
         if not order_id:
             logger.error(msg=f"Failed creating order with data: {', '.join(f'{k}={v!r}' for k, v in order_data.items())}")
@@ -120,18 +120,18 @@ class PurchaseService:
 
 
     @staticmethod
-    def create_transaction(data, db_session=None):
+    def create_transaction(data: dict, db_session=None):
         """
         Create a Transaction for the Order
 
         Args:
             data (dict): Includes order_id, user_id, amount, and related data.
-            db_session (optional): Database session for transactional operations.
+            db_session: Database session for transactional operations.
 
         Returns:
             dict: {"status": 200} on success, or {"error": str, "status": int} on failure.
         """
-        transaction_data = {"order_id": data.get("order_id"), "user_id": data.get("user_id"), "transaction_date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        transaction_data = {"order_id": data.get("order_id"), "user_id": data.get("user_id"),
                             "transaction_type": "buy_now", "amount": data.get("amount"), "shipping_cost": 0, "payment_method": "credit_card", "payment_status": "completed"}
         transaction_id = TransactionMapper.create_transaction(data=transaction_data, db_session=db_session)
         if not transaction_id:
@@ -145,13 +145,13 @@ class PurchaseService:
 
 
     @staticmethod
-    def handle_items(data, db_session=None):
+    def handle_items(data: dict, db_session=None):
         """
         Process Each Purchased Listing
 
         Args:
             data (dict): Contains user_id, profile, listings, order_id, and transaction_id.
-            db_session (optional): Database session for transactional operations.
+            db_session: Database session for transactional operations.
 
         Returns:
             dict: {"status": 200} on success, or {"error": str, "status": int} on failure.
@@ -198,9 +198,17 @@ class PurchaseService:
 
 
     @staticmethod
-    def get_stripe_session_status(args):
-        session_id = args.get("session_id")
+    def get_stripe_session_status(session_id: str):
+        """
+        Retrieve the status and details of a Stripe Checkout Session.
 
+        Args:
+            session_id (str): Stripe session ID to retrieve.
+
+        Returns:
+            Response: JSON response with session details (e.g. customer email) and status on success,
+                      or an error message with the appropriate HTTP status code on failure.
+        """
         try:
             stripe_session = stripe.checkout.Session.retrieve(session_id)
 

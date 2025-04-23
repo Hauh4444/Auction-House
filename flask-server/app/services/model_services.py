@@ -36,7 +36,7 @@ class ModelService:
 
 
     @staticmethod
-    def get_model_by_listing_id(listing_id, db_session=None):
+    def get_model_by_listing_id(listing_id: int, db_session=None):
         """
         Retrieve the model ID and metadata for a specific listing ID.
 
@@ -62,7 +62,7 @@ class ModelService:
 
 
     @staticmethod
-    def get_model_by_model_id(model_id, db_session=None):
+    def get_model_by_model_id(model_id: int, db_session=None):
         """
         Serve a 3D model file by its ID.
 
@@ -88,7 +88,7 @@ class ModelService:
 
 
     @staticmethod
-    def download_model(model_id, db_session=None):
+    def download_model(model_id: int, db_session=None):
         """
         Serve a 3D model file by its ID.
 
@@ -119,7 +119,7 @@ class ModelService:
 
 
     @staticmethod
-    def create_model(data, db_session=None):
+    def create_model(data: dict, db_session=None):
         """
         Add a new 3D model to the database.
 
@@ -143,7 +143,7 @@ class ModelService:
 
 
     @staticmethod
-    def delete_model(model_id, db_session=None):
+    def delete_model(model_id: int, db_session=None):
         """
         Delete a 3D model by its ID.
 

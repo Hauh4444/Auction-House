@@ -9,7 +9,7 @@ logger = setup_logger(name="listing_logger", log_file="logs/listing.log")
 
 class ListingService:
     @staticmethod
-    def get_all_listings(args, db_session=None):
+    def get_all_listings(args: dict, db_session=None):
         """
         Retrieves a list of all listings, with optional filtering and sorting based on query parameters.
 
@@ -32,7 +32,7 @@ class ListingService:
         
 
     @staticmethod
-    def get_listing_by_id(listing_id, db_session=None):
+    def get_listing_by_id(listing_id: int, db_session=None):
         """
         Retrieves a specific listing by its ID.
 
@@ -56,7 +56,7 @@ class ListingService:
 
 
     @staticmethod
-    def create_listing(data, db_session=None):
+    def create_listing(data: dict, db_session=None):
         """
         Creates a new listing with the provided data.
 
@@ -82,7 +82,7 @@ class ListingService:
         
 
     @staticmethod
-    def update_listing(listing_id, data, db_session=None):
+    def update_listing(listing_id: int, data: dict, db_session=None):
         """
         Updates an existing listing by its ID with the provided data.
 
@@ -107,7 +107,7 @@ class ListingService:
 
 
     @staticmethod
-    def delete_listing(listing_id, db_session=None):
+    def delete_listing(listing_id: int, db_session=None):
         """
         Deletes a listing by its ID.
 

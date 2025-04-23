@@ -1,12 +1,12 @@
 from pymysql import cursors
 
-from ..database.connection import get_db
+from ..database import get_db
 from ..entities import ChatMessage
 
 
 class ChatMessageMapper:
     @staticmethod
-    def get_messages_by_chat_id(chat_id, db_session=None):
+    def get_messages_by_chat_id(chat_id: int, db_session=None):
         """
         Retrieve all messages for a given chat.
 
@@ -25,7 +25,7 @@ class ChatMessageMapper:
 
 
     @staticmethod
-    def get_message_by_id(message_id, db_session=None):
+    def get_message_by_id(message_id: int, db_session=None):
         """
         Retrieve a specific message by its ID.
 
@@ -44,7 +44,7 @@ class ChatMessageMapper:
 
 
     @staticmethod
-    def create_message(data, db_session=None):
+    def create_message(data: dict, db_session=None):
         """
         Create a new chat message.
 
@@ -67,7 +67,7 @@ class ChatMessageMapper:
 
 
     @staticmethod
-    def delete_message(message_id, db_session=None):
+    def delete_message(message_id: int, db_session=None):
         """
         Delete a message by its ID.
 

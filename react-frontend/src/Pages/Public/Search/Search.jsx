@@ -86,7 +86,6 @@ const Search = () => {
             })
             .then((res) => {
                 setListings(res.data.listings);
-                console.log(res.data.listings[0]);
             }) // Set the fetched listings into state
             .catch(() => setListings([]));
     }, [location.search]);

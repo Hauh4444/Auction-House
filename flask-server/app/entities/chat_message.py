@@ -1,8 +1,6 @@
-from dataclasses import dataclass
 from datetime import datetime
 
 
-@dataclass
 class ChatMessage:
     """
     Represents a chat message in the system.
@@ -40,7 +38,7 @@ class ChatMessage:
         self.sender_id = sender_id
         self.chat_id = chat_id
         self.message = message
-        self.sent_at = sent_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.sent_at = sent_at or datetime.now()
 
     def to_dict(self):
         """Converts the chat message object to a dictionary representation."""
@@ -49,5 +47,5 @@ class ChatMessage:
             "sender_id": self.sender_id,
             "chat_id": self.chat_id,
             "message": self.message,
-            "created_at": self.sent_at.strftime("%Y-%m-%d %H:%M:%S") if isinstance(self.sent_at, datetime) else self.sent_at,
+            "created_at": self.sent_at if isinstance(self.sent_at, datetime) else self.sent_at,
         }

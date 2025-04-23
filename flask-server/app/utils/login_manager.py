@@ -1,13 +1,15 @@
 from flask_login import LoginManager
-
 from ..data_mappers import AuthMapper
 from ..entities import User
+from .logger import setup_logger
+
+logger = setup_logger(name="app_logger", log_file="logs/app.log")
 
 login_manager = LoginManager()
 
 
 @login_manager.user_loader
-def load_user(user_id, db_session=None):
+def load_user(user_id: int, db_session=None):
     """
     Loads a user by their ID for Flask-Login session management.
 
@@ -18,7 +20,11 @@ def load_user(user_id, db_session=None):
     Returns:
         User: A User object if found, else None.
     """
-    user_data = AuthMapper.get_user_by_id(user_id=user_id, db_session=db_session)
-    if isinstance(user_data, dict):
-        return User(**user_data)
-    return user_data
+    try:
+        user_data = AuthMapper.get_user_by_id(user_id=user_id, db_session=db_session)
+        if isinstance(user_data, dict):
+            return User(**user_data)
+        return user_data
+    except Exception as e:
+        logger.critical(msg=f"Failed loading user with ID {user_id}: {e}")
+        return None

@@ -14,7 +14,7 @@ class ListService:
         Retrieve User Lists
 
         Args:
-            db_session (optional): A database session for testing or direct queries.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response containing the user's lists if found, otherwise a 404 error.
@@ -31,13 +31,13 @@ class ListService:
 
 
     @staticmethod
-    def get_list_items(list_id, db_session=None):
+    def get_list_items(list_id: int, db_session=None):
         """
         Retrieve Items in a List
 
         Args:
             list_id (int): The ID of the list whose items are being retrieved.
-            db_session (optional): A database session for testing or direct queries.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response containing the list items if found, otherwise a 404 error.
@@ -57,13 +57,13 @@ class ListService:
 
 
     @staticmethod
-    def create_list(data, db_session=None):
+    def create_list(data: dict, db_session=None):
         """
         Create a New List
 
         Args:
             data (dict): The data required to create the list, including the user ID and title.
-            db_session (optional): A database session for testing or direct queries.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response containing the newly created list ID or an error message.
@@ -80,14 +80,14 @@ class ListService:
 
 
     @staticmethod
-    def create_list_item(list_id, listing_id, db_session=None):
+    def create_list_item(list_id: int, listing_id: int, db_session=None):
         """
         Add an Item to a List
 
         Args:
             list_id (int): The ID of the list to which the item will be added.
             listing_id (int): The ID of the listing to be added to the list.
-            db_session (optional): A database session for testing or direct queries.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response containing the newly created list item ID or an error message.
@@ -111,14 +111,14 @@ class ListService:
 
 
     @staticmethod
-    def update_list(list_id, data, db_session=None):
+    def update_list(list_id: int, data: dict, db_session=None):
         """
         Update an Existing List
 
         Args:
             list_id (int): The ID of the list to be updated.
             data (dict): The update data containing a new title and/or list items.
-            db_session (optional): A database session for testing or direct queries.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response indicating success or an error message.
@@ -164,13 +164,13 @@ class ListService:
 
 
     @staticmethod
-    def delete_list(list_id, db_session=None):
+    def delete_list(list_id: int, db_session=None):
         """
         Delete a List
 
         Args:
             list_id (int): The ID of the list to be deleted.
-            db_session (optional): A database session for testing or direct queries.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response indicating success or an error message.

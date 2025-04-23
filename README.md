@@ -1,4 +1,4 @@
-# Dinkleberg's Auction House
+# Auction House
 
 ## TODO
 
@@ -15,23 +15,14 @@
 
 - Code Review
     - Routes
-        - Write Checks for if Data Contains all Necessary Values
+        - Write & Log Checks for if Data Contains all Necessary Values
     - Data Mappers
         - SQL Statement Consistency
         - SQL Injection Vulnerabilities
     - Entities
         - Setters & Getters
         - Value & Type Checks for Setters
-- Documentation
-    - Utils
-    - Check Everything
-- Logging
-    - Routes
-        - Data Checks
-    - Database
-        - Backup & Recover & Connect
-    - Init & Utils
-        - Try/Catch
+    - Documentation
 - Fix Tests
 - Analytics & Reports
 - Order & Delivery API

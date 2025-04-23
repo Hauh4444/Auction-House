@@ -8,7 +8,7 @@ logger = setup_logger(name="review_logger", log_file="logs/review.log")
 
 class ReviewService:
     @staticmethod
-    def get_all_reviews(args, db_session=None):
+    def get_all_reviews(args: dict, db_session=None):
         """
         Retrieves a list of all reviews.
 
@@ -31,7 +31,7 @@ class ReviewService:
             
 
     @staticmethod
-    def get_review_by_id(review_id, db_session=None):
+    def get_review_by_id(review_id: int, db_session=None):
         """
         Retrieves a specific review by its ID.
         
@@ -55,7 +55,7 @@ class ReviewService:
 
 
     @staticmethod
-    def create_review(data, db_session=None):
+    def create_review(data: dict, db_session=None):
         """
         Creates a new review with the provided data.
         
@@ -79,7 +79,7 @@ class ReviewService:
             
 
     @staticmethod
-    def update_review(review_id, data, db_session=None):
+    def update_review(review_id: int, data: dict, db_session=None):
         """
         Updates an existing review by its ID with the provided data.
         
@@ -105,7 +105,7 @@ class ReviewService:
 
 
     @staticmethod
-    def delete_review(review_id, db_session=None):
+    def delete_review(review_id: int, db_session=None):
         """
         Deletes a review by its ID.
         

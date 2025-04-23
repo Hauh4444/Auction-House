@@ -33,7 +33,7 @@ class ProfileService:
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
     @staticmethod
-    def create_profile(data, db_session=None):
+    def create_profile(data: dict, db_session=None):
         """
         Creates a new profile with the provided data.
 
@@ -56,7 +56,7 @@ class ProfileService:
         return Response(response=jsonify(response_data).get_data(), status=201, mimetype="application/json")
 
     @staticmethod
-    def update_profile(profile_id, data, db_session=None):
+    def update_profile(profile_id: int, data: dict, db_session=None):
         """
         Updates an existing profile by its ID with the provided data.
 

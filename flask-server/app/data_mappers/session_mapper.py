@@ -1,6 +1,6 @@
 from pymysql import cursors
 
-from ..database.connection import get_db
+from ..database import get_db
 from ..entities import Session
 
 
@@ -24,7 +24,7 @@ class SessionMapper:
 
 
     @staticmethod
-    def get_session_by_id(session_id, db_session=None):
+    def get_session_by_id(session_id: int, db_session=None):
         """
         Retrieve a session by its ID from the database.
 
@@ -43,7 +43,7 @@ class SessionMapper:
 
 
     @staticmethod
-    def create_session(data, db_session=None):
+    def create_session(data: dict, db_session=None):
         """
         Create a new session in the database.
 
@@ -67,7 +67,7 @@ class SessionMapper:
 
 
     @staticmethod
-    def update_session(session_id, data, db_session=None):
+    def update_session(session_id: int, data: dict, db_session=None):
         """
         Update an existing session in the database.
 
@@ -92,7 +92,7 @@ class SessionMapper:
 
 
     @staticmethod
-    def delete_session(session_id, db_session=None):
+    def delete_session(session_id: int, db_session=None):
         """
         Delete a session by its ID.
 

@@ -26,7 +26,7 @@ def get_all_reviews(db_session=None):
 
 # GET /api/reviews/{id}/
 @bp.route("/<int:review_id>/", methods=["GET"])
-def get_review(review_id, db_session=None):
+def get_review(review_id: int, db_session=None):
     """
     Retrieve a single review by its ID.
 
@@ -63,7 +63,7 @@ def create_review(db_session=None):
 # PUT /api/reviews/{id}/
 @bp.route("/<int:review_id>/", methods=["PUT"])
 @login_required
-def update_review(review_id, db_session=None):
+def update_review(review_id: int, db_session=None):
     """
     Update an existing review by its ID.
 
@@ -84,7 +84,7 @@ def update_review(review_id, db_session=None):
 # DELETE /api/reviews/{id}/
 @bp.route("/<int:review_id>/", methods=["DELETE"])
 @login_required
-def delete_review(review_id, db_session=None):
+def delete_review(review_id: int, db_session=None):
     """
     Delete a review by its ID.
 

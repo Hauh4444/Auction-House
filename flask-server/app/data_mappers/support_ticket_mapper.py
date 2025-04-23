@@ -1,13 +1,13 @@
 from pymysql import cursors
 from datetime import datetime
 
-from ..database.connection import get_db
+from ..database import get_db
 from ..entities import SupportTicket
 
 
 class SupportTicketMapper:
     @staticmethod
-    def get_tickets_by_user_id(user_id, db_session=None):
+    def get_tickets_by_user_id(user_id: int, db_session=None):
         """
         Retrieve all support tickets for a given user.
 
@@ -26,7 +26,7 @@ class SupportTicketMapper:
 
 
     @staticmethod
-    def get_tickets_by_staff_id(staff_id, db_session=None):
+    def get_tickets_by_staff_id(staff_id: int, db_session=None):
         """
         Retrieve all support tickets for a given user.
 
@@ -45,7 +45,7 @@ class SupportTicketMapper:
 
 
     @staticmethod
-    def get_ticket_by_id(ticket_id, db_session=None):
+    def get_ticket_by_id(ticket_id: int, db_session=None):
         """
         Retrieve a support ticket by its ID.
 
@@ -64,7 +64,7 @@ class SupportTicketMapper:
 
 
     @staticmethod
-    def create_ticket(data, db_session=None):
+    def create_ticket(data: dict, db_session=None):
         """
         Create a new support ticket.
 
@@ -81,13 +81,13 @@ class SupportTicketMapper:
             INSERT INTO support_tickets (user_id, subject, status, priority, assigned_to, created_at, updated_at) 
             VALUES (%s, %s, %s, %s, %s, %s, %s)
         """
-        cursor.execute(statement, tuple(SupportTicket(**data).to_dict().values())[1:]) # Exclude ticket_id (auto-incremented)
+        cursor.execute(statement, tuple(SupportTicket(**data).to_dict().values())[1:])
         db.commit()
         return cursor.lastrowid
 
 
     @staticmethod
-    def update_ticket(ticket_id, data, db_session=None):
+    def update_ticket(ticket_id: int, data: dict, db_session=None):
         """
         Update a support ticket's details.
 
@@ -103,7 +103,7 @@ class SupportTicketMapper:
         cursor = db.cursor(cursors.DictCursor) # type: ignore
         set_clause = ", ".join([f"{key} = %s" for key in data if key not in ["ticket_id", "created_at", "updated_at"]])
         values = [data.get(key) for key in data if key not in ["ticket_id", "created_at", "updated_at"]]
-        values.append(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+        values.append(datetime.now())
         values.append(ticket_id)
         statement = f"UPDATE support_tickets SET {set_clause}, updated_at = %s WHERE ticket_id = %s"
         cursor.execute(statement, values)
@@ -112,7 +112,7 @@ class SupportTicketMapper:
 
 
     @staticmethod
-    def update_ticket_timestamp(ticket_id, db_session=None):
+    def update_ticket_timestamp(ticket_id: int, db_session=None):
         """
         Update a support ticket's timestamp.
 
@@ -125,13 +125,13 @@ class SupportTicketMapper:
         """
         db = db_session or get_db()
         cursor = db.cursor(cursors.DictCursor) # type: ignore
-        cursor.execute(f"UPDATE support_tickets SET updated_at = %s WHERE ticket_id = %s", (datetime.now().strftime("%Y-%m-%d %H:%M:%S"), ticket_id))
+        cursor.execute(f"UPDATE support_tickets SET updated_at = %s WHERE ticket_id = %s", (datetime.now(), ticket_id))
         db.commit()
         return cursor.rowcount
 
 
     @staticmethod
-    def delete_ticket(ticket_id, db_session=None):
+    def delete_ticket(ticket_id: int, db_session=None):
         """
         Delete a support ticket by its ID.
 

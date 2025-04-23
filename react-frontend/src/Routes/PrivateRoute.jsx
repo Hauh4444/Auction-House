@@ -21,6 +21,9 @@ const PrivateRoute = () => {
     // If the user is not authenticated, redirect to the authentication page
     if (!auth.user) return <Navigate to="/auth-page" state={ { from: location } } />;
 
+    // If user does not have user privelages, redirect to the home page
+    if (auth.user.role !== "user") return <Navigate to="/" />
+
     // If the user is authenticated, render the child routes
     return <Outlet />;
 };

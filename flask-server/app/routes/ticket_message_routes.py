@@ -13,7 +13,7 @@ logger = setup_logger(name="ticket_message_logger", log_file="logs/ticket_messag
 # GET /api/ticket/messages/{ticket_id}/
 @bp.route('/<int:ticket_id>/', methods=['GET'])
 @login_required
-def get_messages_by_ticket(ticket_id, db_session=None):
+def get_messages_by_ticket(ticket_id: int, db_session=None):
     """
     Retrieve all messages for a given ticket.
 
@@ -30,7 +30,7 @@ def get_messages_by_ticket(ticket_id, db_session=None):
 # POST /api/ticket/messages/{ticket_id}/
 @bp.route('/<int:ticket_id>/', methods=['POST'])
 @login_required
-def create_message(ticket_id, db_session=None):
+def create_message(ticket_id: int, db_session=None):
     """
     Create a new message in a support ticket.
 
@@ -49,36 +49,10 @@ def create_message(ticket_id, db_session=None):
     return TicketMessageService.create_message(data=data, db_session=db_session)
 
 
-# PUT /api/ticket/messages/{message_id}/
-@bp.route('/<int:message_id>/', methods=['PUT'])
-@login_required
-def update_message(message_id, db_session=None):
-    """
-    Update an existing ticket message.
-
-    Args:
-        message_id (int): The ID of the message to update.
-        db_session: Optional database session to be used in tests.
-
-    Expects:
-        JSON payload containing the updates for the message.
-
-    Returns:
-        JSON response indicating the status of the message update.
-    """
-    if current_user.role not in ["staff", "admin"]:
-        response_data = {"error": "Unauthorized access"}
-        logger.error(msg=f"Unauthorized access attempt to update ticket message by user {current_user.id}")
-        return Response(response=jsonify(response_data).get_data(), status=401, mimetype="application/json")
-
-    data = request.json
-    return TicketMessageService.update_message(message_id=message_id, updates=data, db_session=db_session)
-
-
 # DELETE /api/ticket/messages/{message_id}/
 @bp.route('/<int:message_id>/', methods=['DELETE'])
 @login_required
-def delete_message(message_id, db_session=None):
+def delete_message(message_id: int, db_session=None):
     """
     Delete a ticket message by its ID.
 

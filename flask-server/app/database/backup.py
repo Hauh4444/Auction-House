@@ -1,9 +1,13 @@
 from datetime import datetime
 from dotenv import load_dotenv
 import os, pymysql
+
 from ..utils.mysql import mysql
+from ..utils.logger import setup_logger
 
 load_dotenv()
+
+logger = setup_logger(name="database_logger", log_file="logs/database.log")
 
 BACKUP_DIRECTORY = os.path.join(os.getcwd(), "database_backups")
 
@@ -27,8 +31,8 @@ def backup_db():
     try:
         os.makedirs(BACKUP_DIRECTORY, exist_ok=True)
 
-        today = datetime.now().strftime("%Y-%m-%d %H:%M:%S").strftime("%Y-%m-%d")
-        backup_file = f"auctionhouse_backup_{today}.sql"
+        today = datetime.now().strftime("%Y-%m-%d")
+        backup_file = f"{os.getenv('DB')}_backup_{today}.sql"
         backup_path = os.path.join(BACKUP_DIRECTORY, backup_file)
 
         conn = pymysql.connect(
@@ -64,12 +68,12 @@ def backup_db():
 
         cursor.close()
         conn.close()
-        print(f"Backup successful: {backup_path}")
+        logger.info(msg=f"Backup successful: {backup_path}")
 
     except mysql.connector.Error as err:
-        print(f"MySQL Error during backup: {err}")
+        logger.warning(msg=f"MySQL Error during backup: {err}")
     except Exception as e:
-        print(f"Unexpected error during backup: {e}")
+        logger.warning(msg=f"Unexpected error during backup: {e}")
 
 
 def recover_db():
@@ -93,21 +97,21 @@ def recover_db():
         backup_files = [
             os.path.join(BACKUP_DIRECTORY, f)
             for f in os.listdir(BACKUP_DIRECTORY)
-            if f.startswith("auctionhouse_backup_") and f.endswith(".sql")
+            if f.startswith(f"{os.getenv('DB')}_backup_") and f.endswith(".sql")
         ]
         backup_files = sorted(backup_files, key=os.path.getmtime, reverse=True)
 
         if not backup_files:
-            print("No backup files found.")
+            logger.critical(msg="No backup files found.")
             return
 
         latest_backup = backup_files[0]
 
         conn = mysql.connector.connect(
-            host="localhost",
-            user="Preston",
-            password="",
-            database="auctionhouse"
+            host=os.getenv("DB_HOST"),
+            user=os.getenv("DB_USER"),
+            password=os.getenv("DB_PASSWORD"),
+            database=os.getenv("DB")
         )
         cursor = conn.cursor()
 
@@ -121,9 +125,9 @@ def recover_db():
         conn.commit()
         cursor.close()
         conn.close()
-        print(f"Database restored from {latest_backup}")
+        logger.info(msg=f"Database restored from {latest_backup}")
 
     except mysql.connector.Error as err:
-        print(f"MySQL Error during recovery: {err}")
+        logger.critical(msg=f"MySQL Error during recovery: {err}")
     except Exception as e:
-        print(f"Unexpected error during recovery: {e}")
+        logger.critical(msg=f"Unexpected error during recovery: {e}")

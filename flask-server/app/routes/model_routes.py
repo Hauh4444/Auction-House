@@ -17,7 +17,7 @@ def get_all_models():
 
 # GET /api/models/listing/{id}/
 @bp.route('/listing/<int:listing_id>/', methods=['GET'])
-def get_model_by_listing_id(listing_id):
+def get_model_by_listing_id(listing_id: int):
     """
     Retrieve metadata for a 3D model by its associated listing ID.
     """
@@ -26,7 +26,7 @@ def get_model_by_listing_id(listing_id):
 
 # GET /api/models/{id}/
 @bp.route('/<int:model_id>/', methods=['GET'])
-def get_model_by_model_id(model_id):
+def get_model_by_model_id(model_id: int):
     """
     Serve a 3D model file by its ID.
     """
@@ -35,7 +35,7 @@ def get_model_by_model_id(model_id):
 
 # GET /api/models/download/{id}/
 @bp.route('/download/<int:model_id>/', methods=['GET'])
-def download_model(model_id):
+def download_model(model_id: int):
     """
     Serve a 3D model file by its ID.
     """

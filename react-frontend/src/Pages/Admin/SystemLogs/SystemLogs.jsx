@@ -21,6 +21,8 @@ const SystemLogs = () => {
     const [logData, setLogData] = useState([]);
     const [level, setLevel] = useState("ALL");
     const [date, setDate] = useState(null);
+    const [line_length, setLineLength] = useState(750);
+    const [limit, setLimit] = useState(50);
 
     useEffect(() => {
         axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/logs/`,
@@ -32,7 +34,7 @@ const SystemLogs = () => {
             .catch(err => console.error(err)); // Log errors if any
     }, []);
 
-    const getLog = (log, level, selectedDate = date) => {
+    const getLog = (log, level, selectedDate = date, line_length, limit) => {
         setLevel(level);
 
         axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/logs/${ log }/`,
@@ -40,6 +42,8 @@ const SystemLogs = () => {
                 params: {
                     level: level !== "ALL" ? level : null,
                     date: selectedDate ? dayjs(selectedDate).format("YYYY-MM-DD") : null,
+                    line_length: line_length,
+                    limit: limit,
                 },
                 headers: { "Content-Type": "application/json" },
                 withCredentials: true,
@@ -92,7 +96,7 @@ const SystemLogs = () => {
                                         name="level"
                                         variant="outlined"
                                         value={ level }
-                                        onChange={ (e) => getLog(currentLog, e.target.value) }
+                                        onChange={ (e) => getLog(currentLog, e.target.value, date, line_length, limit) }
                                     >
                                         <MenuItem value={ "ALL" }>All</MenuItem>
                                         <MenuItem value={ "DEBUG" }>Debug</MenuItem>
@@ -109,15 +113,47 @@ const SystemLogs = () => {
                                         value={ date }
                                         onChange={(newValue) => {
                                             setDate(newValue);
-                                            getLog(currentLog, level, newValue);
+                                            getLog(currentLog, level, newValue, line_length, limit);
                                         }}
                                         renderInput={ (params) => <TextField { ...params } size="small" /> }
                                     />
                                 </LocalizationProvider>
+
+                                <TextField
+                                    className="input"
+                                    label="Max Line Length"
+                                    name="line_length"
+                                    type="number"
+                                    variant="outlined"
+                                    value={ line_length }
+                                    onChange={(e) => {
+                                        const val = parseInt(e.target.value);
+                                        if (!isNaN(val)) {
+                                            setLineLength(val);
+                                            getLog(currentLog, level, date, val, limit);
+                                        }
+                                    }}
+                                />
+
+                                <TextField
+                                    className="input"
+                                    label="Limit"
+                                    name="limit"
+                                    type="number"
+                                    variant="outlined"
+                                    value={ limit }
+                                    onChange={(e) => {
+                                        const val = parseInt(e.target.value);
+                                        if (!isNaN(val)) {
+                                            setLimit(val);
+                                            getLog(currentLog, level, date, line_length, val);
+                                        }
+                                    }}
+                                />
                             </div>
 
                             <div className="logData">
-                                {logData.map((line, index) => (
+                                {logData && logData.map((line, index) => (
                                     <div className="line" key={ index }>{ line }</div>
                                 ))}
                             </div>

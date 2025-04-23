@@ -1,13 +1,13 @@
 from pymysql import cursors
 from datetime import datetime
 
-from ..database.connection import get_db
+from ..database import get_db
 from ..entities import Order, OrderItem
 
 
 class OrderMapper:
     @staticmethod
-    def get_all_orders(user_id, db_session=None):
+    def get_all_orders(user_id: int, db_session=None):
         """
         Retrieve all orders from the database.
 
@@ -26,7 +26,7 @@ class OrderMapper:
 
 
     @staticmethod
-    def get_order_by_id(order_id, db_session=None):
+    def get_order_by_id(order_id: int, db_session=None):
         """
         Retrieve an order by its ID.
 
@@ -45,7 +45,7 @@ class OrderMapper:
 
 
     @staticmethod
-    def create_order(data, db_session=None):
+    def create_order(data: dict, db_session=None):
         """
         Create a new order in the database.
 
@@ -69,7 +69,7 @@ class OrderMapper:
 
 
     @staticmethod
-    def create_order_item(data, db_session=None):
+    def create_order_item(data: dict, db_session=None):
         """
         Create a new order item in the database.
 
@@ -93,7 +93,7 @@ class OrderMapper:
 
 
     @staticmethod
-    def update_order(order_id, data, db_session=None):
+    def update_order(order_id: int, data: dict, db_session=None):
         """
         Update an existing order.
 
@@ -109,7 +109,7 @@ class OrderMapper:
         cursor = db.cursor(cursors.DictCursor) # type: ignore
         conditions = [f"{key} = %s" for key in data if key not in ["order_id", "created_at", "updated_at"]]
         values = [data.get(key) for key in data if key not in ["order_id", "created_at", "updated_at"]]
-        values.append(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+        values.append(datetime.now())
         values.append(order_id)
         statement = f"UPDATE orders SET {', '.join(conditions)}, updated_at = %s WHERE order_id = %s"
         cursor.execute(statement, values)
@@ -118,7 +118,7 @@ class OrderMapper:
 
 
     @staticmethod
-    def delete_order(order_id, db_session=None):
+    def delete_order(order_id: int, db_session=None):
         """
         Delete an order by its ID.
 

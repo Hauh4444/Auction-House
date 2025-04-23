@@ -1,8 +1,6 @@
-from dataclasses import dataclass
 from datetime import datetime
 
 
-@dataclass
 class Transaction:
     """
     Represents a transaction in the system.
@@ -10,7 +8,7 @@ class Transaction:
     Attributes:
         transaction_id (int, optional): The unique identifier for the transaction.
         order_id (int): The ID of the order involved in the transaction.
-        transaction_date (datetime): The date and time when the transaction occurred.
+        transaction_date (datetime, optional): The date and time when the transaction occurred.
         transaction_type (str): The type of transaction ("auction" or "buy_now").
         amount (float): The amount of money involved in the transaction (excluding shipping).
         shipping_cost (float): The cost of shipping associated with the transaction.
@@ -23,12 +21,12 @@ class Transaction:
             self,
             order_id: int,
             user_id: int,
-            transaction_date: datetime,
             transaction_type: str, # "auction", "buy_now"
             amount: float,
             shipping_cost: float,
             payment_method: str,
             payment_status: str, # "pending", "completed", "failed", "refunded"
+            transaction_date: datetime | None = None,
             created_at: datetime | None = None,
             updated_at: datetime | None = None,
             transaction_id: int | None = None
@@ -47,14 +45,14 @@ class Transaction:
         self.transaction_id = transaction_id
         self.order_id = order_id
         self.user_id = user_id
-        self.transaction_date = transaction_date
+        self.transaction_date = transaction_date or datetime.now()
         self.transaction_type = transaction_type
         self.amount = amount
         self.shipping_cost = shipping_cost
         self.payment_method = payment_method
         self.payment_status = payment_status
-        self.created_at = created_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        self.updated_at = updated_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.created_at = created_at or datetime.now()
+        self.updated_at = updated_at or datetime.now()
 
     def to_dict(self):
         """Converts the transaction object to a dictionary representation."""
@@ -62,12 +60,12 @@ class Transaction:
             "transaction_id": self.transaction_id,
             "order_id": self.order_id,
             "user_id": self.user_id,
-            "transaction_date": self.transaction_date.strftime("%Y-%m-%d %H:%M:%S"),
+            "transaction_date": self.transaction_date,
             "transaction_type": self.transaction_type,
             "amount": self.amount,
             "shipping_cost": self.shipping_cost,
             "payment_method": self.payment_method,
             "payment_status": self.payment_status,
-            "created_at": self.created_at.strftime("%Y-%m-%d %H:%M:%S"),
-            "updated_at": self.updated_at.strftime("%Y-%m-%d %H:%M:%S")
+            "created_at": self.created_at,
+            "updated_at": self.updated_at
         }

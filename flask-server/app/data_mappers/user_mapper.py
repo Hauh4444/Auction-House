@@ -1,13 +1,13 @@
 from pymysql import cursors
 from datetime import datetime
 
-from ..database.connection import get_db
+from ..database import get_db
 from ..entities import User
 
 
 class UserMapper:
     @staticmethod
-    def get_user(user_id, db_session=None):
+    def get_user(user_id: int, db_session=None):
         """
         Retrieve a user by their ID.
 
@@ -26,7 +26,7 @@ class UserMapper:
 
 
     @staticmethod
-    def update_user(user_id, data, db_session=None):
+    def update_user(user_id: int, data: dict, db_session=None):
         """
         Update an existing user.
 
@@ -42,7 +42,7 @@ class UserMapper:
         cursor = db.cursor(cursors.DictCursor) # type: ignore
         set_clause = ", ".join([f"{key} = %s" for key in data if key not in ["user_id", "updated_at", "last_login"]])
         values = [data.get(key) for key in data if key not in ["user_id", "updated_at", "last_login"]]
-        values.append(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+        values.append(datetime.now())
         values.append(user_id)
         statement = f"UPDATE users SET {set_clause}, updated_at = %s WHERE user_id = %s"
         cursor.execute(statement, values)
@@ -51,7 +51,7 @@ class UserMapper:
 
 
     @staticmethod
-    def delete_user(user_id, db_session=None):
+    def delete_user(user_id: int, db_session=None):
         """
         Delete a user by their ID.
 

@@ -12,7 +12,7 @@ logger = setup_logger(name="email_logger", log_file="logs/email.log")
 
 class EmailService:
     @staticmethod
-    def send_email(subject, recipients, body):
+    def send_email(subject: str, recipients: list, body: str):
         """
         Sends an email with the given subject, recipients, and body.
 
@@ -38,6 +38,5 @@ class EmailService:
             logger.info(msg=f"Mail data: {email_data} sent successfully")
             return response
         except Exception as e:
-            print(f"Unexpected error sending mail: {e}")
             logger.error(msg=f"Mail data: {email_data} failed to send: {e}")
             return False

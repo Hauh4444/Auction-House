@@ -18,7 +18,7 @@ def get_user_orders(db_session=None):
     Retrieve a user's order history.
 
     Args:
-        db_session (optional): A database session for testing or direct queries.
+        db_session: Optional database session to be used in tests.
 
     Returns:
         JSON response containing a list of the user's past orders.
@@ -33,7 +33,7 @@ def get_user_orders(db_session=None):
 # PUT /api/user/orders/<int:order_id>/
 @bp.route('/orders/<int:order_id>/', methods=['PUT'])
 @login_required
-def update_user_order(order_id, db_session=None):
+def update_user_order(order_id: int, db_session=None):
     """
     Update a specific order in the user's history.
     """
@@ -49,7 +49,7 @@ def update_user_order(order_id, db_session=None):
 # DELETE /api/user/orders/<int:order_id>/
 @bp.route('/orders/<int:order_id>/', methods=['DELETE'])
 @login_required
-def delete_user_order(order_id, db_session=None):
+def delete_user_order(order_id: int, db_session=None):
     """
     Delete a specific order from the user's history.
     """
@@ -69,7 +69,7 @@ def get_user_listings(db_session=None):
     Retrieve a user's listing history.
 
     Args:
-        db_session (optional): A database session for testing or direct queries.
+        db_session: Optional database session to be used in tests.
 
     Returns:
         JSON response containing a list of the user's past listings.
@@ -84,7 +84,7 @@ def get_user_listings(db_session=None):
 # PUT /api/user/listings/<int:listing_id>/
 @bp.route('/listings/<int:listing_id>/', methods=['PUT'])
 @login_required
-def update_user_listing(listing_id, db_session=None):
+def update_user_listing(listing_id: int, db_session=None):
     """
     Update a specific listing in the user's history.
     """
@@ -95,7 +95,7 @@ def update_user_listing(listing_id, db_session=None):
 # DELETE /api/user/listings/<int:listing_id>/
 @bp.route('/listings/<int:listing_id>/', methods=['DELETE'])
 @login_required
-def delete_user_listing(listing_id, db_session=None):
+def delete_user_listing(listing_id: int, db_session=None):
     """
     Delete a specific listing from the user's history.
     """
@@ -110,7 +110,7 @@ def get_user_transactions(db_session=None):
     Retrieve a user's transaction history.
 
     Args:
-        db_session (optional): A database session for testing or direct queries.
+        db_session: Optional database session to be used in tests.
 
     Returns:
         JSON response containing a list of the user's past transactions.
@@ -125,7 +125,7 @@ def get_user_transactions(db_session=None):
 # PUT /api/user/transactions/<int:transaction_id>/
 @bp.route('/transactions/<int:transaction_id>/', methods=['PUT'])
 @login_required
-def update_user_transaction(transaction_id, db_session=None):
+def update_user_transaction(transaction_id: int, db_session=None):
     """
     Update a specific transaction in the user's history.
     """
@@ -141,7 +141,7 @@ def update_user_transaction(transaction_id, db_session=None):
 # DELETE /api/user/transactions/<int:transaction_id>/
 @bp.route('/transactions/<int:transaction_id>/', methods=['DELETE'])
 @login_required
-def delete_user_transaction(transaction_id, db_session=None):
+def delete_user_transaction(transaction_id: int, db_session=None):
     """
     Delete a specific transaction from the user's history.
     """
@@ -161,7 +161,7 @@ def get_user_deliveries(db_session=None):
     Retrieve a user's delivery history.
 
     Args:
-        db_session (optional): A database session for testing or direct queries.
+        db_session: Optional database session to be used in tests.
 
     Returns:
         JSON response containing a list of the user's past deliveries.
@@ -176,7 +176,7 @@ def get_user_deliveries(db_session=None):
 # PUT /api/user/deliveries/<int:delivery_id>/
 @bp.route('/deliveries/<int:delivery_id>/', methods=['PUT'])
 @login_required
-def update_user_delivery(delivery_id, db_session=None):
+def update_user_delivery(delivery_id: int, db_session=None):
     """
     Update a specific delivery in the user's history.
     """
@@ -192,7 +192,7 @@ def update_user_delivery(delivery_id, db_session=None):
 # DELETE /api/user/deliveries/<int:delivery_id>/
 @bp.route('/deliveries/<int:delivery_id>/', methods=['DELETE'])
 @login_required
-def delete_user_delivery(delivery_id, db_session=None):
+def delete_user_delivery(delivery_id: int, db_session=None):
     """
     Delete a specific delivery from the user's history.
     """
@@ -212,7 +212,7 @@ def get_user_support_tickets(db_session=None):
     Retrieve a user's support ticket history.
 
     Args:
-        db_session (optional): A database session for testing or direct queries.
+        db_session: Optional database session to be used in tests.
 
     Returns:
         JSON response containing a list of the user's past support tickets.
@@ -227,7 +227,7 @@ def get_user_support_tickets(db_session=None):
 # PUT /api/user/support-tickets/<int:ticket_id>/
 @bp.route('/support-tickets/<int:ticket_id>/', methods=['PUT'])
 @login_required
-def update_user_support_ticket(ticket_id, db_session=None):
+def update_user_support_ticket(ticket_id: int, db_session=None):
     """
     Update a specific support ticket in the user's history.
     """
@@ -243,7 +243,7 @@ def update_user_support_ticket(ticket_id, db_session=None):
 # DELETE /api/user/support-tickets/<int:ticket_id>/
 @bp.route('/support-tickets/<int:ticket_id>/', methods=['DELETE'])
 @login_required
-def delete_user_support_ticket(ticket_id, db_session=None):
+def delete_user_support_ticket(ticket_id: int, db_session=None):
     """
     Delete a specific support ticket from the user's history.
     """
@@ -263,7 +263,7 @@ def get_user_reviews(db_session=None):
     Retrieve a user's review history.
 
     Args:
-        db_session (optional): A database session for testing or direct queries.
+        db_session: Optional database session to be used in tests.
 
     Returns:
         JSON response containing a list of the user's past reviews.
@@ -278,7 +278,7 @@ def get_user_reviews(db_session=None):
 # PUT /api/user/reviews/<int:review_id>/
 @bp.route('/reviews/<int:review_id>/', methods=['PUT'])
 @login_required
-def update_user_review(review_id, db_session=None):
+def update_user_review(review_id: int, db_session=None):
     """
     Update a specific review in the user's history.
     """
@@ -289,7 +289,7 @@ def update_user_review(review_id, db_session=None):
 # DELETE /api/user/reviews/<int:review_id>/
 @bp.route('/reviews/<int:review_id>/', methods=['DELETE'])
 @login_required
-def delete_user_review(review_id, db_session=None):
+def delete_user_review(review_id: int, db_session=None):
     """
     Delete a specific review from the user's history.
     """

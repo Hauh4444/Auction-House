@@ -15,7 +15,7 @@ class HistoryService:
 
         Args:
             data (dict, optional): A dictionary containing the request arguments, including user ID.
-            db_session (Session, optional): A database session for testing or direct queries.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response containing the user's orders if found, otherwise a 404 error.
@@ -34,14 +34,14 @@ class HistoryService:
 
 
     @staticmethod
-    def update_user_order(order_id, data, db_session=None):
+    def update_user_order(order_id: int, data: dict, db_session=None):
         """
         Update a specific order in the user's history.
 
         Args:
             order_id (int): The ID of the order to update.
             data (dict): The updated data for the order.
-            db_session: Optional database session for testing or direct queries.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response indicating success or failure.
@@ -58,13 +58,13 @@ class HistoryService:
 
 
     @staticmethod
-    def delete_user_order(order_id, db_session=None):
+    def delete_user_order(order_id: int, db_session=None):
         """
         Delete a specific order from the user's history.
 
         Args:
             order_id (int): The ID of the order to delete.
-            db_session: Optional database session for testing or direct queries.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response indicating success or failure.
@@ -87,7 +87,7 @@ class HistoryService:
 
         Args:
             data (dict, optional): A dictionary containing the request arguments, including user ID.
-            db_session (Session, optional): A database session for testing or direct queries.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response containing the user's listings if found, otherwise a 404 error.
@@ -108,14 +108,14 @@ class HistoryService:
 
 
     @staticmethod
-    def update_user_listing(listing_id, data, db_session=None):
+    def update_user_listing(listing_id: int, data: dict, db_session=None):
         """
         Update a specific listing in the user's history.
 
         Args:
             listing_id (int): The ID of the listing to update.
             data (dict): The updated data for the listing.
-            db_session: Optional database session for testing or direct queries.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response indicating success or failure.
@@ -132,13 +132,13 @@ class HistoryService:
 
 
     @staticmethod
-    def delete_user_listing(listing_id, db_session=None):
+    def delete_user_listing(listing_id: int, db_session=None):
         """
         Delete a specific listing from the user's history.
 
         Args:
             listing_id (int): The ID of the listing to delete.
-            db_session: Optional database session for testing or direct queries.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response indicating success or failure.
@@ -161,7 +161,7 @@ class HistoryService:
 
         Args:
             data (dict, optional): A dictionary containing the request arguments, including user ID.
-            db_session (Session, optional): A database session for testing or direct queries.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response containing the user's transactions if found, otherwise a 404 error.
@@ -180,14 +180,14 @@ class HistoryService:
 
 
     @staticmethod
-    def update_user_transaction(transaction_id, data, db_session=None):
+    def update_user_transaction(transaction_id: int, data: dict, db_session=None):
         """
         Update a specific transaction in the user's history.
 
         Args:
             transaction_id (int): The ID of the transaction to update.
             data (dict): The updated data for the transaction.
-            db_session: Optional database session for testing or direct queries.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response indicating success or failure.
@@ -204,13 +204,13 @@ class HistoryService:
 
 
     @staticmethod
-    def delete_user_transaction(transaction_id, db_session=None):
+    def delete_user_transaction(transaction_id: int, db_session=None):
         """
         Delete a specific transaction from the user's history.
 
         Args:
             transaction_id (int): The ID of the transaction to delete.
-            db_session: Optional database session for testing or direct queries.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response indicating success or failure.
@@ -233,7 +233,7 @@ class HistoryService:
 
         Args:
             data (dict, optional): A dictionary containing the request arguments, including user ID.
-            db_session (Session, optional): A database session for testing or direct queries.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response containing the user's deliveries if found, otherwise a 404 error.
@@ -252,14 +252,14 @@ class HistoryService:
 
 
     @staticmethod
-    def update_user_delivery(delivery_id, data, db_session=None):
+    def update_user_delivery(delivery_id: int, data: dict, db_session=None):
         """
         Update a specific delivery in the user's history.
 
         Args:
             delivery_id (int): The ID of the delivery to update.
             data (dict): The updated data for the delivery.
-            db_session: Optional database session for testing or direct queries.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response indicating success or failure.
@@ -276,13 +276,13 @@ class HistoryService:
 
 
     @staticmethod
-    def delete_user_delivery(delivery_id, db_session=None):
+    def delete_user_delivery(delivery_id: int, db_session=None):
         """
         Delete a specific delivery from the user's history.
 
         Args:
             delivery_id (int): The ID of the delivery to delete.
-            db_session: Optional database session for testing or direct queries.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response indicating success or failure.
@@ -305,7 +305,7 @@ class HistoryService:
 
         Args:
             data (dict, optional): A dictionary containing the request arguments, including user ID.
-            db_session (Session, optional): A database session for testing or direct queries.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response containing the user's support tickets if found, otherwise a 404 error.
@@ -324,14 +324,14 @@ class HistoryService:
 
 
     @staticmethod
-    def update_user_support_ticket(ticket_id, data, db_session=None):
+    def update_user_support_ticket(ticket_id: int, data: dict, db_session=None):
         """
         Update a specific support ticket in the user's history.
 
         Args:
             ticket_id (int): The ID of the support ticket to update.
             data (dict): The updated data for the support ticket.
-            db_session: Optional database session for testing or direct queries.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response indicating success or failure.
@@ -348,13 +348,13 @@ class HistoryService:
 
 
     @staticmethod
-    def delete_user_support_ticket(ticket_id, db_session=None):
+    def delete_user_support_ticket(ticket_id: int, db_session=None):
         """
         Delete a specific support ticket from the user's history.
 
         Args:
             ticket_id (int): The ID of the support ticket to delete.
-            db_session: Optional database session for testing or direct queries.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response indicating success or failure.
@@ -377,7 +377,7 @@ class HistoryService:
 
         Args:
             data (dict, optional): A dictionary containing the request arguments, including user ID.
-            db_session (Session, optional): A database session for testing or direct queries.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response containing the user's reviews if found, otherwise a 404 error.
@@ -396,14 +396,14 @@ class HistoryService:
 
 
     @staticmethod
-    def update_user_review(review_id, data, db_session=None):
+    def update_user_review(review_id: int, data: dict, db_session=None):
         """
         Update a specific review in the user's history.
 
         Args:
             review_id (int): The ID of the review to update.
             data (dict): The updated data for the review.
-            db_session: Optional database session for testing or direct queries.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response indicating success or failure.
@@ -419,13 +419,13 @@ class HistoryService:
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
     @staticmethod
-    def delete_user_review(review_id, db_session=None):
+    def delete_user_review(review_id: int, db_session=None):
         """
         Delete a specific review from the user's history.
 
         Args:
             review_id (int): The ID of the review to delete.
-            db_session: Optional database session for testing or direct queries.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response indicating success or failure.

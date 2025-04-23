@@ -1,13 +1,13 @@
 from pymysql import cursors
 from datetime import datetime
 
-from ..database.connection import get_db
+from ..database import get_db
 from ..entities import User
 
 
 class AuthMapper:
     @staticmethod
-    def get_user_by_id(user_id, db_session=None):
+    def get_user_by_id(user_id: int, db_session=None):
         """
         Retrieve a user by their ID.
 
@@ -29,7 +29,7 @@ class AuthMapper:
 
 
     @staticmethod
-    def get_user_by_username(username, db_session=None):
+    def get_user_by_username(username: str, db_session=None):
         """
         Retrieve a user by their username.
 
@@ -51,7 +51,7 @@ class AuthMapper:
 
 
     @staticmethod
-    def create_user(data, db_session=None):
+    def create_user(data: dict, db_session=None):
         """
         Create a new user in the database.
 
@@ -74,7 +74,7 @@ class AuthMapper:
 
 
     @staticmethod
-    def update_last_login(user_id, db_session=None):
+    def update_last_login(user_id: int, db_session=None):
         """
         Update the last login timestamp for a user.
 
@@ -90,6 +90,6 @@ class AuthMapper:
 
         statement = "UPDATE users SET last_login = %s WHERE user_id = %s"
 
-        cursor.execute(statement, (datetime.now().strftime("%Y-%m-%d %H:%M:%S"), user_id))
+        cursor.execute(statement, (datetime.now(), user_id))
         db.commit()
         return cursor.rowcount

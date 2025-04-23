@@ -18,7 +18,7 @@ def get_tickets(db_session=None):
     Retrieve all support tickets for the authenticated user.
 
     Args:
-        db_session (optional): A database session for testing or direct queries.
+        db_session: Optional database session to be used in tests.
 
     Returns:
         JSON response containing a list of support tickets.
@@ -29,13 +29,13 @@ def get_tickets(db_session=None):
 # GET /api/support/tickets/{id}/
 @bp.route("/<int:ticket_id>/", methods=["GET"])
 @login_required
-def get_ticket_by_id(ticket_id, db_session=None):
+def get_ticket_by_id(ticket_id: int, db_session=None):
     """
     Retrieve details of a specific support ticket.
 
     Args:
         ticket_id (int): The ID of the support ticket.
-        db_session (optional): A database session for testing or direct queries.
+        db_session: Optional database session to be used in tests.
 
     Returns:
         JSON response containing the details of the specified ticket.
@@ -51,7 +51,7 @@ def create_ticket(db_session=None):
     Create a new support ticket.
 
     Args:
-        db_session (optional): A database session for testing or direct queries.
+        db_session: Optional database session to be used in tests.
 
     Returns:
         JSON response containing the newly created ticket details.
@@ -64,13 +64,13 @@ def create_ticket(db_session=None):
 # PUT /api/support/tickets/{id}/
 @bp.route("/<int:ticket_id>/", methods=["PUT"])
 @login_required
-def update_ticket(ticket_id, db_session=None):
+def update_ticket(ticket_id: int, db_session=None):
     """
     Update the details of an existing support ticket.
 
     Args:
         ticket_id (int): The ID of the support ticket.
-        db_session (optional): A database session for testing or direct queries.
+        db_session: Optional database session to be used in tests.
 
     Returns:
         JSON response confirming the successful update of the ticket.
@@ -87,13 +87,13 @@ def update_ticket(ticket_id, db_session=None):
 # DELETE /api/support/tickets/{id}/
 @bp.route("/<int:ticket_id>/", methods=["DELETE"])
 @login_required
-def delete_ticket(ticket_id, db_session=None):
+def delete_ticket(ticket_id: int, db_session=None):
     """
     Delete a support ticket.
 
     Args:
         ticket_id (int): The ID of the support ticket.
-        db_session (optional): A database session for testing or direct queries.
+        db_session: Optional database session to be used in tests.
 
     Returns:
         JSON response confirming the deletion of the ticket.

@@ -14,7 +14,7 @@ class ChatService:
         Fetch all support chats for the authenticated user.
 
         Args:
-            db_session (Session, optional): Database session for executing queries.
+            db_session: Database session for executing queries.
 
         Returns:
             Response: JSON response containing the user's chats if available, otherwise a 404 error.
@@ -31,13 +31,13 @@ class ChatService:
 
 
     @staticmethod
-    def get_chat_by_id(chat_id, db_session=None):
+    def get_chat_by_id(chat_id: int, db_session=None):
         """
         Retrieve details of a specific support chat by ID.
 
         Args:
             chat_id (int): Unique identifier of the chat.
-            db_session (Session, optional): Database session for executing queries.
+            db_session: Database session for executing queries.
 
         Returns:
             Response: JSON response with chat details if found, otherwise a 404 error.
@@ -54,13 +54,13 @@ class ChatService:
 
 
     @staticmethod
-    def create_chat(data, db_session=None):
+    def create_chat(data: dict, db_session=None):
         """
         Create a new support chat.
 
         Args:
             data (dict): Payload containing details for creating the chat.
-            db_session (Session, optional): Database session for executing queries.
+            db_session: Database session for executing queries.
 
         Returns:
             Response: JSON response with the created chat ID if successful, otherwise a 409 error.
@@ -77,14 +77,14 @@ class ChatService:
 
 
     @staticmethod
-    def update_chat(chat_id, data, db_session=None):
+    def update_chat(chat_id: int, data: dict, db_session=None):
         """
         Update an existing support chat.
 
         Args:
             chat_id (int): Unique identifier of the chat to update.
             data (dict): Payload containing updated chat details.
-            db_session (Session, optional): Database session for executing queries.
+            db_session: Database session for executing queries.
 
         Returns:
             Response: JSON response confirming update success or a 404 error if the chat is not found.
@@ -101,13 +101,13 @@ class ChatService:
 
 
     @staticmethod
-    def delete_chat(chat_id, db_session=None):
+    def delete_chat(chat_id: int, db_session=None):
         """
         Delete a support chat by ID.
 
         Args:
             chat_id (int): Unique identifier of the chat to delete.
-            db_session (Session, optional): Database session for executing queries.
+            db_session: Database session for executing queries.
 
         Returns:
             Response: JSON response confirming deletion success or a 404 error if the chat is not found.

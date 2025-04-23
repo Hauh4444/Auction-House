@@ -1,8 +1,6 @@
-from dataclasses import dataclass
 from datetime import datetime, date
 
 
-@dataclass
 class Profile:
     """
     Represents a profile in the system.
@@ -55,8 +53,8 @@ class Profile:
         self.profile_picture = profile_picture
         self.bio = bio
         self.social_links = social_links
-        self.created_at = created_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        self.updated_at = updated_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.created_at = created_at or datetime.now()
+        self.updated_at = updated_at or datetime.now()
 
     def to_dict(self):
         """Converts the profile object to a dictionary representation."""
@@ -65,7 +63,7 @@ class Profile:
             "user_id": self.user_id,
             "first_name": self.first_name,
             "last_name": self.last_name,
-            "date_of_birth": self.date_of_birth.strftime("%Y-%m-%d %H:%M:%S"),
+            "date_of_birth": self.date_of_birth,
             "phone_number": self.phone_number,
             "address": self.address,
             "city": self.city,
@@ -74,6 +72,6 @@ class Profile:
             "profile_picture": self.profile_picture,
             "bio": self.bio,
             "social_links": self.social_links,
-            "created_at": self.created_at.strftime("%Y-%m-%d %H:%M:%S"),
-            "updated_at": self.updated_at.strftime("%Y-%m-%d %H:%M:%S")
+            "created_at": self.created_at,
+            "updated_at": self.updated_at
         }

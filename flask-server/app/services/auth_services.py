@@ -15,9 +15,12 @@ logger = setup_logger(name="auth_logger", log_file="logs/auth.log")
 
 class AuthService:
     @staticmethod
-    def check_auth_status():
+    def check_auth_status(db_session=None):
         """
         Checks the authentication status of the current session.
+
+        Args:
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response containing the authentication status and user details.
@@ -34,13 +37,13 @@ class AuthService:
 
 
     @staticmethod
-    def create_user(data, db_session=None):
+    def create_user(data: dict, db_session=None):
         """
         Creates a new user account.
 
         Args:
             data (dict): A dictionary containing the user's information (username, password, email, etc.).
-            db_session (Optional[Session]): A database session used for testing.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response indicating success or failure.
@@ -66,13 +69,13 @@ class AuthService:
 
 
     @staticmethod
-    def login(data, db_session=None):
+    def login(data: dict, db_session=None):
         """
         Authenticates and logs in a user based on the provided username and password.
 
         Args:
             data (dict): A dictionary containing 'username' and 'password' keys.
-            db_session (Optional[Session]): A database session used for testing.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response with a success message and user data if login is successful.
@@ -90,27 +93,30 @@ class AuthService:
         AuthMapper.update_last_login(user_id=current_user.id, db_session=db_session)
         SessionService.create_session(db_session=db_session)
 
-        response_data = {"message": "Login successful", "user": user}
+        response_data = {"message": "Login successful", "user": user.to_dict()}
         logger.info(msg=f"Login successful for user: {user.id}")
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
 
     @staticmethod
-    def logout():
+    def logout(user_id: int, db_session=None):
         """
         Logs out the currently authenticated user.
+
+        Args:
+            user_id (int): The unique identifier for the user.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response indicating the result of the logout operation.
                 Status 200 if logout was successful.
         """
-        logger.info(msg=f"Logout for user: {current_user}")
-
         logout_user()
         session.clear()
         current_user.is_active = False
 
         response_data = {"message": "Logout successful"}
+        logger.info(msg=f"Logout successful for user: {user_id}")
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
 
@@ -118,6 +124,9 @@ class AuthService:
     def password_reset_request(db_session=None):
         """
         Handles a password reset request by generating and sending a reset email.
+
+        Args:
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response indicating success or failure in sending the password reset email.
@@ -156,14 +165,14 @@ class AuthService:
 
 
     @staticmethod
-    def reset_user_password(reset_token, new_password, db_session=None):
+    def reset_user_password(reset_token: str, new_password: str, db_session=None):
         """
         Resets the user's password using a provided reset token.
 
         Args:
             reset_token (str): The token used to verify the password reset request.
             new_password (str): The new password to set for the user.
-            db_session (Optional[Session]): A database session used for testing.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response indicating the result of the password reset operation.
@@ -192,7 +201,7 @@ class AuthService:
         updated_rows = UserMapper.update_user(user_id=current_user.id, data=updated_user_data, db_session=db_session)
         if not updated_rows:
             response_data = {"error": "Error updating user"}
-            logger.error(msg=f"Error updating user: {current_user.id} with new password: {new_password}")
+            logger.error(msg=f"Failed updating user: {current_user.id} with new password: {new_password}")
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
 
         response_data = {"message": "Password has been reset"}
