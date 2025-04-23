@@ -1,107 +1,95 @@
 from pymysql import cursors
-
 from ..database.connection import get_db
-from ..entities import Delivery
+from aftership import AfterShip
 
 
 class DeliveryMapper:
     @staticmethod
     def get_all_deliveries(user_id, db_session=None):
         """
-        Retrieve all deliveries associated with a user.
-
-        Args:
-            user_id (int): The ID of the user whose deliveries are being retrieved.
-            db_session (optional): A database session for testing or direct queries.
-
-        Returns:
-            list[dict]: A list of dictionaries representing the user's deliveries.
+        Retrieve all deliveries for a specific user.
         """
         db = db_session or get_db()
-        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor = db.cursor(cursors.DictCursor)
         cursor.execute("SELECT * FROM deliveries WHERE user_id = %s", (user_id,))
-        deliveries = cursor.fetchall()
-        return [Delivery(**delivery).to_dict() for delivery in deliveries]
+        results = cursor.fetchall()
+        cursor.close()
+        return results
 
     @staticmethod
     def get_delivery_by_id(delivery_id, db_session=None):
         """
-        Retrieve a delivery record by its ID.
-
-        Args:
-            delivery_id (int): The ID of the delivery to retrieve.
-            db_session (optional): A database session for testing or direct queries.
-
-        Returns:
-            dict | None: A dictionary representing the delivery if found, otherwise None.
+        Retrieve a specific delivery by its ID.
         """
         db = db_session or get_db()
-        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor = db.cursor(cursors.DictCursor)
         cursor.execute("SELECT * FROM deliveries WHERE delivery_id = %s", (delivery_id,))
-        delivery = cursor.fetchone()
-        return Delivery(**delivery).to_dict() if delivery else None
+        result = cursor.fetchone()
+        cursor.close()
+        return result
 
     @staticmethod
     def create_delivery(data, db_session=None):
         """
         Create a new delivery record in the database.
-
-        Args:
-            data (dict): A dictionary containing delivery details.
-            db_session (optional): A database session for testing or direct queries.
-
-        Returns:
-            int: The ID of the newly created delivery.
         """
         db = db_session or get_db()
-        cursor = db.cursor(cursors.DictCursor) # type: ignore
-        statement = """
-            INSERT INTO deliveries 
-            (order_item_id, user_id, address, city, state, country, delivery_status, 
-            tracking_number, courier, estimated_delivery_date, delivered_at, created_at, updated_at) 
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        cursor = db.cursor()
+        query = """
+            INSERT INTO deliveries (user_id, address, status, tracking_code, created_at, updated_at)
+            VALUES (%s, %s, %s, %s, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
         """
-        cursor.execute(statement, tuple(Delivery(**data).to_dict().values())[1:])  # Exclude delivery_id (auto-incremented)
+        cursor.execute(query, (
+            data["user_id"],
+            data["address"],
+            "created",
+            data["tracking_code"]
+        ))
         db.commit()
-        return cursor.lastrowid
+        delivery_id = cursor.lastrowid
+        cursor.close()
+        return delivery_id
 
     @staticmethod
     def update_delivery(delivery_id, data, db_session=None):
         """
-        Update an existing delivery record.
-
-        Args:
-            delivery_id (int): The ID of the delivery to update.
-            data (dict): A dictionary containing the fields to update.
-            db_session (optional): A database session for testing or direct queries.
-
-        Returns:
-            int: The number of rows updated (should be 1 if successful).
+        Update an existing delivery.
         """
         db = db_session or get_db()
-        cursor = db.cursor(cursors.DictCursor) # type: ignore
-        conditions = [f"{key} = %s" for key in data if key not in ["delivery_id", "created_at"]]
-        values = [data.get(key) for key in data if key not in ["delivery_id", "created_at"]]
-        values.append(delivery_id)
-        statement = f"UPDATE deliveries SET {', '.join(conditions)}, updated_at = CURRENT_TIMESTAMP WHERE delivery_id = %s"
-        cursor.execute(statement, values)
+        cursor = db.cursor(cursors.DictCursor)
+        set_clause = ", ".join([f"{key} = %s" for key in data])
+        values = list(data.values()) + [delivery_id]
+        query = f"UPDATE deliveries SET {set_clause}, updated_at = CURRENT_TIMESTAMP WHERE delivery_id = %s"
+        cursor.execute(query, values)
         db.commit()
-        return cursor.rowcount
+        updated_rows = cursor.rowcount
+        cursor.close()
+        return updated_rows
 
     @staticmethod
     def delete_delivery(delivery_id, db_session=None):
         """
-        Delete a delivery record by its ID.
-
-        Args:
-            delivery_id (int): The ID of the delivery to delete.
-            db_session (optional): A database session for testing or direct queries.
-
-        Returns:
-            int: The number of rows deleted (should be 1 if successful).
+        Delete a delivery by its ID.
         """
         db = db_session or get_db()
-        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor = db.cursor(cursors.DictCursor)
         cursor.execute("DELETE FROM deliveries WHERE delivery_id = %s", (delivery_id,))
         db.commit()
-        return cursor.rowcount
+        deleted_rows = cursor.rowcount
+        cursor.close()
+        return deleted_rows
+
+    @staticmethod
+    def track_delivery(tracking_code):
+        """
+        Track a delivery using AfterShip.
+
+        Args:
+            tracking_code (str): The tracking code of the shipment.
+
+        Returns:
+            dict: The AfterShip tracking details.
+        """
+        aftership = AfterShip(api_key=os.getenv("AFTERSHIP_API_KEY"))
+        tracking = aftership.tracking.get(tracking_code)
+        return tracking
