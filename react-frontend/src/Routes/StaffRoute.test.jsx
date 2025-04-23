@@ -21,11 +21,11 @@ describe("StaffRoute Component", () => {
         useAuth.mockReturnValue({ user: null });
 
         render(
-            <MemoryRouter initialEntries={["/staff/account"]}>
+            <MemoryRouter initialEntries={ ["/staff/account"] }>
                 <Routes>
-                    <Route path="/auth-page" element={<div>Auth Page</div>} />
-                    <Route element={<StaffRoute />}>
-                        <Route path="/staff/account" element={<div>Account Page</div>} />
+                    <Route path="/auth-page" element={ <div>Auth Page</div> } />
+                    <Route element={ <StaffRoute /> }>
+                        <Route path="/staff/account" element={ <div>Account Page</div> } />
                     </Route>
                 </Routes>
             </MemoryRouter>
@@ -40,11 +40,11 @@ describe("StaffRoute Component", () => {
         useAuth.mockReturnValue({ user: { id: 1, name: "John Doe", role: "user" } });
 
         render(
-            <MemoryRouter initialEntries={["/staff/account"]}>
+            <MemoryRouter initialEntries={ ["/staff/account"] }>
                 <Routes>
-                    <Route path="/" element={<div>Home Page</div>} />
-                    <Route element={<StaffRoute />}>
-                        <Route path="/staff/account" element={<div>Account Page</div>} />
+                    <Route path="/" element={ <div>Home Page</div> } />
+                    <Route element={ <StaffRoute /> }>
+                        <Route path="/staff/account" element={ <div>Account Page</div> } />
                     </Route>
                 </Routes>
             </MemoryRouter>
@@ -59,11 +59,11 @@ describe("StaffRoute Component", () => {
         useAuth.mockReturnValue({ user: { id: 1, name: "John Doe", role: "staff" } });
 
         render(
-            <MemoryRouter initialEntries={["/staff/account"]}>
+            <MemoryRouter initialEntries={ ["/staff/account"] }>
                 <Routes>
-                    <Route path="/auth-page" element={<div>Auth Page</div>} />
-                    <Route element={<StaffRoute />}>
-                        <Route path="/staff/account" element={<div>Account Page</div>} />
+                    <Route path="/auth-page" element={ <div>Auth Page</div> } />
+                    <Route element={ <StaffRoute /> }>
+                        <Route path="/staff/account" element={ <div>Account Page</div> } />
                     </Route>
                 </Routes>
             </MemoryRouter>

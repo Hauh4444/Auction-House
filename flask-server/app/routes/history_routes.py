@@ -1,5 +1,5 @@
-from flask import Blueprint, session, request
-from flask_login import login_required
+from flask import Blueprint, request
+from flask_login import login_required, current_user
 
 from ..services import HistoryService
 
@@ -21,14 +21,14 @@ def get_user_orders(db_session=None):
         JSON response containing a list of the user's past orders.
     """
     data = None
-    if session.get("role") in ["staff", "admin"]:
+    if current_user.role in ["staff", "admin"]:
         data = request.args.to_dict()
 
     return HistoryService.get_user_orders(data=data, db_session=db_session)
 
 
-# PUT /api/user/orders/<int:order_id>
-@bp.route('/orders/<int:order_id>', methods=['PUT'])
+# PUT /api/user/orders/<int:order_id>/
+@bp.route('/orders/<int:order_id>/', methods=['PUT'])
 @login_required
 def update_user_order(order_id, db_session=None):
     """
@@ -38,8 +38,8 @@ def update_user_order(order_id, db_session=None):
     return HistoryService.update_user_order(order_id=order_id, data=data, db_session=db_session)
 
 
-# DELETE /api/user/orders/<int:order_id>
-@bp.route('/orders/<int:order_id>', methods=['DELETE'])
+# DELETE /api/user/orders/<int:order_id>/
+@bp.route('/orders/<int:order_id>/', methods=['DELETE'])
 @login_required
 def delete_user_order(order_id, db_session=None):
     """
@@ -62,14 +62,14 @@ def get_user_listings(db_session=None):
         JSON response containing a list of the user's past listings.
     """
     data = None
-    if session.get("role") in ["staff", "admin"]:
+    if current_user.role in ["staff", "admin"]:
         data = request.args.to_dict()
 
     return HistoryService.get_user_listings(data=data, db_session=db_session)
 
 
-# PUT /api/user/listings/<int:listing_id>
-@bp.route('/listings/<int:listing_id>', methods=['PUT'])
+# PUT /api/user/listings/<int:listing_id>/
+@bp.route('/listings/<int:listing_id>/', methods=['PUT'])
 @login_required
 def update_user_listing(listing_id, db_session=None):
     """
@@ -79,8 +79,8 @@ def update_user_listing(listing_id, db_session=None):
     return HistoryService.update_user_listing(listing_id=listing_id, data=data, db_session=db_session)
 
 
-# DELETE /api/user/listings/<int:listing_id>
-@bp.route('/listings/<int:listing_id>', methods=['DELETE'])
+# DELETE /api/user/listings/<int:listing_id>/
+@bp.route('/listings/<int:listing_id>/', methods=['DELETE'])
 @login_required
 def delete_user_listing(listing_id, db_session=None):
     """
@@ -103,14 +103,14 @@ def get_user_transactions(db_session=None):
         JSON response containing a list of the user's past transactions.
     """
     data = None
-    if session.get("role") in ["staff", "admin"]:
+    if current_user.role in ["staff", "admin"]:
         data = request.args.to_dict()
 
     return HistoryService.get_user_transactions(data=data, db_session=db_session)
 
 
-# PUT /api/user/transactions/<int:transaction_id>
-@bp.route('/transactions/<int:transaction_id>', methods=['PUT'])
+# PUT /api/user/transactions/<int:transaction_id>/
+@bp.route('/transactions/<int:transaction_id>/', methods=['PUT'])
 @login_required
 def update_user_transaction(transaction_id, db_session=None):
     """
@@ -120,8 +120,8 @@ def update_user_transaction(transaction_id, db_session=None):
     return HistoryService.update_user_transaction(transaction_id=transaction_id, data=data, db_session=db_session)
 
 
-# DELETE /api/user/transactions/<int:transaction_id>
-@bp.route('/transactions/<int:transaction_id>', methods=['DELETE'])
+# DELETE /api/user/transactions/<int:transaction_id>/
+@bp.route('/transactions/<int:transaction_id>/', methods=['DELETE'])
 @login_required
 def delete_user_transaction(transaction_id, db_session=None):
     """
@@ -144,14 +144,14 @@ def get_user_deliveries(db_session=None):
         JSON response containing a list of the user's past deliveries.
     """
     data = None
-    if session.get("role") in ["staff", "admin"]:
+    if current_user.role in ["staff", "admin"]:
         data = request.args.to_dict()
 
     return HistoryService.get_user_deliveries(data=data, db_session=db_session)
 
 
-# PUT /api/user/deliveries/<int:delivery_id>
-@bp.route('/deliveries/<int:delivery_id>', methods=['PUT'])
+# PUT /api/user/deliveries/<int:delivery_id>/
+@bp.route('/deliveries/<int:delivery_id>/', methods=['PUT'])
 @login_required
 def update_user_delivery(delivery_id, db_session=None):
     """
@@ -161,8 +161,8 @@ def update_user_delivery(delivery_id, db_session=None):
     return HistoryService.update_user_delivery(delivery_id=delivery_id, data=data, db_session=db_session)
 
 
-# DELETE /api/user/deliveries/<int:delivery_id>
-@bp.route('/deliveries/<int:delivery_id>', methods=['DELETE'])
+# DELETE /api/user/deliveries/<int:delivery_id>/
+@bp.route('/deliveries/<int:delivery_id>/', methods=['DELETE'])
 @login_required
 def delete_user_delivery(delivery_id, db_session=None):
     """
@@ -185,14 +185,14 @@ def get_user_support_tickets(db_session=None):
         JSON response containing a list of the user's past support tickets.
     """
     data = None
-    if session.get("role") in ["staff", "admin"]:
+    if current_user.role in ["staff", "admin"]:
         data = request.args.to_dict()
 
     return HistoryService.get_user_support_tickets(data=data, db_session=db_session)
 
 
-# PUT /api/user/support-tickets/<int:ticket_id>
-@bp.route('/support-tickets/<int:ticket_id>', methods=['PUT'])
+# PUT /api/user/support-tickets/<int:ticket_id>/
+@bp.route('/support-tickets/<int:ticket_id>/', methods=['PUT'])
 @login_required
 def update_user_support_ticket(ticket_id, db_session=None):
     """
@@ -202,8 +202,8 @@ def update_user_support_ticket(ticket_id, db_session=None):
     return HistoryService.update_user_support_ticket(ticket_id=ticket_id, data=data, db_session=db_session)
 
 
-# DELETE /api/user/support-tickets/<int:ticket_id>
-@bp.route('/support-tickets/<int:ticket_id>', methods=['DELETE'])
+# DELETE /api/user/support-tickets/<int:ticket_id>/
+@bp.route('/support-tickets/<int:ticket_id>/', methods=['DELETE'])
 @login_required
 def delete_user_support_ticket(ticket_id, db_session=None):
     """
@@ -226,14 +226,14 @@ def get_user_reviews(db_session=None):
         JSON response containing a list of the user's past reviews.
     """
     data = None
-    if session.get("role") in ["staff", "admin"]:
+    if current_user.role in ["staff", "admin"]:
         data = request.args.to_dict()
 
     return HistoryService.get_user_reviews(data=data, db_session=db_session)
 
 
-# PUT /api/user/reviews/<int:review_id>
-@bp.route('/reviews/<int:review_id>', methods=['PUT'])
+# PUT /api/user/reviews/<int:review_id>/
+@bp.route('/reviews/<int:review_id>/', methods=['PUT'])
 @login_required
 def update_user_review(review_id, db_session=None):
     """
@@ -243,8 +243,8 @@ def update_user_review(review_id, db_session=None):
     return HistoryService.update_user_review(review_id=review_id, data=data, db_session=db_session)
 
 
-# DELETE /api/user/reviews/<int:review_id>
-@bp.route('/reviews/<int:review_id>', methods=['DELETE'])
+# DELETE /api/user/reviews/<int:review_id>/
+@bp.route('/reviews/<int:review_id>/', methods=['DELETE'])
 @login_required
 def delete_user_review(review_id, db_session=None):
     """

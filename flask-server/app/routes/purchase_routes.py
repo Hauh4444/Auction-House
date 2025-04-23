@@ -8,7 +8,7 @@ bp = Blueprint("purchase_bp", __name__, url_prefix="/api/purchase")
 
 @bp.route('/', methods=['POST'])
 @login_required
-def purchase(db_session=None):
+def process_purchase(db_session=None):
     """
     Process a purchase request.
 
@@ -19,4 +19,11 @@ def purchase(db_session=None):
         JSON response indicating the success or failure of the purchase.
     """
     data = request.json
-    return PurchaseService.process_purchase(data=data, db_session=db_session)
+    return PurchaseService.process_payment(data=data, db_session=db_session)
+
+
+@bp.route('/status/', methods=['GET'])
+@login_required
+def get_stripe_session_status():
+    args = request.args
+    return PurchaseService.get_stripe_session_status(args=args)

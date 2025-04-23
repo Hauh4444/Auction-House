@@ -87,13 +87,13 @@ class SupportTicketMapper:
 
 
     @staticmethod
-    def update_ticket(ticket_id, updates, db_session=None):
+    def update_ticket(ticket_id, data, db_session=None):
         """
         Update a support ticket's details.
 
         Args:
             ticket_id (int): The ID of the ticket to update.
-            updates (dict): A dictionary of the fields to update.
+            data (dict): A dictionary of the fields to update.
             db_session: Optional database session to be used in tests.
 
         Returns:
@@ -101,9 +101,9 @@ class SupportTicketMapper:
         """
         db = db_session or get_db()
         cursor = db.cursor(cursors.DictCursor) # type: ignore
-        update_clause = ", ".join(f"{key} = %s" for key in updates.keys())
-        values = list(updates.values()) + [ticket_id]
-        cursor.execute(f"UPDATE support_tickets SET {update_clause}, updated_at = %s WHERE ticket_id = %s", (*values, datetime.now()))
+        update_clause = ", ".join(f"{key} = %s" for key in data.keys())
+        values = list(data.values()) + [ticket_id]
+        cursor.execute(f"UPDATE support_tickets SET {update_clause}, updated_at = %s WHERE ticket_id = %s", (*values, datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
         db.commit()
         return cursor.rowcount
 
@@ -122,7 +122,7 @@ class SupportTicketMapper:
         """
         db = db_session or get_db()
         cursor = db.cursor(cursors.DictCursor) # type: ignore
-        cursor.execute(f"UPDATE support_tickets SET updated_at = %s WHERE ticket_id = %s", (datetime.now(), ticket_id))
+        cursor.execute(f"UPDATE support_tickets SET updated_at = %s WHERE ticket_id = %s", (datetime.now().strftime("%Y-%m-%d %H:%M:%S"), ticket_id))
         db.commit()
         return cursor.rowcount
 

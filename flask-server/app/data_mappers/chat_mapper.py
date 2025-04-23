@@ -100,7 +100,7 @@ class ChatMapper:
         """
         db = db_session or get_db()
         cursor = db.cursor(cursors.DictCursor) # type: ignore
-        cursor.execute(f"UPDATE chats SET updated_at = %s WHERE chat_id = %s", (datetime.now(), chat_id))
+        cursor.execute(f"UPDATE chats SET updated_at = %s WHERE chat_id = %s", (datetime.now().strftime("%Y-%m-%d %H:%M:%S"), chat_id))
         db.commit()
         return cursor.rowcount
 

@@ -18,40 +18,30 @@ class Model:
     """
     def __init__(
             self,
-            name: str,
-            file_reference: str,
-            file_size: float,
             listing_id: int,
+            file_reference: str,
             created_at: datetime | None = None,
             updated_at: datetime | None = None,
             model_id: int | None = None
     ):
         # Type checks for required attributes
-        if not isinstance(name, str):
-            raise TypeError(f"name must be a str, got {type(name).__name__}")
-        if not isinstance(file_reference, str):
-            raise TypeError(f"file_reference must be a str, got {type(file_reference).__name__}")
-        if not isinstance(file_size, (int, float)):
-            raise TypeError(f"file_size must be a number, got {type(file_size).__name__}")
         if not isinstance(listing_id, int):
             raise TypeError(f"listing_id must be an int, got {type(listing_id).__name__}")
+        if not isinstance(file_reference, str):
+            raise TypeError(f"file_reference must be a str, got {type(file_reference).__name__}")
 
         self.model_id = model_id
-        self.name = name
-        self.file_reference = file_reference
-        self.file_size = file_size
         self.listing_id = listing_id
-        self.created_at = created_at or datetime.now()
-        self.updated_at = updated_at or datetime.now()
+        self.file_reference = file_reference
+        self.created_at = created_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.updated_at = updated_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     def to_dict(self):
         """Converts the model object to a dictionary representation."""
         return {
             "model_id": self.model_id,
-            "name": self.name,
-            "file_reference": self.file_reference,
-            "file_size": self.file_size,
             "listing_id": self.listing_id,
-            "created_at": self.created_at,
-            "updated_at": self.updated_at
+            "file_reference": self.file_reference,
+            "created_at": self.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+            "updated_at": self.updated_at.strftime("%Y-%m-%d %H:%M:%S")
         }

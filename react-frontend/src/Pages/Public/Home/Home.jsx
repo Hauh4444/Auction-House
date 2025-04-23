@@ -14,19 +14,19 @@ import RightNav from "@/Components/Navigation/RightNav/RightNav";
  * - Renders the "CategoryNav" Component.
  * - Includes a right-side navigation panel for additional navigation options.
  *
- * @returns {JSX.Element} The rendered homepage containing the header, navigation, and conditionally rendered category navigation.
+ * @returns { JSX.Element } The rendered homepage containing the header, navigation, and conditionally rendered category navigation.
  */
 const Home = () => {
 
     return (
         <div className="homePage page" data-testid="homePage">
             <div className="mainPage">
-                {/* Page Header */}
+                { /* Page Header */ }
                 <Header />
-                {/* Category Navigation */}
+                { /* Category Navigation */ }
                 <CategoryNav />
             </div>
-            {/* Right-side Navigation */}
+            { /* Right-side Navigation */ }
             <RightNav />
         </div>
     );

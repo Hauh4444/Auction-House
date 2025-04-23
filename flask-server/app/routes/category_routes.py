@@ -1,5 +1,5 @@
-from flask import Blueprint, request, jsonify, Response, session
-from flask_login import login_required
+from flask import Blueprint, request, jsonify, Response
+from flask_login import login_required, current_user
 
 from ..services import CategoryService
 
@@ -54,7 +54,7 @@ def create_category(db_session=None):
     Returns:
         JSON response containing the created category.
     """
-    if session.get("role") not in ["staff", "admin"]:
+    if current_user.role not in ["staff", "admin"]:
         response_data = {"error": "Unauthorized access"}
         return Response(response=jsonify(response_data).get_data(), status=401, mimetype="application/json")
 
@@ -79,7 +79,7 @@ def update_category(category_id, db_session=None):
     Returns:
         JSON response containing the updated category.
     """
-    if session.get("role") not in ["staff", "admin"]:
+    if current_user.role not in ["staff", "admin"]:
         response_data = {"error": "Unauthorized access"}
         return Response(response=jsonify(response_data).get_data(), status=401, mimetype="application/json")
 
@@ -101,7 +101,7 @@ def delete_category(category_id, db_session=None):
     Returns:
         JSON response indicating the deletion status.
     """
-    if session.get("role") not in ["staff", "admin"]:
+    if current_user.role not in ["staff", "admin"]:
         response_data = {"error": "Unauthorized access"}
         return Response(response=jsonify(response_data).get_data(), status=401, mimetype="application/json")
     

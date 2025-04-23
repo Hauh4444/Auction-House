@@ -1,4 +1,5 @@
-from flask import jsonify, Response, session
+from flask import jsonify, Response
+from flask_login import current_user
 
 from ..data_mappers import SupportTicketMapper, TicketMessageMapper
 
@@ -15,10 +16,10 @@ class SupportTicketService:
         Returns:
             Response: A JSON response containing the user's support tickets if found, otherwise a 404 error.
         """
-        if session.get("role") in ["staff", "admin"]:
-            support_tickets = SupportTicketMapper.get_tickets_by_staff_id(staff_id=session.get("user_id"), db_session=db_session)
+        if current_user.role in ["staff", "admin"]:
+            support_tickets = SupportTicketMapper.get_tickets_by_staff_id(staff_id=current_user.id, db_session=db_session)
         else:
-            support_tickets = SupportTicketMapper.get_tickets_by_user_id(user_id=session.get("user_id"), db_session=db_session)
+            support_tickets = SupportTicketMapper.get_tickets_by_user_id(user_id=current_user.id, db_session=db_session)
 
         if not support_tickets:
             response_data = {"error": "No support tickets found"}
@@ -41,7 +42,6 @@ class SupportTicketService:
             Response: A JSON response containing the support ticket details or an error message.
         """
         ticket = SupportTicketMapper.get_ticket_by_id(ticket_id=ticket_id, db_session=db_session)
-
         if not ticket:
             response_data = {"error": "Support ticket not found"}
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype='application/json')
@@ -70,7 +70,6 @@ class SupportTicketService:
             "assigned_to": data.get("assigned_to"),
         }
         ticket_id = SupportTicketMapper.create_ticket(data=ticket_data, db_session=db_session)
-
         if not ticket_id:
             response_data = {"error": "Error creating support ticket"}
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype='application/json')
@@ -81,7 +80,6 @@ class SupportTicketService:
             "message": data.get("message"),
         }
         ticket_message_id = TicketMessageMapper.create_message(data=ticket_message_data, db_session=db_session)
-
         if not ticket_message_id:
             response_data = {"error": "Error creating support ticket message"}
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype='application/json')
@@ -104,10 +102,9 @@ class SupportTicketService:
             Response: A JSON response indicating success or an error message.
         """
         updated_rows = SupportTicketMapper.update_ticket(ticket_id=ticket_id, data=data, db_session=db_session)
-
         if not updated_rows:
-            response_data = {"error": "Support ticket not found or update failed"}
-            return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
+            response_data = {"error": "Error updating support ticket"}
+            return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
 
         response_data = {"message": "Support ticket updated", "updated_rows": updated_rows}
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
@@ -126,7 +123,6 @@ class SupportTicketService:
             Response: A JSON response indicating success or an error message.
         """
         deleted_rows = SupportTicketMapper.delete_ticket(ticket_id=ticket_id, db_session=db_session)
-
         if not deleted_rows:
             response_data = {"error": "Support ticket not found"}
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")

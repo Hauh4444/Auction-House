@@ -1,7 +1,8 @@
 // External Libraries
-import { useState, useEffect } from 'react';
-import axios from "axios";
+import { useState, useEffect, useRef, useLayoutEffect } from 'react';
+import { io } from "socket.io-client";
 import { Button, TextField } from "@mui/material";
+import axios from "axios";
 
 // Internal Modules
 import Header from "@/Components/Header/Header";
@@ -14,115 +15,134 @@ import "./CustomerInquiries.scss"
 const CustomerInquiries = () => {
     const auth = useAuth();
 
-    console.log(auth.user.user_id)
-
     const [supportTickets, setSupportTickets] = useState([]);
     const [currentSupportTicket, setCurrentSupportTicket] = useState(null);
     const [ticketMessages, setTicketMessages] = useState([]);
     const [newTicketMessage, setNewTicketMessage] = useState('');
 
+    const messagesEndRef = useRef(null); // Reference to scroll to the bottom of the messages div
+
     useEffect(() => {
-        axios.get("http://127.0.0.1:5000/api/support/tickets/", {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            withCredentials: true, // Ensures cookies are sent with requests
-        })
+        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/support/tickets/`,
+            {
+                headers: { "Content-Type": "application/json" },
+                withCredentials: true, // Ensures cookies are sent with requests
+            })
             .then((res) => {
                 setSupportTickets(res.data.support_tickets);
                 setCurrentSupportTicket(res.data.support_tickets[0])
-            }) // Set the user state
-            .catch(err => console.log(err)); // Log errors if any
+            })
+            .catch(err => console.error(err)); // Log errors if any
+    }, []);
+
+    const getMessages = () => {
+        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/ticket/messages/${ currentSupportTicket.ticket_id }/`,
+            {
+                headers: { "Content-Type": "application/json" },
+                withCredentials: true, // Ensures cookies are sent with requests
+            })
+            .then((res) => setTicketMessages(res.data.ticket_messages))
+            .catch(() => setTicketMessages([]));
+    }
+
+    useEffect(() => {
+        const socket = io(import.meta.env.VITE_BACKEND_URL, {
+            transports: ["polling"],
+            withCredentials: true,
+        });
+
+        if (!socket) return;
+
+        socket.on("new_ticket_message", getMessages);
+
+        return () => {
+            socket.off("new_ticket_message", getMessages);
+        };
     }, []);
 
     useEffect(() => {
         if (!currentSupportTicket) return;
-
-        axios.get(`http://127.0.0.1:5000/api/ticket/messages/${currentSupportTicket.ticket_id}/`, {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            withCredentials: true, // Ensures cookies are sent with requests
-        })
-            .then((res) => setTicketMessages(res.data.ticket_messages))
-            .catch(() => setTicketMessages([]));
+        getMessages();
     }, [currentSupportTicket]);
 
-    const handleSelectChat = (chat) => {
-        setCurrentSupportTicket(chat);
-    }
+    // Scroll to the bottom of the messages list after new messages are loaded or after sending a new message
+    useLayoutEffect(() => {
+        if (messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+        }
+    }, [ticketMessages]); // This will trigger scroll whenever messages change
 
     const handleSendMessage = () => {
         if (!newTicketMessage.trim()) return;
-        axios.post(`http://127.0.0.1:5000/api/ticket/messages/${currentSupportTicket.ticket_id}/`,
+        axios.post(`${ import.meta.env.VITE_BACKEND_API_URL }/ticket/messages/${ currentSupportTicket.ticket_id }/`,
             {
                 message: newTicketMessage
             },
             {
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                headers: { "Content-Type": "application/json" },
                 withCredentials: true,
             })
             .then(() => {
                 setNewTicketMessage("");
-
-                axios.get(`http://127.0.0.1:5000/api/ticket/messages/${currentSupportTicket.ticket_id}/`, {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    withCredentials: true, // Ensures cookies are sent with requests
-                })
-                    .then((res) => {
-                        setTicketMessages(res.data.ticket_messages); // Set the user state
-                    } )
-                    .catch(err => console.log(err)); // Log errors if any
+                getMessages();
             })
-            .catch(error => console.error('Error sending message:', error));
+            .catch(err => console.error(err));
+    };
+
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            handleSendMessage();
+        }
     };
 
     return (
         <div className="customerInquiriesPage page">
             <div className="mainPage">
-                {/* Page Header */}
+                { /* Page Header */ }
                 <Header />
 
                 <div className="content">
                     <div className="supportTickets">
                         {supportTickets && supportTickets.map((ticket, index) => (
-                            <Button className={`ticket${currentSupportTicket === ticket ? " selected" : ""}`} key={index} onClick={() => handleSelectChat(ticket)}>
-                                {ticket.subject}
+                            <Button
+                                className={ `ticket${ currentSupportTicket === ticket ? " selected" : ""  }`}
+                                key={ index }
+                                onClick={ () => setCurrentSupportTicket(ticket) }
+                            >
+                                { ticket.subject }
                             </Button>
                         ))}
                     </div>
                     <div className="main">
                         <div className="messages">
                             {ticketMessages && ticketMessages.map((ticketMessage, index) => (
-                                <div className={`message${auth.user.user_id === ticketMessage.sender_id ? " thisUser" : ""}`} key={index}>
-                                    {ticketMessage.message}
+                                <div className={ `message${ auth.user.user_id === ticketMessage.sender_id ? " thisUser" : ""  }`} key={ index }>
+                                    { ticketMessage.message }
                                 </div>
                             ))}
+                            <div ref={ messagesEndRef } />
                         </div>
                         <div className="newMessage">
                             <TextField
                                 className="input"
-                                value={newTicketMessage}
+                                value={ newTicketMessage }
                                 label="Message"
                                 type="text"
-                                onChange={(e) => setNewTicketMessage(e.target.value)}
+                                onChange={ (e) => setNewTicketMessage(e.target.value) }
+                                onKeyDown={ handleKeyPress }
                                 variant="outlined"
                                 sx={{
                                     '& .MuiOutlinedInput-root': {
-                                        borderRadius: '25px', // Set the border radius
+                                        borderRadius: '25px',
                                     },
                                 }}
                             />
-                            <Button className="btn" onClick={() => handleSendMessage()}>Send</Button>
+                            <Button className="btn" onClick={ () => handleSendMessage() }>Send</Button>
                         </div>
                     </div>
                 </div>
             </div>
-            {/* Right-side Navigation */}
+            { /* Right-side Navigation */ }
             <RightNav />
         </div>
     );

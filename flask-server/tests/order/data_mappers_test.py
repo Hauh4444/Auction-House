@@ -101,7 +101,7 @@ def test_create_order_missing_fields(mock_db_session):
         "updated_at": datetime(2025, 1, 1),
     }
 
-    del data["total_amount"]
+    del data["amount"]
 
     with pytest.raises(expected_exception=TypeError):
         OrderMapper.create_order(data=data, db_session=mock_db_session)

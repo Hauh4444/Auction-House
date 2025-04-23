@@ -38,15 +38,11 @@ import UserProfile from "@/Pages/Private/UserProfile/UserProfile";
 import CustomerInquiries from "@/Pages/Staff/CustomerInquiries/CustomerInquiries";
 import ManageListings from "@/Pages/Staff/ManageListings/ManageListings";
 import StaffAccount from "@/Pages/Staff/StaffAccount/StaffAccount";
-import StaffProfile from "@/Pages/Staff/StaffProfile/StaffProfile";
 import StaffReports from "@/Pages/Staff/StaffReports/StaffReports";
-import UserInfo from "@/Pages/Staff/UserInfo/UserInfo";
+import ManageUsers from "@/Pages/Staff/ManageUsers/ManageUsers.jsx";
 
 // Admin Internal Modules
 import AdminAccount from "@/Pages/Admin/AdminAccount/AdminAccount";
-import AdminDashboard from "@/Pages/Admin/AdminDashboard/AdminDashboard";
-import AdminProfile from "@/Pages/Admin/AdminProfile/AdminProfile";
-import ManageUsers from "@/Pages/Admin/ManageUsers/ManageUsers";
 import SiteSettings from "@/Pages/Admin/SiteSettings/SiteSettings";
 import SystemLogs from "@/Pages/Admin/SystemLogs/SystemLogs";
 
@@ -54,66 +50,62 @@ import SystemLogs from "@/Pages/Admin/SystemLogs/SystemLogs";
  * PublicRoutes Component
  *
  * This component defines the routing structure for both public and private sections of the application.
- * It utilizes the `AuthProvider` context to manage the user"s authentication state. The routing setup includes:
+ * It utilizes the `AuthProvider` context to manage the user's authentication state. The routing setup includes:
  * - Public routes that are accessible to all users.
  * - Private routes that are protected by the `PrivateRoute` component, allowing access only to authenticated users.
  * - Staff routes that are protected by the `StaffRoute` component, allowing access only to authenticated users with staff privileges.
  * - Admin routes that are protected by the `AdminRoute` component, allowing access only to authenticated users with admin privileges.
  *
- * @returns {JSX.Element} The configured routes for public and private pages.
+ * @returns { JSX.Element } The configured routes for public and private pages.
  */
 const PublicRoutes = () => {
 
     return (
         <AuthProvider>
             <Routes>
-                {/* Public Routes */}
-                <Route path="/about" element={<About />} />
-                <Route path="/auth-page" element={<AuthPage />} />
-                <Route path="/browse" element={<Browse />} />
-                <Route path="/category" element={<Category />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/" element={<Home />} />
-                <Route path="/listing" element={<Listing />} />
-                <Route path="*" element={<PageNotFound />} />
-                <Route path="/search" element={<Search />} />
+                { /* Public Routes */ }
+                <Route path="/about" element={ <About /> } />
+                <Route path="/auth-page" element={ <AuthPage /> } />
+                <Route path="/browse" element={ <Browse /> } />
+                <Route path="/category" element={ <Category /> } />
+                <Route path="/contact" element={ <Contact /> } />
+                <Route path="/" element={ <Home /> } />
+                <Route path="/listing" element={ <Listing /> } />
+                <Route path="*" element={ <PageNotFound /> } />
+                <Route path="/search" element={ <Search /> } />
 
-                {/* Protected Routes for Authenticated Users */}
-                <Route element={<PrivateRoute />}>
-                    <Route path="/user/cart" element={<Cart />} />
-                    <Route path="/user/deliveries" element={<Deliveries />} />
-                    <Route path="/user/history" element={<History />} />
-                    <Route path="/user/lists" element={<Lists />} />
-                    <Route path="/user/listings/:id" element={<ManageListing />} />
-                    <Route path="/user/messages" element={<Messages />} />
-                    <Route path="/user/my-bids" element={<MyBids />} />
-                    <Route path="/user/payment-info" element={<PaymentInfo />} />
-                    <Route path="/user/review" element={<Review />} />
-                    <Route path="/user/security" element={<Security />} />
-                    <Route path="/user/seller-profile" element={<SellerProfile />} />
-                    <Route path="/user/support" element={<Support />} />
-                    <Route path="/user/account" element={<UserAccount />} />
-                    <Route path="/user/profile" element={<UserProfile />} />
+                { /* Protected Routes for Authenticated Users */ }
+                <Route element={ <PrivateRoute /> }>
+                    <Route path="/user/cart" element={ <Cart /> } />
+                    <Route path="/user/deliveries" element={ <Deliveries /> } />
+                    <Route path="/user/history" element={ <History /> } />
+                    <Route path="/user/lists" element={ <Lists /> } />
+                    <Route path="/user/listings/:id" element={ <ManageListing /> } />
+                    <Route path="/user/messages" element={ <Messages /> } />
+                    <Route path="/user/my-bids" element={ <MyBids /> } />
+                    <Route path="/user/payment-info" element={ <PaymentInfo /> } />
+                    <Route path="/user/review" element={ <Review /> } />
+                    <Route path="/user/security" element={ <Security /> } />
+                    <Route path="/user/seller-profile" element={ <SellerProfile /> } />
+                    <Route path="/user/support" element={ <Support /> } />
+                    <Route path="/user/account" element={ <UserAccount /> } />
+                    <Route path="/user/profile" element={ <UserProfile /> } />
                 </Route>
 
-                {/* Protected Routes for Staff Users */}
-                <Route element={<StaffRoute />}>
-                    <Route path="/staff/messages" element={<CustomerInquiries />} />
-                    <Route path="/staff/manage-listings" element={<ManageListings />} />
-                    <Route path="/staff/account" element={<StaffAccount />} />
-                    <Route path="/staff/profile" element={<StaffProfile />} />
-                    <Route path="/staff/reports" element={<StaffReports />} />
-                    <Route path="/staff/user-info" element={<UserInfo />} />
+                { /* Protected Routes for Staff Users */ }
+                <Route element={ <StaffRoute /> }>
+                    <Route path="/staff/messages" element={ <CustomerInquiries /> } />
+                    <Route path="/staff/manage-listings" element={ <ManageListings /> } />
+                    <Route path="/staff/account" element={ <StaffAccount /> } />
+                    <Route path="/staff/reports" element={ <StaffReports /> } />
+                    <Route path="/staff/user-info" element={ <ManageUsers /> } />
                 </Route>
 
-                {/* Protected Routes for Admin Users */}
-                <Route element={<AdminRoute />}>
-                    <Route path="/admin/account" element={<AdminAccount />} />
-                    <Route path="/admin/dashboard" element={<AdminDashboard />} />
-                    <Route path="/admin/profile" element={<AdminProfile />} />
-                    <Route path="/admin/users" element={<ManageUsers />} />
-                    <Route path="/admin/settings" element={<SiteSettings />} />
-                    <Route path="/admin/logs" element={<SystemLogs />} />
+                { /* Protected Routes for Admin Users */ }
+                <Route element={ <AdminRoute /> }>
+                    <Route path="/admin/account" element={ <AdminAccount /> } />
+                    <Route path="/admin/settings" element={ <SiteSettings /> } />
+                    <Route path="/admin/logs" element={ <SystemLogs /> } />
                 </Route>
             </Routes>
         </AuthProvider>

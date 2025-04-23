@@ -17,7 +17,7 @@ class Session:
         self.user_id = user_id
         self.role = role
         self.token = token
-        self.created_at = created_at or datetime.now()
+        self.created_at = created_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self.expires_at = expires_at
 
     def to_dict(self):
@@ -27,6 +27,7 @@ class Session:
             "user_id": self.user_id,
             "role": self.role,
             "token": self.token,
-            "created_at": self.created_at,
-            "expires_at": self.expires_at
+            # TODO All datetime instances need to have this check
+            "created_at": self.created_at.strftime("%Y-%m-%d %H:%M:%S") if isinstance(self.created_at, datetime) else self.created_at,
+            "expires_at": self.expires_at.strftime("%Y-%m-%d %H:%M:%S")
         }

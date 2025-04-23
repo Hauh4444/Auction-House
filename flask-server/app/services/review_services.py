@@ -17,7 +17,6 @@ class ReviewService:
             A Response object containing the list of reviews with a 200 status code.
         """
         reviews = ReviewMapper.get_all_reviews(args=args, db_session=db_session)
-
         if not reviews:
             response_data = {"error": "No reviews found"}
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
@@ -39,7 +38,6 @@ class ReviewService:
             A Response object with the review data if found, otherwise a 404 error with a message.
         """
         review = ReviewMapper.get_review_by_id(review_id=review_id, db_session=db_session)
-
         if not review:
             response_data = {"error": "Review not found"}
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
@@ -63,7 +61,6 @@ class ReviewService:
             or a 400 error if required fields are missing.
         """
         review_id = ReviewMapper.create_review(data=data, db_session=db_session)
-
         if not review_id:
             response_data = {"error": "Error creating review"}
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
@@ -84,12 +81,11 @@ class ReviewService:
 
         Returns:
             A Response object with a success message if the review was updated,
-            or a 404 error if the review was not found.
+            or a 409 error if the review was not updated.
         """
         updated_rows = ReviewMapper.update_review(review_id=review_id, data=data, db_session=db_session)
-
         if not updated_rows:
-            response_data = {"error": "Review not found"}
+            response_data = {"error": "Error updating review"}
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
         response_data = {"message": "Review updated", "updated_rows": updated_rows}
@@ -111,7 +107,6 @@ class ReviewService:
             or a 404 error if the review was not found.
         """
         deleted_rows = ReviewMapper.delete_review(review_id=review_id, db_session=db_session)
-
         if not deleted_rows:
             response_data = {"error": "Review not found"}
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")

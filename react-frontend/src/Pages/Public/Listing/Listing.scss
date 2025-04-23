@@ -67,6 +67,7 @@
                     display: flex;
                     flex-basis: 34%;
                     justify-content: center;
+                    position: relative;
 
                     img {
                         width: auto;
@@ -74,6 +75,23 @@
                         max-width: 100%;
                         max-height: 100%;
                         object-fit: contain;
+                    }
+
+                    .modelBtn {
+                        width: 65px;
+                        min-width: 65px;
+                        height: 65px;
+                        padding: 0;
+                        backdrop-filter: blur(1px);
+                        border-radius: 5px;
+                        position: absolute;
+                        right: -25px;
+                        bottom: 0;
+
+                        svg {
+                            font-size: 48px;
+                            color: map.get($theme-colors, accentColor4);
+                        }
                     }
                 }
 
@@ -194,6 +212,22 @@
                         }
                     }
                 }
+            }
+        }
+
+        .closeShowcaseBtn {
+            width: 50px;
+            min-width: 50px;
+            height: 50px;
+            padding: 0;
+            border-radius: 5px;
+            position: fixed;
+            right: 70px;
+            top: 20px;
+
+            svg {
+                font-size: 48px;
+                color: map.get($theme-colors, mainColor3);
             }
         }
     }

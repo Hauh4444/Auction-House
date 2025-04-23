@@ -131,8 +131,8 @@ class Listing:
         self.purchases = purchases
         self.average_review = average_review
         self.total_reviews = total_reviews
-        self.created_at = created_at or datetime.now()
-        self.updated_at = updated_at or datetime.now()
+        self.created_at = created_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.updated_at = updated_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     def to_dict(self):
         """Converts the listing object to a dictionary representation."""
@@ -157,6 +157,6 @@ class Listing:
             "purchases": self.purchases,
             "average_review": self.average_review,
             "total_reviews": self.total_reviews,
-            "created_at": self.created_at,
-            "updated_at": self.updated_at
+            "created_at": self.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+            "updated_at": self.updated_at.strftime("%Y-%m-%d %H:%M:%S")
         }

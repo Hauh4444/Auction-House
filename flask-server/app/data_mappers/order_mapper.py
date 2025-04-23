@@ -1,4 +1,5 @@
 from pymysql import cursors
+from datetime import datetime
 
 from ..database.connection import get_db
 from ..entities import Order, OrderItem
@@ -106,10 +107,11 @@ class OrderMapper:
         """
         db = db_session or get_db()
         cursor = db.cursor(cursors.DictCursor) # type: ignore
-        conditions = [f"{key} = %s" for key in data if key not in ["order_id", "created_at"]]
-        values = [data.get(key) for key in data if key not in ["order_id", "created_at"]]
+        conditions = [f"{key} = %s" for key in data if key not in ["order_id", "created_at", "updated_at"]]
+        values = [data.get(key) for key in data if key not in ["order_id", "created_at", "updated_at"]]
+        values.append(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
         values.append(order_id)
-        statement = f"UPDATE orders SET {', '.join(conditions)}, updated_at = CURRENT_TIMESTAMP WHERE order_id = %s"
+        statement = f"UPDATE orders SET {', '.join(conditions)}, updated_at = %s WHERE order_id = %s"
         cursor.execute(statement, values)
         db.commit()
         return cursor.rowcount

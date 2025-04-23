@@ -20,20 +20,19 @@ const PaymentInfo = () => {
 
     useEffect(() => {
         // Fetch listings from the API with the specified filters
-        axios.get(`http://127.0.0.1:5000/api/user/${filters.nav}/`, {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            withCredentials: true,
-        })
+        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/user/${ filters.nav }/`,
+            {
+                headers: { "Content-Type": "application/json" },
+                withCredentials: true,
+            })
             .then((res) => setTransactions(res.data.transactions))
-            .catch(err => console.log(err)); // Log errors if any
+            .catch(err => console.error(err)); // Log errors if any
     }, [location.search]);
 
     return (
         <div className="paymentInfoPage page">
             <div className="mainPage">
-                {/* Page Header */}
+                { /* Page Header */ }
                 <Header />
 
                 <PaymentNav />
@@ -41,20 +40,20 @@ const PaymentInfo = () => {
                 {filters.nav === "transactions" && (
                     <div className="transactionItems">
                         {transactions.map((transaction, index) => (
-                            <Card className="transactionCard" key={index}>
+                            <Card className="transactionCard" key={ index }>
                                 <CardContent className="cardContent">
-                                    <p><strong>Date:</strong> {transaction.transaction_date}</p>
-                                    <p><strong>Type:</strong> {transaction.transaction_type}</p>
-                                    <p><strong>Total Amount:</strong> ${transaction.amount}</p>
-                                    <p><strong>Payment Method:</strong> {transaction.payment_method}</p>
-                                    <p><strong>Payment Status:</strong> {transaction.payment_status}</p>
+                                    <p><strong>Date:</strong> { transaction.transaction_date }</p>
+                                    <p><strong>Type:</strong> { transaction.transaction_type }</p>
+                                    <p><strong>Total Amount:</strong> ${ transaction.amount }</p>
+                                    <p><strong>Payment Method:</strong> { transaction.payment_method }</p>
+                                    <p><strong>Payment Status:</strong> { transaction.payment_status }</p>
                                 </CardContent>
                             </Card>
                         ))}
                     </div>
                 )}
             </div>
-            {/* Right-side Navigation */}
+            { /* Right-side Navigation */ }
             <RightNav />
         </div>
     );

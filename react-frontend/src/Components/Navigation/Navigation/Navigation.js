@@ -10,7 +10,7 @@
  * - Resets the selected state of all navigation buttons.
  * - Highlights the button that was clicked, improving user experience.
  *
- * @param {Event} e - The event object representing the click event,
+ * @param { Event } e - The event object representing the click event,
  *                    which contains information about the clicked element.
  */
 function toggleNav(e) {

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiPlus, FiMinus } from "react-icons/fi";
 import { BsTrash3Fill } from "react-icons/bs";
+import { loadStripe } from "@stripe/stripe-js";
 import { Button } from "@mui/material";
 import axios from "axios";
 
@@ -35,66 +36,90 @@ const Cart = () => {
         return cartItems.reduce((total, item) => total + item.quantity, 0);
     }
 
+    const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
+
     const purchaseCart = async () => {
-        if (!cartItems.length) {
-            return;
-        }
-        axios.post("http://127.0.0.1:5000/api/purchase/",
+        if (!cartItems.length) return;
+
+        axios.post(`${ import.meta.env.VITE_BACKEND_API_URL }/purchase/`,
             {
                 listings: cartItems,
-                total_amount: getCartTotal(),
-            },
-            {
-                headers: {
-                    "Content-Type": "application/json",
+                amount: getCartTotal(),
+                currency: "usd",
+                success_url: `${import.meta.env.VITE_FRONTEND_URL}/`,
+                cancel_url: `${import.meta.env.VITE_FRONTEND_URL}/cart`,
+            }, {
+                headers: { "Content-Type": "application/json" },
+                withCredentials: true,
+            })
+            .then(async (res) => {
+                const stripe = await stripePromise;
+                await stripe.redirectToCheckout({ sessionId: res.data.id });
+            })
+            .catch((e) => console.error(e));
+    };
+
+    useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const session_id = urlParams.get("session_id");
+
+        if (session_id) {
+            axios.post(`${ import.meta.env.VITE_BACKEND_API_URL }/purchase/status/`,
+                {
+                    session_id: session_id,
                 },
-                withCredentials: true, // Ensure cookies are sent
-            })
-            .then(async () => {
-                await clearCart();
-                setCartItems([]);
-            })
-            .catch(err => console.log(err)); // Log errors if any
-    }
+                {
+                    headers: { "Content-Type": "application/json" },
+                    withCredentials: true,
+                })
+                .then(async (res) => {
+                    if (res.data.status === "complete") {
+                        await clearCart();
+                        setCartItems([]);
+                    }
+                })
+                .catch(err => console.error(err));
+        }
+    }, []);
 
     return (
         <div className="cartPage page">
             <div className="mainPage">
-                {/* Page Header */}
+                { /* Page Header */ }
                 <Header />
 
-                {/* Loop through cartItems and display each one */}
+                { /* Loop through cartItems and display each one */ }
                 <div className="cart">
                     <div className="cartHead">
-                        <h3 style={{ flexBasis: "calc(40% + 140px)" }}>Info</h3>
-                        <h3 style={{ flexBasis: "calc(20% - 40px)" }}>Price</h3>
-                        <h3 style={{ flexBasis: "calc(20% - 40px)" }}>Quantity</h3>
-                        <h3 style={{ flexBasis: "calc(20% - 40px)" }}>Total Price</h3>
+                        <h3 style={ { flexBasis: "calc(40% + 140px)" } }>Info</h3>
+                        <h3 style={ { flexBasis: "calc(20% - 40px)" } }>Price</h3>
+                        <h3 style={ { flexBasis: "calc(20% - 40px)" } }>Quantity</h3>
+                        <h3 style={ { flexBasis: "calc(20% - 40px)" } }>Total Price</h3>
                     </div>
                     {cartItems.length > 0 ? (
                         cartItems.map((item, index) => (
-                            <div className="cartItem" key={index}>
+                            <div className="cartItem" key={ index }>
                                 <div className="itemImage">
-                                    {/* Display the product image */}
-                                    <img src={`data:image/jpg;base64,${item.image_encoded}`} alt="" />
+                                    { /* Display the product image */ }
+                                    <img src={ `data:image/jpg;base64,${ item.image_encoded  }`} alt="" />
                                 </div>
                                 <div className="itemContent">
                                     <div className="basicInfo">
-                                        {/* Button to navigate to the detailed listing view */}
-                                        <Button className="itemHead" onClick={() => navigateToListing(item.listing_id, navigate)}>
-                                            {item.title_short}
+                                        { /* Button to navigate to the detailed listing view */ }
+                                        <Button className="itemHead" onClick={ () => navigateToListing(item.listing_id, navigate) }>
+                                            { item.title_short }
                                         </Button>
                                         <div className="review">
-                                            {/* Render the star rating based on the average review */}
-                                            {renderStars(item.average_review)}
-                                            {/* Display the total number of reviews */}
-                                            <span className="totalReviews" style={{left: -16 * Math.ceil(item.average_review) + "px"}}>
-                                                &emsp;{item.total_reviews}
+                                            { /* Render the star rating based on the average review */ }
+                                            { renderStars(item.average_review) }
+                                            { /* Display the total number of reviews */ }
+                                            <span className="totalReviews" style={ { left: -16 * Math.ceil(item.average_review) + "px" } }>
+                                                &emsp;{ item.total_reviews }
                                             </span>
                                         </div>
                                     </div>
                                     <h2 className="itemPrice">
-                                        ${item.buy_now_price} {/* Display the product price */}
+                                        ${ item.buy_now_price } { /* Display the product price */ }
                                     </h2>
                                     <div className="itemQuantity">
                                         <div className="btns">
@@ -109,7 +134,7 @@ const Cart = () => {
                                                 )}
                                             </Button>
                                             <div className="quantity">
-                                                {item.quantity}
+                                                { item.quantity }
                                             </div>
                                             <Button className="quantityUp" onClick={async () => {
                                                 await addToCart(item);
@@ -120,7 +145,7 @@ const Cart = () => {
                                         </div>
                                     </div>
                                     <h2 className="totalItemPrice">
-                                        ${(cartItems[index].buy_now_price * cartItems[index].quantity).toFixed(2)}
+                                        ${ (cartItems[index].buy_now_price * cartItems[index].quantity).toFixed(2) }
                                     </h2>
                                 </div>
                             </div>
@@ -129,15 +154,15 @@ const Cart = () => {
                         <p>Your cart is empty</p>
                     )}
                     <div className="checkout">
-                        <h2 className="subtotal">Subtotal {getTotalItems()} {getTotalItems() > 1 ? "Items" : "Item"}: <b>${getCartTotal()}</b></h2>
-                        <Button className="btn" onClick={() => purchaseCart()}>
+                        <h2 className="subtotal">Subtotal { getTotalItems() } { getTotalItems() > 1 ? "Items" : "Item" }: <b>${ getCartTotal() }</b></h2>
+                        <Button className="btn" onClick={ () => purchaseCart() }>
                             Proceed To Checkout
                         </Button>
                     </div>
                 </div>
             </div>
 
-            {/* Right-side Navigation */}
+            { /* Right-side Navigation */ }
             <RightNav />
         </div>
     );
