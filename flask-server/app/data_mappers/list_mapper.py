@@ -23,6 +23,7 @@ class ListMapper:
         lists = cursor.fetchall()
         return [List(**list_row).to_dict() for list_row in lists]
 
+
     @staticmethod
     def get_list_items(list_id: int, db_session=None):
         """
@@ -41,6 +42,7 @@ class ListMapper:
         list_items = cursor.fetchall()
         return [ListItem(**list_item).to_dict() for list_item in list_items]
 
+
     @staticmethod
     def get_list_by_id(list_id: int, db_session=None):
         """
@@ -58,6 +60,7 @@ class ListMapper:
         cursor.execute("SELECT * FROM lists WHERE list_id = %s", (list_id,))
         list_row = cursor.fetchone()
         return List(**list_row).to_dict() if list_row else None
+
 
     @staticmethod
     def create_list(data: dict, db_session=None):
@@ -81,6 +84,7 @@ class ListMapper:
         cursor.execute(statement, tuple(List(**data).to_dict().values())[1:])  # Exclude list_id (auto-incremented)
         db.commit()
         return cursor.lastrowid
+
 
     @staticmethod
     def create_list_item(list_id: int, listing_id: int, db_session=None):
@@ -107,6 +111,7 @@ class ListMapper:
         db.commit()
         return cursor.lastrowid
 
+
     @staticmethod
     def update_list(list_id: int, title: str, db_session=None):
         """
@@ -122,10 +127,19 @@ class ListMapper:
         """
         db = db_session or get_db()
         cursor = db.cursor(cursors.DictCursor) # type: ignore
+        for key, value in data.items():
+            if isinstance(value, str):
+                try:
+                    data[key] = datetime.strptime(value, '%a, %d %b %Y %H:%M:%S GMT')
+                except ValueError:
+                    pass
+            if isinstance(value, datetime):
+                data[key] = value.strftime('%Y-%m-%d %H:%M:%S')
         statement = "UPDATE lists SET title = %s, updated_at = CURRENT_TIMESTAMP WHERE list_id = %s"
         cursor.execute(statement, (title, list_id))
         db.commit()
         return cursor.rowcount
+
 
     @staticmethod
     def delete_list(list_id: int, db_session=None):
@@ -144,6 +158,7 @@ class ListMapper:
         cursor.execute("DELETE FROM lists WHERE list_id = %s", (list_id,))
         db.commit()
         return cursor.rowcount
+
 
     @staticmethod
     def delete_list_item(list_id: int, listing_id: int, db_session=None):

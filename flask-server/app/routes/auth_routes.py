@@ -110,7 +110,6 @@ def password_reset_request(db_session=None):
 
 # POST /api/auth/password_reset/
 @bp.route("/password_reset/", methods=["POST"])
-@login_required
 def password_reset(db_session=None):
     """
     Reset the user password.

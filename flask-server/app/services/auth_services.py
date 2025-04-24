@@ -1,11 +1,12 @@
 from flask import jsonify, session, Response
 from flask_login import login_user, logout_user, current_user
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import os, jwt
 
 from .session_services import SessionService
 from .email_services import EmailService
+from .sms_services import SMSService
 from ..data_mappers import AuthMapper, ProfileMapper, UserMapper
 from ..utils.password import hash_password
 from ..utils.logger import setup_logger
@@ -132,14 +133,6 @@ class AuthService:
             Response: A JSON response indicating success or failure in sending the password reset email.
                 Returns 202 if email was successfully sent, 404 if profile or user not found.
         """
-        reset_token = jwt.encode({
-            'user_id': current_user.id,
-            'exp': datetime.now() + timedelta(hours=1)
-        }, os.getenv('SECRET_KEY'), algorithm='HS256')
-        reset_link = f"{os.getenv('FRONTEND_URL')}/reset_password?token={reset_token}"
-        subject = "Password Reset Request"
-        body = f"Your password reset link is: {reset_link}"
-
         profile = ProfileMapper.get_profile(user_id=current_user.id, db_session=db_session)
         if not profile:
             response_data = {"error": "Profile not found"}
@@ -152,12 +145,21 @@ class AuthService:
             logger.error(msg=f"User not found with id: {current_user.id}")
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
+        reset_token = jwt.encode({"user_id": current_user.id, "exp": datetime.now(timezone.utc) + timedelta(hours=1)}, os.getenv("SECRET_KEY"), algorithm="HS256")
+        reset_link = f"{os.getenv('FRONTEND_URL')}/reset_password?token={reset_token}"
+        subject = "Password Reset Request"
+        body = f"Your password reset link is: {reset_link}"
+
         # Use EmailService to send the email
         mail_response = EmailService.send_email(subject, [user.get("email")], body)
         if not int(mail_response) == 202:
             response_data = {"error": "HTTP error sending email"}
             logger.error(msg=f"HTTP failure sending email to: {user.get('email')} body: {body}")
             return Response(response=jsonify(response_data).get_data(), status=400, mimetype="application/json")
+
+        sms_response = SMSService.send_sms(profile.get("phone_number"), body)
+        if int(sms_response) != 200:
+            logger.warning(f"HTTP failure sending sms to: {profile.get('phone_number')} body: {body}")
 
         response_data = {"message": "Password reset email sent"}
         logger.info(msg=f"Password reset email sent to: {user.get('email')}")
@@ -179,31 +181,32 @@ class AuthService:
                 Returns 200 if password is successfully reset, 400 if the token is expired or invalid, 404 if user not found.
         """
         try:
-            jwt.decode(reset_token, os.getenv('SECRET_KEY'), algorithms=['HS256'])
+            decoded_token = jwt.decode(reset_token, os.getenv("SECRET_KEY"), algorithms=["HS256"])
+            user_id = decoded_token.get("user_id")
         except jwt.ExpiredSignatureError:
             response_data = {"error": "Reset token has expired"}
-            logger.error(msg=f"Reset token: {reset_token} expired for user: {current_user.id}")
+            logger.error(msg=f"Reset token: {reset_token} expired")
             return Response(response=jsonify(response_data).get_data(), status=400, mimetype="application/json")
         except jwt.InvalidTokenError:
             response_data = {"error": "Invalid reset token"}
-            logger.error(msg=f"Invalid reset token: {reset_token} for user: {current_user.id}")
+            logger.error(msg=f"Invalid reset token: {reset_token}")
             return Response(response=jsonify(response_data).get_data(), status=400, mimetype="application/json")
 
         # Get the current user
-        user = UserMapper.get_user(user_id=current_user.id, db_session=db_session)
+        user = UserMapper.get_user(user_id=user_id, db_session=db_session)
         if not user:
             response_data = {"error": "User not found"}
-            logger.error(msg=f"User not found with id: {current_user.id}")
+            logger.error(msg=f"User not found with id: {user_id}")
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
         # Update the user's password
         updated_user_data = {"password_hash": hash_password(new_password)}
-        updated_rows = UserMapper.update_user(user_id=current_user.id, data=updated_user_data, db_session=db_session)
+        updated_rows = UserMapper.update_user(user_id=user_id, data=updated_user_data, db_session=db_session)
         if not updated_rows:
             response_data = {"error": "Error updating user"}
-            logger.error(msg=f"Failed updating user: {current_user.id} with new password: {new_password}")
+            logger.error(msg=f"Failed updating user: {user_id} with new password: {new_password}")
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
 
         response_data = {"message": "Password has been reset"}
-        logger.info(msg=f"User: {current_user.id} successfully reset password to: {new_password}")
+        logger.info(msg=f"User: {user_id} successfully reset password to: {new_password}")
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")

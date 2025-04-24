@@ -113,6 +113,14 @@ class ReviewMapper:
         """
         db = db_session or get_db()
         cursor = db.cursor(cursors.DictCursor) # type: ignore
+        for key, value in data.items():
+            if isinstance(value, str):
+                try:
+                    data[key] = datetime.strptime(value, '%a, %d %b %Y %H:%M:%S GMT')
+                except ValueError:
+                    pass
+            if isinstance(value, datetime):
+                data[key] = value.strftime('%Y-%m-%d %H:%M:%S')
         set_clause = ", ".join([f"{key} = %s" for key in data if key not in ["review_id", "updated_at"]])
         values = [data.get(key) for key in data if key not in ["review_id", "updated_at"]]
         values.append(datetime.now())

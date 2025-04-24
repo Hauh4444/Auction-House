@@ -82,7 +82,7 @@
 ### MySQL Database
 
 1. MySQL Workbench will automatically be set to run on startup.
-2. You can disable run on startup and manually run using the `net start` command.
+2. You can disable run on startup and manually run using the `net start MySQL80` command.
 3. If you choose any other MySQL database management tool, follow the appropriate guides for usage.
 
 ## Other
@@ -90,3 +90,7 @@
 ### MySQL Database
 
 1. There are models for the auctionhouse database located in `mysql-database/Models/` that can be accessed using MySQL Workbench
+
+### Ozeki
+
+1. You can disable run on startup and manually run using the `net start OzekiSystem` command.

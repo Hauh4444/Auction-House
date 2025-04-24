@@ -23,6 +23,7 @@ class DeliveryMapper:
         deliveries = cursor.fetchall()
         return [Delivery(**delivery).to_dict() for delivery in deliveries]
 
+
     @staticmethod
     def get_delivery_by_id(delivery_id: int, db_session=None):
         """
@@ -40,6 +41,7 @@ class DeliveryMapper:
         cursor.execute("SELECT * FROM deliveries WHERE delivery_id = %s", (delivery_id,))
         delivery = cursor.fetchone()
         return Delivery(**delivery).to_dict() if delivery else None
+
 
     @staticmethod
     def create_delivery(data: dict, db_session=None):
@@ -65,6 +67,7 @@ class DeliveryMapper:
         db.commit()
         return cursor.lastrowid
 
+
     @staticmethod
     def update_delivery(delivery_id: int, data: dict, db_session=None):
         """
@@ -80,6 +83,14 @@ class DeliveryMapper:
         """
         db = db_session or get_db()
         cursor = db.cursor(cursors.DictCursor) # type: ignore
+        for key, value in data.items():
+            if isinstance(value, str):
+                try:
+                    data[key] = datetime.strptime(value, '%a, %d %b %Y %H:%M:%S GMT')
+                except ValueError:
+                    pass
+            if isinstance(value, datetime):
+                data[key] = value.strftime('%Y-%m-%d %H:%M:%S')
         conditions = [f"{key} = %s" for key in data if key not in ["delivery_id", "created_at"]]
         values = [data.get(key) for key in data if key not in ["delivery_id", "created_at"]]
         values.append(delivery_id)
@@ -87,6 +98,7 @@ class DeliveryMapper:
         cursor.execute(statement, values)
         db.commit()
         return cursor.rowcount
+
 
     @staticmethod
     def delete_delivery(delivery_id: int, db_session=None):

@@ -87,9 +87,7 @@ class AuthMapper:
         """
         db = db_session or get_db()
         cursor = db.cursor(cursors.DictCursor) # type: ignore
-
         statement = "UPDATE users SET last_login = %s WHERE user_id = %s"
-
         cursor.execute(statement, (datetime.now(), user_id))
         db.commit()
         return cursor.rowcount

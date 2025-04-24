@@ -10,6 +10,7 @@ import Contact from "@/Pages/Public/Contact/Contact";
 import Home from "@/Pages/Public/Home/Home";
 import Listing from "@/Pages/Public/Listing/Listing";
 import PageNotFound from "@/Pages/Public/PageNotFound/PageNotFound";
+import PasswordReset from "@/Pages/Public/PasswordReset/PasswordReset";
 import Search from "@/Pages/Public/Search/Search";
 import Support from "@/Pages/Private/Support/Support";
 
@@ -72,6 +73,7 @@ const PublicRoutes = () => {
                 <Route path="/" element={ <Home /> } />
                 <Route path="/listing" element={ <Listing /> } />
                 <Route path="*" element={ <PageNotFound /> } />
+                <Route path="/reset_password" element={ <PasswordReset /> } />
                 <Route path="/search" element={ <Search /> } />
 
                 { /* Protected Routes for Authenticated Users */ }
