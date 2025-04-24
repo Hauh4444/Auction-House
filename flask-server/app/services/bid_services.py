@@ -74,11 +74,11 @@ class BidService:
             logger.error(msg=f"Failed creating bid with data: {', '.join(f'{k}={v!r}' for k, v in data.items())}")
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
 
-        listing_data = {"bids": "bids + 1"}
-        updated_rows = ListingMapper.update_listing(listing_id=data.get("listing_id"), data=listing_data, db_session=db_session)
+        listing_args = {"bids": 1, "current_price": 1}
+        updated_rows = ListingMapper.update_listing(listing_id=data.get("listing_id"), data=listing_args, db_session=db_session)
         if not updated_rows:
             response_data = {"error": "Error updating listing"}
-            logger.error(msg=f"Failed updating listing with data: {', '.join(f'{k}={v!r}' for k, v in listing_data.items())}")
+            logger.error(msg=f"Failed updating listing with data: {', '.join(f'{k}={v!r}' for k, v in listing_args.items())}")
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
 
         bid = BidMapper.get_bid_by_id(bid_id=bid_id, db_session=db_session)
@@ -87,7 +87,7 @@ class BidService:
             logger.error(msg=f"Bid: {bid_id} not found")
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
-        socketio.emit('new_bid', {"data": data})
+        socketio.emit("new_bid")
 
         response_data = {"message": "Bid created", "bid_id": bid_id}
         logger.info(msg=f"Bid: {bid_id} created successfully with data: {', '.join(f'{k}={v!r}' for k, v in data.items())}")

@@ -121,12 +121,17 @@ class ListingMapper:
             int: Number of rows updated.
         """
         db = db_session or get_db()
-        cursor = db.cursor(cursors.DictCursor) # type: ignore
-        set_clause = ", ".join([f"{key} = %s" for key in data if key not in ["listing_id", "created_at", "updated_at"]])
-        values = [data.get(key) for key in data if key not in ["listing_id", "created_at", "updated_at"]]
+        cursor = db.cursor(cursors.DictCursor)  # type: ignore
+        set_clause = []
+        values = []
+        for key, value in data.items():
+            if key not in ["listing_id", "created_at", "updated_at"]:
+                increment_value = 1 if key in ["bids", "current_price"] else None
+                set_clause.append(f"{key} = {key} + %s" if increment_value else f"{key} = %s")
+                values.append(increment_value if increment_value else value)
         values.append(datetime.now())
         values.append(listing_id)
-        statement = f"UPDATE listings SET {set_clause}, updated_at = %s WHERE listing_id = %s"
+        statement = f"UPDATE listings SET {', '.join(set_clause)}, updated_at = %s WHERE listing_id = %s"
         cursor.execute(statement, values)
         db.commit()
         return cursor.rowcount

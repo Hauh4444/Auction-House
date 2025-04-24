@@ -6,10 +6,11 @@
 
 - Documentation
 - Analytics & Reports
+- Order & Delivery API
+- Live Auction UI
 - Manage Listings
 - Implement Feedback UI
 - Friend UI
-- Live Auction UI
 
 ### Flask Server
 

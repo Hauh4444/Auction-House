@@ -10,6 +10,7 @@ class Chat:
         user1_id (int): The ID of the first user in the chat.
         user2_id (int): The ID of the second user in the chat.
         created_at (datetime, optional): The creation timestamp.
+        updated_at (datetime, optional): The updated timestamp.
     """
     def __init__(
             self,
@@ -37,7 +38,7 @@ class Chat:
         self.user1_id = user1_id
         self.user2_id = user2_id
         self.created_at = created_at or datetime.now()
-        self.updated_at = created_at or datetime.now()
+        self.updated_at = updated_at or datetime.now()
 
     def to_dict(self):
         """Converts the chat object to a dictionary representation."""

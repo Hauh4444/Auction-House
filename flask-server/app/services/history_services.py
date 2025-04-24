@@ -9,18 +9,18 @@ logger = setup_logger(name="user_history_logger", log_file="logs/user_history.lo
 
 class HistoryService:
     @staticmethod
-    def get_user_orders(data=None, db_session=None):
+    def get_user_orders(args=None, db_session=None):
         """
         Retrieve a user's order history.
 
         Args:
-            data (dict, optional): A dictionary containing the request arguments, including user ID.
+            args (dict, optional): A dictionary containing the request arguments, including user ID.
             db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response containing the user's orders if found, otherwise a 404 error.
         """
-        user_id = data.get("user_id") if current_user.role in ["staff", "admin"] else current_user.id
+        user_id = args.get("user_id") if current_user.role in ["staff", "admin"] else current_user.id
         orders = OrderMapper.get_all_orders(user_id=user_id, db_session=db_session)
 
         if not orders:
@@ -81,29 +81,26 @@ class HistoryService:
 
 
     @staticmethod
-    def get_user_listings(data=None, db_session=None):
+    def get_user_listings(args=None, db_session=None):
         """
         Retrieve a user's listing history.
 
         Args:
-            data (dict, optional): A dictionary containing the request arguments, including user ID.
+            args (dict, optional): A dictionary containing the request arguments, including user ID.
             db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response containing the user's listings if found, otherwise a 404 error.
         """
-        if current_user.role not in ["staff", "admin"]:
-            data.update(user_id=current_user.id)
-
-        listings = ListingMapper.get_all_listings(args=data, db_session=db_session)
+        listings = ListingMapper.get_all_listings(args=args, db_session=db_session)
 
         if not listings:
             response_data = {"error": "Listings not found"}
-            logger.error(msg=f"No listings found for user: {data.get('user_id')}")
+            logger.error(msg=f"No listings found for user: {args.get('user_id')}")
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype='application/json')
 
         response_data = {"message": "Listings found", "listings": listings}
-        logger.info(msg=f"Listings found: {[listing.get('listing_id') for listing in listings]} for user: {data.get('user_id')}")
+        logger.info(msg=f"Listings found: {[listing.get('listing_id') for listing in listings]} for user: {args.get('user_id')}")
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype='application/json')
 
 
@@ -155,18 +152,18 @@ class HistoryService:
 
 
     @staticmethod
-    def get_user_transactions(data=None, db_session=None):
+    def get_user_transactions(args=None, db_session=None):
         """
         Retrieve a user's transaction history.
 
         Args:
-            data (dict, optional): A dictionary containing the request arguments, including user ID.
+            args (dict, optional): A dictionary containing the request arguments, including user ID.
             db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response containing the user's transactions if found, otherwise a 404 error.
         """
-        user_id = data.get("user_id") if current_user.role in ["staff", "admin"] else current_user.id
+        user_id = args.get("user_id") if current_user.role in ["staff", "admin"] else current_user.id
         transactions = TransactionMapper.get_all_transactions(user_id=user_id, db_session=db_session)
 
         if not transactions:
@@ -227,18 +224,18 @@ class HistoryService:
 
 
     @staticmethod
-    def get_user_deliveries(data=None, db_session=None):
+    def get_user_deliveries(args=None, db_session=None):
         """
         Retrieve a user's delivery history.
 
         Args:
-            data (dict, optional): A dictionary containing the request arguments, including user ID.
+            args (dict, optional): A dictionary containing the request arguments, including user ID.
             db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response containing the user's deliveries if found, otherwise a 404 error.
         """
-        user_id = data.get("user_id") if current_user.role in ["staff", "admin"] else current_user.id
+        user_id = args.get("user_id") if current_user.role in ["staff", "admin"] else current_user.id
         deliveries = DeliveryMapper.get_all_deliveries(user_id=user_id, db_session=db_session)
 
         if not deliveries:
@@ -299,18 +296,18 @@ class HistoryService:
 
 
     @staticmethod
-    def get_user_support_tickets(data=None, db_session=None):
+    def get_user_support_tickets(args=None, db_session=None):
         """
         Retrieve a user's support ticket history.
 
         Args:
-            data (dict, optional): A dictionary containing the request arguments, including user ID.
+            args (dict, optional): A dictionary containing the request arguments, including user ID.
             db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response containing the user's support tickets if found, otherwise a 404 error.
         """
-        user_id = data.get("user_id") if current_user.role in ["staff", "admin"] else current_user.id
+        user_id = args.get("user_id") if current_user.role in ["staff", "admin"] else current_user.id
         tickets = SupportTicketMapper.get_all_support_tickets(user_id=user_id, db_session=db_session)
 
         if not tickets:
@@ -371,18 +368,18 @@ class HistoryService:
 
 
     @staticmethod
-    def get_user_reviews(data=None, db_session=None):
+    def get_user_reviews(args=None, db_session=None):
         """
         Retrieve a user's review history.
 
         Args:
-            data (dict, optional): A dictionary containing the request arguments, including user ID.
+            args (dict, optional): A dictionary containing the request arguments, including user ID.
             db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response containing the user's reviews if found, otherwise a 404 error.
         """
-        user_id = data.get("user_id") if current_user.role in ["staff", "admin"] else current_user.id
+        user_id = args.get("user_id") if current_user.role in ["staff", "admin"] else current_user.id
         reviews = ReviewMapper.get_all_reviews(args={"user_id": user_id}, db_session=db_session)
 
         if not reviews:

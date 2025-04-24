@@ -8,7 +8,7 @@ import axios from "axios";
 // Internal Modules
 import Header from "@/Components/Header/Header";
 import RightNav from "@/Components/Navigation/RightNav/RightNav";
-import { useAuth } from "@/ContextAPI/AuthContext.js";
+import { useAuth } from "@/ContextAPI/AuthContext";
 
 // Stylesheets
 import "./ManageUsers.scss";

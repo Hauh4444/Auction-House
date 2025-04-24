@@ -29,7 +29,7 @@ import "./AuthPage.scss";
 const AuthPage = () => {
     const navigate = useNavigate(); // Navigate hook for routing
     const location = useLocation(); // Get current attempted location
-    const from = location.state?.from?.pathname || "/"; // Default to home if no previous route
+    const from = location.state?.from || { pathname: "/" };
     const { login, createAccount } = useAuth(); // Access authentication functions from the AuthProvider context
 
     // State variables for user input fields

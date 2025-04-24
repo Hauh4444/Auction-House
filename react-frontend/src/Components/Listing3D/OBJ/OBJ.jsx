@@ -1,8 +1,8 @@
 // External Libraries
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
-import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
+import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader';
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 import PropTypes from 'prop-types';
 
 const OBJModel = ({ modelPath }) => {

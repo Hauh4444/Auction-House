@@ -5,8 +5,8 @@ import { Button, TextField } from "@mui/material";
 import axios from "axios";
 
 // Internal Modules
-import Header from "@/Components/Header/Header.jsx";
-import RightNav from "@/Components/Navigation/RightNav/RightNav.jsx";
+import Header from "@/Components/Header/Header";
+import RightNav from "@/Components/Navigation/RightNav/RightNav";
 
 // Stylesheets
 import "./SiteSettings.scss";
@@ -81,13 +81,13 @@ const SiteSettings = () => {
 
     const handleSubmit = () => {
         axios.post(`${ import.meta.env.VITE_BACKEND_API_URL }/auth/site-settings/`,
-        {
-            settings: settings,
-        },
-        {
-            headers: { "Content-Type": "application/json" },
-            withCredentials: true,
-        })
+            {
+                settings: settings,
+            },
+            {
+                headers: { "Content-Type": "application/json" },
+                withCredentials: true,
+            })
             .then(() => navigate("/admin/account"))
             .catch(err => console.error(err));
     };

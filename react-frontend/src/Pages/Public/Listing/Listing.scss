@@ -26,24 +26,35 @@
                         font-size: 24px;
                     }
 
-                    .bid,
-                    .price {
+                    .buySection,
+                    .bidSection {
+                        width: 275px;
+                        margin: 0;
+                        display: flex;
+                        flex-direction: row;
+                        flex-wrap: wrap;
+                    }
+
+                    .price,
+                    .bid {
                         margin-top: 25px;
                         display: inline-block;
+                        flex-basis: 75px;
                         font-weight: normal;
                         font-size: 20px;
                     }
 
-                    .placeBidBtn,
-                    .addCartBtn {
+                    .addCartBtn,
+                    .placeBidBtn {
                         height: 35px;
-                        margin: 20px 0 0 20px;
+                        margin: 20px 0 0 25px;
                         padding: 0 20px;
                         border-radius: 5px;
                         box-shadow: 0 2px 4px map.get($theme-colors, mainColor4);
                         background-image: linear-gradient(to right, map.get($theme-colors, accentColor1), map.get($theme-colors, accentColor2));
                         display: inline-block;
                         vertical-align: top;
+                        flex-basis: 175px;
                         font-weight: normal;
                         font-size: 20px;
                         color: map.get($theme-colors, mainColor1);
@@ -51,14 +62,17 @@
 
                     .bidDescription {
                         width: fit-content;
-                        margin: 20px 0 0 25px;
+                        margin: 10px auto 0;
+                        font-size: 14px;
+                        color: map.get($theme-colors, mainColor2);
                     }
 
                     .shareButtons {
-                        margin-top: 15px;
+                        width: 132px;
+                        margin: 15px 0 0;
 
                         .shareBtn {
-                            margin-right: 15px;
+                            margin: 0 15px 0 0;
                         }
                     }
                 }

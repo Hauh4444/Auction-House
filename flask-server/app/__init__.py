@@ -62,7 +62,7 @@ def create_app():
         logger.critical(msg=f"Failed to initialize session in app: {e}")
 
     try:
-        socketio.init_app(app, transports=["websocket", "polling"])
+        socketio.init_app(app, transports=["websocket"])
     except Exception as e:
         logger.critical(msg=f"Failed to initialize SocketIO in app: {e}")
 

@@ -55,7 +55,7 @@ class TicketMessageService:
             logger.error(msg=f"Failed updating timestamp of support ticket: {data.get('ticket_id')}")
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype='application/json')
 
-        socketio.emit('new_ticket_message', {"message_id": message_id})
+        socketio.emit("new_ticket_message")
 
         response_data = {"message": "Message created", "message_id": message_id}
         logger.info(msg=f"Message: {message_id} created successfully with data: {', '.join(f'{k}={v!r}' for k, v in data.items())}")

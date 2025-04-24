@@ -21,6 +21,11 @@ const CustomerInquiries = () => {
     const [newTicketMessage, setNewTicketMessage] = useState('');
 
     const messagesEndRef = useRef(null); // Reference to scroll to the bottom of the messages div
+    const currentSupportTicketRef = useRef(currentSupportTicket);
+
+    useEffect(() => {
+        currentSupportTicketRef.current = currentSupportTicket;
+    }, [currentSupportTicket]);
 
     useEffect(() => {
         axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/support/tickets/`,
@@ -47,16 +52,30 @@ const CustomerInquiries = () => {
 
     useEffect(() => {
         const socket = io(import.meta.env.VITE_BACKEND_URL, {
-            transports: ["polling"],
+            transports: ["websocket"],
             withCredentials: true,
         });
 
         if (!socket) return;
 
-        socket.on("new_ticket_message", getMessages);
+        // We have to use references because of fucking race conditions
+        const handleNewMessage = () => {
+            const ticketId = currentSupportTicketRef.current?.ticket_id;
+            if (ticketId) {
+                axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/ticket/messages/${ ticketId }/`,
+                    {
+                        headers: {"Content-Type": "application/json"},
+                        withCredentials: true, // Ensures cookies are sent with requests
+                    })
+                    .then((res) => setTicketMessages(res.data.ticket_messages))
+                    .catch(() => setTicketMessages([]));
+            }
+        }
+
+        socket.on("new_ticket_message", handleNewMessage);
 
         return () => {
-            socket.off("new_ticket_message", getMessages);
+            socket.off("new_ticket_message", handleNewMessage);
         };
     }, []);
 
@@ -129,7 +148,7 @@ const CustomerInquiries = () => {
                                 label="Message"
                                 type="text"
                                 onChange={ (e) => setNewTicketMessage(e.target.value) }
-                                onKeyDown={ handleKeyPress }
+                                onKeyDown={ (e) => handleKeyPress(e) }
                                 variant="outlined"
                                 sx={{
                                     '& .MuiOutlinedInput-root': {

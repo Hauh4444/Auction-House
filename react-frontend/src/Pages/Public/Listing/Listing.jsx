@@ -1,11 +1,13 @@
 // External Libraries
-import { useEffect, useState } from  "react";
-import { useLocation } from "react-router-dom";
+import { useEffect, useState, useRef } from  "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { FacebookIcon, FacebookShareButton, PinterestIcon, PinterestShareButton, TwitterShareButton, XIcon } from "react-share";
 import { IoMdCube } from "react-icons/io";
 import { ImCross } from "react-icons/im";
+import { io } from "socket.io-client";
 import { Button } from "@mui/material";
 import axios from "axios";
+import { format } from 'date-fns';
 
 // Internal Modules
 import Header from "@/Components/Header/Header";
@@ -13,6 +15,7 @@ import RightNav from "@/Components/Navigation/RightNav/RightNav";
 import Listing3D from "@/Components/Listing3D/Listing3D";
 import { renderStars } from "@/utils/helpers";
 import { useCart } from "@/ContextAPI/CartContext";
+import { useAuth } from "@/ContextAPI/AuthContext";
 
 // Stylesheets
 import "./Listing.scss";
@@ -31,8 +34,10 @@ import "./Listing.scss";
  * @returns { JSX.Element } The rendered homepage containing the header, navigation, and conditionally rendered category navigation.
  */
 const Listing = () => {
+    const navigate = useNavigate();
     const location = useLocation(); // Hook to access the current location (URL)
     const filters = Object.fromEntries(new URLSearchParams(location.search).entries()); // Extract query parameters from the URL
+    const auth = useAuth();
 
     const { addToCart } = useCart(); // Access authentication functions from the AuthProvider context
 
@@ -41,26 +46,26 @@ const Listing = () => {
     const [model, setModel] = useState(null);
     const [showModel, setShowModel] = useState(false);
 
-    /**
-     * Fetches listing data based on the "key" parameter in the URL.
-     * The effect runs every time `location.search` changes.
-     */
+    const listingRef = useRef(listing);
+
     useEffect(() => {
+        listingRef.current = listing;
+    }, [listing]);
+
+    useEffect(() => getListing(), [location.search]); // Call on update of URL filters
+
+    const getListing = () => {
         axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/listings/${ filters.key }/`,
             {
                 headers: { "Content-Type": "application/json" },
             })
             .then((res) => {
-                setListing(res.data.listing)
-                getListingObjects(res.data.listing.listing_id)
+                setListing(res.data.listing);
+                getListingObjects(res.data.listing.listing_id);
             }) // Update state with fetched data
             .catch(err => console.error(err)); // Log errors if any
-    }, [location.search]); // Call on update of URL filters
+    }
 
-    /**
-     * Fetches listing review data of the three best reviews based on the listing_id parameter.
-     * The effect runs every time `location.search` changes.
-     */
     const getListingObjects = (id) => {
         axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/reviews/`,
             {
@@ -83,6 +88,49 @@ const Listing = () => {
             .then((res) => setModel(res.data.model)) // Update state with fetched data
             .catch(() => setModel(null)); // Clear model state on error
     }
+
+    const placeBid = (listing) => {
+        if (!auth.user) navigate("/auth-page", { state: { from: location } });
+        axios.post(`${ import.meta.env.VITE_BACKEND_API_URL }/bids/`,
+            {
+                listing_id: listing.listing_id,
+                amount: listing.current_price,
+            },
+            {
+                headers: { "Content-Type": "application/json" },
+                withCredentials: true,
+            })
+            .then(() => getListing())
+            .catch(err => console.error(err));
+    }
+
+    useEffect(() => {
+        const socket = io(import.meta.env.VITE_BACKEND_URL, {
+            transports: ["websocket"],
+            withCredentials: true,
+        });
+
+        if (!socket) return;
+
+        // We have to use references because of fucking race conditions
+        const handleNewBid = () => {
+            const listingId = listingRef.current?.listing_id;
+            if (listingId) {
+                axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/listings/${ listingId }/`,
+                    {
+                        headers: {"Content-Type": "application/json"},
+                    })
+                    .then((res) => setListing(res.data.listing)) // Update state with fetched data
+                    .catch(err => console.error(err)); // Log errors if any
+            }
+        }
+
+        socket.on("new_bid", handleNewBid);
+
+        return () => {
+            socket.off("new_bid", handleNewBid);
+        };
+    }, []);
 
     const openModel = () => {
         setShowModel(true);
@@ -119,18 +167,30 @@ const Listing = () => {
                             { /* Display product title */ }
                             <div className="title">{ listing.title }</div>
 
+                            { /* Display buy-now price */ }
+                            <div className="buySection">
+                                <div className="price">
+                                    {listing?.buy_now_price ? `$${listing.buy_now_price.toFixed(2)}` : "—"}
+                                </div>
+                                <Button className="addCartBtn" onClick={ () => addToCart(listing) }>
+                                    Add to Cart
+                                </Button>
+                            </div>
+
                             { /* Display auction-specific details if listing is an auction */ }
                             {listing.listing_type === "auction" && (
-                                <>
-                                    <div className="bid">${ listing.current_price }</div>
-                                    <Button className="placeBidBtn">Place Bid</Button>
-                                    <p className="bidDescription">{ listing.bids } bids. Ends: { listing.auction_end }</p>
-                                </>
+                                <div className="bidSection">
+                                    <div className="bid">
+                                        {listing?.current_price ? `$${listing.current_price.toFixed(2)}` : "—"}
+                                    </div>
+                                    <Button className="placeBidBtn" onClick={ () => placeBid(listing) }>
+                                        Place Bid
+                                    </Button>
+                                    <p className="bidDescription">
+                                        { listing.bids } bids. Ends: { format(new Date(listing.auction_end), "MM/dd/yyyy, hh:mm a") }
+                                    </p>
+                                </div>
                             )}
-
-                            { /* Display buy-now price */ }
-                            <div className="price">${ listing.buy_now_price }</div>
-                            <Button className="addCartBtn" onClick={ () => addToCart(listing) }>Add to Cart</Button>
 
                             { /* Social media share buttons */ }
                             <div className="shareButtons">
@@ -149,11 +209,11 @@ const Listing = () => {
                         { /* Display product image or fallback message */ }
                         <div className="image">
                             {listing.image_encoded ? (
-                                <div style={ { position: 'relative', display: 'inline-block' } }>
+                                <div style={ { position: "relative", display: "inline-block" } }>
                                     <img
                                         src={ `data:image/jpg;base64,${ listing.image_encoded  }`}
                                         alt={ listing.title }
-                                        style={ { display: 'block' } } // prevents spacing under image
+                                        style={ { display: "block" } } // prevents spacing under image
                                     />
                                     {/*
                                         This will be replaced with a seperate call to get the model

@@ -23,11 +23,11 @@ def get_user_orders(db_session=None):
     Returns:
         JSON response containing a list of the user's past orders.
     """
-    data = None
+    args = None
     if current_user.role in ["staff", "admin"]:
-        data = request.args.to_dict()
+        args = request.args.to_dict()
 
-    return HistoryService.get_user_orders(data=data, db_session=db_session)
+    return HistoryService.get_user_orders(args=args, db_session=db_session)
 
 
 # PUT /api/user/orders/<int:order_id>/
@@ -74,11 +74,13 @@ def get_user_listings(db_session=None):
     Returns:
         JSON response containing a list of the user's past listings.
     """
-    data = None
+    args = None
     if current_user.role in ["staff", "admin"]:
-        data = request.args.to_dict()
+        args = request.args.to_dict()
+    else:
+        args.update(user_id=current_user.id)
 
-    return HistoryService.get_user_listings(data=data, db_session=db_session)
+    return HistoryService.get_user_listings(args=args, db_session=db_session)
 
 
 # PUT /api/user/listings/<int:listing_id>/
@@ -115,11 +117,11 @@ def get_user_transactions(db_session=None):
     Returns:
         JSON response containing a list of the user's past transactions.
     """
-    data = None
+    args = None
     if current_user.role in ["staff", "admin"]:
-        data = request.args.to_dict()
+        args = request.args.to_dict()
 
-    return HistoryService.get_user_transactions(data=data, db_session=db_session)
+    return HistoryService.get_user_transactions(args=args, db_session=db_session)
 
 
 # PUT /api/user/transactions/<int:transaction_id>/
@@ -166,11 +168,11 @@ def get_user_deliveries(db_session=None):
     Returns:
         JSON response containing a list of the user's past deliveries.
     """
-    data = None
+    args = None
     if current_user.role in ["staff", "admin"]:
-        data = request.args.to_dict()
+        args = request.args.to_dict()
 
-    return HistoryService.get_user_deliveries(data=data, db_session=db_session)
+    return HistoryService.get_user_deliveries(args=args, db_session=db_session)
 
 
 # PUT /api/user/deliveries/<int:delivery_id>/
@@ -217,11 +219,11 @@ def get_user_support_tickets(db_session=None):
     Returns:
         JSON response containing a list of the user's past support tickets.
     """
-    data = None
+    args = None
     if current_user.role in ["staff", "admin"]:
-        data = request.args.to_dict()
+        args = request.args.to_dict()
 
-    return HistoryService.get_user_support_tickets(data=data, db_session=db_session)
+    return HistoryService.get_user_support_tickets(args=args, db_session=db_session)
 
 
 # PUT /api/user/support-tickets/<int:ticket_id>/
@@ -268,11 +270,11 @@ def get_user_reviews(db_session=None):
     Returns:
         JSON response containing a list of the user's past reviews.
     """
-    data = None
+    args = None
     if current_user.role in ["staff", "admin"]:
-        data = request.args.to_dict()
+        args = request.args.to_dict()
 
-    return HistoryService.get_user_reviews(data=data, db_session=db_session)
+    return HistoryService.get_user_reviews(args=args, db_session=db_session)
 
 
 # PUT /api/user/reviews/<int:review_id>/

@@ -39,7 +39,7 @@ import CustomerInquiries from "@/Pages/Staff/CustomerInquiries/CustomerInquiries
 import ManageListings from "@/Pages/Staff/ManageListings/ManageListings";
 import StaffAccount from "@/Pages/Staff/StaffAccount/StaffAccount";
 import StaffReports from "@/Pages/Staff/StaffReports/StaffReports";
-import ManageUsers from "@/Pages/Staff/ManageUsers/ManageUsers.jsx";
+import ManageUsers from "@/Pages/Staff/ManageUsers/ManageUsers";
 
 // Admin Internal Modules
 import AdminAccount from "@/Pages/Admin/AdminAccount/AdminAccount";

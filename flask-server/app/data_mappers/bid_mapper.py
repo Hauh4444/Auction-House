@@ -57,7 +57,7 @@ class BidMapper:
         db = db_session or get_db()
         cursor = db.cursor(cursors.DictCursor) # type: ignore
         statement = """
-            INSERT INTO categories 
+            INSERT INTO bids 
             (listing_id, user_id, amount, created_at) 
             VALUES (%s, %s, %s, %s)
         """

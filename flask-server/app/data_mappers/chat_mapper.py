@@ -22,7 +22,6 @@ class ChatMapper:
         cursor = db.cursor(cursors.DictCursor) # type: ignore
         cursor.execute("SELECT * FROM chats WHERE user1_id = %s OR user2_id = %s ORDER BY updated_at DESC", (user_id, user_id))
         chats = cursor.fetchall()
-
         return [Chat(**chat).to_dict() for chat in chats]
 
 
