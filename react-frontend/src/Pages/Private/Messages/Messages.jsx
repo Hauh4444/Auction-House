@@ -13,7 +13,7 @@ import { useAuth } from "@/ContextAPI/AuthContext";
 import "./Messages.scss";
 
 const Messages = () => {
-    const auth = useAuth();
+    const auth = useAuth(); // Fetch the authentication context
 
     const [chats, setChats] = useState([]); // State for storing chats
     const [currentChat, setCurrentChat] = useState(null); // State for the currently selected chat

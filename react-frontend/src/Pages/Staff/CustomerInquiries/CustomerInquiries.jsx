@@ -13,7 +13,7 @@ import { useAuth } from "@/ContextAPI/AuthContext";
 import "./CustomerInquiries.scss"
 
 const CustomerInquiries = () => {
-    const auth = useAuth();
+    const auth = useAuth(); // Fetch the authentication context
 
     const [supportTickets, setSupportTickets] = useState([]);
     const [currentSupportTicket, setCurrentSupportTicket] = useState(null);

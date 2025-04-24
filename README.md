@@ -9,8 +9,10 @@
 - Order & Delivery API
 - Live Auction UI
 - Manage Listings
+- Product Upload
 - Implement Feedback UI
 - Friend UI
+- Payment Info
 
 ### Flask Server
 

@@ -9,6 +9,7 @@ import Header from "@/Components/Header/Header";
 import RightNav from "@/Components/Navigation/RightNav/RightNav";
 import SellerProfileNav from "@/Components/Navigation/SellerProfileNav/SellerProfileNav";
 import { renderStars, navigateToListing, encodeImageToBase64 } from "@/utils/helpers";
+import tempImage from "@/assets/images/noImage.webp"
 
 // Stylesheets
 import "./SellerProfile.scss";
@@ -23,7 +24,16 @@ const SellerProfile = () => {
         category_id: "", listing_type: "buy_now", starting_price: 0, reserve_price: 0, auction_end: "", buy_now_price: 0}) // State to hold uploaded listing data
     const [categories, setCategories] = useState([]); // State to hold category data
     const [listingCategory, setListingCategory] = useState("") // State to hold currently selected category data
-    const tempImage = useState("") // State to hold blank encoded image
+
+    useEffect(() => {
+        async function encode() {
+            const response = await fetch(tempImage);
+            const blob = await response.blob();
+            const base64 = await encodeImageToBase64(blob);
+            setListing({ ...listing, image_encoded: base64 });
+        }
+        encode();
+    }, []);
 
     useEffect(() => {
         axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/user/listings/`,
@@ -44,16 +54,9 @@ const SellerProfile = () => {
             .catch(err => console.error(err)); // Log errors if any
     }, []); // Empty dependency array ensures this effect runs only once
 
-    const handleImageChange = (e) => {
+    const handleImageChange = async (e) => {
         const file = e.target.files[0];
-        if (file) {
-            encodeImageToBase64(file)
-                .then((base64String) => {
-                    const image_encoded = `data:image/jpg;base64,${ base64String }`;
-                    setListing({ ...listing, image_encoded: image_encoded }); // Save the file object for upload
-                })
-                .catch(err => console.error(err)); // Log errors if any
-        }
+        if (file) setListing({ ...listing, image_encoded: await encodeImageToBase64(file) });
     };
 
     // On submit, post new listing to the backend API
@@ -109,14 +112,14 @@ const SellerProfile = () => {
                         <CardContent className="content">
                             <div className="imageUpload">
                                 <img
-                                    src={ `data:image/jpg;base64,${ listing.image_encoded || `data:image/jpg;base64,${ tempImage  }`}` }
+                                    src={ `data:image/jpg;base64,${ listing.image_encoded }` }
                                     alt="Product Image"
                                     className="product-image"
                                 />
                                 <input
                                     type="file"
                                     accept="image/*"
-                                    className="product-picture"
+                                    id="product-picture"
                                     style={ { display: "none" } }
                                     onChange={ handleImageChange }
                                 />

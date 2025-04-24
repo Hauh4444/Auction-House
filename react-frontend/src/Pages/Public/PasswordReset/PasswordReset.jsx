@@ -1,4 +1,4 @@
-// External Modules
+// External Libraries
 import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { TextField, Button, Card, CardContent, CardHeader } from "@mui/material";

@@ -24,7 +24,6 @@ import "./Listing.scss";
  * Listing Component
  *
  * This component fetches and displays a listing based on query parameters from the URL.
- * It utilizes React's `useEffect` and `useState` Hooks to manage the API request and state updates.
  *
  * Features:
  * - Retrieves listing data from the Flask server using Axios.
@@ -37,8 +36,7 @@ const Listing = () => {
     const navigate = useNavigate();
     const location = useLocation(); // Hook to access the current location (URL)
     const filters = Object.fromEntries(new URLSearchParams(location.search).entries()); // Extract query parameters from the URL
-    const auth = useAuth();
-
+    const auth = useAuth(); // Fetch the authentication context
     const { addToCart } = useCart(); // Access authentication functions from the AuthProvider context
 
     const [listing, setListing] = useState({}); // State to store the listing data

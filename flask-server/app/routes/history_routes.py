@@ -78,7 +78,7 @@ def get_user_listings(db_session=None):
     if current_user.role in ["staff", "admin"]:
         args = request.args.to_dict()
     else:
-        args.update(user_id=current_user.id)
+        args = {"user_id": current_user.id}
 
     return HistoryService.get_user_listings(args=args, db_session=db_session)
 

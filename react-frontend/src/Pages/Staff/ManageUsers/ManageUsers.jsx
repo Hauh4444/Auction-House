@@ -14,7 +14,7 @@ import { useAuth } from "@/ContextAPI/AuthContext";
 import "./ManageUsers.scss";
 
 const ManageUsers = () => {
-    const auth = useAuth();
+    const auth = useAuth(); // Fetch the authentication context
 
     const [ currentRoute, setCurrentRoute ] = useState("user");
     const [ userIdInput, setUserIdInput ] = useState("");

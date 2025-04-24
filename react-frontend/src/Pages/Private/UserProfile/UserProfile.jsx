@@ -59,9 +59,7 @@ const UserProfile = () => {
         const file = e.target.files[0];
         if (file) {
             encodeImageToBase64(file)
-                .then((base64String) => {
-                    setProfile({ ...profile, profile_picture: base64String }); // Save the file object for upload
-                })
+                .then((base64String) => setProfile({ ...profile, profile_picture: base64String }))
                 .catch(err => console.error(err)); // Log errors if any
         }
     };

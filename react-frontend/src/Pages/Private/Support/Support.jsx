@@ -14,10 +14,10 @@ import { useAuth } from "@/ContextAPI/AuthContext";
 import './Support.scss';
 
 const Support = () => {
-    const auth = useAuth();
     const navigate = useNavigate(); // Navigate hook for routing
     const location = useLocation(); // Hook to access the current location (URL)
     const filters = Object.fromEntries(new URLSearchParams(location.search).entries()); // Extract query parameters from URL
+    const auth = useAuth(); // Fetch the authentication context
 
     const [subject, setSubject] = useState(null);
     const [message, setMessage] = useState("");

@@ -14,7 +14,7 @@ import { useAuth } from "@/ContextAPI/AuthContext";
 import "./RightNav.scss";
 
 // Custom Variables
-import { variables } from "@/assets/variables.modules";
+import { variables } from "@/assets/variables/variables.modules.js";
 
 /**
  * RightNav Component
@@ -37,7 +37,7 @@ import { variables } from "@/assets/variables.modules";
  */
 const RightNav = () => {
     const navigate = useNavigate(); // Navigate hook for routing
-    const auth = useAuth();
+    const auth = useAuth(); // Fetch the authentication context
 
     return (
         <nav className="rightNav"> { /* Navigation container */ }

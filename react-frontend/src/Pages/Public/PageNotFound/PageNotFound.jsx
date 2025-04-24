@@ -1,5 +1,14 @@
 // External Libraries
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@mui/material";
+
+// Internal Modules
+import Header from "@/Components/Header/Header";
+import RightNav from "@/Components/Navigation/RightNav/RightNav";
+import image from "@/assets/images/404.jpg";
+
+// Stylesheets
+import "./PageNotFound.scss"
 
 /**
  * PageNotFound Component
@@ -13,17 +22,27 @@ import { Link } from "react-router-dom";
  * @returns { JSX.Element } The rendered homepage containing the header, navigation, and conditionally rendered category navigation.
  */
 const PageNotFound = () => {
+    const navigate = useNavigate();
+
     return (
-        <>
-            <section className="mainSection">
-                <img src="/assets/404.jpg" className="notFoundImage" alt="Page Not Found" />
-            </section>
-            <div>
-                <Link to="/">
-                    Back to Home
-                </Link>
+        <div className="pageNotFoundPage page">
+            <div className="mainPage">
+                { /* Page Header */ }
+                <Header />
+
+                <div className="content">
+                    <div className="notFound">
+                        <div className="image">
+                            <img src={ image } alt="Page Not Found" />
+                        </div>
+                        <Button className="btn" onClick={ () => navigate("/") }>
+                            Back to Home
+                        </Button>
+                    </div>
+                </div>
             </div>
-        < />
+            <RightNav />
+        </div>
     )
 }
 
