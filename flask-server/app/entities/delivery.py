@@ -104,8 +104,11 @@ class Delivery:
             "delivery_status": self.delivery_status,
             "tracking_number": self.tracking_number,
             "courier": self.courier,
-            "estimated_delivery_date": self.estimated_delivery_date.strftime("%Y-%m-%d %H:%M:%S"),
-            "delivered_at": self.delivered_at,
-            "created_at": self.created_at.strftime("%Y-%m-%d %H:%M:%S"),
-            "updated_at": self.updated_at.strftime("%Y-%m-%d %H:%M:%S")
+            "estimated_delivery_date": self.estimated_delivery_date.strftime("%Y-%m-%d %H:%M:%S") if self.estimated_delivery_date else None,
+            "delivered_at": self.delivered_at.strftime("%Y-%m-%d %H:%M:%S") if self.delivered_at else None,
+            "created_at": self.created_at.strftime("%Y-%m-%d %H:%M:%S") if self.created_at else None,
+            "updated_at": self.updated_at.strftime("%Y-%m-%d %H:%M:%S") if self.updated_at else None
         }
+
+
+
