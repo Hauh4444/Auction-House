@@ -41,7 +41,7 @@ const SellerProfile = () => {
                 headers: { "Content-Type": "application/json" },
             })
             .then((res) => setListings(res.data.listings))
-            .catch(err => console.error(err)); // Log errors if any
+            .catch((err) => console.error(err)); // Log errors if any
     }, []);
 
     useEffect(() => {
@@ -51,7 +51,7 @@ const SellerProfile = () => {
                 headers: { "Content-Type": "application/json" },
             })
             .then((res) => setCategories(res.data.categories)) // Update state with fetched data
-            .catch(err => console.error(err)); // Log errors if any
+            .catch((err) => console.error(err)); // Log errors if any
     }, []); // Empty dependency array ensures this effect runs only once
 
     const handleImageChange = async (e) => {
@@ -70,7 +70,7 @@ const SellerProfile = () => {
                 withCredentials: true, // Ensure cookies are sent
             })
             .then(() => navigate("/user/seller-profile?nav=manage"))
-            .catch(err => console.error(err)); // Log errors if any
+            .catch((err) => console.error(err)); // Log errors if any
     }
 
     return (

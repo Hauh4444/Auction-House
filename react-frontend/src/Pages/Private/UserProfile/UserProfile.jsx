@@ -56,7 +56,7 @@ const UserProfile = () => {
                 withCredentials: true, // Ensures cookies are sent with requests
             })
             .then((res) => setProfile(res.data.profile)) // Set the user state
-            .catch(err => console.error(err)); // Log errors if any
+            .catch((err) => console.error(err)); // Log errors if any
     }, []); 
 
     const handleImageChange = (e) => {
@@ -64,7 +64,7 @@ const UserProfile = () => {
         if (file) {
             encodeImageToBase64(file)
                 .then((base64String) => setProfile({ ...profile, profile_picture: base64String }))
-                .catch(err => console.error(err)); // Log errors if any
+                .catch((err) => console.error(err)); // Log errors if any
         }
     };
 
@@ -77,7 +77,7 @@ const UserProfile = () => {
                 withCredentials: true, // Ensure cookies are sent if needed
             })
             .then(() => { setEdit(false) }) // Turn edit mode off if no errors
-            .catch(err => console.error(err)); // Log errors if any
+            .catch((err) => console.error(err)); // Log errors if any
     }
 
     return (

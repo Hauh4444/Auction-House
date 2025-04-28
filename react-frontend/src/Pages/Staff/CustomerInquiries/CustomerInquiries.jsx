@@ -37,7 +37,7 @@ const CustomerInquiries = () => {
                 setSupportTickets(res.data.support_tickets);
                 setCurrentSupportTicket(res.data.support_tickets[0])
             })
-            .catch(err => console.error(err)); // Log errors if any
+            .catch((err) => console.error(err)); // Log errors if any
     }, []);
 
     const getMessages = () => {
@@ -105,7 +105,7 @@ const CustomerInquiries = () => {
                 setNewTicketMessage("");
                 getMessages();
             })
-            .catch(err => console.error(err));
+            .catch((err) => console.error(err));
     };
 
     const handleKeyPress = (e) => {

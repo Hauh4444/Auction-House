@@ -1,6 +1,6 @@
 // External Libraries
 import { useEffect, useState, useRef } from  "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { FacebookIcon, FacebookShareButton, PinterestIcon, PinterestShareButton, TwitterShareButton, XIcon } from "react-share";
 import { IoMdCube } from "react-icons/io";
 import { ImCross } from "react-icons/im";
@@ -13,9 +13,9 @@ import { format } from 'date-fns';
 import Header from "@/Components/Header/Header";
 import RightNav from "@/Components/Navigation/RightNav/RightNav";
 import Listing3D from "@/Components/Listing3D/Listing3D";
+import LiveAuction from "@/Components/Auction/LiveAuction"
 import { renderStars } from "@/utils/helpers";
 import { useCart } from "@/ContextAPI/CartContext";
-import { useAuth } from "@/ContextAPI/AuthContext";
 
 // Stylesheets
 import "./Listing.scss";
@@ -33,16 +33,15 @@ import "./Listing.scss";
  * @returns { JSX.Element } The rendered homepage containing the header, navigation, and conditionally rendered category navigation.
  */
 const Listing = () => {
-    const navigate = useNavigate();
     const location = useLocation(); // Hook to access the current location (URL)
     const filters = Object.fromEntries(new URLSearchParams(location.search).entries()); // Extract query parameters from the URL
-    const auth = useAuth(); // Fetch the authentication context
     const { addToCart } = useCart(); // Access authentication functions from the AuthProvider context
 
     const [listing, setListing] = useState({}); // State to store the listing data
     const [reviews, setReviews] = useState([]);
     const [model, setModel] = useState(null);
     const [showModel, setShowModel] = useState(false);
+    const [showAuction, setShowAuction] = useState(false);
 
     const listingRef = useRef(listing);
 
@@ -52,6 +51,57 @@ const Listing = () => {
 
     useEffect(() => getListing(), [location.search]); // Call on update of URL filters
 
+    useEffect(() => {
+        if (showModel || showAuction) document.body.style.overflow = "hidden";
+        else document.body.style.overflow = "auto";
+
+        return () => document.body.style.overflow = "auto";
+    }, [showModel, showAuction]);
+
+    useEffect(() => {
+        const socket = io(import.meta.env.VITE_BACKEND_URL, {
+            transports: ["websocket"],
+            withCredentials: true,
+        });
+
+        if (!socket) return;
+
+        // We have to use references because of fucking race conditions
+        const handleNewBid = () => {
+            const listingId = listingRef.current?.listing_id;
+            if (listingId) {
+                axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/listings/${ listingId }/`,
+                    {
+                        headers: {"Content-Type": "application/json"},
+                    })
+                    .then((res) => setListing(res.data.listing)) // Update state with fetched data
+                    .catch((err) => console.error(err)); // Log errors if any
+            }
+        }
+
+        socket.on("new_bid", handleNewBid);
+
+        return () => {
+            socket.off("new_bid", handleNewBid);
+        };
+    }, []);
+
+    useEffect(() => {
+        if (showAuction || showModel) {
+            const handleEscapeKey = (event) => {
+                if (event.key === "Escape") {
+                    if (showModel) setShowModel(false);
+                    else setShowAuction(false);
+                }
+            };
+            window.addEventListener("keydown", handleEscapeKey);
+
+            return () => {
+                window.removeEventListener("keydown", handleEscapeKey);
+            };
+        }
+    }, [showAuction, showModel]);
+
     const getListing = () => {
         axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/listings/${ filters.key }/`,
             {
@@ -60,8 +110,8 @@ const Listing = () => {
             .then((res) => {
                 setListing(res.data.listing);
                 getListingObjects(res.data.listing.listing_id);
-            }) // Update state with fetched data
-            .catch(err => console.error(err)); // Log errors if any
+            })
+            .catch((err) => console.error(err)); // Log errors if any
     }
 
     const getListingObjects = (id) => {
@@ -85,72 +135,6 @@ const Listing = () => {
             })
             .then((res) => setModel(res.data.model)) // Update state with fetched data
             .catch(() => setModel(null)); // Clear model state on error
-    }
-
-    const placeBid = (listing) => {
-        if (!auth.user) navigate("/auth-page", { state: { from: location } });
-        axios.post(`${ import.meta.env.VITE_BACKEND_API_URL }/bids/`,
-            {
-                listing_id: listing.listing_id,
-                amount: listing.current_price,
-            },
-            {
-                headers: { "Content-Type": "application/json" },
-                withCredentials: true,
-            })
-            .then(() => getListing())
-            .catch(err => console.error(err));
-    }
-
-    useEffect(() => {
-        const socket = io(import.meta.env.VITE_BACKEND_URL, {
-            transports: ["websocket"],
-            withCredentials: true,
-        });
-
-        if (!socket) return;
-
-        // We have to use references because of fucking race conditions
-        const handleNewBid = () => {
-            const listingId = listingRef.current?.listing_id;
-            if (listingId) {
-                axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/listings/${ listingId }/`,
-                    {
-                        headers: {"Content-Type": "application/json"},
-                    })
-                    .then((res) => setListing(res.data.listing)) // Update state with fetched data
-                    .catch(err => console.error(err)); // Log errors if any
-            }
-        }
-
-        socket.on("new_bid", handleNewBid);
-
-        return () => {
-            socket.off("new_bid", handleNewBid);
-        };
-    }, []);
-
-    const openModel = () => {
-        setShowModel(true);
-
-        // Add event listener for Escape key press when model is opened
-        const handleEscapeKey = (event) => {
-            if (event.key === "Escape") {
-                closeModel(); // Close model when Escape is pressed
-            }
-        };
-
-        // Add event listener to the window object
-        window.addEventListener("keydown", handleEscapeKey);
-
-        // Clean up function to remove the event listener when the model is closed
-        return () => {
-            window.removeEventListener("keydown", handleEscapeKey);
-        };
-    }
-
-    const closeModel = () => {
-        setShowModel(false);
     }
 
     return (
@@ -181,7 +165,7 @@ const Listing = () => {
                                     <div className="bid">
                                         {listing?.current_price ? `$${listing.current_price.toFixed(2)}` : "—"}
                                     </div>
-                                    <Button className="placeBidBtn" onClick={ () => placeBid(listing) }>
+                                    <Button className="placeBidBtn" onClick={ () => setShowAuction(true) }>
                                         Place Bid
                                     </Button>
                                     <p className="bidDescription">
@@ -211,16 +195,12 @@ const Listing = () => {
                                     <img
                                         src={ `data:image/jpg;base64,${ listing.image_encoded  }`}
                                         alt={ listing.title }
-                                        style={ { display: "block" } } // prevents spacing under image
+                                        style={ { display: "block" } }
                                     />
-                                    {/*
-                                        This will be replaced with a seperate call to get the model
-                                        instead of expecting the listing attribute model
-                                    */}
                                     {model && (
                                         <Button
                                             className="modelBtn"
-                                            onClick={ () => openModel() }
+                                            onClick={ () => setShowModel(true) }
                                         >
                                             <IoMdCube className="icon" />
                                         </Button>
@@ -247,6 +227,7 @@ const Listing = () => {
                             )}
                         </div>
                     </div>
+
                     <div className="secondaryInfo">
                         { /* Additional listing information */ }
                         <div className="specifics">
@@ -275,11 +256,12 @@ const Listing = () => {
                                         </table>
                                     )
                                 ) : (
-                                    // If it's a plain string, display it as a paragraph
+                                    // If it's a string, display it as a paragraph
                                     <p>{ listing.item_specifics }</p>
                                 )
                             )}
                         </div>
+
                         { /* Reviews section */ }
                         <div className="reviewSection">
                             {reviews &&
@@ -302,8 +284,16 @@ const Listing = () => {
                 </div>
                 {showModel && model && (
                     <>
-                        <Listing3D modelPath={model.file_reference} />
-                        <Button className="closeShowcaseBtn" onClick={ () => closeModel() }>
+                        <Listing3D modelPath={ model.file_reference } />
+                        <Button className="closeShowcaseBtn" onClick={ () => setShowModel(false) }>
+                            <ImCross size={ 24 } />
+                        </Button>
+                    </>
+                )}
+                {showAuction && (
+                    <>
+                        <LiveAuction listing={ listing } />
+                        <Button className="closeShowcaseBtn" onClick={ () => setShowAuction(false) }>
                             <ImCross size={ 24 } />
                         </Button>
                     </>

@@ -54,7 +54,7 @@ const ManageUsers = () => {
                 .then(() => {
                     handleSubmit();
                 })
-                .catch(err => console.error(err));
+                .catch((err) => console.error(err));
         } else {
             setEditingRow(rowId);
         }
@@ -77,7 +77,7 @@ const ManageUsers = () => {
             withCredentials: true,
         })
             .then(() => handleSubmit())
-            .catch(err => console.error(err));
+            .catch((err) => console.error(err));
     };
 
     return (

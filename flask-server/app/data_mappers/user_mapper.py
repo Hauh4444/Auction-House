@@ -48,8 +48,8 @@ class UserMapper:
                     pass
             if isinstance(value, datetime):
                 data[key] = value.strftime('%Y-%m-%d %H:%M:%S')
-        set_clause = ", ".join([f"{key} = %s" for key in data if key not in ["user_id", "updated_at", "last_login"]])
-        values = [data.get(key) for key in data if key not in ["user_id", "updated_at", "last_login"]]
+        set_clause = ", ".join([f"{key} = %s" for key in data if key not in ["user_id", "created_at", "updated_at", "last_login"]])
+        values = [data.get(key) for key in data if key not in ["user_id", "created_at", "updated_at", "last_login"]]
         values.append(datetime.now())
         values.append(user_id)
         statement = f"UPDATE users SET {set_clause}, updated_at = %s WHERE user_id = %s"

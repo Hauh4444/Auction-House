@@ -31,7 +31,7 @@ const SystemLogs = () => {
                 withCredentials: true, // Ensures cookies are sent with requests
             })
             .then((res) => setLogs(res.data.logs))
-            .catch(err => console.error(err)); // Log errors if any
+            .catch((err) => console.error(err)); // Log errors if any
     }, []);
 
     const getLog = (log, level, selectedDate = date, line_length, limit) => {

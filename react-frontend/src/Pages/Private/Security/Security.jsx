@@ -22,7 +22,7 @@ const Security = () => {
                 withCredentials: true, // Ensures cookies are sent with requests
             })
             .then((res) => setUser(res.data.user)) // Set the user state
-            .catch(err => console.error(err)); // Log errors if any
+            .catch((err) => console.error(err)); // Log errors if any
     }, []);
 
     const password_reset_request = () => {
@@ -32,7 +32,7 @@ const Security = () => {
                 withCredentials: true,
             })
             .then(() => alert("Password reset request email sent to: " + user["email"]))
-            .catch(err => console.error(err));
+            .catch((err) => console.error(err));
     }
 
     return (

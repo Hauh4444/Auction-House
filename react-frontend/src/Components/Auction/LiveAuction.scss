@@ -1,0 +1,120 @@
+// Built In Modules
+@use "sass:map";
+// Custom Variables
+@use "@/assets/variables/variables.modules.scss" as *;
+
+.overlay {
+    width: calc(100% - 50px);
+    height: 100%;
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    left: 0;
+    top: 0;
+
+    .liveAuction {
+        width: 550px;
+        height: 350px;
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0 2px 4px map.get($theme-colors, mainColor4);
+        background-color: map.get($theme-colors, mainColor1);
+        display: flex;
+        flex-direction: row;
+        gap: 25px;
+
+        .section.left {
+            border-radius: 25px;
+            box-shadow: 0 2px 4px map.get($theme-colors, mainColor4);
+            background-color: map.get($theme-colors, mainColor1);
+        }
+
+        .section.right {
+            justify-content: space-between;
+        }
+
+        .section {
+            height: 100%;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            flex-basis: 50%;
+            justify-content: center;
+
+            .image {
+                width: calc(100% - 50px);
+                padding: 25px;
+                flex-basis: 75%;
+                overflow: hidden;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: contain;
+                }
+            }
+
+            .currentBid {
+                width: 100%;
+                padding-bottom: 15px;
+                flex-basis: 25%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                font-size: 20px;
+                gap: 5px;
+
+                p {
+                    margin: 0;
+                }
+            }
+
+            h2 {
+                margin-top: 5px;
+                text-align: center;
+                font-size: 30px;
+            }
+
+            .btn {
+                height: 56px;
+                background-color: map.get($theme-colors, mainColor1);
+                box-shadow: 0 1px 2px map.get($theme-colors, mainColor4);
+                border-radius: 5px;
+                position: relative;
+                overflow: hidden;
+                z-index: 0;
+                font-size: 18px;
+                color: map.get($theme-colors, mainColor3);
+                transition: all 0.2s ease;
+
+                &::after {
+                    background: linear-gradient(to right, map.get($theme-colors, accentColor3), map.get($theme-colors, accentColor4)) no-repeat;
+                    position: absolute;
+                    z-index: -1;
+                    opacity: 0;
+                    inset: 0;
+                    content: "";
+                    transition: opacity 0.5s ease;
+                }
+
+                &:hover::after {
+                    opacity: 1;
+                }
+
+                &:hover {
+                    border: none;
+                    background-color: transparent !important;
+                    color: map.get($theme-colors, mainColor1) !important;
+                }
+            }
+        }
+
+        .divider {
+            width: 1px;
+            background-color: map.get($theme-colors, mainColor5);
+        }
+    }
+}

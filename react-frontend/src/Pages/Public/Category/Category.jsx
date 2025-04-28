@@ -63,7 +63,7 @@ const Category = () => {
                 headers: { "Content-Type": "application/json" },
             })
             .then((res) => setCategory(res.data.category)) // Update state with fetched data
-            .catch(err => console.error(err)); // Log errors if any
+            .catch((err) => console.error(err)); // Log errors if any
     }, [location.search]);
 
     useEffect(() => {

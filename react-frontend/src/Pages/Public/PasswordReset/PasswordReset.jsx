@@ -34,7 +34,7 @@ const PasswordReset = () => {
                 withCredentials: true,
             })
             .then(() => navigate("/"))
-            .catch(err => setResetError(err.response.data.error));
+            .catch((err) => setResetError(err.response.data.error));
     };
 
     return (

@@ -2,8 +2,8 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
-import posthog from "posthog-js";
 import { PostHogProvider } from 'posthog-js/react';
+import posthog from "posthog-js";
 
 // Internal Modules
 import CartProvider from "@/ContextAPI/CartProvider";
@@ -26,8 +26,6 @@ posthog.init(
         }
     }
 );
-
-posthog.startSessionRecording();
 
 /**
  * Entry Point of the Application

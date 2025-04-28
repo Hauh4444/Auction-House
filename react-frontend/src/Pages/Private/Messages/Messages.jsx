@@ -113,7 +113,7 @@ const Messages = () => {
                 setNewMessage(""); // Reset message input
                 getMessages(); // Fetch new messages
             })
-            .catch(err => console.error(err)); // Log errors if any
+            .catch((err) => console.error(err)); // Log errors if any
     };
 
     const handleKeyPress = (e) => {

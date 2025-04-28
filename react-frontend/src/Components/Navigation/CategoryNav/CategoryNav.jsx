@@ -30,7 +30,7 @@ const CategoryNav = () => {
                 headers: { "Content-Type": "application/json" },
             })
             .then((res) => setCategories(res.data.categories)) // Set the fetched categories into the state
-            .catch(err => console.error(err)); // Log errors if any
+            .catch((err) => console.error(err)); // Log errors if any
     }, []); // Empty dependency array ensures the request runs once when the component mounts
 
     // Function to navigate to the selected category page

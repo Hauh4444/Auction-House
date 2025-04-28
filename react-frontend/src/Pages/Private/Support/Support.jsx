@@ -110,7 +110,7 @@ const Support = () => {
                     setSupportTickets(res.data.support_tickets);
                     setCurrentSupportTicket(res.data.support_tickets[0])
                 }) // Set the user state
-                .catch(err => console.error(err)); // Log errors if any
+                .catch((err) => console.error(err)); // Log errors if any
         }
     }
 
@@ -125,7 +125,7 @@ const Support = () => {
                 withCredentials: true,
             })
             .then(() => navigate("/"))
-            .catch(err => console.error(err));
+            .catch((err) => console.error(err));
     }
 
     const handleSendMessage = () => {
@@ -142,7 +142,7 @@ const Support = () => {
                 setNewTicketMessage("");
                 getMessages();
             })
-            .catch(err => console.error(err));
+            .catch((err) => console.error(err));
     };
 
     const handleKeyPress = (e) => {

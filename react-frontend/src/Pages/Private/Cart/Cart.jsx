@@ -56,7 +56,7 @@ const Cart = () => {
                 const stripe = await stripePromise;
                 await stripe.redirectToCheckout({ sessionId: res.data.id });
             })
-            .catch(err => console.error(err));
+            .catch((err) => console.error(err));
     };
 
     useEffect(() => {
@@ -78,7 +78,7 @@ const Cart = () => {
                         setCartItems([]);
                     }
                 })
-                .catch(err => console.error(err));
+                .catch((err) => console.error(err));
         }
     }, []);
 
