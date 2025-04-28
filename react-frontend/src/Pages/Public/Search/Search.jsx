@@ -36,7 +36,6 @@ const Search = () => {
     const { addToCart } = useCart(); // Access authentication functions from the AuthProvider context
 
     const [listings, setListings] = useState([]); // State to hold product listings
-    const [paginationButtons, setPaginationButtons] = useState(null); // State to store the pagination buttons
 
     useEffect(() => {
         // Adjust filters for pagination
@@ -48,45 +47,18 @@ const Search = () => {
         if (filters.nav === "new") {
             filters.sort = "created_at";
             filters.order = "desc";
-            setPaginationButtons(null);
         }
         if (filters.nav === "best-sellers") {
             filters.sort = "purchases";
             filters.order = "desc";
-            setPaginationButtons(null);
-        }
-        // Display pagination buttons if "view-all" navigation is selected
-        if (filters.nav === "view-all") {
-            setPaginationButtons(
-                // Pagination buttons
-                <div className="pagination">
-                    <Button
-                        className="previousPagination"
-                        style={ filters.page === "1" ? { opacity: 0.5, cursor: "default"  } : { opacity: 1, cursor: "pointer" } }
-                        disabled={ filters.page === "1" }
-                        onClick={ () => pagination(-1) }
-                    >
-                        <MdArrowBackIosNew className="icon" />&ensp;Previous
-                    </Button>
-                    <Button
-                        style={ { marginLeft: "25px" } }
-                        onClick={ () => pagination(1) }
-                    >
-                        Next&ensp;<MdArrowForwardIos className="icon" />
-                    </Button>
-                </div>
-            );
         }
 
-        // Fetch listings from the API with the specified filters
-        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/listings/`,
-            {
-                headers: { "Content-Type": "application/json" },
-                params: createSearchParams(filters), // Convert filters to query parameters
-            })
-            .then((res) => {
-                setListings(res.data.listings);
-            }) // Set the fetched listings into state
+        // Fetch listings
+        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/listings/`, {
+            headers: { "Content-Type": "application/json" },
+            params: createSearchParams(filters),
+        })
+            .then((res) => setListings(res.data.listings))
             .catch(() => setListings([]));
     }, [location.search]);
 
@@ -106,9 +78,7 @@ const Search = () => {
         });
 
         // Scroll to top of page
-        setTimeout(() => {
-            window.scrollTo(0, 0);
-        }, 100);
+        setTimeout(() => window.scrollTo(0, 0), 100);
     }
 
     return (
@@ -154,7 +124,25 @@ const Search = () => {
                         </div>
                     ))}
                     { /* Pagination Controls */ }
-                    { paginationButtons }
+                    {filters.nav === "view-all" && (
+                        <div className="pagination">
+                            <Button
+                                className="previousPagination"
+                                style={ filters.page === "1" ? { opacity: 0.5, cursor: "default" } : { opacity: 1, cursor: "pointer" } }
+                                disabled={ filters.page === "1"}
+                                onClick={ () => pagination(-1)}
+                            >
+                                <MdArrowBackIosNew className="icon" />&ensp;Previous
+                            </Button>
+                            <Button
+                                style={ listings.length === 0 ? { opacity: 0.5, cursor: "default", marginLeft: "25px" } : { opacity: 1, cursor: "pointer", marginLeft: "25px" } }
+                                disabled={ listings.length === 0 }
+                                onClick={ () => pagination(1) }
+                            >
+                                Next&ensp;<MdArrowForwardIos className="icon" />
+                            </Button>
+                        </div>
+                    )}
                 </div>
             </div>
             { /* Right-side Navigation */ }

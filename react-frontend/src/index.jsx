@@ -7,6 +7,7 @@ import { PostHogProvider } from 'posthog-js/react';
 
 // Internal Modules
 import CartProvider from "@/ContextAPI/CartProvider";
+import WebVitalsProvider from "@/ContextAPI/WebVitalsProvider";
 import App from "@/App";
 
 // Stylesheets
@@ -16,8 +17,17 @@ posthog.init(
     import.meta.env.VITE_PUBLIC_POSTHOG_KEY,
     {
         api_host: import.meta.env.VITE_PUBLIC_POSTHOG_HOST,
+        autocapture: true,
+        capture_pageleave: true,
+        mask_all_text: true,
+        mask_text_selectors: ['input[type="password"]', 'input[type="email"]'],
+        session_recording: {
+            recordCanvas: true,
+        }
     }
 );
+
+posthog.startSessionRecording();
 
 /**
  * Entry Point of the Application
@@ -34,12 +44,12 @@ posthog.init(
  */
 createRoot(document.getElementById("root")).render(
     <StrictMode>
-        <PostHogProvider
-            client={ posthog }
-        >
+        <PostHogProvider client={ posthog }>
             <BrowserRouter>
                 <CartProvider>
-                    <App />
+                    <WebVitalsProvider>
+                        <App />
+                    </WebVitalsProvider>
                 </CartProvider>
             </BrowserRouter>
         </PostHogProvider>

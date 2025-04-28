@@ -120,13 +120,11 @@
             display: flex;
             flex-direction: row;
 
-
             .supportTickets {
                 display: flex;
                 flex-direction: column;
                 flex-basis: 250px;
                 box-shadow: inset -4px 0 4px -4px map.get($theme-colors, mainColor4);
-
 
                 .ticket {
                     width: fit-content;
@@ -186,7 +184,7 @@
                 .messages {
                     height: calc(100% - 100px);
                     overflow-y: scroll;
-
+                    mask-image: linear-gradient(to top, black calc(100% - 48px), transparent 100%);
 
                     .message {
                         width: fit-content;

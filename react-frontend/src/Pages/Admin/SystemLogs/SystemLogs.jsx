@@ -115,7 +115,7 @@ const SystemLogs = () => {
                                             setDate(newValue);
                                             getLog(currentLog, level, newValue, line_length, limit);
                                         }}
-                                        renderInput={ (params) => <TextField { ...params } size="small" /> }
+                                        slotProps={ { textField: { variant: "outlined" } } }
                                     />
                                 </LocalizationProvider>
 

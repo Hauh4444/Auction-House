@@ -4,15 +4,23 @@
 
 ### React Frontend
 
-- Documentation
-- Analytics & Reports
-- Order & Delivery API
-- Live Auction UI
+- Analytics
+- Live Auction
 - Manage Listings
 - Product Upload
-- Implement Feedback UI
-- Friend UI
+- Review 
+- Friends
 - Payment Info
+- History
+  - Transactions
+  - Deliveries
+  - Orders
+- List
+  - Create
+  - Update
+  - Delete
+- About
+- Contact
 
 ### Flask Server
 

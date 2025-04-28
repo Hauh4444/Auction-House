@@ -1,6 +1,10 @@
 // External Libraries
 import { useEffect, useState } from "react";
 import { Button, Card, CardContent, TextField } from "@mui/material";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
 import axios from "axios";
 
 // Internal Modules
@@ -97,7 +101,7 @@ const UserProfile = () => {
                                     />
                                     {fields.map((field) => (
                                         <p key={ field.name }>
-                                            <strong>{ field.label }:</strong> { field.value }
+                                            <strong>{ field.label }:</strong> { field.name === "date_of_birth" ? dayjs(field.value).format("MM-DD-YYYY") : field.value }
                                         </p>
                                     ))}
                                 </div>
@@ -130,22 +134,34 @@ const UserProfile = () => {
                                     </Button>
                                 </div>
                                 {fields.map((field) => (
-                                    <TextField
-                                        key={ field.name }
-                                        className={ `input ${ field.name === "bio" ? "bio" : "shortField"  }`}
-                                        style={ { display: "flex", ...field.style } }
-                                        label={ field.label }
-                                        name={ field.name }
-                                        type={ field.type }
-                                        variant="outlined"
-                                        value={ profile[field.name] }
-                                        onChange={ (e) => setProfile({ ...profile, [e.target.name]: e.target.value  })}
-                                        required
-                                        multiline={ field.multiline }
-                                        rows={ field.rows }
-                                        maxrows={ field.maxrows }
-                                        fullWidth={ field.fullWidth }
-                                    />
+                                    field.name === "date_of_birth" ? (
+                                        <LocalizationProvider dateAdapter={ AdapterDayjs } key={ field.name }>
+                                            <DatePicker
+                                                className="input shortField"
+                                                label={ field.label }
+                                                value={ dayjs(profile[field.name]) }
+                                                onChange={ (value) => setProfile({ ...profile, [field.name]: dayjs(value).format("YYYY-MM-DD") }) }
+                                                slotProps={ { textField: { variant: "outlined" } } }
+                                            />
+                                        </LocalizationProvider>
+                                    ) : (
+                                        <TextField
+                                            key={ field.name }
+                                            className={ `input ${ field.name === "bio" ? "bio" : "shortField"  }`}
+                                            style={ { display: "flex", ...field.style } }
+                                            label={ field.label }
+                                            name={ field.name }
+                                            type={ field.type }
+                                            variant="outlined"
+                                            value={ profile[field.name] }
+                                            onChange={ (e) => setProfile({ ...profile, [e.target.name]: e.target.value }) }
+                                            required
+                                            multiline={ field.multiline }
+                                            rows={ field.rows }
+                                            maxrows={ field.maxrows }
+                                            fullWidth={ field.fullWidth }
+                                        />
+                                    )
                                 ))}
                                 { /* Submit button */ }
                                 <Button className="btn" onClick={ () => handleSubmit(profile) }>Submit</Button>

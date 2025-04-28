@@ -1,6 +1,7 @@
 // External Libraries
 import { useState } from "react";
 import axios from "axios";
+import posthog from "posthog-js";
 import PropTypes from "prop-types";
 
 // Internal Modules
@@ -17,6 +18,7 @@ const AuthProvider = ({ children }) => {
         try {
             const res = await axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/auth/auth_status/`);
             setUser(res.data.authenticated ? { "user_id": res.data.id, "role": res.data.role } : null);
+            posthog.identify(res.data.id, {role: res.data.role});
         } catch (err) {
             console.error(err);
             setUser(null);
