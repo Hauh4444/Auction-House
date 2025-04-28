@@ -53,8 +53,8 @@ class Transaction:
         self.shipping_cost = shipping_cost
         self.payment_method = payment_method
         self.payment_status = payment_status
-        self.created_at = created_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        self.updated_at = updated_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.created_at = created_at or datetime.now()
+        self.updated_at = updated_at or datetime.now()
 
     def to_dict(self):
         """Converts the transaction object to a dictionary representation."""

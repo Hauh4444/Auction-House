@@ -5,6 +5,7 @@ from app.entities import User
 def test_user_creation():
     user = User(
         user_id=1,
+        role="user",
         username="testuser",
         password_hash="hashedpassword",
         email="test@example.com",
@@ -12,6 +13,7 @@ def test_user_creation():
     )
     
     assert user.user_id == 1
+    assert user.role == "user"
     assert user.username == "testuser"
     assert user.password_hash == "hashedpassword"
     assert user.email == "test@example.com"
@@ -23,6 +25,7 @@ def test_user_creation():
 def test_user_with_optional_fields():
     user = User(
         user_id=2,
+        role="user",
         username="janedoe",
         password_hash="securehash",
         email="jane@example.com",
@@ -40,6 +43,7 @@ def test_user_with_optional_fields():
 def test_user_to_dict():
     user = User(
         user_id=3,
+        role="staff",
         username="alice123",
         password_hash="alicehash",
         email="alice@example.com",
@@ -49,6 +53,7 @@ def test_user_to_dict():
     user_dict = user.to_dict()
     
     assert user_dict["user_id"] == 3
+    assert user_dict["role"] == "staff"
     assert user_dict["username"] == "alice123"
     assert user_dict["password_hash"] == "alicehash"
     assert user_dict["email"] == "alice@example.com"
@@ -72,6 +77,7 @@ def test_user_invalid_username_length():
     with pytest.raises(ValueError):
         user = User(
             user_id=4,
+            role="user",
             username="ab",
             password_hash="shortname",
             email="short@example.com",

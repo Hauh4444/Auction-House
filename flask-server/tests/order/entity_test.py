@@ -23,8 +23,8 @@ def test_order_creation():
     assert isinstance(order.user_id, int)
     assert isinstance(order.order_date, datetime)
     assert isinstance(order.status, str)
-    assert isinstance(order.created_at, str)
-    assert isinstance(order.updated_at, str)
+    assert isinstance(order.created_at, datetime)
+    assert isinstance(order.updated_at, datetime)
 
 
 def test_order_with_optional_fields():

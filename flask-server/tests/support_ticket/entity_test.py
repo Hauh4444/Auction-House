@@ -14,12 +14,13 @@ def test_support_ticket_creation():
     assert ticket.subject == "Order not received"
     assert ticket.status == "Open"
     assert ticket.priority == "High"
-    assert isinstance(ticket.created_at, str)  # Now it should be a string
-    assert isinstance(ticket.updated_at, str)  # Now it should be a string
-    assert len(ticket.created_at) == 19  # Checking for the correct date format length (YYYY-MM-DD HH:MM:SS)
-    assert len(ticket.updated_at) == 19  # Checking for the correct date format length (YYYY-MM-DD HH:MM:SS)
+    assert isinstance(ticket.created_at, datetime)  
+    assert isinstance(ticket.updated_at, datetime)  
 
 def test_support_ticket_with_optional_fields():
+    created = datetime(2024, 3, 18, 10, 0, 0)
+    updated = datetime(2024, 3, 18, 12, 0, 0)
+
     ticket = SupportTicket(
         ticket_id=10,
         user_id=2,
@@ -27,22 +28,27 @@ def test_support_ticket_with_optional_fields():
         status="In Progress",
         priority="Medium",
         assigned_to=5,
-        created_at="2024-03-18 10:00:00",  # Keep as string
-        updated_at="2024-03-18 12:00:00"   # Keep as string
+        created_at=created,
+        updated_at=updated
     )
     
     assert ticket.ticket_id == 10
     assert ticket.assigned_to == 5
-    assert ticket.created_at == "2024-03-18 10:00:00"
-    assert ticket.updated_at == "2024-03-18 12:00:00"
+    assert ticket.created_at == created
+    assert ticket.updated_at == updated
 
 def test_support_ticket_to_dict():
+    created = datetime(2025, 1, 1, 9, 0, 0)
+    updated = datetime(2025, 1, 1, 10, 0, 0)
+
     ticket = SupportTicket(
         ticket_id=7,
         user_id=3,
         subject="Refund request",
         status="Closed",
-        priority="Low"
+        priority="Low",
+        created_at=created,
+        updated_at=updated
     )
     
     ticket_dict = ticket.to_dict()
@@ -52,8 +58,7 @@ def test_support_ticket_to_dict():
     assert ticket_dict["subject"] == "Refund request"
     assert ticket_dict["status"] == "Closed"
     assert ticket_dict["priority"] == "Low"
-    assert isinstance(ticket_dict["created_at"], str)  # Should be string
-    assert isinstance(ticket_dict["updated_at"], str)  # Should be string
-    assert len(ticket_dict["created_at"]) == 19  # Checking the correct date format length (YYYY-MM-DD HH:MM:SS)
-    assert len(ticket_dict["updated_at"]) == 19  # Checking the correct date format length (YYYY-MM-DD HH:MM:SS)
-
+    assert isinstance(ticket_dict["created_at"], str)
+    assert isinstance(ticket_dict["updated_at"], str)
+    assert ticket_dict["created_at"] == "2025-01-01 09:00:00"
+    assert ticket_dict["updated_at"] == "2025-01-01 10:00:00"
