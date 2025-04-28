@@ -52,6 +52,13 @@ def create_app():
     CORS(app, supports_credentials=True, resources={r"/api/*": {"origins": os.getenv("FRONTEND_URL")},
                                                     r"/static/*": {"origins": os.getenv("FRONTEND_URL")},
                                                     r"/socket.io/*": {"origins": os.getenv("FRONTEND_URL")}})
+    @app.errorhandler(Exception)
+    def handle_exception(e):
+        capture_event('backend_error', {
+            'error_message': str(e)
+        }, 'server')
+
+    return "Something went wrong.", 500
 
     # Register routes
     for _, module_name, _ in pkgutil.iter_modules(routes.__path__):
