@@ -49,16 +49,21 @@ def create_app():
     session.init_app(app)
     socketio.init_app(app, transports=["websocket", "polling"])
     scheduler.start()
-    CORS(app, supports_credentials=True, resources={r"/api/*": {"origins": os.getenv("FRONTEND_URL")},
-                                                    r"/static/*": {"origins": os.getenv("FRONTEND_URL")},
+    CORS(app, supports_credentials=True, resources={r"/api/*": {"origins": os.getenv("FRONTEND_URL")}, 
+                                                    r"/static/*": {"origins": os.getenv("FRONTEND_URL")}, 
                                                     r"/socket.io/*": {"origins": os.getenv("FRONTEND_URL")}})
+
+    # Error handling
     @app.errorhandler(Exception)
     def handle_exception(e):
+        """
+        Capture and log errors (500 server-side errors).
+        This can be extended to log errors in external services (e.g., PostHog, Sentry).
+        """
         capture_event('backend_error', {
             'error_message': str(e)
         }, 'server')
-
-    return "Something went wrong.", 500
+        return "Something went wrong.", 500
 
     # Register routes
     for _, module_name, _ in pkgutil.iter_modules(routes.__path__):
