@@ -22,27 +22,35 @@ class User(UserMixin):
         updated_at (datetime, optional): The timestamp when the user was last updated.
         last_login (datetime, optional): The last login timestamp.
         is_active (bool): Indicates if the user account is active.
+        db_session: Optional database session for tests
     """
     def __init__(
-            self,
-            role: str,
-            username: str,
-            password_hash: str,
-            email: str,
-            created_at: datetime | None = None,
-            updated_at: datetime | None = None,
-            last_login: datetime | None = None,
-            is_active: bool | None = None,
-            user_id: int | None = None,
+        self,
+        role: str,
+        username: str,
+        password_hash: str,
+        email: str,
+        db_session,
+        created_at: datetime | None = None,
+        updated_at: datetime | None = None,
+        last_login: datetime | None = None,
+        is_active: bool | None = None,
+        user_id: int | None = None,
     ):
+        self.db_session = db_session  # <-- SET THIS FIRST
+
         self.user_id = user_id
         self.role = role
-        self.username = username
         self.password_hash = password_hash
         self.email = email
-        self.created_at = created_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        self.updated_at = updated_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        self.last_login = last_login or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.created_at = created_at or datetime.now()
+        self.updated_at = updated_at or datetime.now()
+        self.last_login = last_login or datetime.now()
+
+        self._username = None  # temporary
+        self._is_active = None  # temporary
+
+        self.username = username  # use setter after db_session is ready
         self.is_active = bool(is_active)
 
     def to_dict(self):
@@ -75,7 +83,7 @@ class User(UserMixin):
     def username(self, new_username):
         if not new_username or len(new_username) < 3:
             raise ValueError("Username must be at least 3 characters long.")
-        db = get_db()
+        db = self.db_session or get_db()
         cursor = db.cursor(cursors.DictCursor) # type: ignore
         cursor.execute("UPDATE users SET username = %s WHERE user_id = %s", (new_username, self.user_id))
         db.commit()
@@ -84,7 +92,7 @@ class User(UserMixin):
     @is_active.setter
     def is_active(self, value):
         self._is_active = bool(value)
-        db = get_db()
+        db = self.db_session or get_db()
         cursor = db.cursor(cursors.DictCursor) # type: ignore
         cursor.execute("UPDATE users SET is_active = %s WHERE user_id = %s", (int(value), self.user_id))
         db.commit()

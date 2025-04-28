@@ -19,10 +19,12 @@ class UserMapper:
             dict: User details if found, otherwise None.
         """
         db = db_session or get_db()
-        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor = db.cursor(cursors.DictCursor)  # type: ignore
         cursor.execute("SELECT * FROM users WHERE user_id = %s", (user_id,))
         user = cursor.fetchone()
-        return User(**user).to_dict()
+        if not user:
+            return None  # handle not found
+        return User(db_session=db_session, **user).to_dict()  # <-- PASS db_session here
 
 
     @staticmethod
