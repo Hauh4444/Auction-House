@@ -46,7 +46,7 @@ def test_session_to_dict():
     assert session_dict["role"] == "moderator"
     assert session_dict["token"] == "modtoken123"
     assert session_dict["expires_at"] == str("2024-03-22 16:00:00")
-"""
+
 def test_session_missing_required_fields():
     with pytest.raises(TypeError):
         Session()
@@ -60,4 +60,3 @@ def test_session_invalid_types():
             token=456,
             expires_at="invalid_date"
         )
-"""
