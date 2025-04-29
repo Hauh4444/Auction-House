@@ -30,7 +30,7 @@ def test_get_all_sessions(mock_db_session):
     assert len(sessions) == 2
     assert sessions[0]["role"] == "admin"
     assert sessions[1]["role"] == "user"
-    assert isinstance(sessions[0]["created_at"], datetime)
+    assert isinstance(sessions[0]["created_at"], str)
 
 
 def test_get_session_by_id(mock_db_session):

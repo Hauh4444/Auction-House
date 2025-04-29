@@ -13,13 +13,24 @@ class TicketMessage:
         sent_at (datetime, optional): The timestamp when the message was sent.
     """
     def __init__(
-            self,
-            ticket_id: int,
-            message: str,
-            sender_id: int,
-            sent_at: datetime | None = None,
-            message_id: int | None = None
+        self,
+        ticket_id: int,
+        message: str,
+        sender_id: int,
+        sent_at: datetime | None = None,
+        message_id: int | None = None
     ):
+        if not isinstance(ticket_id, int):
+            raise TypeError("ticket_id must be an int")
+        if not isinstance(sender_id, int):
+            raise TypeError("sender_id must be an int")
+        if not isinstance(message, str):
+            raise TypeError("message must be a str")
+        if sent_at is not None and not isinstance(sent_at, datetime):
+            raise TypeError("sent_at must be a datetime or None")
+        if message_id is not None and not isinstance(message_id, int):
+            raise TypeError("message_id must be an int or None")
+
         self.message_id = message_id
         self.ticket_id = ticket_id
         self.sender_id = sender_id

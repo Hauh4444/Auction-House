@@ -1,48 +1,55 @@
 import pytest
 from datetime import datetime
-from app.entities import TicketMessage
+from app.entities import TicketMessage  # Adjust the import path if necessary
 
 def test_ticket_message_creation():
-    message = TicketMessage(
-        ticket_id=1,
-        message="Hello, I need help with my order."
+    ticket_message = TicketMessage(
+        ticket_id=123,
+        message="This is a test message.",
+        sender_id=456
     )
-    
-    assert message.ticket_id == 1
-    assert message.message == "Hello, I need help with my order."
-    assert isinstance(message.sent_at, datetime)
 
-def test_ticket_message_with_optional_fields():
-    message = TicketMessage(
-        message_id=10,
-        ticket_id=2,
-        user_sender_id=5,
-        staff_sender_id=None,
-        message="Can you provide an update?",
-        sent_at=datetime(2024, 3, 18, 10, 0, 0)
+    assert ticket_message.ticket_id == 123
+    assert ticket_message.sender_id == 456
+    assert ticket_message.message == "This is a test message."
+    assert ticket_message.message_id is None
+    # sent_at is assigned automatically if not provided
+    assert isinstance(ticket_message.sent_at, str)
+
+def test_ticket_message_creation_with_sent_at_and_message_id():
+    sent_time = datetime(2024, 4, 28, 15, 30, 0)
+    ticket_message = TicketMessage(
+        ticket_id=789,
+        message="Another test message.",
+        sender_id=321,
+        sent_at=sent_time,
+        message_id=101
     )
-    
-    assert message.message_id == 10
-    assert message.user_sender_id == 5
-    assert message.staff_sender_id is None
-    assert message.sent_at == datetime(2024, 3, 18, 10, 0, 0)
+
+    assert ticket_message.ticket_id == 789
+    assert ticket_message.sender_id == 321
+    assert ticket_message.message == "Another test message."
+    assert ticket_message.message_id == 101
+    assert ticket_message.sent_at == datetime(2024, 4, 28, 15, 30, 0)
 
 def test_ticket_message_to_dict():
-    message = TicketMessage(
-        message_id=7,
-        ticket_id=3,
-        user_sender_id=4,
-        message="This issue is urgent!"
+    sent_time = datetime(2025, 1, 1, 12, 0, 0)
+    ticket_message = TicketMessage(
+        ticket_id=555,
+        message="Dict test message.",
+        sender_id=777,
+        sent_at=sent_time,
+        message_id=888
     )
-    
-    message_dict = message.to_dict()
-    
-    assert message_dict["message_id"] == 7
-    assert message_dict["ticket_id"] == 3
-    assert message_dict["user_sender_id"] == 4
-    assert message_dict["staff_sender_id"] is None
-    assert message_dict["message"] == "This issue is urgent!"
-"""
+
+    ticket_message_dict = ticket_message.to_dict()
+
+    assert ticket_message_dict["ticket_id"] == 555
+    assert ticket_message_dict["sender_id"] == 777
+    assert ticket_message_dict["message"] == "Dict test message."
+    assert ticket_message_dict["message_id"] == 888
+    assert ticket_message_dict["sent_at"] == "2025-01-01 12:00:00"
+
 def test_ticket_message_missing_required_fields():
     with pytest.raises(TypeError):
         TicketMessage()
@@ -50,10 +57,7 @@ def test_ticket_message_missing_required_fields():
 def test_ticket_message_invalid_types():
     with pytest.raises(TypeError):
         TicketMessage(
-            message_id="10",
-            ticket_id="ticket",
-            user_sender_id="user",
-            staff_sender_id="staff",
-            message=123
+            ticket_id="invalid",  # Should be int
+            message=12345,        # Should be str
+            sender_id="invalid"   # Should be int
         )
-"""

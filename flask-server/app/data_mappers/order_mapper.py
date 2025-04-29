@@ -56,16 +56,23 @@ class OrderMapper:
         Returns:
             int: The ID of the newly created order.
         """
+        # Ensure created_at and updated_at are datetime objects
+        if isinstance(data.get("created_at"), str):
+            data["created_at"] = datetime.strptime(data["created_at"], "%Y-%m-%d %H:%M:%S")
+        if isinstance(data.get("updated_at"), str):
+            data["updated_at"] = datetime.strptime(data["updated_at"], "%Y-%m-%d %H:%M:%S")
+
         db = db_session or get_db()
-        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor = db.cursor(cursors.DictCursor)  # type: ignore
         statement = """
             INSERT INTO orders 
             (user_id, order_date, status, created_at, updated_at) 
             VALUES (%s, %s, %s, %s, %s)
         """
-        cursor.execute(statement, tuple(Order(**data).to_dict().values())[1:]) # Exclude order_id (auto-incremented)
+        cursor.execute(statement, tuple(Order(**data).to_dict().values())[1:])  # Exclude order_id (auto-incremented)
         db.commit()
         return cursor.lastrowid
+
 
 
     @staticmethod

@@ -15,7 +15,7 @@ def mock_db_session():
 def test_get_user(mock_db_session):
     mock_cursor = mock_db_session.cursor.return_value
     mock_cursor.fetchone.return_value = {
-        "user_id": 1, "username": "John Doe", "email": "johndoe@example.com",
+        "user_id": 1, "role": "staff", "username": "John Doe", "email": "johndoe@example.com",
         "password_hash": "hashedpassword", "is_active": True, "created_at": datetime(2024, 1, 1), "updated_at": datetime(2025, 1, 3)
     }
 

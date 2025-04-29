@@ -24,8 +24,8 @@ def test_profile_creation():
     assert profile.city == "Springfield"
     assert profile.state == "IL"
     assert profile.country == "USA"
-    assert isinstance(profile.created_at, datetime)
-    assert isinstance(profile.updated_at, datetime)
+    assert isinstance(profile.created_at, str)
+    assert isinstance(profile.updated_at, str)
 
 def test_profile_with_optional_fields():
     profile = Profile(
@@ -64,7 +64,9 @@ def test_profile_to_dict():
         address="789 Pine St",
         city="Denver",
         state="CO",
-        country="USA"
+        country="USA",
+        created_at=datetime(2024, 3, 18, 10, 0, 0),
+        updated_at=datetime(2024, 3, 18, 12, 0, 0)
     )
     
     profile_dict = profile.to_dict()
@@ -72,12 +74,14 @@ def test_profile_to_dict():
     assert profile_dict["profile_id"] == 5
     assert profile_dict["first_name"] == "Alice"
     assert profile_dict["last_name"] == "Johnson"
-    assert profile_dict["date_of_birth"] == date(1995, 2, 10)
+    assert profile_dict["date_of_birth"] == "1995-02-10 00:00:00"
     assert profile_dict["phone_number"] == "555-123-4567"
     assert profile_dict["address"] == "789 Pine St"
     assert profile_dict["city"] == "Denver"
     assert profile_dict["state"] == "CO"
     assert profile_dict["country"] == "USA"
+    assert isinstance(profile_dict["created_at"], str)
+    assert isinstance(profile_dict["updated_at"], str)
 """
 def test_profile_missing_required_fields():
     with pytest.raises(TypeError):

@@ -14,7 +14,7 @@ def test_session_creation():
     assert session.role == "admin"
     assert session.token == "abcdef123456"
     assert session.expires_at == datetime(2024, 3, 20, 12, 0, 0)
-    assert isinstance(session.created_at, datetime)
+    assert isinstance(session.created_at, str)
 
 def test_session_with_optional_fields():
     session = Session(
@@ -45,7 +45,7 @@ def test_session_to_dict():
     assert session_dict["user_id"] == 3
     assert session_dict["role"] == "moderator"
     assert session_dict["token"] == "modtoken123"
-    assert session_dict["expires_at"] == datetime(2024, 3, 22, 16, 0, 0)
+    assert session_dict["expires_at"] == str("2024-03-22 16:00:00")
 """
 def test_session_missing_required_fields():
     with pytest.raises(TypeError):

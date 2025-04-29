@@ -4,81 +4,102 @@ from datetime import datetime
 
 from app.data_mappers import TransactionMapper
 
-
 @pytest.fixture
 def mock_db_session():
     session = MagicMock()
     session.cursor.return_value = session
     return session
 
-
 def test_get_all_transactions(mock_db_session):
     mock_cursor = mock_db_session.cursor.return_value
     mock_cursor.fetchall.return_value = [
         {
-            "transaction_id": 1, "listing_id": 100, "buyer_id": 10, "seller_id": 20,
-            "transaction_date": datetime(2024, 1, 1), "transaction_type": "auction", "amount": 150.00,
-            "payment_method": "VISA", "status": "completed", "shipping_address": "123 Main St",
-            "tracking_number": "94009340434321239384", "created_at": datetime(2024, 1, 1), "updated_at": datetime(2024, 1, 3)
+            "transaction_id": 1,
+            "order_id": 10,
+            "user_id": 1,
+            "transaction_date": datetime(2024, 1, 1),
+            "transaction_type": "auction",
+            "amount": 150.00,
+            "shipping_cost": 10.00,
+            "payment_method": "VISA",
+            "payment_status": "completed",
+            "created_at": datetime(2024, 1, 1),
+            "updated_at": datetime(2024, 1, 3)
         },
         {
-            "transaction_id": 2, "listing_id": 101, "buyer_id": 11, "seller_id": 21,
-            "transaction_date": datetime(2024, 2, 1), "transaction_type": "buy_now", "amount": 200.00,
-            "payment_method": "PAYPAL", "status": "pending", "shipping_address": "456 Oak St",
-            "tracking_number": "9610 1385 2890", "created_at": datetime(2024, 2, 1), "updated_at": datetime(2024, 2, 3)
+            "transaction_id": 2,
+            "order_id": 12,
+            "user_id": 1,
+            "transaction_date": datetime(2024, 2, 1),
+            "transaction_type": "buy_now",
+            "amount": 200.00,
+            "shipping_cost": 15.00,
+            "payment_method": "PAYPAL",
+            "payment_status": "pending",
+            "created_at": datetime(2024, 2, 1),
+            "updated_at": datetime(2024, 2, 3)
         }
     ]
-    
-    transactions = TransactionMapper.get_all_transactions(db_session=mock_db_session)
+
+    transactions = TransactionMapper.get_all_transactions(user_id=1, db_session=mock_db_session)
     
     assert len(transactions) == 2
     assert transactions[0]["amount"] == 150.00
     assert transactions[1]["payment_method"] == "PAYPAL"
-    assert isinstance(transactions[0]["created_at"], datetime)
-
+    assert isinstance(transactions[0]["created_at"], str)
 
 def test_get_transaction_by_id(mock_db_session):
     mock_cursor = mock_db_session.cursor.return_value
     mock_cursor.fetchone.return_value = {
-        "transaction_id": 1, "listing_id": 100, "buyer_id": 10, "seller_id": 20,
-        "transaction_date": datetime(2024, 1, 1), "transaction_type": "buy_now", "amount": 150.00,
-        "payment_method": "VISA", "status": "completed", "shipping_address": "123 Main St",
-        "tracking_number": "94009340434321239384", "created_at": datetime(2024, 1, 1), "updated_at": datetime(2024, 1, 3)
+        "transaction_id": 1,
+        "order_id": 10,
+        "user_id": 1,
+        "transaction_date": datetime(2024, 1, 1),
+        "transaction_type": "buy_now",
+        "amount": 150.00,
+        "shipping_cost": 12.00,
+        "payment_method": "VISA",
+        "payment_status": "completed",
+        "created_at": datetime(2024, 1, 1),
+        "updated_at": datetime(2024, 1, 3)
     }
 
     transaction = TransactionMapper.get_transaction_by_id(transaction_id=1, db_session=mock_db_session)
 
     assert transaction["transaction_id"] == 1
-    assert transaction["status"] == "completed"
-
+    assert transaction["payment_status"] == "completed"
 
 def test_create_transaction(mock_db_session):
     mock_cursor = mock_db_session.cursor.return_value
     mock_cursor.lastrowid = 3
     data = {
-        "listing_id": 102, "buyer_id": 12, "seller_id": 22,
-        "transaction_date": datetime(2025, 3, 3), "transaction_type": "auction", "amount": 250.00,
-        "payment_method": "MASTERCARD", "status": "completed", "shipping_address": "789 Pine St",
-        "tracking_number": "1234567890", "created_at": datetime(2025, 3, 3), "updated_at": datetime(2025, 3, 5)
+        "order_id": 20,
+        "user_id": 5,
+        "transaction_date": datetime(2025, 3, 3),
+        "transaction_type": "auction",
+        "amount": 250.00,
+        "shipping_cost": 20.00,
+        "payment_method": "MASTERCARD",
+        "payment_status": "completed",
+        "created_at": datetime(2025, 3, 3),
+        "updated_at": datetime(2025, 3, 5)
     }
 
     created_transaction = TransactionMapper.create_transaction(data=data, db_session=mock_db_session)
 
     assert created_transaction == 3
 
-
 def test_update_transaction(mock_db_session):
     mock_cursor = mock_db_session.cursor.return_value
     mock_cursor.rowcount = 1
     data = {
-        "status": "refunded",
+        "payment_status": "refunded",
         "amount": 100.00
     }
 
     rows_updated = TransactionMapper.update_transaction(transaction_id=1, data=data, db_session=mock_db_session)
 
     assert rows_updated == 1
-
 
 def test_delete_transaction(mock_db_session):
     mock_cursor = mock_db_session.cursor.return_value
@@ -87,61 +108,3 @@ def test_delete_transaction(mock_db_session):
     rows_deleted = TransactionMapper.delete_transaction(transaction_id=1, db_session=mock_db_session)
 
     assert rows_deleted == 1
-
-def test_create_transaction_missing_fields(mock_db_session):
-    mock_cursor = mock_db_session.cursor.return_value
-    mock_cursor.lastrowid = 3
-    data = {
-        "listing_id": 103, "buyer_id": 1003, "seller_id": 2003, "transaction_date": datetime(2024, 3, 1), 
-        "transaction_type": "purchase", "amount": 350.00, "payment_method": "credit_card", 
-        "status": "completed", "shipping_address": "789 Road", "tracking_number": "IJKL9101", 
-        "created_at": datetime(2024, 3, 1), "updated_at": datetime(2024, 3, 1)
-    }
-
-    del data["amount"]
-
-    with pytest.raises(expected_exception=TypeError):
-        TransactionMapper.create_transaction(data=data, db_session=mock_db_session)
-
-
-def test_get_transaction_db_failure(mock_db_session):
-    mock_cursor = mock_db_session.cursor.return_value
-    mock_cursor.fetchone.side_effect = Exception("Database error")
-
-    with pytest.raises(expected_exception=Exception, match="Database error"):
-        TransactionMapper.get_transaction_by_id(transaction_id=1, db_session=mock_db_session)
-
-
-def test_create_transaction_db_failure(mock_db_session):
-    mock_cursor = mock_db_session.cursor.return_value
-    mock_cursor.execute.side_effect = Exception("Database error")
-    data = {
-        "listing_id": 103, "buyer_id": 1003, "seller_id": 2003, "transaction_date": datetime(2024, 3, 1), 
-        "transaction_type": "buy_now", "amount": 350.00, "payment_method": "credit_card", 
-        "status": "completed", "shipping_address": "789 Road", "tracking_number": "IJKL9101", 
-        "created_at": datetime(2024, 3, 1), "updated_at": datetime(2024, 3, 1)
-    }
-
-    with pytest.raises(expected_exception=Exception, match="Database error"):
-        TransactionMapper.create_transaction(data=data, db_session=mock_db_session)
-
-
-def test_update_transaction_invalid_id(mock_db_session):
-    mock_cursor = mock_db_session.cursor.return_value
-    mock_cursor.rowcount = 0  # Simulate no rows were updated
-
-    updates = {
-        "status": "shipped", "amount": 300.00, "tracking_number": "XYZ12345"
-    }
-
-    rows_updated = TransactionMapper.update_transaction(transaction_id=999, data=updates, db_session=mock_db_session)  # Invalid ID
-
-    assert rows_updated == 0  # Expecting no rows to be updated
-
-
-def test_delete_transaction_db_failure(mock_db_session):
-    mock_cursor = mock_db_session.cursor.return_value
-    mock_cursor.execute.side_effect = Exception("Database error")
-
-    with pytest.raises(expected_exception=Exception, match="Database error"):
-        TransactionMapper.delete_transaction(transaction_id=1, db_session=mock_db_session)

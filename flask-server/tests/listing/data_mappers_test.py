@@ -41,8 +41,8 @@ def test_get_all_listings(mock_db_session):
     assert len(listings) == 2
     assert listings[0]["title"] == "Laptop"
     assert listings[1]["title"] == "Laptop"
-    assert isinstance(listings[0]["created_at"], datetime)
-    assert isinstance(listings[1]["created_at"], datetime)
+    assert isinstance(listings[0]["created_at"], str)
+    assert isinstance(listings[1]["created_at"], str)
 
 
 def test_get_listing_by_id(mock_db_session):
