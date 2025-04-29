@@ -85,7 +85,7 @@ def test_delete_review(mock_db_session):
 
     assert rows_deleted == 1
 
-"""
+
 def test_create_review_missing_fields(mock_db_session):
     mock_cursor = mock_db_session.cursor.return_value
     mock_cursor.lastrowid = 3
@@ -99,7 +99,7 @@ def test_create_review_missing_fields(mock_db_session):
 
     with pytest.raises(expected_exception=TypeError):
         ReviewMapper.create_review(data=data, db_session=mock_db_session)
-"""
+
 
 def test_get_review_db_failure(mock_db_session):
     mock_cursor = mock_db_session.cursor.return_value

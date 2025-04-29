@@ -82,7 +82,7 @@ def test_profile_to_dict():
     assert profile_dict["country"] == "USA"
     assert isinstance(profile_dict["created_at"], str)
     assert isinstance(profile_dict["updated_at"], str)
-"""
+
 def test_profile_missing_required_fields():
     with pytest.raises(TypeError):
         Profile()
@@ -101,4 +101,3 @@ def test_profile_invalid_types():
             state=161718,
             country=[]
         )
-"""

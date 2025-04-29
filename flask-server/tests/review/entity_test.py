@@ -55,7 +55,7 @@ def test_review_to_dict():
     assert review_dict["title"] == "Excellent!"
     assert review_dict["description"] == "Highly recommend this product."
     assert review_dict["stars"] == 5.0
-"""
+
 def test_review_missing_required_fields():
     with pytest.raises(TypeError):
         Review()
@@ -71,4 +71,3 @@ def test_review_invalid_types():
             description=789,
             stars="five"
         )
-"""
