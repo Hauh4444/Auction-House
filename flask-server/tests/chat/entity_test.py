@@ -22,7 +22,7 @@ def test_chat_creation():
     assert chat.user2_id == 2
     assert isinstance(chat.user1_id, int)
     assert isinstance(chat.user2_id, int)
-    assert isinstance(chat.created_at, str)
+    assert isinstance(chat.created_at, datetime)
 
 
 def test_chat_with_optional_fields():
@@ -52,11 +52,11 @@ def test_chat_to_dict():
     assert chat_dict["chat_id"] == 1
     assert chat_dict["user1_id"] == 1
     assert chat_dict["user2_id"] == 2
-    assert chat_dict["created_at"] == "2024-01-01 10:00:00"
+    assert chat_dict["created_at"] == datetime(2024, 1, 1, 10, 0, 0)
     assert isinstance(chat_dict["chat_id"], int)
     assert isinstance(chat_dict["user1_id"], int)
     assert isinstance(chat_dict["user2_id"], int)
-    assert isinstance(chat_dict["created_at"], str)
+    assert isinstance(chat_dict["created_at"], datetime)
 
 
 def test_chat_missing_required_fields():

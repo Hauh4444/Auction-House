@@ -35,8 +35,8 @@ def test_get_messages_by_chat_id(mock_db_session):
     assert len(messages) == 2
     assert messages[0]["message"] == "Hello, world!"
     assert messages[1]["message"] == "Hi there!"
-    assert isinstance(messages[0]["created_at"], str)  # Adjusted to 'created_at'
-    assert isinstance(messages[1]["created_at"], str)  # Adjusted to 'created_at'
+    assert isinstance(messages[0]["created_at"], datetime)  # Adjusted to 'created_at'
+    assert isinstance(messages[1]["created_at"], datetime)  # Adjusted to 'created_at'
 
 
 def test_get_message_by_id(mock_db_session):
@@ -53,7 +53,7 @@ def test_get_message_by_id(mock_db_session):
 
     assert message["message_id"] == 1
     assert message["message"] == "Hello, world!"
-    assert isinstance(message["created_at"], str)  # Adjusted to 'created_at'
+    assert isinstance(message["created_at"], datetime)  # Adjusted to 'created_at'
 
 
 def test_create_message(mock_db_session):

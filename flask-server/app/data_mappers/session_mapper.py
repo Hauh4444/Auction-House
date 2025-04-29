@@ -2,6 +2,7 @@ from pymysql import cursors
 
 from ..database import get_db
 from ..entities import Session
+from datetime import datetime
 
 
 class SessionMapper:

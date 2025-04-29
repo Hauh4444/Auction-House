@@ -21,8 +21,8 @@ def test_category_creation():
     assert category.description == "Various books"
     assert isinstance(category.name, str)
     assert isinstance(category.description, str)
-    assert isinstance(category.created_at, str)
-    assert isinstance(category.updated_at, str)
+    assert isinstance(category.created_at, datetime)
+    assert isinstance(category.updated_at, datetime)
 
 
 def test_category_with_optional_fields():
@@ -62,14 +62,14 @@ def test_category_to_dict():
     assert category_dict["description"] == "Various books"
     assert category_dict["image_encoded"] == "image_data"
     # Updated: Expect datetime fields as strings
-    assert category_dict["created_at"] == "2024-01-01 10:00:00"
-    assert category_dict["updated_at"] == "2024-01-02 12:00:00"
+    assert category_dict["created_at"] == datetime(2024, 1, 1, 10, 0, 0)
+    assert category_dict["updated_at"] == datetime(2024, 1, 2, 12, 0, 0)
     assert isinstance(category_dict["category_id"], int)
     assert isinstance(category_dict["name"], str)
     assert isinstance(category_dict["description"], str)
     assert isinstance(category_dict["image_encoded"], str)
-    assert isinstance(category_dict["created_at"], str)
-    assert isinstance(category_dict["updated_at"], str)
+    assert isinstance(category_dict["created_at"], datetime)
+    assert isinstance(category_dict["updated_at"], datetime)
 
 
 def test_category_missing_required_fields():

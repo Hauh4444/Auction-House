@@ -58,7 +58,7 @@ def test_support_ticket_to_dict():
     assert ticket_dict["subject"] == "Refund request"
     assert ticket_dict["status"] == "Closed"
     assert ticket_dict["priority"] == "Low"
-    assert isinstance(ticket_dict["created_at"], str)
-    assert isinstance(ticket_dict["updated_at"], str)
-    assert ticket_dict["created_at"] == "2025-01-01 09:00:00"
-    assert ticket_dict["updated_at"] == "2025-01-01 10:00:00"
+    assert isinstance(ticket_dict["created_at"], datetime)
+    assert isinstance(ticket_dict["updated_at"], datetime)
+    assert ticket_dict["created_at"] == datetime(2025, 1, 1, 9, 0, 0)
+    assert ticket_dict["updated_at"] == datetime(2025, 1, 1, 10, 0, 0)

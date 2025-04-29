@@ -22,7 +22,9 @@ class UserMapper:
         cursor = db.cursor(cursors.DictCursor)  # type: ignore
         cursor.execute("SELECT * FROM users WHERE user_id = %s", (user_id,))
         user = cursor.fetchone()
-        return User(db_session=db_session, **user).to_dict() if db_session else User(**user).to_dict() if user else None
+        if not user:
+            return None
+        return User(db_session=db_session, **user).to_dict()
 
 
     @staticmethod

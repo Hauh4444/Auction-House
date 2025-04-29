@@ -25,10 +25,7 @@ def test_chat_message_creation():
     assert isinstance(chat_message.sender_id, int)
     assert isinstance(chat_message.chat_id, int)
     assert isinstance(chat_message.message, str)
-
-    # Check if sent_at is a string, since it defaults to the current timestamp as a string
-    assert isinstance(chat_message.sent_at, str)
-    assert len(chat_message.sent_at) == 19  # Format should be "YYYY-MM-DD HH:MM:SS"
+    assert isinstance(chat_message.sent_at, datetime)
 
 
 
@@ -62,7 +59,7 @@ def test_chat_message_to_dict():
     assert chat_message_dict["sender_id"] == 1
     assert chat_message_dict["chat_id"] == 1
     assert chat_message_dict["message"] == "hello"
-    assert chat_message_dict["created_at"] == "2024-01-01 10:00:00"  # Adjusted to 'created_at'
+    assert chat_message_dict["created_at"] == datetime(2024, 1, 1, 10, 0, 0)  # Adjusted to 'created_at'
 
 
 

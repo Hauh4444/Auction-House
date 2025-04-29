@@ -39,8 +39,8 @@ def test_get_all_categories(mock_db_session):
     assert categories[0]["name"] == "Electronics"
     assert categories[1]["name"] == "Books"
     # Updated: Just check it's a string
-    assert isinstance(categories[0]["created_at"], str)
-    assert isinstance(categories[1]["created_at"], str)
+    assert isinstance(categories[0]["created_at"], datetime)
+    assert isinstance(categories[1]["created_at"], datetime)
 
 
 def test_get_category_by_id(mock_db_session):
@@ -59,8 +59,8 @@ def test_get_category_by_id(mock_db_session):
     assert category["category_id"] == 1
     assert category["name"] == "Electronics"
     # Updated: Just check it's a string
-    assert isinstance(category["created_at"], str)
-    assert isinstance(category["updated_at"], str)
+    assert isinstance(category["created_at"], datetime)
+    assert isinstance(category["updated_at"], datetime)
 
 
 def test_create_category(mock_db_session):

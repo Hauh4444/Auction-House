@@ -45,8 +45,8 @@ def test_listing_creation():
     assert isinstance(listing.buy_now_price, (int, float))
     assert isinstance(listing.status, str)
     assert isinstance(listing.image_encoded, str)
-    assert isinstance(listing.created_at, str)
-    assert isinstance(listing.updated_at, str)
+    assert isinstance(listing.created_at, datetime)
+    assert isinstance(listing.updated_at, datetime)
 
 
 def test_listing_with_optional_fields():
@@ -139,8 +139,8 @@ def test_listing_to_dict():
     assert listing_dict["purchases"] == 2
     assert listing_dict["average_review"] == 4.5
     assert listing_dict["total_reviews"] == 50
-    assert listing_dict["created_at"] == '2024-01-01 10:00:00'  # This should be a string now
-    assert listing_dict["updated_at"] == '2024-01-01 12:00:00'  # This should be a string now
+    assert listing_dict["created_at"] == datetime(2024, 1, 1, 10, 0, 0) 
+    assert listing_dict["updated_at"] == datetime(2024, 1, 1, 12, 0, 0)
     assert isinstance(listing_dict["listing_id"], int)
     assert isinstance(listing_dict["starting_price"], (int, float))
     assert isinstance(listing_dict["reserve_price"], (int, float))
@@ -151,8 +151,8 @@ def test_listing_to_dict():
     assert isinstance(listing_dict["purchases"], int)
     assert isinstance(listing_dict["average_review"], (int, float))
     assert isinstance(listing_dict["total_reviews"], int)
-    assert isinstance(listing_dict["created_at"], str)
-    assert isinstance(listing_dict["updated_at"], str)
+    assert isinstance(listing_dict["created_at"], datetime)
+    assert isinstance(listing_dict["updated_at"], datetime)
 
 
 # noinspection PyArgumentList
