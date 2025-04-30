@@ -8,21 +8,14 @@ class Delivery:
     Represents a delivery record in the system.
 
     Attributes:
-        delivery_id (int, optional): The unique identifier for the delivery.
-        order_item_id (int): The order item associated with this delivery.
+        delivery_id (int): The unique identifier for the delivery.
         user_id (int): The user who placed the order.
-        address (str): The delivery address.
-        city (str): The city of delivery.
-        state (str): The state of delivery.
-        country (str): The country of delivery.
-        delivery_status (str): The current status of the delivery.
-        tracking_number (str, optional): The tracking number for the delivery.
-        courier (str, optional): The courier handling the delivery.
-        estimated_delivery_date (date, optional): The estimated delivery date.
-        delivered_at (datetime, optional): The actual delivery timestamp.
-        created_at (datetime, optional): The creation timestamp.
-        updated_at (datetime, optional): The last updated timestamp.
+        tracking_code (str): The tracking code for the delivery.
     """
+    delivery_id: int
+    user_id: int
+    tracking_code: str
+
     def __init__(
             self,
             order_item_id: int,

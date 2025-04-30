@@ -36,15 +36,10 @@ class DeliveryMapper:
         db = db_session or get_db()
         cursor = db.cursor()
         query = """
-            INSERT INTO deliveries (user_id, address, status, tracking_code, created_at, updated_at)
-            VALUES (%s, %s, %s, %s, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+            INSERT INTO deliveries (user_id, tracking_code, created_at, updated_at)
+            VALUES (%s, %s, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
         """
-        cursor.execute(query, (
-            data["user_id"],
-            data["address"],
-            "created",
-            data["tracking_code"]
-        ))
+        cursor.execute(query, (data["user_id"], data["tracking_code"]))
         db.commit()
         delivery_id = cursor.lastrowid
         cursor.close()
@@ -93,3 +88,15 @@ class DeliveryMapper:
         aftership = AfterShip(api_key=os.getenv("AFTERSHIP_API_KEY"))
         tracking = aftership.tracking.get(tracking_code)
         return tracking
+
+    @staticmethod
+    def get_delivery_reference(delivery_id, db_session=None):
+        """
+        Retrieve the reference data for a delivery by its ID.
+        """
+        db = db_session or get_db()
+        cursor = db.cursor(cursors.DictCursor)
+        cursor.execute("SELECT * FROM deliveries WHERE delivery_id = %s", (delivery_id,))
+        result = cursor.fetchone()
+        cursor.close()
+        return result
