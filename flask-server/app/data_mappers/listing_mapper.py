@@ -126,7 +126,7 @@ class ListingMapper:
         values = []
         for key, value in data.items():
             if key not in ["listing_id", "created_at", "updated_at"]:
-                increment_value = 1 if key in ["bids", "current_price"] else None
+                increment_value = 1 if key == "bids" else None
                 set_clause.append(f"{key} = {key} + %s" if increment_value else f"{key} = %s")
                 values.append(increment_value if increment_value else value)
         values.append(datetime.now())

@@ -3,6 +3,7 @@ from flask_login import current_user
 
 from ..data_mappers import ListingMapper
 from ..utils.logger import setup_logger
+from ..utils.auction_tasks import end_auction_task
 
 logger = setup_logger(name="listing_logger", log_file="logs/listing.log")
 

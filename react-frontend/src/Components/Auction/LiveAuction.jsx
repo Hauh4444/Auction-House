@@ -32,7 +32,7 @@ const LiveAuction = ({ listing }) => {
         axios.post(`${ import.meta.env.VITE_BACKEND_API_URL }/bids/`,
             {
                 listing_id: listing.listing_id,
-                amount: listing.current_price,
+                amount: newBid,
             },
             {
                 headers: { "Content-Type": "application/json" },

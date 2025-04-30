@@ -74,7 +74,7 @@ class BidService:
             logger.error(msg=f"Failed creating bid with data: {', '.join(f'{k}={v!r}' for k, v in data.items())}")
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
 
-        listing_args = {"bids": 1, "current_price": 1}
+        listing_args = {"bids": 1, "current_price": data.get("amount")}
         updated_rows = ListingMapper.update_listing(listing_id=data.get("listing_id"), data=listing_args, db_session=db_session)
         if not updated_rows:
             response_data = {"error": "Error updating listing"}
