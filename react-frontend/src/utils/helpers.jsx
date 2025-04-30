@@ -54,7 +54,7 @@ const navigateToListing = (id, navigate) => {
 const addToList = (list_id, listing_id) => {
     axios.post(`${ import.meta.env.VITE_BACKEND_API_URL }/user/lists/${ list_id }/`,
         {
-            listing_id: listing_id,
+            listing_id: parseInt(listing_id),
         },
         {
             headers: { "Content-Type": "application/json" },

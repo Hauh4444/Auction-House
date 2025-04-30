@@ -28,9 +28,9 @@ class Chat:
 
         # Type checks for optional attributes
         if created_at is not None and not isinstance(created_at, (datetime, str)):
-            raise TypeError(f"created_at must be a datetime,, or None, got {type(created_at).__name__}")
+            raise TypeError(f"created_at must be a datetime, str, or None, got {type(created_at).__name__}")
         if updated_at is not None and not isinstance(updated_at, (datetime, str)):
-            raise TypeError(f"updated_at must be a datetime,, or None, got {type(updated_at).__name__}")
+            raise TypeError(f"updated_at must be a datetime, str, or None, got {type(updated_at).__name__}")
         if chat_id is not None and not isinstance(chat_id, int):
             raise TypeError(f"chat_id must be an int or None, got {type(chat_id).__name__}")
 

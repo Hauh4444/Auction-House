@@ -20,25 +20,22 @@ class User(UserMixin):
         updated_at (datetime, optional): The timestamp when the user was last updated.
         last_login (datetime, optional): The last login timestamp.
         is_active (bool): Indicates if the user account is active.
-        db_session: Optional database session for tests
     """
     def __init__(
-        self,
-        role: str,
-        username: str,
-        password_hash: str,
-        email: str,
-        db_session=None,
-        created_at: datetime | None = None,
-        updated_at: datetime | None = None,
-        last_login: datetime | None = None,
-        is_active: bool | None = None,
-        user_id: int | None = None,
+            self,
+            role: str,
+            username: str,
+            password_hash: str,
+            email: str,
+            created_at: datetime | None = None,
+            updated_at: datetime | None = None,
+            last_login: datetime | None = None,
+            is_active: bool | None = None,
+            user_id: int | None = None,
     ):
-        self.db_session = db_session
         self.user_id = user_id
-        self.username = username
         self.role = role
+        self.username = username
         self.password_hash = password_hash
         self.email = email
         self.created_at = created_at or datetime.now()
@@ -79,13 +76,11 @@ class User(UserMixin):
         if not value or len(value) < 3:
             raise ValueError(f"username must be of length 3 got '{value}' instead")
 
+        db = get_db()
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor.execute("UPDATE users SET username = %s WHERE user_id = %s", (value, self.user_id))
+        db.commit()
         self._username = value
-
-        if self.user_id is not None:
-            db = self.db_session or get_db()
-            cursor = db.cursor(cursors.DictCursor)  # type: ignore
-            cursor.execute("UPDATE users SET username = %s WHERE user_id = %s", (value, self.user_id))
-            db.commit()
 
     @is_active.setter
     def is_active(self, value):
@@ -93,9 +88,7 @@ class User(UserMixin):
             raise TypeError(f"is_active must be a int or bool, got '{type(value).__name__}'")
 
         self._is_active = bool(value)
-
-        if self.user_id is not None:
-            db = self.db_session or get_db()
-            cursor = db.cursor(cursors.DictCursor) # type: ignore
-            cursor.execute("UPDATE users SET is_active = %s WHERE user_id = %s", (int(value), self.user_id))
-            db.commit()
+        db = get_db()
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor.execute("UPDATE users SET is_active = %s WHERE user_id = %s", (int(value), self.user_id))
+        db.commit()

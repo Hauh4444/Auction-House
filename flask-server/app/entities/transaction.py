@@ -22,8 +22,8 @@ class Transaction:
             order_id: int,
             user_id: int,
             transaction_type: str, # "auction", "buy_now"
-            amount: float,
-            shipping_cost: float,
+            amount: float | int,
+            shipping_cost: float | int,
             payment_method: str,
             payment_status: str, # "pending", "completed", "failed", "refunded"
             transaction_date: datetime | None = None,
@@ -34,7 +34,31 @@ class Transaction:
         self.VALID_TRANSACTION_TYPES = {"auction", "buy_now"}
         self.VALID_PAYMENT_STATUSES = {"pending", "completed", "failed", "refunded"}
 
-        # Type checks
+        # Type checks for required attributes
+        if not isinstance(order_id, int):
+            raise TypeError(f"order_id must be a int, got {type(order_id).__name__}")
+        if not isinstance(user_id, int):
+            raise TypeError(f"user_id must be a int, got {type(user_id).__name__}")
+        if not isinstance(transaction_type, str):
+            raise TypeError(f"transaction_type must be a str, got {type(transaction_type).__name__}")
+        if not isinstance(amount, (float, int)):
+            raise TypeError(f"amount must be a number, got {type(amount).__name__}")
+        if not isinstance(shipping_cost, (float, int)):
+            raise TypeError(f"shipping_cost must be a number, got {type(shipping_cost).__name__}")
+        if not isinstance(payment_method, str):
+            raise TypeError(f"payment_method must be a str, got {type(payment_method).__name__}")
+        if not isinstance(payment_status, str):
+            raise TypeError(f"payment_status must be a str, got {type(payment_status).__name__}")
+
+        # Type checks for optional attributes
+        if transaction_date is not None and not isinstance(transaction_date, datetime):
+            raise TypeError(f"transaction_date must be a datetime or None, got {type(transaction_date).__name__}")
+        if created_at is not None and not isinstance(created_at, (datetime, str)):
+            raise TypeError(f"created_at must be a datetime or None, got {type(created_at).__name__}")
+        if updated_at is not None and not isinstance(updated_at, (datetime, str)):
+            raise TypeError(f"updated_at must be a datetime or None, got {type(updated_at).__name__}")
+        if transaction_id is not None and not isinstance(transaction_id, int):
+            raise TypeError(f"transaction_id must be a int or None, got {type(transaction_id).__name__}")
 
         # Value checks
         if transaction_type not in self.VALID_TRANSACTION_TYPES:

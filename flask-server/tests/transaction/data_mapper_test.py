@@ -10,6 +10,7 @@ def mock_db_session():
     session.cursor.return_value = session
     return session
 
+
 def test_get_all_transactions(mock_db_session):
     mock_cursor = mock_db_session.cursor.return_value
     mock_cursor.fetchall.return_value = [
@@ -48,6 +49,7 @@ def test_get_all_transactions(mock_db_session):
     assert transactions[1]["payment_method"] == "PAYPAL"
     assert isinstance(transactions[0]["created_at"], datetime)
 
+
 def test_get_transaction_by_id(mock_db_session):
     mock_cursor = mock_db_session.cursor.return_value
     mock_cursor.fetchone.return_value = {
@@ -69,6 +71,7 @@ def test_get_transaction_by_id(mock_db_session):
     assert transaction["transaction_id"] == 1
     assert transaction["payment_status"] == "completed"
 
+
 def test_create_transaction(mock_db_session):
     mock_cursor = mock_db_session.cursor.return_value
     mock_cursor.lastrowid = 3
@@ -89,6 +92,7 @@ def test_create_transaction(mock_db_session):
 
     assert created_transaction == 3
 
+
 def test_update_transaction(mock_db_session):
     mock_cursor = mock_db_session.cursor.return_value
     mock_cursor.rowcount = 1
@@ -100,6 +104,7 @@ def test_update_transaction(mock_db_session):
     rows_updated = TransactionMapper.update_transaction(transaction_id=1, data=data, db_session=mock_db_session)
 
     assert rows_updated == 1
+
 
 def test_delete_transaction(mock_db_session):
     mock_cursor = mock_db_session.cursor.return_value

@@ -20,13 +20,16 @@ class TicketMessage:
         sent_at: datetime | None = None,
         message_id: int | None = None
     ):
+        # Type checks for required attributes
         if not isinstance(ticket_id, int):
             raise TypeError("ticket_id must be an int")
         if not isinstance(sender_id, int):
             raise TypeError("sender_id must be an int")
         if not isinstance(message, str):
             raise TypeError("message must be a str")
-        if sent_at is not None and not isinstance(sent_at, datetime):
+
+        # Type checks for optional attributes
+        if sent_at is not None and not isinstance(sent_at, (datetime, str)):
             raise TypeError("sent_at must be a datetime or None")
         if message_id is not None and not isinstance(message_id, int):
             raise TypeError("message_id must be an int or None")

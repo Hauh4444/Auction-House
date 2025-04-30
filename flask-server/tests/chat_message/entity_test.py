@@ -59,7 +59,7 @@ def test_chat_message_to_dict():
     assert chat_message_dict["sender_id"] == 1
     assert chat_message_dict["chat_id"] == 1
     assert chat_message_dict["message"] == "hello"
-    assert chat_message_dict["created_at"] == datetime(2024, 1, 1, 10, 0, 0)  # Adjusted to 'created_at'
+    assert chat_message_dict["sent_at"] == datetime(2024, 1, 1, 10, 0, 0)  # Adjusted to 'sent_at'
 
 
 

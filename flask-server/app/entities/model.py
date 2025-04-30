@@ -28,6 +28,14 @@ class Model:
         if not isinstance(file_reference, str):
             raise TypeError(f"file_reference must be a str, got {type(file_reference).__name__}")
 
+        # Type checks for optional attributes
+        if created_at is not None and not isinstance(created_at, (datetime, str)):
+            raise TypeError(f"created_at must be a datetime or None, got {type(created_at).__name__}")
+        if updated_at is not None and not isinstance(updated_at, (datetime, str)):
+            raise TypeError(f"updated_at must be a datetime or None, got {type(updated_at).__name__}")
+        if model_id is not None and not isinstance(model_id, int):
+            raise TypeError(f"model_id must be a int or None, got {type(model_id).__name__}")
+
         self.model_id = model_id
         self.listing_id = listing_id
         self.file_reference = file_reference

@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 import os, pkgutil, importlib
 
 from .utils.limiter import limiter
-from .utils.session import session
+from .utils.session import flask_session
 from .utils.login_manager import login_manager
 from .utils.mysql import mysql
 from .utils.scheduler import scheduler
@@ -57,7 +57,7 @@ def create_app():
         logger.critical(msg=f"Failed to initialize MySQL in app: {e}")
 
     try:
-        session.init_app(app)
+        flask_session.init_app(app)
     except Exception as e:
         logger.critical(msg=f"Failed to initialize session in app: {e}")
 

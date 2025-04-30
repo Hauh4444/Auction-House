@@ -44,10 +44,10 @@ const Cart = () => {
         axios.post(`${ import.meta.env.VITE_BACKEND_API_URL }/purchase/`,
             {
                 listings: cartItems,
-                amount: getCartTotal(),
+                amount: parseFloat(getCartTotal()),
                 currency: "usd",
                 success_url: `${import.meta.env.VITE_FRONTEND_URL}/`,
-                cancel_url: `${import.meta.env.VITE_FRONTEND_URL}/cart`,
+                cancel_url: `${import.meta.env.VITE_FRONTEND_URL}/user/cart`,
             }, {
                 headers: { "Content-Type": "application/json" },
                 withCredentials: true,
@@ -66,7 +66,7 @@ const Cart = () => {
         if (session_id) {
             axios.post(`${ import.meta.env.VITE_BACKEND_API_URL }/purchase/status/`,
                 {
-                    session_id: session_id,
+                    session_id: parseInt(session_id),
                 },
                 {
                     headers: { "Content-Type": "application/json" },

@@ -9,19 +9,18 @@ login_manager = LoginManager()
 
 
 @login_manager.user_loader
-def load_user(user_id: int, db_session=None):
+def load_user(user_id: int):
     """
     Loads a user by their ID for Flask-Login session management.
 
     Args:
         user_id (int): The user ID.
-        db_session: Optional database session to be used in tests.
 
     Returns:
         User: A User object if found, else None.
     """
     try:
-        user_data = AuthMapper.get_user_by_id(user_id=user_id, db_session=db_session)
+        user_data = AuthMapper.get_user_by_id(user_id=user_id)
         if isinstance(user_data, dict):
             return User(**user_data)
         return user_data

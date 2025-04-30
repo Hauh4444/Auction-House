@@ -64,11 +64,11 @@ class Delivery:
         if estimated_delivery_date is not None and not isinstance(estimated_delivery_date, (date, str)):
             raise TypeError(f"estimated_delivery_date must be a date, str, or None, got {type(estimated_delivery_date).__name__}")
         if delivered_at is not None and not isinstance(delivered_at, (datetime, str)):
-            raise TypeError(f"delivered_at must be a datetime,, or None, got {type(delivered_at).__name__}")
+            raise TypeError(f"delivered_at must be a datetime, str, or None, got {type(delivered_at).__name__}")
         if created_at is not None and not isinstance(created_at, (datetime, str)):
-            raise TypeError(f"created_at must be a datetime,, or None, got {type(created_at).__name__}")
+            raise TypeError(f"created_at must be a datetime, str, or None, got {type(created_at).__name__}")
         if updated_at is not None and not isinstance(updated_at, (datetime, str)):
-            raise TypeError(f"updated_at must be a datetime,, or None, got {type(updated_at).__name__}")
+            raise TypeError(f"updated_at must be a datetime, str, or None, got {type(updated_at).__name__}")
 
         # Value checks for enumerated attributes
         if delivery_status not in self.VALID_DELIVERY_STATUSES:

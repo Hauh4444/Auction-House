@@ -25,7 +25,7 @@ const PrivateRoute = () => {
     if (auth.user.role !== "user") return <Navigate to="/" />
 
     // If the user is authenticated, render the child routes
-    return <Outlet />;
+    return <Outlet/>;
 };
 
 export default PrivateRoute;

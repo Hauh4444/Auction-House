@@ -1,6 +1,7 @@
 from flask import jsonify, session, Response
 
 from datetime import datetime, timedelta
+import uuid
 
 from ..data_mappers import SessionMapper
 from ..utils.logger import setup_logger
@@ -9,6 +10,12 @@ logger = setup_logger(name="session_logger", log_file="logs/session.log")
 
 
 class SessionService:
+    """
+    TODO:
+        We are not currently using this due to issues with race conditions that weren't able to be solved
+        This isn't entirely necessary since we are storing session data via the filesystem
+        Ideally we would migrate session management to something like redis
+    """
     @staticmethod
     def create_session(db_session=None):
         """

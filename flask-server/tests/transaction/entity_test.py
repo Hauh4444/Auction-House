@@ -2,6 +2,7 @@ import pytest
 from datetime import datetime
 from app.entities import Transaction
 
+
 def test_transaction_creation():
     transaction = Transaction(
         order_id=1,
@@ -25,6 +26,7 @@ def test_transaction_creation():
     assert isinstance(transaction.created_at, datetime) 
     assert isinstance(transaction.updated_at, datetime)
 
+
 def test_transaction_with_optional_fields():
     transaction = Transaction(
         transaction_id=10,
@@ -43,6 +45,7 @@ def test_transaction_with_optional_fields():
     assert transaction.transaction_id == 10
     assert transaction.created_at == datetime(2024, 3, 18, 10, 0, 0)
     assert transaction.updated_at == datetime(2024, 3, 18, 12, 0, 0)
+
 
 def test_transaction_to_dict():
     transaction = Transaction(
@@ -69,9 +72,11 @@ def test_transaction_to_dict():
     assert transaction_dict["payment_method"] == "Bank Transfer"
     assert transaction_dict["payment_status"] == "completed"
 
+
 def test_transaction_missing_required_fields():
     with pytest.raises(TypeError):
         Transaction()
+
 
 def test_transaction_invalid_values():
     # Invalid transaction_type

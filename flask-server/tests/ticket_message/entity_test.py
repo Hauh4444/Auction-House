@@ -2,6 +2,7 @@ import pytest
 from datetime import datetime
 from app.entities import TicketMessage  # Adjust the import path if necessary
 
+
 def test_ticket_message_creation():
     ticket_message = TicketMessage(
         ticket_id=123,
@@ -15,6 +16,7 @@ def test_ticket_message_creation():
     assert ticket_message.message_id is None
     # sent_at is assigned automatically if not provided
     assert isinstance(ticket_message.sent_at, datetime)
+
 
 def test_ticket_message_creation_with_sent_at_and_message_id():
     sent_time = datetime(2024, 4, 28, 15, 30, 0)
@@ -31,6 +33,7 @@ def test_ticket_message_creation_with_sent_at_and_message_id():
     assert ticket_message.message == "Another test message."
     assert ticket_message.message_id == 101
     assert ticket_message.sent_at == datetime(2024, 4, 28, 15, 30, 0)
+
 
 def test_ticket_message_to_dict():
     sent_time = datetime(2025, 1, 1, 12, 0, 0)
@@ -50,9 +53,11 @@ def test_ticket_message_to_dict():
     assert ticket_message_dict["message_id"] == 888
     assert ticket_message_dict["sent_at"] == datetime(2025, 1, 1, 12, 0, 0)
 
+
 def test_ticket_message_missing_required_fields():
     with pytest.raises(TypeError):
         TicketMessage()
+
 
 def test_ticket_message_invalid_types():
     with pytest.raises(TypeError):

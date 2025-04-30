@@ -91,3 +91,24 @@ class AuthMapper:
         cursor.execute(statement, (datetime.now(), user_id))
         db.commit()
         return cursor.rowcount
+
+
+    @staticmethod
+    def update_is_active(user_id: int, is_active: bool, db_session=None):
+        """
+        Update the is active boolean for a user.
+
+        Args:
+            user_id (int): The ID of the user to update.
+            is_active (bool): Bool of if user is active.
+            db_session: Optional database session to be used in tests.
+
+        Returns:
+            int: Number of rows updated.
+        """
+        db = db_session or get_db()
+        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        statement = "UPDATE users SET is_active = %s WHERE user_id = %s"
+        cursor.execute(statement, (is_active, user_id))
+        db.commit()
+        return cursor.rowcount

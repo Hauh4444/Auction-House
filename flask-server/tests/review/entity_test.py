@@ -2,6 +2,7 @@ import pytest
 from datetime import datetime
 from app.entities import Review
 
+
 def test_review_creation():
     review = Review(
         listing_id=1,
@@ -20,6 +21,7 @@ def test_review_creation():
     assert review.stars == 4.5
     assert isinstance(review.created_at, datetime)
 
+
 def test_review_with_optional_fields():
     review = Review(
         review_id=10,
@@ -34,6 +36,7 @@ def test_review_with_optional_fields():
     
     assert review.review_id == 10
     assert review.created_at == datetime(2024, 3, 18, 10, 0, 0)
+
 
 def test_review_to_dict():
     review = Review(
@@ -56,9 +59,11 @@ def test_review_to_dict():
     assert review_dict["description"] == "Highly recommend this product."
     assert review_dict["stars"] == 5.0
 
+
 def test_review_missing_required_fields():
     with pytest.raises(TypeError):
         Review()
+
 
 def test_review_invalid_types():
     with pytest.raises(TypeError):

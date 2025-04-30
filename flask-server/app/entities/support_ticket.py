@@ -26,6 +26,26 @@ class SupportTicket:
             updated_at: datetime | None = None,
             ticket_id: int | None = None
     ):
+        # Type checks for required attributes
+        if not isinstance(user_id, int):
+            raise TypeError(f"user_id must be a int, got {type(user_id).__name__}")
+        if not isinstance(subject, str):
+            raise TypeError(f"subject must be a str, got {type(subject).__name__}")
+        if not isinstance(status, str):
+            raise TypeError(f"status must be a str, got {type(status).__name__}")
+        if not isinstance(priority, str):
+            raise TypeError(f"priority must be a str, got {type(priority).__name__}")
+
+        # Type checks for optional attributes
+        if assigned_to is not None and not isinstance(assigned_to, int):
+            raise TypeError(f"assigned_to must be a int or None, got {type(assigned_to).__name__}")
+        if created_at is not None and not isinstance(created_at, (datetime, str)):
+            raise TypeError(f"created_at must be a datetime or None, got {type(created_at).__name__}")
+        if updated_at is not None and not isinstance(updated_at, (datetime, str)):
+            raise TypeError(f"updated_at must be a datetime or None, got {type(updated_at).__name__}")
+        if ticket_id is not None and not isinstance(ticket_id, int):
+            raise TypeError(f"ticket_id must be a int or None, got {type(ticket_id).__name__}")
+
         self.ticket_id = ticket_id
         self.user_id = user_id
         self.subject = subject

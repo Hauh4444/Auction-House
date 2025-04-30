@@ -70,9 +70,9 @@ const Listing = () => {
         const handleNewBid = () => {
             const listingId = listingRef.current?.listing_id;
             if (listingId) {
-                axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/listings/${ listingId }/`,
+                axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/listings/${ listingId }/`,
                     {
-                        headers: {"Content-Type": "application/json"},
+                        headers: { "Content-Type": "application/json" },
                     })
                     .then((res) => setListing(res.data.listing)) // Update state with fetched data
                     .catch((err) => console.error(err)); // Log errors if any

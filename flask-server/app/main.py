@@ -1,3 +1,6 @@
+from flask_login import current_user
+from flask_socketio import disconnect
+
 from app import create_app
 
 from .utils.socketio import socketio

@@ -2,6 +2,7 @@ import pytest
 from datetime import datetime, date
 from app.entities import Profile
 
+
 def test_profile_creation():
     profile = Profile(
         user_id=1,
@@ -26,6 +27,7 @@ def test_profile_creation():
     assert profile.country == "USA"
     assert isinstance(profile.created_at, datetime)
     assert isinstance(profile.updated_at, datetime)
+
 
 def test_profile_with_optional_fields():
     profile = Profile(
@@ -52,6 +54,7 @@ def test_profile_with_optional_fields():
     assert profile.social_links == {"twitter": "@janesmith"}
     assert isinstance(profile.created_at, datetime)
     assert isinstance(profile.updated_at, datetime)
+
 
 def test_profile_to_dict():
     profile = Profile(
@@ -82,10 +85,12 @@ def test_profile_to_dict():
     assert profile_dict["country"] == "USA"
     assert isinstance(profile_dict["created_at"], datetime)
     assert isinstance(profile_dict["updated_at"], datetime)
-"""
+
+
 def test_profile_missing_required_fields():
     with pytest.raises(TypeError):
         Profile()
+
 
 def test_profile_invalid_types():
     with pytest.raises(TypeError):

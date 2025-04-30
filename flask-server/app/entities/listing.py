@@ -38,17 +38,17 @@ class Listing:
             description: str,
             item_specifics: str,
             listing_type: str, # "auction", "buy_now"
-            buy_now_price: int | float,
+            buy_now_price: float | int,
             status: str, # "active", "sold", "cancelled", "ended", "draft"
             image_encoded: str,
-            starting_price: float | None = None,
-            reserve_price: float | None = None,
-            current_price: float | None = None,
+            starting_price: float | int | None = None,
+            reserve_price: float | int | None = None,
+            current_price: float | int | None = None,
             auction_start: datetime | None = None,
             auction_end: datetime | None = None,
             bids: int | None = None,
             purchases: int | None = 0,
-            average_review: float | None = None,
+            average_review: float | int | None = None,
             total_reviews: int | None = 0,
             created_at: datetime | None = None,
             updated_at: datetime | None = None,
@@ -72,7 +72,7 @@ class Listing:
             raise TypeError(f"item_specifics must be a str, got {type(item_specifics).__name__}")
         if not isinstance(listing_type, str):
             raise TypeError(f"listing_type must be a str, got {type(listing_type).__name__}")
-        if not isinstance(buy_now_price, (int, float)):
+        if not isinstance(buy_now_price, (float, int)):
             raise TypeError(f"buy_now_price must be a number, got {type(buy_now_price).__name__}")
         if not isinstance(status, str):
             raise TypeError(f"status must be a str, got {type(status).__name__}")
@@ -80,28 +80,28 @@ class Listing:
             raise TypeError(f"image_encoded must be a str, got {type(image_encoded).__name__}")
 
         # Type checks for optional attributes
-        if starting_price is not None and not isinstance(starting_price, (int, float)):
+        if starting_price is not None and not isinstance(starting_price, (float, int)):
             raise TypeError(f"starting_price must be a number, got {type(starting_price).__name__}")
-        if reserve_price is not None and not isinstance(reserve_price, (int, float)):
+        if reserve_price is not None and not isinstance(reserve_price, (float, int)):
             raise TypeError(f"reserve_price must be a number, got {type(reserve_price).__name__}")
-        if current_price is not None and not isinstance(current_price, (int, float)):
+        if current_price is not None and not isinstance(current_price, (float, int)):
             raise TypeError(f"current_price must be a number, got {type(current_price).__name__}")
         if auction_start is not None and not isinstance(auction_start, (datetime, str)):
-            raise TypeError(f"auction_start must be a datetime,, or None, got {type(auction_start).__name__}")
+            raise TypeError(f"auction_start must be a datetime, str, or None, got {type(auction_start).__name__}")
         if auction_end is not None and not isinstance(auction_end, (datetime, str)):
-            raise TypeError(f"auction_end must be a datetime,, or None, got {type(auction_end).__name__}")
+            raise TypeError(f"auction_end must be a datetime, str, or None, got {type(auction_end).__name__}")
         if bids is not None and not isinstance(bids, int):
             raise TypeError(f"bids must be an int, got {type(bids).__name__}")
         if purchases is not None and not isinstance(purchases, int):
             raise TypeError(f"purchases must be an int, got {type(purchases).__name__}")
-        if average_review is not None and not isinstance(average_review, (int, float)):
+        if average_review is not None and not isinstance(average_review, (float, int)):
             raise TypeError(f"average_review must be a number, got {type(average_review).__name__}")
         if total_reviews is not None and not isinstance(total_reviews, int):
             raise TypeError(f"total_reviews must be an int, got {type(total_reviews).__name__}")
         if created_at is not None and not isinstance(created_at, (datetime, str)):
-            raise TypeError(f"created_at must be a datetime,, or None, got {type(created_at).__name__}")
+            raise TypeError(f"created_at must be a datetime, str, or None, got {type(created_at).__name__}")
         if updated_at is not None and not isinstance(updated_at, (datetime, str)):
-            raise TypeError(f"updated_at must be a datetime,, or None, got {type(updated_at).__name__}")
+            raise TypeError(f"updated_at must be a datetime, str, or None, got {type(updated_at).__name__}")
 
         # Value checks for enumerated attributes
         if listing_type not in self.VALID_LISTING_TYPES:

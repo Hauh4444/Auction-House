@@ -20,12 +20,32 @@ class OrderItem:
             order_id: int,
             listing_id: int,
             quantity: int,
-            price: float,
-            total_price: float,
+            price: float | int,
+            total_price: float | int,
             created_at: datetime | None = None,
             updated_at: datetime | None = None,
             order_item_id: int | None = None
     ):
+        # Type checks for required attributes
+        if not isinstance(order_id, int):
+            raise TypeError(f"order_id must be a int, got {type(order_id).__name__}")
+        if not isinstance(listing_id, int):
+            raise TypeError(f"listing_id must be a int, got {type(listing_id).__name__}")
+        if not isinstance(quantity, int):
+            raise TypeError(f"quantity must be a int, got {type(quantity).__name__}")
+        if not isinstance(price, (float, int)):
+            raise TypeError(f"price must be a number, got {type(price).__name__}")
+        if not isinstance(total_price, (float, int)):
+            raise TypeError(f"total_price must be a number, got {type(total_price).__name__}")
+
+        # Type checks for optional attributes
+        if created_at is not None and not isinstance(created_at, (datetime, str)):
+            raise TypeError(f"created_at must be a datetime or None, got {type(created_at).__name__}")
+        if updated_at is not None and not isinstance(updated_at, (datetime, str)):
+            raise TypeError(f"updated_at must be a datetime or None, got {type(updated_at).__name__}")
+        if order_item_id is not None and not isinstance(order_item_id, int):
+            raise TypeError(f"order_item_id must be a int or None, got {type(order_item_id).__name__}")
+
         self.order_item_id = order_item_id
         self.order_id = order_id
         self.listing_id = listing_id

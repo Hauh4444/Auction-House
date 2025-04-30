@@ -2,6 +2,7 @@ import pytest
 from datetime import datetime, timedelta
 from app.entities import Session
 
+
 def test_session_creation():
     session = Session(
         user_id=1,
@@ -16,6 +17,7 @@ def test_session_creation():
     assert session.expires_at == datetime(2024, 3, 20, 12, 0, 0)
     assert isinstance(session.created_at, datetime)
 
+
 def test_session_with_optional_fields():
     session = Session(
         session_id=10,
@@ -29,6 +31,7 @@ def test_session_with_optional_fields():
     assert session.session_id == 10
     assert session.created_at == datetime(2024, 3, 18, 10, 0, 0)
     assert session.expires_at == datetime(2024, 3, 25, 14, 0, 0)
+
 
 def test_session_to_dict():
     session = Session(
@@ -46,10 +49,12 @@ def test_session_to_dict():
     assert session_dict["role"] == "moderator"
     assert session_dict["token"] == "modtoken123"
     assert session_dict["expires_at"] == datetime(2024, 3, 22, 16, 0, 0)
-"""
+
+
 def test_session_missing_required_fields():
     with pytest.raises(TypeError):
         Session()
+
 
 def test_session_invalid_types():
     with pytest.raises(TypeError):

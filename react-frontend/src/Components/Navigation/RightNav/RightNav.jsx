@@ -43,7 +43,7 @@ const RightNav = () => {
         <nav className="rightNav"> { /* Navigation container */ }
             <div className="navBar"> { /* Navigation bar container */ }
                 <Button className="btn" data-testid="menuBtn"> { /* Button for menu */ }
-                    <BsThreeDots className="menuBtn" style={ { fontSize: "25px", color: variables.mainColor3 } } onClick={ () => { if (!auth.user) navigate("/auth-page") } }/>
+                    <BsThreeDots className="menuBtn" style={ { fontSize: "25px", color: variables.mainColor3 } } onClick={ () => { auth.logout() } }/>
                 </Button>
                 <Button className="btn" data-testid="accountBtn" style={ { marginBottom: "15px" } } onClick={ () => navigate(`/${ auth.user ? auth.user.role : "user"  }/account`)}>
                     <RiAccountCircle2Fill className="fill" /> { /* Filled account icon */ }

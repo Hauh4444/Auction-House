@@ -24,7 +24,21 @@ class Order:
     ):
         self.VALID_STATUSES = {"pending", "processing", "shipped", "delivered", "cancelled", "returned"}
 
-        # Type checks
+        # Type checks for required attributes
+        if not isinstance(user_id, int):
+            raise TypeError(f"user_id must be a int, got {type(user_id).__name__}")
+        if not isinstance(status, str):
+            raise TypeError(f"status must be a str, got {type(status).__name__}")
+
+        # Type checks for optional attributes
+        if order_date is not None and not isinstance(order_date, datetime):
+            raise TypeError(f"order_date must be a datetime or None, got {type(order_date).__name__}")
+        if created_at is not None and not isinstance(created_at, (datetime, str)):
+            raise TypeError(f"created_at must be a datetime or None, got {type(created_at).__name__}")
+        if updated_at is not None and not isinstance(updated_at, (datetime, str)):
+            raise TypeError(f"updated_at must be a datetime or None, got {type(updated_at).__name__}")
+        if order_id is not None and not isinstance(order_id, int):
+            raise TypeError(f"order_id must be a int or None, got {type(order_id).__name__}")
 
         # Value checks
         if status not in self.VALID_STATUSES:

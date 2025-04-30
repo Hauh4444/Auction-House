@@ -30,7 +30,7 @@ class ChatMessage:
 
         # Type checks for optional attributes
         if sent_at is not None and not isinstance(sent_at, (datetime, str)):
-            raise TypeError(f"sent_at must be a datetime,, or None, got {type(sent_at).__name__}")
+            raise TypeError(f"sent_at must be a datetime, str, or None, got {type(sent_at).__name__}")
         if message_id is not None and not isinstance(message_id, int):
             raise TypeError(f"message_id must be an int or None, got {type(message_id).__name__}")
 
@@ -47,5 +47,5 @@ class ChatMessage:
             "sender_id": self.sender_id,
             "chat_id": self.chat_id,
             "message": self.message,
-            "created_at": self.sent_at if isinstance(self.sent_at, datetime) else self.sent_at,
+            "sent_at": self.sent_at,
         }

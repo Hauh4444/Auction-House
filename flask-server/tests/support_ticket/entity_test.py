@@ -2,6 +2,7 @@ import pytest
 from datetime import datetime
 from app.entities import SupportTicket
 
+
 def test_support_ticket_creation():
     ticket = SupportTicket(
         user_id=1,
@@ -16,6 +17,7 @@ def test_support_ticket_creation():
     assert ticket.priority == "High"
     assert isinstance(ticket.created_at, datetime)  
     assert isinstance(ticket.updated_at, datetime)  
+
 
 def test_support_ticket_with_optional_fields():
     created = datetime(2024, 3, 18, 10, 0, 0)
@@ -36,6 +38,7 @@ def test_support_ticket_with_optional_fields():
     assert ticket.assigned_to == 5
     assert ticket.created_at == created
     assert ticket.updated_at == updated
+
 
 def test_support_ticket_to_dict():
     created = datetime(2025, 1, 1, 9, 0, 0)

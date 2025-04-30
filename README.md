@@ -24,6 +24,7 @@
 
 ### Flask Server
 
+- Manually Configure Session Based User Authnetication
 - Code Review
     - Routes
         - Write & Log Checks for if Data Contains all Necessary Values
