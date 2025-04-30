@@ -82,7 +82,7 @@ class User(UserMixin):
         self._username = value
 
         if self.user_id is not None:
-            db = self.db_session or get_db()
+            db = get_db()
             cursor = db.cursor(cursors.DictCursor)  # type: ignore
             cursor.execute("UPDATE users SET username = %s WHERE user_id = %s", (value, self.user_id))
             db.commit()
