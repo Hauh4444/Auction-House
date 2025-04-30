@@ -46,7 +46,7 @@ def test_get_all_transactions(mock_db_session):
     assert len(transactions) == 2
     assert transactions[0]["amount"] == 150.00
     assert transactions[1]["payment_method"] == "PAYPAL"
-    assert isinstance(transactions[0]["created_at"], str)
+    assert isinstance(transactions[0]["created_at"], datetime)
 
 def test_get_transaction_by_id(mock_db_session):
     mock_cursor = mock_db_session.cursor.return_value

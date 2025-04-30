@@ -22,7 +22,7 @@ def test_transaction_creation():
     assert transaction.shipping_cost == 10.00
     assert transaction.payment_method == "Credit Card"
     assert transaction.payment_status == "pending"
-    assert isinstance(transaction.created_at, datetime)  # It's saved as a string (due to strftime)
+    assert isinstance(transaction.created_at, datetime) 
     assert isinstance(transaction.updated_at, datetime)
 
 def test_transaction_with_optional_fields():
@@ -62,7 +62,7 @@ def test_transaction_to_dict():
     assert transaction_dict["transaction_id"] == 7
     assert transaction_dict["order_id"] == 8
     assert transaction_dict["user_id"] == 9
-    assert transaction_dict["transaction_date"] == "2024-03-20 16:45:00"
+    assert transaction_dict["transaction_date"] == datetime(2024, 3, 20, 16, 45, 0)
     assert transaction_dict["transaction_type"] == "buy_now"
     assert transaction_dict["amount"] == 75.00
     assert transaction_dict["shipping_cost"] == 5.00

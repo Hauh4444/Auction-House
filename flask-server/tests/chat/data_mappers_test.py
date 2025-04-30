@@ -34,8 +34,8 @@ def test_get_all_chats(mock_db_session):
     assert len(chats) == 2
     assert chats[0]["user1_id"] == 1
     assert chats[1]["user1_id"] == 2
-    assert isinstance(chats[0]["created_at"], str)
-    assert isinstance(chats[1]["created_at"], str)
+    assert isinstance(chats[0]["created_at"], datetime)
+    assert isinstance(chats[1]["created_at"], datetime)
 
 
 def test_get_chat_by_id(mock_db_session):
@@ -51,7 +51,7 @@ def test_get_chat_by_id(mock_db_session):
 
     assert chat["chat_id"] == 1
     assert chat["user1_id"] == 1
-    assert isinstance(chat["created_at"], str)
+    assert isinstance(chat["created_at"], datetime)
 
 
 def test_create_chat(mock_db_session):

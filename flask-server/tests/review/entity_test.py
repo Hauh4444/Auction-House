@@ -18,7 +18,7 @@ def test_review_creation():
     assert review.title == "Great product"
     assert review.description == "I really liked this product. It works well!"
     assert review.stars == 4.5
-    assert isinstance(review.created_at, str)
+    assert isinstance(review.created_at, datetime)
 
 def test_review_with_optional_fields():
     review = Review(

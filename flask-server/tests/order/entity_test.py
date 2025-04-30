@@ -73,16 +73,16 @@ def test_order_to_dict():
 
     assert order_dict["order_id"] == 123
     assert order_dict["user_id"] == 1
-    assert order_dict["order_date"] == "2025-04-27 14:30:00"
+    assert order_dict["order_date"] == datetime(2025, 4, 27, 14, 30, 0)
     assert order_dict["status"] == "shipped"
-    assert order_dict["created_at"] == "2025-04-25 10:00:00"
-    assert order_dict["updated_at"] == "2025-04-26 12:00:00"
+    assert order_dict["created_at"] == datetime(2025, 4, 25, 10, 0, 0)
+    assert order_dict["updated_at"] == datetime(2025, 4, 26, 12, 0, 0)
     assert isinstance(order_dict["order_id"], int)
     assert isinstance(order_dict["user_id"], int)
-    assert isinstance(order_dict["order_date"], str)
+    assert isinstance(order_dict["order_date"], datetime)
     assert isinstance(order_dict["status"], str)
-    assert isinstance(order_dict["created_at"], str)
-    assert isinstance(order_dict["updated_at"], str)
+    assert isinstance(order_dict["created_at"], datetime)
+    assert isinstance(order_dict["updated_at"], datetime)
 
 
 def test_order_missing_required_fields():

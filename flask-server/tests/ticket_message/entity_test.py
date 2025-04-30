@@ -14,7 +14,7 @@ def test_ticket_message_creation():
     assert ticket_message.message == "This is a test message."
     assert ticket_message.message_id is None
     # sent_at is assigned automatically if not provided
-    assert isinstance(ticket_message.sent_at, str)
+    assert isinstance(ticket_message.sent_at, datetime)
 
 def test_ticket_message_creation_with_sent_at_and_message_id():
     sent_time = datetime(2024, 4, 28, 15, 30, 0)
@@ -48,7 +48,7 @@ def test_ticket_message_to_dict():
     assert ticket_message_dict["sender_id"] == 777
     assert ticket_message_dict["message"] == "Dict test message."
     assert ticket_message_dict["message_id"] == 888
-    assert ticket_message_dict["sent_at"] == "2025-01-01 12:00:00"
+    assert ticket_message_dict["sent_at"] == datetime(2025, 1, 1, 12, 0, 0)
 
 def test_ticket_message_missing_required_fields():
     with pytest.raises(TypeError):

@@ -2,7 +2,7 @@ from pymysql import cursors
 
 from ..database import get_db
 from ..entities import Category
-
+from datetime import datetime
 
 class CategoryMapper:
     @staticmethod

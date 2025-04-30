@@ -36,8 +36,8 @@ def test_get_all_orders(mock_db_session):
     assert len(orders) == 2
     assert orders[0]["status"] == "delivered"
     assert orders[1]["status"] == "shipped"
-    assert isinstance(orders[0]["created_at"], str)
-    assert isinstance(orders[1]["created_at"], str)
+    assert isinstance(orders[0]["created_at"], datetime)
+    assert isinstance(orders[1]["created_at"], datetime)
 
 
 def test_get_order_by_id(mock_db_session):
@@ -55,7 +55,7 @@ def test_get_order_by_id(mock_db_session):
 
     assert order["order_id"] == 2
     assert order["status"] == "delivered"
-    assert isinstance(order["created_at"], str)
+    assert isinstance(order["created_at"], datetime)
 
 
 def test_create_order(mock_db_session):
@@ -105,7 +105,7 @@ def test_create_order_missing_fields(mock_db_session):
         "updated_at": datetime(2025, 1, 1),
     }
 
-    del data["order_date"]  # Remove required field to simulate missing data
+    del data["user_id"]  # Remove required field to simulate missing data
 
     with pytest.raises(expected_exception=TypeError):
         OrderMapper.create_order(data=data, db_session=mock_db_session)

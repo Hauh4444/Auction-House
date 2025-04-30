@@ -35,10 +35,8 @@ def test_delivery_creation():
     assert isinstance(delivery.state, str)
     assert isinstance(delivery.country, str)
     assert isinstance(delivery.delivery_status, str)
-    
-    # Ensure created_at is a datetime object, not a string
-    assert isinstance(delivery.created_at, str)
-    assert isinstance(delivery.updated_at, str)
+    assert isinstance(delivery.created_at, datetime)
+    assert isinstance(delivery.updated_at, datetime)
 
 def test_delivery_to_dict():
     delivery = Delivery(
@@ -71,10 +69,10 @@ def test_delivery_to_dict():
     assert delivery_dict["courier"] == "UPS"
 
     # Compare the string-formatted datetime
-    assert delivery_dict["estimated_delivery_date"] == '2024-01-01 00:00:00'  # String match
-    assert delivery_dict["delivered_at"] == '2024-01-01 10:00:00'  # String match
-    assert delivery_dict["created_at"] == '2024-01-01 10:00:00'  # String match
-    assert delivery_dict["updated_at"] == '2024-01-01 10:00:00'  # String match
+    assert delivery_dict["estimated_delivery_date"] == datetime(2024, 1, 1, 0, 0, 0)
+    assert delivery_dict["delivered_at"] == datetime(2024, 1, 1, 10, 0, 0)
+    assert delivery_dict["created_at"] == datetime(2024, 1, 1, 10, 0, 0)
+    assert delivery_dict["updated_at"] == datetime(2024, 1, 1, 10, 0, 0)
 
 
 def test_delivery_missing_required_fields():

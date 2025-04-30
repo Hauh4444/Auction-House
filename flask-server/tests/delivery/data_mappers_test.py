@@ -54,8 +54,8 @@ def test_get_all_deliveries(mock_db_session):
     assert deliveries[0]["address"] == "123 Main St"
     assert deliveries[1]["address"] == "456 Elm St"
     # Check if created_at is a string (formatted properly)
-    assert isinstance(deliveries[0]["created_at"], str)
-    assert isinstance(deliveries[1]["created_at"], str)
+    assert isinstance(deliveries[0]["created_at"], datetime)
+    assert isinstance(deliveries[1]["created_at"], datetime)
 
 
 def test_get_delivery_by_id(mock_db_session):
@@ -82,8 +82,8 @@ def test_get_delivery_by_id(mock_db_session):
     assert delivery["delivery_id"] == 1
     assert delivery["address"] == "123 Main St"
     # Check if created_at is a string
-    assert isinstance(delivery["created_at"], str)
-    assert isinstance(delivery["updated_at"], str)
+    assert isinstance(delivery["created_at"], datetime)
+    assert isinstance(delivery["updated_at"], datetime)
 
 
 def test_create_delivery(mock_db_session):
