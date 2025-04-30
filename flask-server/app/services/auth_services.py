@@ -1,10 +1,9 @@
-from flask import jsonify, session, Response
+from flask import jsonify, session, Response, make_response
 from flask_login import login_user, logout_user, current_user
 
 from datetime import datetime, timedelta, timezone
 import os, jwt
 
-from .session_services import SessionService
 from .email_services import EmailService
 from .sms_services import SMSService
 from ..data_mappers import AuthMapper, ProfileMapper, UserMapper
@@ -88,15 +87,16 @@ class AuthService:
             logger.error(msg=f"Invalid username: {data.get('username')} or password: {data.get('password')}")
             return Response(response=jsonify(response_data).get_data(), status=422, mimetype="application/json")
 
-        session.update(user_id=user.id, role=user.role)
-        login_user(user=user, remember=True)
-        current_user.is_active = True
-        AuthMapper.update_last_login(user_id=current_user.id, db_session=db_session)
-        SessionService.create_session(db_session=db_session)
+        login_user(user=user)
+        session.update(user_id=user.id, _user_id=user.id, role=user.role)
+
+        AuthMapper.update_last_login(user_id=user.id, db_session=db_session)
+        AuthMapper.update_is_active(user_id=user.id, is_active=True, db_session=db_session)
 
         response_data = {"message": "Login successful", "user": user.to_dict()}
         logger.info(msg=f"Login successful for user: {user.id}")
-        return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
+        response = make_response(jsonify(response_data), 200)
+        return response
 
 
     @staticmethod
@@ -114,11 +114,14 @@ class AuthService:
         """
         logout_user()
         session.clear()
-        current_user.is_active = False
+
+        AuthMapper.update_is_active(user_id=user_id, is_active=False, db_session=db_session)
 
         response_data = {"message": "Logout successful"}
         logger.info(msg=f"Logout successful for user: {user_id}")
-        return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
+        response = Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
+        response.set_cookie("session", value="", max_age=0, expires=0, path="/", secure=True, samesite="None")
+        return response
 
 
     @staticmethod

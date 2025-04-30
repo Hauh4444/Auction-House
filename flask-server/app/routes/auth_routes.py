@@ -12,7 +12,6 @@ logger = setup_logger(name="auth_logger", log_file="logs/auth.log")
 
 # GET /api/auth/auth_status/
 @bp.route("/auth_status/", methods=["GET"])
-@login_required
 def check_auth_status(db_session=None):
     """
     Check the authentication status of the current user.

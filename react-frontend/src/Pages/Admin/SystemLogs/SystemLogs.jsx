@@ -6,7 +6,10 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
 import axios from "axios";
+
+dayjs.extend(utc);
 
 // Internal Modules
 import Header from "@/Components/Header/Header";
@@ -41,7 +44,7 @@ const SystemLogs = () => {
             {
                 params: {
                     level: level !== "ALL" ? level : null,
-                    date: selectedDate ? dayjs(selectedDate).format("YYYY-MM-DD") : null,
+                    date: selectedDate ? dayjs.utc(selectedDate).format("YYYY-MM-DD") : null,
                     line_length: line_length,
                     limit: limit,
                 },

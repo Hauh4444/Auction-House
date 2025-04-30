@@ -5,7 +5,10 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
 import axios from "axios";
+
+dayjs.extend(utc);
 
 // Internal Modules
 import Header from "@/Components/Header/Header";
@@ -55,7 +58,9 @@ const UserProfile = () => {
                 headers: { "Content-Type": "application/json" },
                 withCredentials: true, // Ensures cookies are sent with requests
             })
-            .then((res) => setProfile(res.data.profile)) // Set the user state
+            .then((res) => {
+                setProfile(res.data.profile);
+            }) // Set the user state
             .catch((err) => console.error(err)); // Log errors if any
     }, []); 
 
@@ -101,7 +106,7 @@ const UserProfile = () => {
                                     />
                                     {fields.map((field) => (
                                         <p key={ field.name }>
-                                            <strong>{ field.label }:</strong> { field.name === "date_of_birth" ? dayjs(field.value).format("MM-DD-YYYY") : field.value }
+                                            <strong>{ field.label }:</strong> { field.name === "date_of_birth" ? dayjs.utc(field.value).format("MM-DD-YYYY") : field.value }
                                         </p>
                                     ))}
                                 </div>
@@ -139,8 +144,8 @@ const UserProfile = () => {
                                             <DatePicker
                                                 className="input shortField"
                                                 label={ field.label }
-                                                value={ dayjs(profile[field.name]) }
-                                                onChange={ (value) => setProfile({ ...profile, [field.name]: dayjs(value).format("YYYY-MM-DD") }) }
+                                                value={ dayjs.utc(profile.date_of_birth) }
+                                                onChange={ (value) => setProfile({ ...profile, date_of_birth: dayjs.utc(value).format("YYYY-MM-DD") }) }
                                                 slotProps={ { textField: { variant: "outlined" } } }
                                             />
                                         </LocalizationProvider>

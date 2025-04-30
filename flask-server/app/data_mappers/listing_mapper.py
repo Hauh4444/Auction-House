@@ -1,3 +1,4 @@
+from charset_normalizer.md import is_arabic_isolated_form
 from pymysql import cursors
 from datetime import datetime
 
@@ -125,7 +126,7 @@ class ListingMapper:
         set_clause = []
         values = []
         for key, value in data.items():
-            if key not in ["listing_id", "created_at", "updated_at"]:
+            if key not in ["listing_id", "created_at", "updated_at", "auction_start", "auction_end"]:
                 increment_value = 1 if key == "bids" else None
                 set_clause.append(f"{key} = {key} + %s" if increment_value else f"{key} = %s")
                 values.append(increment_value if increment_value else value)

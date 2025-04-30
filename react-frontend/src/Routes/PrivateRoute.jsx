@@ -1,4 +1,5 @@
 // External Libraries
+import { useEffect, useState } from "react";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 
 // Internal Modules
@@ -17,6 +18,20 @@ const PrivateRoute = () => {
     // Fetch the authentication context
     const auth = useAuth();
     const location = useLocation(); // Get current attempted location
+    const [isAuthChecked, setIsAuthChecked] = useState(false);
+
+    useEffect(() => {
+        // Only check auth if we haven't already
+        if (!isAuthChecked) {
+            auth.checkAuthStatus().finally(() => {
+                setIsAuthChecked(true);
+            });
+        }
+    }, [auth, isAuthChecked]);
+
+    if (!isAuthChecked) {
+        return null;
+    }
 
     // If the user is not authenticated, redirect to the authentication page
     if (!auth.user) return <Navigate to="/auth-page" state={ { from: location } } />;

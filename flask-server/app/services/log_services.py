@@ -1,7 +1,5 @@
 from flask import jsonify, Response
-
 import os, re
-
 from ..utils.logger import setup_logger
 
 logger = setup_logger(name="log_logger", log_file="logs/log.log")
@@ -17,10 +15,10 @@ class LogService:
             Response: JSON response with a list of log filenames and HTTP 200 status code.
         """
         logs = [f for f in os.listdir("logs") if f.endswith(".log")]
-
         response_data = {"message": "Logs successfully retrieved", "logs": logs}
-        logger.info(msg=f"Logs found: {[log for log in logs]}")
+        logger.info(msg=f"Logs found: {logs}")
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
+
 
     @staticmethod
     def get_log_file(filename: str, args: dict):
@@ -51,45 +49,27 @@ class LogService:
             logger.error(msg=f"Log: {filename} not found")
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
-        with open(filepath, "r") as f:
-            log = f.readlines()
-
+        log_lines = []
         try:
-            if level:
-                level_pattern = re.compile(rf"\b{re.escape(level)}\b", re.IGNORECASE)
-                log = [line for line in log if level_pattern.search(line)]
-        except re.error as e:
-            response_data = {"error": "Invalid log level pattern"}
-            logger.error(msg=f"Regex error for level filter: {e}")
-            return Response(response=jsonify(response_data).get_data(), status=400, mimetype="application/json")
+            with open(filepath, "r") as f:
+                for line in f:
+                    # Apply filters in a single pass
+                    if level and not re.search(rf"\b{re.escape(level)}\b", line, re.IGNORECASE):
+                        continue
+                    if date and not re.match(rf"^{re.escape(date)}\b", line):
+                        continue
+                    if max_line_length:
+                        line = line[:int(max_line_length)]  # Truncate to max length if specified
+                    log_lines.append(line)
 
-        try:
-            if date:
-                date_pattern = re.compile(rf"^{re.escape(date)}\b")
-                log = [line for line in log if date_pattern.match(line)]
-        except re.error as e:
-            response_data = {"error": "Invalid date pattern"}
-            logger.error(msg=f"Regex error for date filter: {e}")
-            return Response(response=jsonify(response_data).get_data(), status=400, mimetype="application/json")
+                    if limit and len(log_lines) >= int(limit):  # Stop once we hit the limit
+                        break
 
-        if max_line_length:
-            try:
-                max_line_length = int(max_line_length)
-                log = [line[:max_line_length] for line in log]
-            except ValueError:
-                response_data = {"error": "Invalid line_length value"}
-                logger.error(msg="Invalid line_length parameter")
-                return Response(response=jsonify(response_data).get_data(), status=400, mimetype="application/json")
+        except Exception as e:
+            response_data = {"error": "Error reading log file"}
+            logger.error(msg=f"Error reading log file: {e}")
+            return Response(response=jsonify(response_data).get_data(), status=500, mimetype="application/json")
 
-        if limit:
-            try:
-                limit = int(limit)
-                log = log[:limit]
-            except ValueError:
-                response_data = {"error": "Invalid limit value"}
-                logger.error(msg="Invalid limit parameter")
-                return Response(response=jsonify(response_data).get_data(), status=400, mimetype="application/json")
-
-        response_data = {"message": "Log file successfully retrieved", "log": log}
-        logger.info(msg=f"Returning {len(log)} lines from log: {filename}")
+        response_data = {"message": "Log file successfully retrieved", "log": log_lines}
+        logger.info(msg=f"Returning {len(log_lines)} lines from log: {filename}")
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")

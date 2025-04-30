@@ -20,6 +20,13 @@ import { useCart } from "@/ContextAPI/CartContext";
 // Stylesheets
 import "./Listing.scss";
 
+const parseJsonSafe = (str) => {
+    try {
+        return JSON.parse(str);
+    } catch (e) {
+        return null; // Return null if parsing fails
+    }
+};
 /**
  * Listing Component
  *
@@ -137,6 +144,22 @@ const Listing = () => {
             .catch(() => setModel(null)); // Clear model state on error
     }
 
+    const getParsedDescription = () => {
+        const parsedDescription = parseJsonSafe(listing.description);
+        if (parsedDescription === null) {
+            return listing.description; // If it's not a valid JSON string, return the original description
+        }
+        return parsedDescription;
+    };
+
+    const getParsedItemSpecifics = () => {
+        const parsedItemSpecifics = parseJsonSafe(listing.item_specifics);
+        if (parsedItemSpecifics === null) {
+            return listing.item_specifics; // If it's not a valid JSON string, return the original item specifics
+        }
+        return parsedItemSpecifics;
+    };
+
     return (
         <div className="listingPage page">
             <div className="mainPage">
@@ -214,50 +237,49 @@ const Listing = () => {
                         { /* Display product description */ }
                         <div className="description">
                             <div className="title">Description:</div>
-                            {listing.description &&
-                            Array.isArray(JSON.parse(listing.description)) &&
-                            JSON.parse(listing.description).length > 0 ? (
-                                <ul className="list">
-                                    {JSON.parse(listing.description).map((desc, index) => (
-                                        <li key={ index }>{ desc }</li>
-                                    ))}
-                                </ul>
-                            ) : (
-                                <div>No description available</div>
-                            )}
+                            {getParsedDescription() &&
+                                (typeof getParsedDescription() === "string" ? (
+                                    <p>{getParsedDescription()}</p>
+                                ) : Array.isArray(getParsedDescription()) ? (
+                                    <ul className="list">
+                                        {getParsedDescription().map((desc, index) => (
+                                            <li key={index}>{desc}</li>
+                                        ))}
+                                    </ul>
+                                ) : typeof getParsedDescription() === "object" ? (
+                                    <div>{JSON.stringify(getParsedDescription())}</div>
+                                ) : (
+                                    <div>No description available</div>
+                                ))}
                         </div>
                     </div>
 
                     <div className="secondaryInfo">
                         { /* Additional listing information */ }
                         <div className="specifics">
-                            {listing.item_specifics && (
-                                // Check if item_specifics is an object (or array)
-                                typeof JSON.parse(listing.item_specifics) === "object" ? (
-                                    // If it's an array, display as a list
-                                    Array.isArray(JSON.parse(listing.item_specifics)) ? (
-                                        <ul>
-                                            {JSON.parse(listing.item_specifics).map((item, index) => (
-                                                <li key={ index }>{ item }</li>
-                                            ))}
-                                        </ul>
-                                    ) : (
-                                        // If it's an object, display as a table of key-value pairs
-                                        <table>
-                                            <caption>Item Specifics</caption>
-                                            <tbody>
-                                            {Object.keys(JSON.parse(listing.item_specifics)).map((key, index) => (
-                                                <tr key={ index }>
-                                                    <th>{ key }</th>
-                                                    <td>{ JSON.parse(listing.item_specifics)[key] }</td>
-                                                </tr>
-                                            ))}
-                                            </tbody>
-                                        </table>
-                                    )
+                            {getParsedItemSpecifics() && (
+                                typeof getParsedItemSpecifics() === "string" ? (
+                                    <p>{getParsedItemSpecifics()}</p>
+                                ) : Array.isArray(getParsedItemSpecifics()) ? (
+                                    <ul>
+                                        {getParsedItemSpecifics().map((item, index) => (
+                                            <li key={index}>{item}</li>
+                                        ))}
+                                    </ul>
+                                ) : typeof getParsedItemSpecifics() === "object" ? (
+                                    <table>
+                                        <caption>Item Specifics</caption>
+                                        <tbody>
+                                        {Object.keys(getParsedItemSpecifics()).map((key, index) => (
+                                            <tr key={index}>
+                                                <th>{key}</th>
+                                                <td>{getParsedItemSpecifics()[key]}</td>
+                                            </tr>
+                                        ))}
+                                        </tbody>
+                                    </table>
                                 ) : (
-                                    // If it's a string, display it as a paragraph
-                                    <p>{ listing.item_specifics }</p>
+                                    <div>No item specifics available</div>
                                 )
                             )}
                         </div>

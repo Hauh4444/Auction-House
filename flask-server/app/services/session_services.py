@@ -14,7 +14,7 @@ class SessionService:
     TODO:
         We are not currently using this due to issues with race conditions that weren't able to be solved
         This isn't entirely necessary since we are storing session data via the filesystem
-        Ideally we would migrate session management to something like redis
+        Ideally we would migrate session management/storage to something like redis
     """
     @staticmethod
     def create_session(db_session=None):
@@ -29,7 +29,7 @@ class SessionService:
         """
         session_data = {
             "user_id": session.get("user_id"),
-            "token": session.get("_id"),
+            "token": session.get("id"),
             "role": session.get("role"),
             "expires_at": datetime.now() + timedelta(days=1),
         }

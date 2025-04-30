@@ -4,13 +4,9 @@
 
 ### React Frontend
 
-- Analytics
-- Live Auction
 - Manage Listings
-- Product Upload
 - Review 
 - Friends
-- Payment Info
 - History
   - Transactions
   - Deliveries
@@ -24,21 +20,15 @@
 
 ### Flask Server
 
-- Manually Configure Session Based User Authnetication
 - Code Review
     - Routes
         - Write & Log Checks for if Data Contains all Necessary Values
     - Data Mappers
         - SQL Statement Consistency
         - SQL Injection Vulnerabilities
-    - Entities
-        - Setters & Getters
-        - Value & Type Checks for Setters
     - Documentation
 - Fix Tests
-- Analytics & Reports
 - Order & Delivery API
-- Text Notifications
 
 ## Setup
 

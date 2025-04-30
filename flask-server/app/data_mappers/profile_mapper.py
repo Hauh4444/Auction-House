@@ -73,6 +73,7 @@ class ProfileMapper:
                     pass
             if isinstance(value, datetime):
                 data[key] = value.strftime('%Y-%m-%d %H:%M:%S')
+        print(data.get("date_of_birth"))
         conditions = [f"{key} = %s" for key in data if key not in ["profile_id", "created_at", "updated_at"]]
         values = [data.get(key) for key in data if key not in ["profile_id", "created_at", "updated_at"]]
         values.append(datetime.now())

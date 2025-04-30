@@ -133,14 +133,6 @@ class SupportTicketMapper:
         """
         db = db_session or get_db()
         cursor = db.cursor(cursors.DictCursor) # type: ignore
-        for key, value in data.items():
-            if isinstance(value, str):
-                try:
-                    data[key] = datetime.strptime(value, '%a, %d %b %Y %H:%M:%S GMT')
-                except ValueError:
-                    pass
-            if isinstance(value, datetime):
-                data[key] = value.strftime('%Y-%m-%d %H:%M:%S')
         cursor.execute(f"UPDATE support_tickets SET updated_at = %s WHERE ticket_id = %s", (datetime.now(), ticket_id))
         db.commit()
         return cursor.rowcount

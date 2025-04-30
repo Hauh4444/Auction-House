@@ -57,6 +57,9 @@ class User(UserMixin):
             "is_active": self.is_active
         }
 
+    def get_id(self):
+        return str(self.user_id)
+
     @property
     def id(self):
         return self.user_id

@@ -1,5 +1,5 @@
 // External Libraries
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import posthog from "posthog-js";
 import PropTypes from "prop-types";
@@ -60,7 +60,7 @@ const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={ { user, error, createAccount, login, logout } }>
+        <AuthContext.Provider value={ { user, error, checkAuthStatus, login, createAccount, logout } }>
             { children }
         </AuthContext.Provider>
     );

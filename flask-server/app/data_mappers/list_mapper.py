@@ -127,14 +127,6 @@ class ListMapper:
         """
         db = db_session or get_db()
         cursor = db.cursor(cursors.DictCursor) # type: ignore
-        for key, value in data.items():
-            if isinstance(value, str):
-                try:
-                    data[key] = datetime.strptime(value, '%a, %d %b %Y %H:%M:%S GMT')
-                except ValueError:
-                    pass
-            if isinstance(value, datetime):
-                data[key] = value.strftime('%Y-%m-%d %H:%M:%S')
         statement = "UPDATE lists SET title = %s, updated_at = CURRENT_TIMESTAMP WHERE list_id = %s"
         cursor.execute(statement, (title, list_id))
         db.commit()
