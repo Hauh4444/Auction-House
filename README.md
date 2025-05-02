@@ -4,7 +4,6 @@
 
 ### React Frontend
 
-- Manage Listings
 - Review 
 - Friends
 - History
@@ -15,8 +14,6 @@
   - Create
   - Update
   - Delete
-- About
-- Contact
 
 ### Flask Server
 
@@ -27,7 +24,6 @@
         - SQL Statement Consistency
         - SQL Injection Vulnerabilities
     - Documentation
-- Fix Tests
 - Order & Delivery API
 
 ## Setup

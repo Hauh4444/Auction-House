@@ -4,4 +4,4 @@ from .socketio import socketio
 
 @shared_task
 def end_auction_task(listing_id):
-    socketio.emit("auction_ended", {"lising_id": listing_id})
+    socketio.emit("auction_ended", {"listing_id": listing_id})

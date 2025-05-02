@@ -4,6 +4,7 @@ from flask_login import current_user
 from ..data_mappers import ListingMapper
 from ..utils.logger import setup_logger
 from ..utils.auction_tasks import end_auction_task
+from ..utils.scheduler import scheduler
 
 logger = setup_logger(name="listing_logger", log_file="logs/listing.log")
 
@@ -77,6 +78,15 @@ class ListingService:
             logger.error(msg=f"Failed creating listing with data: {', '.join(f'{k}={v!r}' for k, v in data.items())}")
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
 
+        if listing_data.get("listing_type") == "auction":
+            scheduler.add_job(
+                func=end_auction_task,
+                trigger='date',
+                run_date=listing_data.get("auction_end"),
+                id=listing_data.get("listing_id"),
+                replace_existing=True
+            )
+
         response_data = {"message": "Listing created", "listing_id": listing_id}
         logger.info(msg=f"Listing: {listing_id} created successfully with data: {', '.join(f'{k}={v!r}' for k, v in data.items())}")
         return Response(response=jsonify(response_data).get_data(), status=201, mimetype="application/json")
@@ -95,7 +105,7 @@ class ListingService:
         Returns:
             A Response object with a success message if the listing was updated, or a 404 error if the listing was not found.
         """
-        updated_rows = ListingMapper.update_listing(listing_id=listing_id, data=data, db_session=db_session)
+        updated_rows = ListingMapper.update_listing(listing_id=listing_id, data=data.get("listing"), db_session=db_session)
         if not updated_rows:
             response_data = {"error": "Error updating listing"}
             logger.error(msg=f"Failed updating listing: {listing_id} with data: {', '.join(f'{k}={v!r}' for k, v in data.items())}")

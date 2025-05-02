@@ -6,8 +6,9 @@ import { IoMdCube } from "react-icons/io";
 import { ImCross } from "react-icons/im";
 import { io } from "socket.io-client";
 import { Button } from "@mui/material";
-import axios from "axios";
 import { format } from 'date-fns';
+import dayjs from "dayjs";
+import axios from "axios";
 
 // Internal Modules
 import Header from "@/Components/Header/Header";
@@ -292,7 +293,7 @@ const Listing = () => {
                                         <div className="left">
                                             { renderStars(review.stars) }
                                             <p>- by { review.username }</p>
-                                            <p className="date">{ review.created_at }</p>
+                                            <p className="date">{ dayjs.utc(review.created_at).format("YYYY-MM-DD HH:mm:ss") }</p>
                                         </div>
                                         <div className="right">
                                             <h3>{ review.title }</h3>
