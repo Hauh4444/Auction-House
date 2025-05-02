@@ -36,10 +36,15 @@ class DeliveryMapper:
         db = db_session or get_db()
         cursor = db.cursor()
         query = """
-            INSERT INTO deliveries (user_id, tracking_code, created_at, updated_at)
-            VALUES (%s, %s, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+            INSERT INTO deliveries (user_id, tracking_number, courier, tracking_url_provider, created_at, updated_at)
+            VALUES (%s, %s, %s, %s, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
         """
-        cursor.execute(query, (data["user_id"], data["tracking_code"]))
+        cursor.execute(query, (
+            data["user_id"],
+            data["tracking_number"],
+            data["courier"],
+            data["tracking_url_provider"]
+        ))
         db.commit()
         delivery_id = cursor.lastrowid
         cursor.close()

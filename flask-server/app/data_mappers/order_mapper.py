@@ -45,27 +45,40 @@ class OrderMapper:
 
 
     @staticmethod
-    def create_order(data, db_session=None):
+    def get_order_reference(order_id, db_session=None):
         """
-        Create a new order in the database.
-
-        Args:
-            data (dict): Dictionary containing order details.
-            db_session: Optional database session to be used in tests.
-
-        Returns:
-            int: The ID of the newly created order.
+        Retrieve the reference data for an order by its ID.
         """
         db = db_session or get_db()
-        cursor = db.cursor(cursors.DictCursor) # type: ignore
-        statement = """
-            INSERT INTO orders 
-            (user_id, order_date, status, created_at, updated_at) 
-            VALUES (%s, %s, %s, %s, %s)
+        cursor = db.cursor(cursors.DictCursor)
+        cursor.execute("SELECT * FROM orders WHERE order_id = %s", (order_id,))
+        result = cursor.fetchone()
+        cursor.close()
+        return result
+
+
+    @staticmethod
+    def create_order(data, db_session=None):
         """
-        cursor.execute(statement, tuple(Order(**data).to_dict().values())[1:]) # Exclude order_id (auto-incremented)
+        Create a new order record in the database.
+        """
+        db = db_session or get_db()
+        cursor = db.cursor()
+        query = """
+            INSERT INTO orders (user_id, order_number, total_price, order_status, shippo_order_id, created_at, updated_at)
+            VALUES (%s, %s, %s, %s, %s, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+        """
+        cursor.execute(query, (
+            data["user_id"],
+            data["order_number"],
+            data["total_price"],
+            data["order_status"],
+            data["shippo_order_id"]
+        ))
         db.commit()
-        return cursor.lastrowid
+        order_id = cursor.lastrowid
+        cursor.close()
+        return order_id
 
 
     @staticmethod
