@@ -6,6 +6,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
 import axios from "axios";
 
 // Internal Modules
@@ -23,6 +24,8 @@ const SystemLogs = () => {
     const [date, setDate] = useState(null);
     const [line_length, setLineLength] = useState(750);
     const [limit, setLimit] = useState(50);
+
+    dayjs.extend(utc);
 
     useEffect(() => {
         axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/logs/`,

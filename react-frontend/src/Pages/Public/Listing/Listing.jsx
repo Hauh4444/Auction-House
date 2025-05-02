@@ -8,6 +8,7 @@ import { io } from "socket.io-client";
 import { Button } from "@mui/material";
 import { format } from 'date-fns';
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc"
 import axios from "axios";
 
 // Internal Modules
@@ -52,6 +53,8 @@ const Listing = () => {
     const [showAuction, setShowAuction] = useState(false);
 
     const listingRef = useRef(listing);
+
+    dayjs.extend(utc);
 
     useEffect(() => {
         listingRef.current = listing;

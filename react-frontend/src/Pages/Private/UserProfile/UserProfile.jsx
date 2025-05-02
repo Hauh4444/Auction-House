@@ -5,6 +5,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
 import axios from "axios";
 
 // Internal Modules
@@ -47,6 +48,8 @@ const UserProfile = () => {
         { label: "Country", name: "country", type: "text", style: { float: "right" }, value: profile.country },
         { label: "Bio", name: "bio", type: "text", multiline: true, rows: 5, maxrows: 10, fullWidth: true, value: profile.bio },
     ];
+
+    dayjs.extend(utc);
 
     // Fetch profile data from the backend API
     useEffect(() => {

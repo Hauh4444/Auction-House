@@ -6,6 +6,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
 import axios from "axios";
 import PropTypes from "prop-types";
 
@@ -40,6 +41,8 @@ const ProductManage = ({ httpType }) => {
 
     const smallInputRef = useRef(null);
     const imgRef = useRef(null);
+
+    dayjs.extend(utc);
 
     useEffect(() => {
         if (httpType === "put") {
