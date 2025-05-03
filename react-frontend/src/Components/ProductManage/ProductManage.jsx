@@ -90,9 +90,7 @@ const ProductManage = ({ httpType }) => {
     const handleImageChange = async (e) => {
         const file = e.target.files[0];
         if (file) {
-            console.log("Selected file:", file);
             const base64Image = await encodeImageToBase64(file);
-            console.log("Base64 Image:", base64Image);
             setListing({ ...listing, image_encoded: base64Image });
         }
     };
@@ -120,7 +118,7 @@ const ProductManage = ({ httpType }) => {
         };
 
         if (httpType === "post") {
-            axios.post(`${ import.meta.env.VITE_BACKEND_API_URL }/user/listings/`,
+            axios.post(`${ import.meta.env.VITE_BACKEND_API_URL }/listings/`,
                 {
                     listing: sanitizedListing,
                 },
@@ -142,6 +140,16 @@ const ProductManage = ({ httpType }) => {
                 .then(() => navigate("/user/seller-profile?nav=manage"))
                 .catch((err) => console.error(err)); // Log errors if any
         }
+    }
+
+    const handleDelete = (listing) => {
+        axios.delete(`${ import.meta.env.VITE_BACKEND_API_URL }/listings/${ listing.listing_id }/`,
+            {
+                headers: { "Content-Type": "application/json" },
+                withCredentials: true, // Ensure cookies are sent
+            })
+            .then(() => navigate("/user/seller-profile?nav=manage"))
+            .catch((err) => console.error(err)); // Log errors if any
     }
 
     return (
@@ -304,6 +312,10 @@ const ProductManage = ({ httpType }) => {
                             fullWidth={ true }
                         />
                     </div>
+                    { /* Delete button */ }
+                    {httpType === "put" && (
+                        <Button className="btn" style={{ float: "left" }} onClick={ () => handleDelete(listing) }>Delete</Button>
+                    )}
                     { /* Submit button */ }
                     <Button className="btn" onClick={ () => handleSubmit(listing) }>Submit</Button>
                 </CardContent>

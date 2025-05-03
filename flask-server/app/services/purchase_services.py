@@ -23,7 +23,7 @@ class PurchaseService:
 
         Args:
             data (dict): Payment data including amount, currency, success_url, cancel_url, and listings.
-            db_session: Database session for transactional operations.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: JSON response containing either the Stripe session ID on success,
@@ -76,12 +76,12 @@ class PurchaseService:
 
         Args:
             data (dict): Purchase data including listings and amount.
-            db_session: Database session for transactional operations.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             dict: {"status": 200} on success, or {"error": str, "status": int} on failure.
         """
-        user_id, listings, amount = current_user.id, data.get('listings'), data.get("amount")
+        user_id, listings, amount = current_user.id, data.get("listings"), data.get("amount")
 
         # Retrieve the user's profile
         profile = ProfileMapper.get_profile(user_id=current_user.id, db_session=db_session)
@@ -102,7 +102,7 @@ class PurchaseService:
 
         Args:
             data (dict): Includes user_id, listings, amount, and profile.
-            db_session: Database session for transactional operations.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             dict: {"status": 200} on success, or {"error": str, "status": int} on failure.
@@ -116,31 +116,6 @@ class PurchaseService:
         logger.info(msg=f"Order: {order_id} created successfully with data: {', '.join(f'{k}={v!r}' for k, v in order_data.items())}")
 
         data.update(order_id=order_id)
-        return PurchaseService.create_transaction(data=data, db_session=db_session)
-
-
-    @staticmethod
-    def create_transaction(data: dict, db_session=None):
-        """
-        Create a Transaction for the Order
-
-        Args:
-            data (dict): Includes order_id, user_id, amount, and related data.
-            db_session: Database session for transactional operations.
-
-        Returns:
-            dict: {"status": 200} on success, or {"error": str, "status": int} on failure.
-        """
-        transaction_data = {"order_id": data.get("order_id"), "user_id": data.get("user_id"),
-                            "transaction_type": "buy_now", "amount": data.get("amount"), "shipping_cost": 0, "payment_method": "credit_card", "payment_status": "completed"}
-        transaction_id = TransactionMapper.create_transaction(data=transaction_data, db_session=db_session)
-        if not transaction_id:
-            logger.error(msg=f"Failed creating transaction with data: {', '.join(f'{k}={v!r}' for k, v in transaction_data.items())}")
-            return {"error": "Error creating transaction", "status": 409}
-
-        logger.info(msg=f"Transaction: {transaction_id} created successfully with data: {', '.join(f'{k}={v!r}' for k, v in transaction_data.items())}")
-
-        data.update(transaction_id=transaction_id)
         return PurchaseService.handle_items(data=data, db_session=db_session)
 
 
@@ -151,13 +126,13 @@ class PurchaseService:
 
         Args:
             data (dict): Contains user_id, profile, listings, order_id, and transaction_id.
-            db_session: Database session for transactional operations.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             dict: {"status": 200} on success, or {"error": str, "status": int} on failure.
         """
         for listing in data.get("listings"):
-            if listing.get("status") != 'active':
+            if listing.get("status") != "active":
                 return {"error": "Listing is not available for purchase", "status": 400}
             # TODO: sold functionality requires new data/logic of total items available for purchase
             # listing.update(status="sold")
@@ -198,19 +173,35 @@ class PurchaseService:
 
 
     @staticmethod
-    def get_stripe_session_status(session_id: str):
+    def get_stripe_session_status(session_id: str, db_session=None):
         """
         Retrieve the status and details of a Stripe Checkout Session.
 
         Args:
             session_id (str): Stripe session ID to retrieve.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: JSON response with session details (e.g. customer email) and status on success,
                       or an error message with the appropriate HTTP status code on failure.
         """
         try:
-            stripe_session = stripe.checkout.Session.retrieve(session_id)
+            stripe_session = stripe.checkout.Session.retrieve(
+                session_id,
+                expand=["payment_intent"]
+            )
+
+            payment_intent = stripe_session.payment_intent
+            payment_intent_id = None
+
+            if payment_intent:
+                payment_intent_id = payment_intent.get("id")
+
+            transaction_response = PurchaseService.create_transaction(payment_intent_id=payment_intent_id, db_session=db_session)
+            if not transaction_response.get("status") == 200:
+                error = {"error": transaction_response.get("error")}
+                status = transaction_response.get("status")
+                return Response(response=jsonify(error).get_data(), status=status, mimetype="application/json")
 
             response_data = {
                 "message": "Found stripe session",
@@ -222,9 +213,58 @@ class PurchaseService:
 
         except stripe.error.StripeError as e:
             response_data = {"error": str(e)}
-            logger.error(msg=f"Stripe session: {session_id} not found: {e}")
+            logger.error(msg=f"Stripe session: {session_id} error: {e}")
             return Response(response=jsonify(response_data).get_data(), status=400, mimetype="application/json")
         except Exception as e:
             response_data = {"error": "Internal server error", "details": str(e)}
-            logger.error(msg=f"Stripe session: {session_id} not found: {e}")
+            logger.error(msg=f"Stripe session: {session_id} error: {e}")
+            return Response(response=jsonify(response_data).get_data(), status=500, mimetype="application/json")
+
+
+    @staticmethod
+    def create_transaction(payment_intent_id: str, db_session=None):
+        """
+        Create a Transaction for the Order
+
+        Args:
+            payment_intent_id (str): Payment Intent ID.
+            db_session: Database session for transactional operations.
+
+        Returns:
+            dict: {"status": 200} on success, or {"error": str, "status": int} on failure.
+        """
+        transaction_data = {"user_id": current_user.id, "payment_intent_id": payment_intent_id}
+        transaction_id = TransactionMapper.create_transaction(data=transaction_data, db_session=db_session)
+        if not transaction_id:
+            logger.error(msg=f"Failed creating transaction with payment_intent_id: {payment_intent_id}")
+            return {"error": "Error creating transaction", "status": 409}
+
+        logger.info(msg=f"Transaction: {transaction_id} created successfully with payment_intent_id: {payment_intent_id}")
+        return {"status": 200}
+
+
+    @staticmethod
+    def get_payment_method(payment_method_id: str):
+        """
+        Retrieve the payment method.
+
+        Args:
+            payment_method_id (str): ID of the payment method to retrieve
+
+        Returns:
+            JSON response indicating the success or failure of retrieving the payment method.
+        """
+        try:
+            payment_method = stripe.PaymentMethod.retrieve(payment_method_id)
+            response_data = {"message": "Payment method found", "payment_method": payment_method}
+            logger.info(msg=f"Payment method: {payment_method_id} found")
+            return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
+
+        except stripe.error.StripeError as e:
+            response_data = {"error": str(e)}
+            logger.error(msg=f"Stripe error: {e}")
+            return Response(response=jsonify(response_data).get_data(), status=400, mimetype="application/json")
+        except Exception as e:
+            response_data = {"error": "Internal server error", "details": str(e)}
+            logger.error(msg=f"Stripe error: {e}")
             return Response(response=jsonify(response_data).get_data(), status=500, mimetype="application/json")

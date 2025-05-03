@@ -10,6 +10,7 @@ bp = Blueprint("purchase_bp", __name__, url_prefix="/api/purchase")
 logger = setup_logger(name="purchase_logger", log_file="logs/purchase.log")
 
 
+# POST /api/purchase/
 @bp.route("/", methods=["POST"])
 @login_required
 def process_purchase(db_session=None):
@@ -37,11 +38,15 @@ def process_purchase(db_session=None):
     return PurchaseService.process_payment(data=data, db_session=db_session)
 
 
+# GET /api/purchase/status/
 @bp.route("/status/", methods=["GET"])
 @login_required
-def get_stripe_session_status():
+def get_stripe_session_status(db_session=None):
     """
     Retrieve the status of a Stripe Checkout Session.
+
+    Args:
+        db_session: Optional database session to be used in tests.
 
     Returns:
         Response: JSON response containing the session status and customer email if available,
@@ -54,4 +59,36 @@ def get_stripe_session_status():
         logger.error(msg=f"Failed retrieving stripe session with args: {', '.join(f'{k}={v!r}' for k, v in args.items())}")
         return Response(response=jsonify(response_data).get_data(), status=400, mimetype="application/json")
 
-    return PurchaseService.get_stripe_session_status(session_id=args.get("session_id"))
+    return PurchaseService.get_stripe_session_status(session_id=args.get("session_id"), db_session=db_session)
+
+
+# GET /api/purchase/payment-method/{id}/
+@bp.route("/payment-method/<payment_method_id>/", methods=["GET"])
+@login_required
+def get_payment_method(payment_method_id: str):
+    """
+    Retrieve the payment method.
+
+    Args:
+        payment_method_id (str): ID of the payment method to retrieve
+
+    Returns:
+        JSON response indicating the success or failure of retrieving the payment method.
+    """
+    return PurchaseService.get_payment_method(payment_method_id=payment_method_id)
+
+
+# GET /api/purchase/payment-method/{id}/
+@bp.route("/payment-method/<payment_method_id>/", methods=["GET"])
+@login_required
+def get_payment_method(payment_method_id: str):
+    """
+    Retrieve the payment method.
+
+    Args:
+        payment_method_id (str): ID of the payment method to retrieve
+
+    Returns:
+        JSON response indicating the success or failure of retrieving the payment method.
+    """
+    return PurchaseService.get_payment_method(payment_method_id=payment_method_id)

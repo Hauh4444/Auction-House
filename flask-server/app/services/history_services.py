@@ -1,6 +1,8 @@
 from flask import jsonify, Response
 from flask_login import current_user
 
+import stripe
+
 from ..data_mappers import OrderMapper, ListingMapper, TransactionMapper, DeliveryMapper, SupportTicketMapper, ReviewMapper
 from ..utils.logger import setup_logger
 
@@ -169,7 +171,24 @@ class HistoryService:
         if not transactions:
             response_data = {"error": "Transactions not found"}
             logger.error(msg=f"No transactions found for user: {user_id}")
-            return Response(response=jsonify(response_data).get_data(), status=404, mimetype='application/json')
+            return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
+
+        for idx, transaction in enumerate(transactions):
+            try:
+                payment_intent_id = transaction.get("payment_intent_id")
+                stripe_payment_intent  = stripe.PaymentIntent.retrieve(payment_intent_id)
+                transactions[idx] = stripe_payment_intent
+                transactions[idx]["transaction_id"] = transaction.get("transaction_id")
+                logger.info(msg=f"Stripe payment intent: {payment_intent_id} found")
+
+            except stripe.error.StripeError as e:
+                response_data = {"error": str(e)}
+                logger.error(msg=f"Stripe payment intent: {transaction.get("payment_intent_id")} error: {e}")
+                return Response(response=jsonify(response_data).get_data(), status=400, mimetype="application/json")
+            except Exception as e:
+                response_data = {"error": "Internal server error", "details": str(e)}
+                logger.error(msg=f"Stripe payment intent: {transaction.get("payment_intent_id")} error: {e}")
+                return Response(response=jsonify(response_data).get_data(), status=500, mimetype="application/json")
 
         response_data = {"message": "Transactions found", "transactions": transactions}
         logger.info(msg=f"Transactions found: {[transaction.get('transaction_id') for transaction in transactions]} for user: {user_id}")

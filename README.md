@@ -4,17 +4,20 @@
 
 ### React Frontend
 
-- Review 
-- Friends
-- History
-  - Transactions
-  - Deliveries
-  - Orders
-- List
-  - Create
-  - Update
-  - Delete
-9
+- Private
+  - Review 
+- Staff 
+  - Manage Listings
+  - Manage Categories
+- Other
+  - List
+    - Create
+    - Update
+    - Delete
+  - Chats
+    - Create
+    - Delete
+
 ### Flask Server
 
 - Code Review
@@ -24,7 +27,6 @@
         - SQL Statement Consistency
         - SQL Injection Vulnerabilities
     - Documentation
-- Shippo Integration
 
 ## Setup
 

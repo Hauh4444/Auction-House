@@ -10,7 +10,7 @@ bp = Blueprint("ticket_message_bp", __name__, url_prefix="/api/ticket/messages")
 logger = setup_logger(name="ticket_message_logger", log_file="logs/ticket_message.log")
 
 
-# GET /api/ticket/messages/{ticket_id}/
+# GET /api/ticket/messages/{id}/
 @bp.route('/<int:ticket_id>/', methods=['GET'])
 @login_required
 def get_messages_by_ticket(ticket_id: int, db_session=None):

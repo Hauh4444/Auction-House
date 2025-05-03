@@ -7,7 +7,7 @@ from ..services import ChatMessageService
 bp = Blueprint("chat_message_bp", __name__, url_prefix="/api/user/messages")
 
 
-# GET /api/user/messages/{chat_id}/
+# GET /api/user/messages/{id}/
 @bp.route('/<int:chat_id>/', methods=['GET'])
 @login_required
 def get_messages_by_chat(chat_id: int, db_session=None):

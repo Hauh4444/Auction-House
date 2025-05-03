@@ -74,7 +74,7 @@ const About = () => {
                                 <ListItem>
                                     <ListItemText
                                         primary="🔗 APIs"
-                                        secondary="📊 PostHog, 💳 Stripe, ✉️ MailerSend, 📦 Shippo"
+                                        secondary="📊 PostHog, 💳 Stripe, ✉️ MailerSend"
                                     />
                                 </ListItem>
                                 <ListItem>

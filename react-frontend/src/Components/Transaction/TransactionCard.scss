@@ -1,0 +1,125 @@
+// Built In Modules
+@use "sass:map";
+// Custom Variables
+@use "@/assets/variables/variables.modules.scss" as *;
+
+.transactionCard {
+    max-width: calc(33% - 57.5px);
+    padding: 20px;
+    border-radius: 10px !important;
+    box-shadow: 0 2px 4px map.get($theme-colors, mainColor4) !important;
+    background-color: map.get($theme-colors, mainColor1);
+    display: flex;
+    flex-grow: 1;
+    flex-basis: calc(33% - 70px);
+    align-items: center;
+
+    .cardContent {
+        width: 100%;
+        padding: 0 !important;
+
+        .thickDivider {
+            height: 1px;
+            background-color: map.get($theme-colors, mainColor3);
+            border: none;
+        }
+
+        .divider {
+            margin: 15px 0;
+        }
+
+        .infoGrid {
+            margin-bottom: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+
+            .infoItem {
+                flex: 1 1 45%;
+                display: flex;
+                justify-content: space-between;
+                font-size: 0.95rem;
+                color: map.get($theme-colors, mainColor6);
+
+                &.fullWidth {
+                    flex: 1 1 100%;
+                }
+
+                .label {
+                    font-weight: 600;
+                }
+
+                .statusCard {
+                    margin-right: -5px;
+                    padding: 2px 5px;
+                    border-radius: 5px;
+
+                    &.succeeded {
+                        background-color: #d1fbb2;
+                        color: #327b19;
+                    }
+
+                    &.pending,
+                    &.processing {
+                        background-color: #f9e076;
+                        color: #c49102;
+                    }
+
+                    &.failed,
+                    &.canceled {
+                        background-color: #fa8072;
+                        color: #7c0a02;
+                    }
+                }
+
+                .card-icon {
+                    margin-right: 8px;
+                    display: inline-flex;
+                    vertical-align: -7px;
+                    line-height: 1;
+                    font-size: 1.5rem;
+
+                    &.visa {
+                        color: #1A1F71; // Visa Blue
+                    }
+
+                    &.mastercard {
+                        color: #FF5F00; // MasterCard Orange
+                    }
+
+                    &.amex {
+                        color: #2E77A4; // American Express Blue
+                    }
+
+                    &.discover {
+                        color: #FF6A00; // Discover Orange
+                    }
+
+                    &.jcb {
+                        color: #0077B5; // JCB Blue
+                    }
+
+                    &.diners {
+                        color: #F0A800; // Diners Club Yellow
+                    }
+                }
+            }
+        }
+
+        .description {
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            color: map.get($theme-colors, mainColor6);
+        }
+
+        .metadata {
+            font-size: 0.85rem;
+            color: map.get($theme-colors, mainColor3);
+
+            strong {
+                margin-bottom: 5px;
+                display: block;
+            }
+        }
+    }
+}

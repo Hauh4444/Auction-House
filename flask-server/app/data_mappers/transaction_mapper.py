@@ -20,7 +20,7 @@ class TransactionMapper:
         """
         db = db_session or get_db()
         cursor = db.cursor(cursors.DictCursor) # type: ignore
-        cursor.execute("SELECT * FROM transactions WHERE user_id = %s", (user_id,))
+        cursor.execute("SELECT * FROM transactions WHERE user_id = %s ORDER BY created_at DESC", (user_id,))
         transactions = cursor.fetchall()
         return [Transaction(**transaction).to_dict() for transaction in transactions]
 
@@ -43,28 +43,26 @@ class TransactionMapper:
         transaction = cursor.fetchone()
         return Transaction(**transaction).to_dict() if transaction else None
 
-
     @staticmethod
     def create_transaction(data: dict, db_session=None):
-        """
-        Create a new transaction in the database.
-
-        Args:
-            data (dict): Dictionary containing transaction details.
-            db_session: Optional database session to be used in tests.
-
-        Returns:
-            int: The ID of the newly created transaction.
-        """
         db = db_session or get_db()
-        cursor = db.cursor(cursors.DictCursor) # type: ignore
-        statement = """
-            INSERT INTO transactions 
-            (order_id, user_id, transaction_date, transaction_type, amount, 
-            shipping_cost, payment_method, payment_status, created_at, updated_at) 
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        cursor = db.cursor(cursors.DictCursor)  # type: ignore
+
+        # Avoid duplicates
+        check_stmt = """
+            SELECT transaction_id FROM transactions WHERE payment_intent_id = %s
         """
-        cursor.execute(statement, tuple(Transaction(**data).to_dict().values())[1:]) # Exclude transaction_id (auto-incremented)
+        cursor.execute(check_stmt, (data["payment_intent_id"],))
+        existing = cursor.fetchone()
+        if existing:
+            return existing["transaction_id"]
+
+        insert_stmt = """
+            INSERT INTO transactions 
+            (user_id, payment_intent_id, created_at, updated_at) 
+            VALUES (%s, %s, %s, %s)
+        """
+        cursor.execute(insert_stmt, tuple(Transaction(**data).to_dict().values())[1:])  # Exclude transaction_id (auto-incremented)
         db.commit()
         return cursor.lastrowid
 
