@@ -10,7 +10,7 @@ bp = Blueprint("purchase_bp", __name__, url_prefix="/api/purchase")
 logger = setup_logger(name="purchase_logger", log_file="logs/purchase.log")
 
 
-@bp.route('/', methods=['POST'])
+@bp.route("/", methods=["POST"])
 @login_required
 def process_purchase(db_session=None):
     """
@@ -37,7 +37,7 @@ def process_purchase(db_session=None):
     return PurchaseService.process_payment(data=data, db_session=db_session)
 
 
-@bp.route('/status/', methods=['GET'])
+@bp.route("/status/", methods=["GET"])
 @login_required
 def get_stripe_session_status():
     """

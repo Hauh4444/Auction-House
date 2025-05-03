@@ -32,6 +32,7 @@ class ProfileService:
         logger.info(msg=f"Profile found for user: {user_id}")
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
+
     @staticmethod
     def create_profile(data: dict, db_session=None):
         """
@@ -54,6 +55,7 @@ class ProfileService:
         response_data = {"message": "Profile created", "profile_id": profile_id}
         logger.info(msg=f"Profile: {profile_id} created successfully with data: {', '.join(f'{k}={v!r}' for k, v in data.items())}")
         return Response(response=jsonify(response_data).get_data(), status=201, mimetype="application/json")
+
 
     @staticmethod
     def update_profile(profile_id: int, data: dict, db_session=None):
@@ -78,6 +80,7 @@ class ProfileService:
         response_data = {"message": "Profile updated", "updated_rows": updated_rows}
         logger.info(msg=f"Profile: {profile_id} updated successfully with data: {', '.join(f'{k}={v!r}' for k, v in data.items())}")
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
+
 
     @staticmethod
     def delete_profile(data=None, db_session=None):

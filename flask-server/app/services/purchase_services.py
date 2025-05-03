@@ -212,9 +212,13 @@ class PurchaseService:
         try:
             stripe_session = stripe.checkout.Session.retrieve(session_id)
 
-            response_data = {"message": "Found stripe session", "customer_email": stripe_session.customer_details.email if stripe_session.customer_details else None}
+            response_data = {
+                "message": "Found stripe session",
+                "customer_email": stripe_session.customer_details.email,
+                "status": stripe_session.status
+            }
             logger.info(msg=f"Stripe session: {session_id} found")
-            return Response(response=jsonify(response_data).get_data(), status=stripe_session.status, mimetype="application/json")
+            return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
         except stripe.error.StripeError as e:
             response_data = {"error": str(e)}

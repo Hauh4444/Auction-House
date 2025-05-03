@@ -24,7 +24,7 @@
         - SQL Statement Consistency
         - SQL Injection Vulnerabilities
     - Documentation
-- Order & Delivery API
+- Shippo Integration
 
 ## Setup
 
