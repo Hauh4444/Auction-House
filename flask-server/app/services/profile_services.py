@@ -1,8 +1,14 @@
 from flask import jsonify, Response
 from flask_login import current_user
-
+import shippo
+import os
+from dotenv import load_dotenv
 from ..data_mappers import ProfileMapper
+from ..data_mappers.delivery_mapper import DeliveryMapper
 
+# Load environment variables
+load_dotenv()
+shippo.api_key = os.getenv("SHIPPO_API_KEY")
 
 class ProfileService:
     @staticmethod
@@ -95,4 +101,68 @@ class ProfileService:
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
         response_data = {"message": "Profile deleted", "deleted_rows": deleted_rows}
+        return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
+
+class PurchaseService:
+    @staticmethod
+    def create_delivery(data, db_session=None):
+        """
+        Create a new delivery record in the database and generate a shipment using Shippo.
+        """
+        # Create a shipment using Shippo
+        shipment = shippo.Shipment.create(
+            address_from=data["from_address"],
+            address_to=data["to_address"],
+            parcels=[data["parcel"]],
+            async=False
+        )
+
+        # Extract tracking details
+        tracking_number = shipment["tracking_number"]
+        courier = shipment["carrier"]
+        tracking_url_provider = shipment["tracking_url_provider"]
+
+        # Save the delivery details to the database
+        delivery_data = {
+            "user_id": data["user_id"],
+            "tracking_number": tracking_number,
+            "courier": courier,
+            "tracking_url_provider": tracking_url_provider
+        }
+        delivery_id = DeliveryMapper.create_delivery(data=delivery_data, db_session=db_session)
+
+        if not delivery_id:
+            response_data = {"error": "Failed to create delivery"}
+            return Response(response=jsonify(response_data).get_data(), status=400, mimetype="application/json")
+
+        response_data = {
+            "message": "Delivery created",
+            "delivery_id": delivery_id,
+            "tracking_number": tracking_number,
+            "courier": courier,
+            "tracking_url_provider": tracking_url_provider
+        }
+        return Response(response=jsonify(response_data).get_data(), status=201, mimetype="application/json")
+
+    @staticmethod
+    def get_delivery(delivery_id, db_session=None):
+        """
+        Retrieve delivery tracking details using Shippo.
+        """
+        # Get the reference data from the database
+        delivery_reference = DeliveryMapper.get_delivery_reference(delivery_id=delivery_id, db_session=db_session)
+
+        if not delivery_reference:
+            response_data = {"error": "Delivery not found"}
+            return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
+
+        # Use Shippo to get tracking details
+        tracking_number = delivery_reference["tracking_number"]
+        courier = delivery_reference["courier"]
+        tracking_status = shippo.Track.get(carrier=courier, tracking_number=tracking_number)
+
+        response_data = {
+            "message": "Tracking details retrieved",
+            "tracking_status": tracking_status
+        }
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")

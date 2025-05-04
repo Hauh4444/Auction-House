@@ -40,50 +40,49 @@ class DeliveryService:
     @staticmethod
     def create_delivery(data, db_session=None):
         """
-        Create a new delivery record in the database and generate a shipment using Shippo.
+        Create a delivery for the order item.
+
+        Args:
+            data (dict): Includes order_item_id, user_id, and address details.
+            db_session (optional): Database session for transactional operations.
+
+        Returns:
+            dict: {"status": 200} on success, or {"error": str, "status": int} on failure.
         """
         try:
             # Create a shipment using Shippo
             shipment = shippo.Shipment.create(
                 address_from=data["from_address"],
                 address_to=data["to_address"],
-                parcels=[data["parcel"]],
+                parcels=[{
+                    "length": "10",
+                    "width": "5",
+                    "height": "5",
+                    "distance_unit": "in",
+                    "weight": "2",
+                    "mass_unit": "lb"
+                }],
                 asynchronous=False
             )
 
-            # Extract tracking details
-            tracking_number = shipment["tracking"]["tracking_number"]
-            courier = shipment["tracking"]["carrier"]
-            tracking_url_provider = shipment["tracking"]["tracking_url"]
-
             # Save the delivery details to the database
             delivery_data = {
-                "user_id": data["user_id"],
-                "tracking_number": tracking_number,
-                "courier": courier,
-                "tracking_url_provider": tracking_url_provider
+                "order_item_id": data.get("order_item_id"),
+                "user_id": data.get("user_id"),
+                "tracking_number": shipment["tracking_number"],
+                "courier": shipment["carrier"],
+                "tracking_url": shipment["tracking_url"]
             }
             delivery_id = DeliveryMapper.create_delivery(data=delivery_data, db_session=db_session)
-
             if not delivery_id:
-                response_data = {"error": "Failed to create delivery"}
-                return Response(response=jsonify(response_data).get_data(), status=400, mimetype="application/json")
+                return {"error": "Error creating delivery", "status": 409}
 
-            response_data = {
-                "message": "Delivery created",
-                "delivery_id": delivery_id,
-                "tracking_number": tracking_number,
-                "courier": courier,
-                "tracking_url_provider": tracking_url_provider
-            }
-            return Response(response=jsonify(response_data).get_data(), status=201, mimetype="application/json")
+            return {"status": 200, "delivery_id": delivery_id}
 
         except shippo.error.APIError as e:
-            response_data = {"error": "Shippo API error", "details": str(e)}
-            return Response(response=jsonify(response_data).get_data(), status=400, mimetype="application/json")
+            return {"error": f"Shippo API error: {str(e)}", "status": 400}
         except Exception as e:
-            response_data = {"error": "Internal server error", "details": str(e)}
-            return Response(response=jsonify(response_data).get_data(), status=500, mimetype="application/json")
+            return {"error": f"Internal server error: {str(e)}", "status": 500}
 
     @staticmethod
     def update_user_delivery(delivery_id, data, db_session=None):

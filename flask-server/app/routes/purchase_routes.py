@@ -28,19 +28,22 @@ def get_stripe_session_status():
     return PurchaseService.get_stripe_session_status(args=args)
 
 
-@bp.route("/delivery/<int:delivery_id>", methods=["GET"])
-@login_required
-def get_delivery(delivery_id):
-    """
-    Retrieve delivery tracking details using AfterShip.
-    """
-    return PurchaseService.get_delivery(delivery_id=delivery_id)
-
-
 @bp.route("/order/<int:order_id>", methods=["GET"])
 @login_required
 def get_order(order_id):
-    """
-    Retrieve order details from the database.
-    """
     return PurchaseService.get_order(order_id=order_id)
+
+@bp.route("/transaction/<int:transaction_id>", methods=["GET"])
+@login_required
+def get_transaction(transaction_id):
+    return PurchaseService.get_transaction(transaction_id=transaction_id)
+
+@bp.route("/order-item/<int:order_item_id>", methods=["GET"])
+@login_required
+def get_order_item(order_item_id):
+    return PurchaseService.get_order_item(order_item_id=order_item_id)
+
+@bp.route("/delivery/<int:delivery_id>", methods=["GET"])
+@login_required
+def get_delivery(delivery_id):
+    return PurchaseService.get_delivery(delivery_id=delivery_id)
