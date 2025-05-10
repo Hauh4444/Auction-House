@@ -13,7 +13,7 @@ class CategoryService:
         Retrieves a list of all categories.
 
         Args:
-            db_session (Optional[Session]): An optional database session to be used in tests.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response containing the list of categories.
@@ -30,13 +30,13 @@ class CategoryService:
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
     @staticmethod
-    def get_category_by_id(category_id, db_session=None):
+    def get_category_by_id(category_id: int, db_session=None):
         """
         Retrieves a specific category by its ID.
 
         Args:
             category_id (int): The ID of the category to retrieve.
-            db_session (Optional[Session]): An optional database session to be used in tests.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response containing the category data if found.
@@ -53,13 +53,13 @@ class CategoryService:
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
     @staticmethod
-    def create_category(data, db_session=None):
+    def create_category(data: dict, db_session=None):
         """
         Creates a new category with the provided data.
 
         Args:
             data (dict): A dictionary containing the category details (e.g., name).
-            db_session (Optional[Session]): An optional database session to be used in tests.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response with the success message and newly created category ID.
@@ -68,22 +68,22 @@ class CategoryService:
         category_id = CategoryMapper.create_category(data=data, db_session=db_session)
         if not category_id:
             response_data = {"error": "Error creating category"}
-            logger.error(msg=f"Failed creating category with data: {data}")
+            logger.error(msg=f"Failed creating category with data: {', '.join(f'{k}={v!r}' for k, v in data.items())}")
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
 
         response_data = {"message": "Category created", "category_id": category_id}
-        logger.info(msg=f"Category: {category_id} created successfully with data: {data}")
+        logger.info(msg=f"Category: {category_id} created successfully with data: {', '.join(f'{k}={v!r}' for k, v in data.items())}")
         return Response(response=jsonify(response_data).get_data(), status=201, mimetype="application/json")
 
     @staticmethod
-    def update_category(category_id, data, db_session=None):
+    def update_category(category_id: int, data: dict, db_session=None):
         """
         Updates an existing category by its ID with the provided data.
 
         Args:
             category_id (int): The ID of the category to update.
             data (dict): A dictionary containing the updated category details.
-            db_session (Optional[Session]): An optional database session to be used in tests.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response with a success message if the category was updated.
@@ -92,21 +92,21 @@ class CategoryService:
         updated_rows = CategoryMapper.update_category(category_id=category_id, data=data, db_session=db_session)
         if not updated_rows:
             response_data = {"error": "Error updating category"}
-            logger.error(msg=f"Failed updating category: {category_id} with data: {data}")
+            logger.error(msg=f"Failed updating category: {category_id} with data: {', '.join(f'{k}={v!r}' for k, v in data.items())}")
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
 
         response_data = {"message": "Category updated", "updated_rows": updated_rows}
-        logger.info(msg=f"Category: {category_id} updated successfully with data: {data}")
+        logger.info(msg=f"Category: {category_id} updated successfully with data: {', '.join(f'{k}={v!r}' for k, v in data.items())}")
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
     @staticmethod
-    def delete_category(category_id, db_session=None):
+    def delete_category(category_id: int, db_session=None):
         """
         Deletes a category by its ID.
 
         Args:
             category_id (int): The ID of the category to delete.
-            db_session (Optional[Session]): An optional database session to be used in tests.
+            db_session: Optional database session to be used in tests.
 
         Returns:
             Response: A JSON response with a success message if the category was deleted.

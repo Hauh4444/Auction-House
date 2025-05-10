@@ -1,13 +1,13 @@
 from pymysql import cursors
 from datetime import datetime
 
-from ..database.connection import get_db
+from ..database import get_db
 from ..entities import User
 
 
 class UserMapper:
     @staticmethod
-    def get_user(user_id, db_session=None):
+    def get_user(user_id: int, db_session=None):
         """
         Retrieve a user by their ID.
 
@@ -19,14 +19,14 @@ class UserMapper:
             dict: User details if found, otherwise None.
         """
         db = db_session or get_db()
-        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor = db.cursor(cursors.DictCursor)  # type: ignore
         cursor.execute("SELECT * FROM users WHERE user_id = %s", (user_id,))
         user = cursor.fetchone()
-        return User(**user).to_dict()
+        return User(**user).to_dict() if user else None
 
 
     @staticmethod
-    def update_user(user_id, data, db_session=None):
+    def update_user(user_id: int, data: dict, db_session=None):
         """
         Update an existing user.
 
@@ -40,9 +40,17 @@ class UserMapper:
         """
         db = db_session or get_db()
         cursor = db.cursor(cursors.DictCursor) # type: ignore
-        set_clause = ", ".join([f"{key} = %s" for key in data if key not in ["user_id", "updated_at"]])
-        values = [data.get(key) for key in data if key not in ["user_id", "updated_at"]]
-        values.append(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+        for key, value in data.items():
+            if isinstance(value, str):
+                try:
+                    data[key] = datetime.strptime(value, '%a, %d %b %Y %H:%M:%S GMT')
+                except ValueError:
+                    pass
+            if isinstance(value, datetime):
+                data[key] = value.strftime('%Y-%m-%d %H:%M:%S')
+        set_clause = ", ".join([f"{key} = %s" for key in data if key not in ["user_id", "created_at", "updated_at", "last_login"]])
+        values = [data.get(key) for key in data if key not in ["user_id", "created_at", "updated_at", "last_login"]]
+        values.append(datetime.now())
         values.append(user_id)
         statement = f"UPDATE users SET {set_clause}, updated_at = %s WHERE user_id = %s"
         cursor.execute(statement, values)
@@ -51,7 +59,7 @@ class UserMapper:
 
 
     @staticmethod
-    def delete_user(user_id, db_session=None):
+    def delete_user(user_id: int, db_session=None):
         """
         Delete a user by their ID.
 

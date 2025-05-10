@@ -10,6 +10,7 @@ import Contact from "@/Pages/Public/Contact/Contact";
 import Home from "@/Pages/Public/Home/Home";
 import Listing from "@/Pages/Public/Listing/Listing";
 import PageNotFound from "@/Pages/Public/PageNotFound/PageNotFound";
+import PasswordReset from "@/Pages/Public/PasswordReset/PasswordReset";
 import Search from "@/Pages/Public/Search/Search";
 import Support from "@/Pages/Private/Support/Support";
 
@@ -39,7 +40,7 @@ import CustomerInquiries from "@/Pages/Staff/CustomerInquiries/CustomerInquiries
 import ManageListings from "@/Pages/Staff/ManageListings/ManageListings";
 import StaffAccount from "@/Pages/Staff/StaffAccount/StaffAccount";
 import StaffReports from "@/Pages/Staff/StaffReports/StaffReports";
-import ManageUsers from "@/Pages/Staff/ManageUsers/ManageUsers.jsx";
+import ManageUsers from "@/Pages/Staff/ManageUsers/ManageUsers";
 
 // Admin Internal Modules
 import AdminAccount from "@/Pages/Admin/AdminAccount/AdminAccount";
@@ -72,6 +73,7 @@ const PublicRoutes = () => {
                 <Route path="/" element={ <Home /> } />
                 <Route path="/listing" element={ <Listing /> } />
                 <Route path="*" element={ <PageNotFound /> } />
+                <Route path="/reset_password" element={ <PasswordReset /> } />
                 <Route path="/search" element={ <Search /> } />
 
                 { /* Protected Routes for Authenticated Users */ }

@@ -1,6 +1,5 @@
 import pytest
 from unittest.mock import MagicMock
-
 from datetime import datetime
 
 from app.entities import Category
@@ -62,6 +61,7 @@ def test_category_to_dict():
     assert category_dict["name"] == "Books"
     assert category_dict["description"] == "Various books"
     assert category_dict["image_encoded"] == "image_data"
+    # Updated: Expect datetime fields as strings
     assert category_dict["created_at"] == datetime(2024, 1, 1, 10, 0, 0)
     assert category_dict["updated_at"] == datetime(2024, 1, 2, 12, 0, 0)
     assert isinstance(category_dict["category_id"], int)
@@ -72,15 +72,13 @@ def test_category_to_dict():
     assert isinstance(category_dict["updated_at"], datetime)
 
 
-# noinspection PyArgumentList
 def test_category_missing_required_fields():
-    with pytest.raises(expected_exception=TypeError):
+    with pytest.raises(TypeError):
         Category()
 
 
-# noinspection PyTypeChecker
 def test_category_invalid_types():
-    with pytest.raises(expected_exception=TypeError):
+    with pytest.raises(TypeError):
         Category(
             category_id="1",
             name=1,

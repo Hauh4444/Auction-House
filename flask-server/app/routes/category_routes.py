@@ -2,9 +2,12 @@ from flask import Blueprint, request, jsonify, Response
 from flask_login import login_required, current_user
 
 from ..services import CategoryService
+from ..utils.logger import setup_logger
 
 # Blueprint for category-related routes
 bp = Blueprint("category_bp", __name__, url_prefix="/api/categories")
+
+logger = setup_logger(name="category_logger", log_file="logs/category.log")
 
 
 # GET /api/categories/
@@ -24,7 +27,7 @@ def get_all_categories(db_session=None):
 
 # GET /api/categories/{id}/
 @bp.route("/<int:category_id>/", methods=["GET"])
-def get_category(category_id, db_session=None):
+def get_category(category_id: int, db_session=None):
     """
     Retrieve a single category by its ID.
 
@@ -56,6 +59,7 @@ def create_category(db_session=None):
     """
     if current_user.role not in ["staff", "admin"]:
         response_data = {"error": "Unauthorized access"}
+        logger.error(msg=f"Unauthorized access attempt to create category by user {current_user.id}")
         return Response(response=jsonify(response_data).get_data(), status=401, mimetype="application/json")
 
     data = request.json
@@ -65,7 +69,7 @@ def create_category(db_session=None):
 # PUT /api/categories/{id}/
 @bp.route("/<int:category_id>/", methods=["PUT"])
 @login_required
-def update_category(category_id, db_session=None):
+def update_category(category_id: int, db_session=None):
     """
     Update an existing category by its ID.
 
@@ -81,6 +85,7 @@ def update_category(category_id, db_session=None):
     """
     if current_user.role not in ["staff", "admin"]:
         response_data = {"error": "Unauthorized access"}
+        logger.error(msg=f"Unauthorized access attempt to update category by user {current_user.id}")
         return Response(response=jsonify(response_data).get_data(), status=401, mimetype="application/json")
 
     data = request.json
@@ -90,7 +95,7 @@ def update_category(category_id, db_session=None):
 # DELETE /api/categories/{id}/
 @bp.route("/<int:category_id>/", methods=["DELETE"])
 @login_required
-def delete_category(category_id, db_session=None):
+def delete_category(category_id: int, db_session=None):
     """
     Delete a category by its ID.
 
@@ -103,6 +108,7 @@ def delete_category(category_id, db_session=None):
     """
     if current_user.role not in ["staff", "admin"]:
         response_data = {"error": "Unauthorized access"}
+        logger.error(msg=f"Unauthorized access attempt to delete category by user {current_user.id}")
         return Response(response=jsonify(response_data).get_data(), status=401, mimetype="application/json")
     
     return CategoryService.delete_category(category_id=category_id, db_session=db_session)

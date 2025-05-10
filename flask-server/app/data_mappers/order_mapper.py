@@ -1,13 +1,13 @@
 from pymysql import cursors
 from datetime import datetime
 
-from ..database.connection import get_db
+from ..database import get_db
 from ..entities import Order, OrderItem
 
 
 class OrderMapper:
     @staticmethod
-    def get_all_orders(user_id, db_session=None):
+    def get_all_orders(user_id: int, db_session=None):
         """
         Retrieve all orders from the database.
 
@@ -26,7 +26,7 @@ class OrderMapper:
 
 
     @staticmethod
-    def get_order_by_id(order_id, db_session=None):
+    def get_order_by_id(order_id: int, db_session=None):
         """
         Retrieve an order by its ID.
 
@@ -45,7 +45,7 @@ class OrderMapper:
 
 
     @staticmethod
-    def create_order(data, db_session=None):
+    def create_order(data: dict, db_session=None):
         """
         Create a new order in the database.
 
@@ -56,20 +56,27 @@ class OrderMapper:
         Returns:
             int: The ID of the newly created order.
         """
+        # Ensure created_at and updated_at are datetime objects
+        if isinstance(data.get("created_at"), str):
+            data["created_at"] = datetime.strptime(data["created_at"], "%Y-%m-%d %H:%M:%S")
+        if isinstance(data.get("updated_at"), str):
+            data["updated_at"] = datetime.strptime(data["updated_at"], "%Y-%m-%d %H:%M:%S")
+
         db = db_session or get_db()
-        cursor = db.cursor(cursors.DictCursor) # type: ignore
+        cursor = db.cursor(cursors.DictCursor)  # type: ignore
         statement = """
             INSERT INTO orders 
             (user_id, order_date, status, created_at, updated_at) 
             VALUES (%s, %s, %s, %s, %s)
         """
-        cursor.execute(statement, tuple(Order(**data).to_dict().values())[1:]) # Exclude order_id (auto-incremented)
+        cursor.execute(statement, tuple(Order(**data).to_dict().values())[1:])  # Exclude order_id (auto-incremented)
         db.commit()
         return cursor.lastrowid
 
 
+
     @staticmethod
-    def create_order_item(data, db_session=None):
+    def create_order_item(data: dict, db_session=None):
         """
         Create a new order item in the database.
 
@@ -93,7 +100,7 @@ class OrderMapper:
 
 
     @staticmethod
-    def update_order(order_id, data, db_session=None):
+    def update_order(order_id: int, data: dict, db_session=None):
         """
         Update an existing order.
 
@@ -107,9 +114,17 @@ class OrderMapper:
         """
         db = db_session or get_db()
         cursor = db.cursor(cursors.DictCursor) # type: ignore
+        for key, value in data.items():
+            if isinstance(value, str):
+                try:
+                    data[key] = datetime.strptime(value, '%a, %d %b %Y %H:%M:%S GMT')
+                except ValueError:
+                    pass
+            if isinstance(value, datetime):
+                data[key] = value.strftime('%Y-%m-%d %H:%M:%S')
         conditions = [f"{key} = %s" for key in data if key not in ["order_id", "created_at", "updated_at"]]
         values = [data.get(key) for key in data if key not in ["order_id", "created_at", "updated_at"]]
-        values.append(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+        values.append(datetime.now())
         values.append(order_id)
         statement = f"UPDATE orders SET {', '.join(conditions)}, updated_at = %s WHERE order_id = %s"
         cursor.execute(statement, values)
@@ -118,7 +133,7 @@ class OrderMapper:
 
 
     @staticmethod
-    def delete_order(order_id, db_session=None):
+    def delete_order(order_id: int, db_session=None):
         """
         Delete an order by its ID.
 

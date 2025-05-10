@@ -54,13 +54,13 @@ const navigateToListing = (id, navigate) => {
 const addToList = (list_id, listing_id) => {
     axios.post(`${ import.meta.env.VITE_BACKEND_API_URL }/user/lists/${ list_id }/`,
         {
-            listing_id: listing_id,
+            listing_id: parseInt(listing_id),
         },
         {
             headers: { "Content-Type": "application/json" },
             withCredentials: true, // Ensure cookies are sent
         })
-        .catch(err => console.error(err)); // Log errors if any
+        .catch((err) => console.error(err)); // Log errors if any
 }
 
 const updateList = (list_id, list_items) => {
@@ -72,7 +72,7 @@ const updateList = (list_id, list_items) => {
             headers: { "Content-Type": "application/json" },
             withCredentials: true, // Ensure cookies are sent
         })
-        .catch(err => console.error(err)); // Log errors if any
+        .catch((err) => console.error(err)); // Log errors if any
 }
 
 export { renderStars, encodeImageToBase64, navigateToListing, addToList, updateList };

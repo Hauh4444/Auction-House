@@ -20,7 +20,7 @@ const Deliveries = () => {
                 withCredentials: true, // Ensures cookies are sent with requests
             })
             .then((res) => setDeliveries(res.data.deliveries))
-            .catch(err => console.error(err)); // Log errors if any
+            .catch((err) => console.error(err)); // Log errors if any
     }, []);
 
     return (

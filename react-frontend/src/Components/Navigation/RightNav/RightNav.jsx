@@ -14,7 +14,7 @@ import { useAuth } from "@/ContextAPI/AuthContext";
 import "./RightNav.scss";
 
 // Custom Variables
-import { variables } from "@/assets/variables.modules";
+import { variables } from "@/assets/variables/variables.modules.js";
 
 /**
  * RightNav Component
@@ -37,13 +37,13 @@ import { variables } from "@/assets/variables.modules";
  */
 const RightNav = () => {
     const navigate = useNavigate(); // Navigate hook for routing
-    const auth = useAuth();
+    const auth = useAuth(); // Fetch the authentication context
 
     return (
         <nav className="rightNav"> { /* Navigation container */ }
             <div className="navBar"> { /* Navigation bar container */ }
                 <Button className="btn" data-testid="menuBtn"> { /* Button for menu */ }
-                    <BsThreeDots className="menuBtn" style={ { fontSize: "25px", color: variables.mainColor3 } } onClick={ () => { if (!auth.user) navigate("/auth-page") } }/>
+                    <BsThreeDots className="menuBtn" style={ { fontSize: "25px", color: variables.mainColor3 } } onClick={ () => { auth.user ? auth.logout() : navigate("user/account") } }/>
                 </Button>
                 <Button className="btn" data-testid="accountBtn" style={ { marginBottom: "15px" } } onClick={ () => navigate(`/${ auth.user ? auth.user.role : "user"  }/account`)}>
                     <RiAccountCircle2Fill className="fill" /> { /* Filled account icon */ }

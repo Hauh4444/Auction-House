@@ -13,7 +13,7 @@ import { useAuth } from "@/ContextAPI/AuthContext";
 import "./Messages.scss";
 
 const Messages = () => {
-    const auth = useAuth();
+    const auth = useAuth(); // Fetch the authentication context
 
     const [chats, setChats] = useState([]); // State for storing chats
     const [currentChat, setCurrentChat] = useState(null); // State for the currently selected chat
@@ -21,6 +21,11 @@ const Messages = () => {
     const [newMessage, setNewMessage] = useState(""); // State for storing new message input
 
     const messagesEndRef = useRef(null); // Reference to scroll to the bottom of the messages div
+    const currentChatRef = useRef(currentChat);
+
+    useEffect(() => {
+        currentChatRef.current = currentChat;
+    }, [currentChat]);
 
     // Fetch chats and set the first chat as current chat
     useEffect(() => {
@@ -50,16 +55,30 @@ const Messages = () => {
 
     useEffect(() => {
         const socket = io(import.meta.env.VITE_BACKEND_URL, {
-            transports: ["polling"],
+            transports: ["websocket"],
             withCredentials: true,
         });
 
         if (!socket) return;
 
-        socket.on("new_message", getMessages);
+        // We have to use references because of fucking race conditions
+        const handleNewMessage = () => {
+            const chatId = currentChatRef.current?.chat_id;
+            if (chatId) {
+                axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/user/messages/${ chatId }/`,
+                    {
+                        headers: { "Content-Type": "application/json" },
+                        withCredentials: true,
+                    })
+                    .then((res) => setMessages(res.data.messages))
+                    .catch(() => setMessages([]));
+            }
+        };
+
+        socket.on("new_message", handleNewMessage);
 
         return () => {
-            socket.off("new_message", getMessages);
+            socket.off("new_message", handleNewMessage);
         };
     }, []);
 
@@ -76,19 +95,25 @@ const Messages = () => {
         }
     }, [messages]); // This will trigger scroll whenever messages change
 
+    const handleCreateChat = () => {
+
+    }
+
     const handleSendMessage = () => {
         if (!newMessage.trim()) return; // Prevent sending empty messages
-        axios.post(`${ import.meta.env.VITE_BACKEND_API_URL }/user/messages/${ currentChat.chat_id }/`, {
-            message: newMessage
-        }, {
-            headers: { "Content-Type": "application/json" },
-            withCredentials: true, // Ensures cookies are sent with requests
-        })
+        axios.post(`${ import.meta.env.VITE_BACKEND_API_URL }/user/messages/${ currentChat.chat_id }/`,
+            {
+                message: newMessage
+            },
+            {
+                headers: { "Content-Type": "application/json" },
+                withCredentials: true, // Ensures cookies are sent with requests
+            })
             .then(() => {
                 setNewMessage(""); // Reset message input
                 getMessages(); // Fetch new messages
             })
-            .catch(err => console.error(err)); // Log errors if any
+            .catch((err) => console.error(err)); // Log errors if any
     };
 
     const handleKeyPress = (e) => {
@@ -134,7 +159,7 @@ const Messages = () => {
                                 label="Message"
                                 type="text"
                                 onChange={ (e) => setNewMessage(e.target.value) }
-                                onKeyDown={ () => handleKeyPress() }
+                                onKeyDown={ (e) => handleKeyPress(e) }
                                 variant="outlined"
                                 sx={{
                                     "& .MuiOutlinedInput-root": {

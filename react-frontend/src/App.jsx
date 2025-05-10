@@ -33,7 +33,7 @@ const lightTheme = createTheme({
  *
  * @returns { JSX.Element }
  * - Renders the `ThemeProvider` with the selected theme (light theme currently).
- * - Contains the `PublicRoutes` component, which defines the application"s routing for public pages.
+ * - Contains the `PublicRoutes` component, which defines the application"s routing for pages.
  */
 function App() {
     const [isDarkMode, setIsDarkMode] = useState(false);

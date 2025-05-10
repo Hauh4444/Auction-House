@@ -63,7 +63,7 @@ const Category = () => {
                 headers: { "Content-Type": "application/json" },
             })
             .then((res) => setCategory(res.data.category)) // Update state with fetched data
-            .catch(err => console.error(err)); // Log errors if any
+            .catch((err) => console.error(err)); // Log errors if any
     }, [location.search]);
 
     useEffect(() => {
@@ -219,14 +219,15 @@ const Category = () => {
                     <div className="pagination">
                         <Button
                             className="previousPagination"
-                            style={ filters.page === "1" ? { opacity: 0.5, cursor: "default"  } : { opacity: 1, cursor: "pointer" } }
+                            style={ filters.page === "1" ? { opacity: 0.5, cursor: "default" } : { opacity: 1, cursor: "pointer" } }
                             disabled={ filters.page === "1" }
                             onClick={ () => pagination(-1) }
                         >
                             <MdArrowBackIosNew className="icon" />&ensp;Previous
                         </Button>
                         <Button
-                            style={ { marginLeft: "25px" } }
+                            style={ listings.length === 0 ? { opacity: 0.5, cursor: "default", marginLeft: "25px" } : { opacity: 1, cursor: "pointer", marginLeft: "25px" } }
+                            disabled={ listings.length === 0 }
                             onClick={ () => pagination(1) }
                         >
                             Next&ensp;<MdArrowForwardIos className="icon" />

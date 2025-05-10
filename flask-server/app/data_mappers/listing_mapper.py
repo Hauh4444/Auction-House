@@ -1,13 +1,14 @@
+from charset_normalizer.md import is_arabic_isolated_form
 from pymysql import cursors
 from datetime import datetime
 
-from ..database.connection import get_db
+from ..database import get_db
 from ..entities import Listing
 
 
 class ListingMapper:
     @staticmethod
-    def get_all_listings(args, db_session=None):
+    def get_all_listings(args: dict, db_session=None):
         """
         Retrieve all listings with optional filtering, sorting, and pagination.
 
@@ -63,7 +64,7 @@ class ListingMapper:
 
 
     @staticmethod
-    def get_listing_by_id(listing_id, db_session=None):
+    def get_listing_by_id(listing_id: int, db_session=None):
         """
         Retrieve a single listing by its ID.
 
@@ -82,7 +83,7 @@ class ListingMapper:
 
 
     @staticmethod
-    def create_listing(data, db_session=None):
+    def create_listing(data: dict, db_session=None):
         """
         Create a new listing in the database.
 
@@ -108,7 +109,7 @@ class ListingMapper:
 
 
     @staticmethod
-    def update_listing(listing_id, data, db_session=None):
+    def update_listing(listing_id: int, data: dict, db_session=None):
         """
         Update an existing listing.
 
@@ -121,19 +122,24 @@ class ListingMapper:
             int: Number of rows updated.
         """
         db = db_session or get_db()
-        cursor = db.cursor(cursors.DictCursor) # type: ignore
-        set_clause = ", ".join([f"{key} = %s" for key in data if key not in ["listing_id", "created_at", "updated_at"]])
-        values = [data.get(key) for key in data if key not in ["listing_id", "created_at", "updated_at"]]
-        values.append(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+        cursor = db.cursor(cursors.DictCursor)  # type: ignore
+        set_clause = []
+        values = []
+        for key, value in data.items():
+            if key not in ["listing_id", "created_at", "updated_at", "auction_start", "auction_end"]:
+                increment_value = 1 if key == "bids" else None
+                set_clause.append(f"{key} = {key} + %s" if increment_value else f"{key} = %s")
+                values.append(increment_value if increment_value else value)
+        values.append(datetime.now())
         values.append(listing_id)
-        statement = f"UPDATE listings SET {set_clause}, updated_at = %s WHERE listing_id = %s"
+        statement = f"UPDATE listings SET {', '.join(set_clause)}, updated_at = %s WHERE listing_id = %s"
         cursor.execute(statement, values)
         db.commit()
         return cursor.rowcount
 
 
     @staticmethod
-    def delete_listing(listing_id, db_session=None):
+    def delete_listing(listing_id: int, db_session=None):
         """
         Delete a listing by its ID.
 

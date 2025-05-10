@@ -2,10 +2,11 @@ from flask import jsonify, Response
 
 from ..data_mappers import ReviewMapper
 
+logger = setup_logger(name="review_logger", log_file="logs/review.log")
 
 class ReviewService:
     @staticmethod
-    def get_all_reviews(args, db_session=None):
+    def get_all_reviews(args: dict, db_session=None):
         """
         Retrieves a list of all reviews.
 
@@ -19,14 +20,16 @@ class ReviewService:
         reviews = ReviewMapper.get_all_reviews(args=args, db_session=db_session)
         if not reviews:
             response_data = {"error": "No reviews found"}
+            logger.error(msg=f"No reviews found")
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
         response_data = {"message": "Reviews found", "reviews": reviews}
+        logger.info(msg=f"Reviews found: {[review.get('title') for review in reviews]}")
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
             
 
     @staticmethod
-    def get_review_by_id(review_id, db_session=None):
+    def get_review_by_id(review_id: int, db_session=None):
         """
         Retrieves a specific review by its ID.
         
@@ -40,15 +43,17 @@ class ReviewService:
         review = ReviewMapper.get_review_by_id(review_id=review_id, db_session=db_session)
         if not review:
             response_data = {"error": "Review not found"}
+            logger.error(msg=f"Review: {review_id} not found")
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
         response_data = {"message": "Review found", "review": review}
+        logger.info(msg=f"Review: {review_id} found")
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
 
 
     @staticmethod
-    def create_review(data, db_session=None):
+    def create_review(data: dict, db_session=None):
         """
         Creates a new review with the provided data.
         
@@ -63,14 +68,16 @@ class ReviewService:
         review_id = ReviewMapper.create_review(data=data, db_session=db_session)
         if not review_id:
             response_data = {"error": "Error creating review"}
+            logger.error(msg=f"Failed creating review with data: {', '.join(f'{k}={v!r}' for k, v in data.items())}")
             return Response(response=jsonify(response_data).get_data(), status=409, mimetype="application/json")
 
         response_data = {"message": "Review created", "review_id": review_id}
+        logger.info(msg=f"Review: {review_id} created successfully with data: {', '.join(f'{k}={v!r}' for k, v in data.items())}")
         return Response(response=jsonify(response_data).get_data(), status=201, mimetype="application/json")
             
 
     @staticmethod
-    def update_review(review_id, data, db_session=None):
+    def update_review(review_id: int, data: dict, db_session=None):
         """
         Updates an existing review by its ID with the provided data.
         
@@ -86,15 +93,17 @@ class ReviewService:
         updated_rows = ReviewMapper.update_review(review_id=review_id, data=data, db_session=db_session)
         if not updated_rows:
             response_data = {"error": "Error updating review"}
+            logger.error(msg=f"Failed updating review: {review_id} with data: {', '.join(f'{k}={v!r}' for k, v in data.items())}")
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
         response_data = {"message": "Review updated", "updated_rows": updated_rows}
+        logger.info(msg=f"Review: {review_id} updated successfully with data: {', '.join(f'{k}={v!r}' for k, v in data.items())}")
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 
 
 
     @staticmethod
-    def delete_review(review_id, db_session=None):
+    def delete_review(review_id: int, db_session=None):
         """
         Deletes a review by its ID.
         
@@ -109,8 +118,10 @@ class ReviewService:
         deleted_rows = ReviewMapper.delete_review(review_id=review_id, db_session=db_session)
         if not deleted_rows:
             response_data = {"error": "Review not found"}
+            logger.error(msg=f"Review: {review_id} not found")
             return Response(response=jsonify(response_data).get_data(), status=404, mimetype="application/json")
 
         response_data = {"message": "Review deleted", "deleted_rows": deleted_rows}
+        logger.info(msg=f"Review: {review_id} deleted successfully")
         return Response(response=jsonify(response_data).get_data(), status=200, mimetype="application/json")
 

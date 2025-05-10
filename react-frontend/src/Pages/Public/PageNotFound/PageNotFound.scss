@@ -1,0 +1,81 @@
+// Built In Modules
+@use "sass:map";
+// Custom Variables
+@use "@/assets/variables/variables.modules.scss" as *;
+
+.pageNotFoundPage {
+    .mainPage {
+        height: 100vh;
+
+        .content {
+            width: 100%;
+            height: calc(100% - 80px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .notFound {
+                width: 30%;
+                height: 55%;
+                margin: auto;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+
+                .image {
+                    width: 100%;
+                    overflow: hidden;
+                    position: relative;
+                    flex-basis: 90%;
+                    border-radius: 50px;
+
+                    img {
+                        width: auto;
+                        height: auto;
+                        max-width: 100%;
+                        max-height: 100%;
+                        object-fit: contain;
+                        position: absolute;
+                        left: 50%;
+                        top: 50%;
+                        transform: translate(-50%, -50%);
+                    }
+                }
+                .btn {
+                    width: fit-content;
+                    height: 50px;
+                    margin: 20px auto 0;
+                    padding: 15px;
+                    background-color: map.get($theme-colors, mainColor1);
+                    box-shadow: 0 2px 4px map.get($theme-colors, mainColor4);
+                    border-radius: 25px;
+                    overflow: hidden;
+                    text-transform: none;
+                    color: map.get($theme-colors, mainColor3);
+                    transition: all 0.5s ease;
+
+                    &::after {
+                        background: linear-gradient(to right, map.get($theme-colors, accentColor3), map.get($theme-colors, accentColor4)) no-repeat;
+                        position: absolute;
+                        z-index: -1;
+                        opacity: 0;
+                        inset: 0;
+                        content: "";
+                        transition: opacity 0.5s ease;
+                    }
+
+                    &:hover::after {
+                        opacity: 1;
+                    }
+
+                    &:hover {
+                        border: none;
+                        background-color: transparent;
+                        color: map.get($theme-colors, mainColor1) !important;
+                    }
+                }
+            }
+        }
+    }
+}

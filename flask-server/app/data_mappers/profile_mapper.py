@@ -1,13 +1,13 @@
 from pymysql import cursors
 from datetime import datetime
 
-from ..database.connection import get_db
+from ..database import get_db
 from ..entities import Profile
 
 
 class ProfileMapper:
     @staticmethod
-    def get_profile(user_id, db_session=None):
+    def get_profile(user_id: int, db_session=None):
         """
         Retrieve a profile by its associated user ID.
 
@@ -26,7 +26,7 @@ class ProfileMapper:
 
 
     @staticmethod
-    def create_profile(data, db_session=None):
+    def create_profile(data: dict, db_session=None):
         """
         Create a new profile in the database.
 
@@ -51,7 +51,7 @@ class ProfileMapper:
 
 
     @staticmethod
-    def update_profile(profile_id, data, db_session=None):
+    def update_profile(profile_id: int, data: dict, db_session=None):
         """
         Update an existing profile.
 
@@ -65,9 +65,18 @@ class ProfileMapper:
         """
         db = db_session or get_db()
         cursor = db.cursor(cursors.DictCursor) # type: ignore
-        conditions = [f"{key} = %s" for key in data if key not in ["profile_id", "updated_at"]]
-        values = [data.get(key) for key in data if key not in ["transaction_id", "updated_at"]]
-        values.append(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+        for key, value in data.items():
+            if isinstance(value, str):
+                try:
+                    data[key] = datetime.strptime(value, '%a, %d %b %Y %H:%M:%S GMT')
+                except ValueError:
+                    pass
+            if isinstance(value, datetime):
+                data[key] = value.strftime('%Y-%m-%d %H:%M:%S')
+        print(data.get("date_of_birth"))
+        conditions = [f"{key} = %s" for key in data if key not in ["profile_id", "created_at", "updated_at"]]
+        values = [data.get(key) for key in data if key not in ["profile_id", "created_at", "updated_at"]]
+        values.append(datetime.now())
         values.append(profile_id)
         statement = f"UPDATE profiles SET {', '.join(conditions)}, updated_at = %s WHERE profile_id = %s"
         cursor.execute(statement, values)
@@ -78,7 +87,7 @@ class ProfileMapper:
 
 
     @staticmethod
-    def delete_profile(user_id, db_session=None):
+    def delete_profile(user_id: int, db_session=None):
         """
         Delete a profile by its ID.
 

@@ -40,6 +40,14 @@ const Popup = () => {
     const [minPrice, setMinPrice] = useState(""); // State for minimum price
     const [maxPrice, setMaxPrice] = useState(""); // State for maximum price
 
+    useEffect(() => {
+        setSortBy("relevance");
+        setCategory(filters.category_id || "All");
+        setListingType(filters.listing_type || "All");
+        setMinPrice("");
+        setMaxPrice("");
+    }, [filters.query]);
+
     // Effect hook to fetch categories from the API on component mount
     useEffect(() => {
         axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/categories/`,
@@ -47,7 +55,7 @@ const Popup = () => {
                 headers: { "Content-Type": "application/json" },
             })
             .then((res) => setCategories(res.data.categories)) // Update state with fetched data
-            .catch(err => console.error(err)); // Log errors if any
+            .catch((err) => console.error(err)); // Log errors if any
     }, []); 
 
     /**
@@ -56,6 +64,7 @@ const Popup = () => {
      * @param { string } value The value of the filter.
      */
     function updateFilter(key, value) {
+        filters.page = 1
         // Handle sorting filter separately, as it involves both "sort" and "order" parameters
         if (key === "sort") {
             setSortBy(value); // Update the sort criteria

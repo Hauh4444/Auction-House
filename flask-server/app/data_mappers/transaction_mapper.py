@@ -1,13 +1,13 @@
 from pymysql import cursors
 from datetime import datetime
 
-from ..database.connection import get_db
+from ..database import get_db
 from ..entities import Transaction
 
 
 class TransactionMapper:
     @staticmethod
-    def get_all_transactions(user_id, db_session=None):
+    def get_all_transactions(user_id: int, db_session=None):
         """
         Retrieve all transactions from the database.
 
@@ -20,13 +20,13 @@ class TransactionMapper:
         """
         db = db_session or get_db()
         cursor = db.cursor(cursors.DictCursor) # type: ignore
-        cursor.execute("SELECT * FROM transactions WHERE user_id = %s", (user_id,))
+        cursor.execute("SELECT * FROM transactions WHERE user_id = %s ORDER BY created_at DESC", (user_id,))
         transactions = cursor.fetchall()
         return [Transaction(**transaction).to_dict() for transaction in transactions]
 
 
     @staticmethod
-    def get_transaction_by_id(transaction_id, db_session=None):
+    def get_transaction_by_id(transaction_id: int, db_session=None):
         """
         Retrieve a transaction by its ID.
 
@@ -43,34 +43,32 @@ class TransactionMapper:
         transaction = cursor.fetchone()
         return Transaction(**transaction).to_dict() if transaction else None
 
-
     @staticmethod
-    def create_transaction(data, db_session=None):
-        """
-        Create a new transaction in the database.
-
-        Args:
-            data (dict): Dictionary containing transaction details.
-            db_session: Optional database session to be used in tests.
-
-        Returns:
-            int: The ID of the newly created transaction.
-        """
+    def create_transaction(data: dict, db_session=None):
         db = db_session or get_db()
-        cursor = db.cursor(cursors.DictCursor) # type: ignore
-        statement = """
-            INSERT INTO transactions 
-            (order_id, user_id, transaction_date, transaction_type, amount, 
-            shipping_cost, payment_method, payment_status, created_at, updated_at) 
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        cursor = db.cursor(cursors.DictCursor)  # type: ignore
+
+        # Avoid duplicates
+        check_stmt = """
+            SELECT transaction_id FROM transactions WHERE payment_intent_id = %s
         """
-        cursor.execute(statement, tuple(Transaction(**data).to_dict().values())[1:]) # Exclude transaction_id (auto-incremented)
+        cursor.execute(check_stmt, (data["payment_intent_id"],))
+        existing = cursor.fetchone()
+        if existing:
+            return existing["transaction_id"]
+
+        insert_stmt = """
+            INSERT INTO transactions 
+            (user_id, payment_intent_id, created_at, updated_at) 
+            VALUES (%s, %s, %s, %s)
+        """
+        cursor.execute(insert_stmt, tuple(Transaction(**data).to_dict().values())[1:])  # Exclude transaction_id (auto-incremented)
         db.commit()
         return cursor.lastrowid
 
 
     @staticmethod
-    def update_transaction(transaction_id, data, db_session=None):
+    def update_transaction(transaction_id: int, data: dict, db_session=None):
         """
         Update an existing transaction.
 
@@ -84,9 +82,17 @@ class TransactionMapper:
         """
         db = db_session or get_db()
         cursor = db.cursor(cursors.DictCursor) # type: ignore
+        for key, value in data.items():
+            if isinstance(value, str):
+                try:
+                    data[key] = datetime.strptime(value, '%a, %d %b %Y %H:%M:%S GMT')
+                except ValueError:
+                    pass
+            if isinstance(value, datetime):
+                data[key] = value.strftime('%Y-%m-%d %H:%M:%S')
         conditions = [f"{key} = %s" for key in data if key not in ["transaction_id", "created_at", "updated_at"]]
         values = [data.get(key) for key in data if key not in ["transaction_id", "created_at", "updated_at"]]
-        values.append(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+        values.append(datetime.now())
         values.append(transaction_id)
         statement = f"UPDATE transactions SET {', '.join(conditions)}, updated_at = %s WHERE transaction_id = %s"
         cursor.execute(statement, values)
@@ -95,7 +101,7 @@ class TransactionMapper:
 
 
     @staticmethod
-    def delete_transaction(transaction_id, db_session=None):
+    def delete_transaction(transaction_id: int, db_session=None):
         """
         Delete a transaction by its ID.
 

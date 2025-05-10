@@ -7,10 +7,10 @@ from ..services import ChatMessageService
 bp = Blueprint("chat_message_bp", __name__, url_prefix="/api/user/messages")
 
 
-# GET /api/user/messages/{chat_id}/
+# GET /api/user/messages/{id}/
 @bp.route('/<int:chat_id>/', methods=['GET'])
 @login_required
-def get_messages_by_chat(chat_id, db_session=None):
+def get_messages_by_chat(chat_id: int, db_session=None):
     """
     Retrieve all messages for a given chat.
 
@@ -27,7 +27,7 @@ def get_messages_by_chat(chat_id, db_session=None):
 # POST /api/user/messages/{chat_id}/
 @bp.route('/<int:chat_id>/', methods=['POST'])
 @login_required
-def create_message(chat_id, db_session=None):
+def create_message(chat_id: int, db_session=None):
     """
     Create a new message in a support chat.
 
@@ -49,7 +49,7 @@ def create_message(chat_id, db_session=None):
 # PUT /api/user/messages/{message_id}/
 @bp.route('/<int:message_id>/', methods=['PUT'])
 @login_required
-def update_message(message_id, db_session=None):
+def update_message(message_id: int, db_session=None):
     """
     Update an existing chat message.
 
@@ -70,7 +70,7 @@ def update_message(message_id, db_session=None):
 # DELETE /api/user/messages/{message_id}/
 @bp.route('/<int:message_id>/', methods=['DELETE'])
 @login_required
-def delete_message(message_id, db_session=None):
+def delete_message(message_id: int, db_session=None):
     """
     Delete a chat message by its ID.
 

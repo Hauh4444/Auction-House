@@ -139,7 +139,7 @@ def test_listing_to_dict():
     assert listing_dict["purchases"] == 2
     assert listing_dict["average_review"] == 4.5
     assert listing_dict["total_reviews"] == 50
-    assert listing_dict["created_at"] == datetime(2024, 1, 1, 10, 0, 0)
+    assert listing_dict["created_at"] == datetime(2024, 1, 1, 10, 0, 0) 
     assert listing_dict["updated_at"] == datetime(2024, 1, 1, 12, 0, 0)
     assert isinstance(listing_dict["listing_id"], int)
     assert isinstance(listing_dict["starting_price"], (int, float))

@@ -44,10 +44,10 @@ const Cart = () => {
         axios.post(`${ import.meta.env.VITE_BACKEND_API_URL }/purchase/`,
             {
                 listings: cartItems,
-                amount: getCartTotal(),
+                amount: parseFloat(getCartTotal()),
                 currency: "usd",
-                success_url: `${import.meta.env.VITE_FRONTEND_URL}/`,
-                cancel_url: `${import.meta.env.VITE_FRONTEND_URL}/cart`,
+                success_url: `${import.meta.env.VITE_FRONTEND_URL}/user/cart?session_id={CHECKOUT_SESSION_ID}`,
+                cancel_url: `${import.meta.env.VITE_FRONTEND_URL}/user/cart`,
             }, {
                 headers: { "Content-Type": "application/json" },
                 withCredentials: true,
@@ -56,7 +56,7 @@ const Cart = () => {
                 const stripe = await stripePromise;
                 await stripe.redirectToCheckout({ sessionId: res.data.id });
             })
-            .catch((e) => console.error(e));
+            .catch((err) => console.error(err));
     };
 
     useEffect(() => {
@@ -64,11 +64,9 @@ const Cart = () => {
         const session_id = urlParams.get("session_id");
 
         if (session_id) {
-            axios.post(`${ import.meta.env.VITE_BACKEND_API_URL }/purchase/status/`,
+            axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/purchase/status/`,
                 {
-                    session_id: session_id,
-                },
-                {
+                    params: { session_id: session_id },
                     headers: { "Content-Type": "application/json" },
                     withCredentials: true,
                 })
@@ -78,7 +76,7 @@ const Cart = () => {
                         setCartItems([]);
                     }
                 })
-                .catch(err => console.error(err));
+                .catch((err) => console.error(err));
         }
     }, []);
 

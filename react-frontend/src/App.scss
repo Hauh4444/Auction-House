@@ -1,7 +1,7 @@
 // Built In Modules
 @use "sass:map";
 // Custom Variables
-@use "@/assets/variables.modules.scss" as *;
+@use "@/assets/variables/variables.modules.scss" as *;
 
 .page {
     width: 100%;

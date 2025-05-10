@@ -1,8 +1,6 @@
-from dataclasses import dataclass
 from datetime import datetime
 
 
-@dataclass
 class Model:
     """
     Represents a 3D model in the system.
@@ -30,11 +28,19 @@ class Model:
         if not isinstance(file_reference, str):
             raise TypeError(f"file_reference must be a str, got {type(file_reference).__name__}")
 
+        # Type checks for optional attributes
+        if created_at is not None and not isinstance(created_at, (datetime, str)):
+            raise TypeError(f"created_at must be a datetime or None, got {type(created_at).__name__}")
+        if updated_at is not None and not isinstance(updated_at, (datetime, str)):
+            raise TypeError(f"updated_at must be a datetime or None, got {type(updated_at).__name__}")
+        if model_id is not None and not isinstance(model_id, int):
+            raise TypeError(f"model_id must be a int or None, got {type(model_id).__name__}")
+
         self.model_id = model_id
         self.listing_id = listing_id
         self.file_reference = file_reference
-        self.created_at = created_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        self.updated_at = updated_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.created_at = created_at or datetime.now()
+        self.updated_at = updated_at or datetime.now()
 
     def to_dict(self):
         """Converts the model object to a dictionary representation."""
@@ -42,6 +48,6 @@ class Model:
             "model_id": self.model_id,
             "listing_id": self.listing_id,
             "file_reference": self.file_reference,
-            "created_at": self.created_at.strftime("%Y-%m-%d %H:%M:%S"),
-            "updated_at": self.updated_at.strftime("%Y-%m-%d %H:%M:%S")
+            "created_at": self.created_at,
+            "updated_at": self.updated_at
         }

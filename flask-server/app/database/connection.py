@@ -3,9 +3,12 @@ from dotenv import load_dotenv
 import os, pymysql
 
 from ..utils.mysql import mysql
+from ..utils.logger import setup_logger
 from .backup import recover_db
 
 load_dotenv()
+
+logger = setup_logger(name="database_logger", log_file="logs/database.log")
 
 
 def get_db():
@@ -32,14 +35,16 @@ def get_db():
             password=os.getenv("DB_PASSWORD"),
             database=os.getenv("DB")
         )
+        logger.info(msg=f"Database: {os.getenv('DB')} successfully connected")
         return conn
 
     except Error as e:
         if e.errno == 1049:  # Error code for "Unknown database"
             recover_db()  # Recover the database from backup
             conn = mysql.connect()
-            conn.cursor().execute("USE auctionhouse")  # Retry selecting the database
+            conn.cursor().execute(f"USE {os.getenv('DB')}")  # Retry selecting the database
+            logger.info(msg=f"Database: {os.getenv('DB')} successfully connected after backup recovery")
             return conn
         else:
-            print(f"MySQL Connection Error: {e}")
+            logger.critical(msg=f"MySQL Connection Error: {e}")
             return None

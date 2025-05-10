@@ -14,10 +14,10 @@ import { useAuth } from "@/ContextAPI/AuthContext";
 import './Support.scss';
 
 const Support = () => {
-    const auth = useAuth();
     const navigate = useNavigate(); // Navigate hook for routing
     const location = useLocation(); // Hook to access the current location (URL)
     const filters = Object.fromEntries(new URLSearchParams(location.search).entries()); // Extract query parameters from URL
+    const auth = useAuth(); // Fetch the authentication context
 
     const [subject, setSubject] = useState(null);
     const [message, setMessage] = useState("");
@@ -27,6 +27,11 @@ const Support = () => {
     const [newTicketMessage, setNewTicketMessage] = useState('');
 
     const messagesEndRef = useRef(null); // Reference to scroll to the bottom of the messages div
+    const currentSupportTicketRef = useRef(currentSupportTicket);
+
+    useEffect(() => {
+        currentSupportTicketRef.current = currentSupportTicket;
+    }, [currentSupportTicket]);
 
     const cardInfo = {
         "?nav=tracking": "Where's My Shit",
@@ -64,35 +69,51 @@ const Support = () => {
 
     useEffect(() => {
         const socket = io(import.meta.env.VITE_BACKEND_URL, {
-            transports: ["polling"],
+            transports: ["websocket"],
             withCredentials: true,
         });
 
         if (!socket) return;
 
-        socket.on("new_ticket_message", getMessages);
+        // We have to use references because of fucking race conditions
+        const handleNewMessage = () => {
+            const ticketId = currentSupportTicketRef.current?.ticket_id;
+            if (ticketId) {
+                axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/ticket/messages/${ ticketId }/`,
+                    {
+                        headers: { "Content-Type": "application/json" },
+                        withCredentials: true, // Ensures cookies are sent with requests
+                    })
+                    .then((res) => setTicketMessages(res.data.ticket_messages))
+                    .catch(() => setTicketMessages([]));
+            }
+        }
+
+        socket.on("new_ticket_message", handleNewMessage);
 
         return () => {
-            socket.off("new_ticket_message", getMessages);
+            socket.off("new_ticket_message", handleNewMessage);
         };
     }, []);
+
+    const getTickets = () => {
+        axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/support/tickets/`,
+            {
+                headers: { "Content-Type": "application/json" },
+                withCredentials: true, // Ensures cookies are sent with requests
+            })
+            .then((res) => {
+                setSupportTickets(res.data.support_tickets);
+                setCurrentSupportTicket(res.data.support_tickets[0])
+            }) // Set the user state
+            .catch((err) => console.error(err)); // Log errors if any
+    }
 
     const handleSelectSubject = (key) => {
         navigate("/user/support" + key);
         setSubject(key.charAt(5).toUpperCase() + key.slice(6));
 
-        if (key.slice(5) === "tickets") {
-            axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/support/tickets/`,
-                {
-                    headers: { "Content-Type": "application/json" },
-                    withCredentials: true, // Ensures cookies are sent with requests
-                })
-                .then((res) => {
-                    setSupportTickets(res.data.support_tickets);
-                    setCurrentSupportTicket(res.data.support_tickets[0])
-                }) // Set the user state
-                .catch(err => console.error(err)); // Log errors if any
-        }
+        if (key.slice(5) === "tickets") getTickets();
     }
 
     const handleSubmitTicket = () => {
@@ -105,8 +126,8 @@ const Support = () => {
                 headers: { "Content-Type": "application/json" },
                 withCredentials: true,
             })
-            .then(() => navigate("/"))
-            .catch(err => console.error(err));
+            .then(() => handleSelectSubject("?nav=tickets"))
+            .catch((err) => console.error(err));
     }
 
     const handleSendMessage = () => {
@@ -123,7 +144,7 @@ const Support = () => {
                 setNewTicketMessage("");
                 getMessages();
             })
-            .catch(err => console.error(err));
+            .catch((err) => console.error(err));
     };
 
     const handleKeyPress = (e) => {
@@ -182,7 +203,7 @@ const Support = () => {
                                         label="Message"
                                         type="text"
                                         onChange={ (e) => setNewTicketMessage(e.target.value) }
-                                        onKeyDown={ handleKeyPress }
+                                        onKeyDown={ (e) => handleKeyPress(e) }
                                         variant="outlined"
                                         sx={{
                                             '& .MuiOutlinedInput-root': {

@@ -1,8 +1,6 @@
-from dataclasses import dataclass
 from datetime import datetime
 
 
-@dataclass
 class Category:
     """
     Represents a category in the system.
@@ -34,9 +32,9 @@ class Category:
         if image_encoded is not None and not isinstance(image_encoded, str):
             raise TypeError(f"image_encoded must be a str or None, got {type(image_encoded).__name__}")
         if created_at is not None and not isinstance(created_at, (datetime, str)):
-            raise TypeError(f"created_at must be a datetime, or None, got {type(created_at).__name__}")
+            raise TypeError(f"created_at must be a datetime, str, or None, got {type(created_at).__name__}")
         if updated_at is not None and not isinstance(updated_at, (datetime, str)):
-            raise TypeError(f"updated_at must be a datetime, or None, got {type(updated_at).__name__}")
+            raise TypeError(f"updated_at must be a datetime, str, or None, got {type(updated_at).__name__}")
         if category_id is not None and not isinstance(category_id, int):
             raise TypeError(f"category_id must be an int or None, got {type(category_id).__name__}")
 
@@ -44,8 +42,8 @@ class Category:
         self.name = name
         self.description = description
         self.image_encoded = image_encoded
-        self.created_at = created_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        self.updated_at = updated_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.created_at = created_at or datetime.now()
+        self.updated_at = updated_at or datetime.now()
 
     def to_dict(self):
         """Converts the category object to a dictionary representation."""
@@ -54,7 +52,7 @@ class Category:
             "name": self.name,
             "description": self.description,
             "image_encoded": self.image_encoded,
-            "created_at": self.created_at.strftime("%Y-%m-%d %H:%M:%S"),
-            "updated_at": self.updated_at.strftime("%Y-%m-%d %H:%M:%S")
+            "created_at": self.created_at,
+            "updated_at": self.updated_at
         }
 

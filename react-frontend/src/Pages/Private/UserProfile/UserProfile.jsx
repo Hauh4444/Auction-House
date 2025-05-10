@@ -1,6 +1,11 @@
 // External Libraries
 import { useEffect, useState } from "react";
 import { Button, Card, CardContent, TextField } from "@mui/material";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
 import axios from "axios";
 
 // Internal Modules
@@ -44,6 +49,8 @@ const UserProfile = () => {
         { label: "Bio", name: "bio", type: "text", multiline: true, rows: 5, maxrows: 10, fullWidth: true, value: profile.bio },
     ];
 
+    dayjs.extend(utc);
+
     // Fetch profile data from the backend API
     useEffect(() => {
         axios.get(`${ import.meta.env.VITE_BACKEND_API_URL }/user/profile/`,
@@ -51,18 +58,18 @@ const UserProfile = () => {
                 headers: { "Content-Type": "application/json" },
                 withCredentials: true, // Ensures cookies are sent with requests
             })
-            .then((res) => setProfile(res.data.profile)) // Set the user state
-            .catch(err => console.error(err)); // Log errors if any
+            .then((res) => {
+                setProfile(res.data.profile);
+            }) // Set the user state
+            .catch((err) => console.error(err)); // Log errors if any
     }, []); 
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
             encodeImageToBase64(file)
-                .then((base64String) => {
-                    setProfile({ ...profile, profile_picture: base64String }); // Save the file object for upload
-                })
-                .catch(err => console.error(err)); // Log errors if any
+                .then((base64String) => setProfile({ ...profile, profile_picture: base64String }))
+                .catch((err) => console.error(err)); // Log errors if any
         }
     };
 
@@ -75,7 +82,7 @@ const UserProfile = () => {
                 withCredentials: true, // Ensure cookies are sent if needed
             })
             .then(() => { setEdit(false) }) // Turn edit mode off if no errors
-            .catch(err => console.error(err)); // Log errors if any
+            .catch((err) => console.error(err)); // Log errors if any
     }
 
     return (
@@ -99,7 +106,7 @@ const UserProfile = () => {
                                     />
                                     {fields.map((field) => (
                                         <p key={ field.name }>
-                                            <strong>{ field.label }:</strong> { field.value }
+                                            <strong>{ field.label }:</strong> { field.name === "date_of_birth" ? dayjs.utc(field.value).format("MM-DD-YYYY") : field.value }
                                         </p>
                                     ))}
                                 </div>
@@ -132,22 +139,34 @@ const UserProfile = () => {
                                     </Button>
                                 </div>
                                 {fields.map((field) => (
-                                    <TextField
-                                        key={ field.name }
-                                        className={ `input ${ field.name === "bio" ? "bio" : "shortField"  }`}
-                                        style={ { display: "flex", ...field.style } }
-                                        label={ field.label }
-                                        name={ field.name }
-                                        type={ field.type }
-                                        variant="outlined"
-                                        value={ profile[field.name] }
-                                        onChange={ (e) => setProfile({ ...profile, [e.target.name]: e.target.value  })}
-                                        required
-                                        multiline={ field.multiline }
-                                        rows={ field.rows }
-                                        maxrows={ field.maxrows }
-                                        fullWidth={ field.fullWidth }
-                                    />
+                                    field.name === "date_of_birth" ? (
+                                        <LocalizationProvider dateAdapter={ AdapterDayjs } key={ field.name }>
+                                            <DatePicker
+                                                className="input shortField"
+                                                label={ field.label }
+                                                value={ dayjs.utc(profile.date_of_birth) }
+                                                onChange={ (value) => setProfile({ ...profile, date_of_birth: dayjs.utc(value).format("YYYY-MM-DD") }) }
+                                                slotProps={ { textField: { variant: "outlined" } } }
+                                            />
+                                        </LocalizationProvider>
+                                    ) : (
+                                        <TextField
+                                            key={ field.name }
+                                            className={ `input ${ field.name === "bio" ? "bio" : "shortField"  }`}
+                                            style={ { display: "flex", ...field.style } }
+                                            label={ field.label }
+                                            name={ field.name }
+                                            type={ field.type }
+                                            variant="outlined"
+                                            value={ profile[field.name] }
+                                            onChange={ (e) => setProfile({ ...profile, [e.target.name]: e.target.value }) }
+                                            required
+                                            multiline={ field.multiline }
+                                            rows={ field.rows }
+                                            maxrows={ field.maxrows }
+                                            fullWidth={ field.fullWidth }
+                                        />
+                                    )
                                 ))}
                                 { /* Submit button */ }
                                 <Button className="btn" onClick={ () => handleSubmit(profile) }>Submit</Button>

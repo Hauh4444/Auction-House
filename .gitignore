@@ -7,7 +7,8 @@
 /react-frontend/dist/
 /react-frontend/.env
 
-/flask-server/.venv/
-/flask-server/flask_session/
 /flask-server/database_backups/
+/flask-server/flask_session/
+/flask-server/logs/
+/flask-server/.venv/
 /flask-server/.env

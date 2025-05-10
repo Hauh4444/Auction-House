@@ -5,8 +5,8 @@ import { OrbitControls, Environment, ContactShadows, useProgress, Html } from '@
 import PropTypes from 'prop-types';
 
 // Internal Modules
-import GLBModel from "./GLB/GLB"
-import OBJModel from "./OBJ/OBJ"
+import GLBModel from "./Models/GLB"
+import OBJModel from "./Models/OBJ"
 
 // Stylesheets
 import "./Listing3D.scss"

@@ -30,7 +30,7 @@ def get_profile(db_session=None):
 # PUT /api/user/profile/{id}/
 @bp.route("/<int:profile_id>/", methods=["PUT"])
 @login_required
-def update_profile(profile_id, db_session=None):
+def update_profile(profile_id: int, db_session=None):
     """
     Update an existing profile.
 

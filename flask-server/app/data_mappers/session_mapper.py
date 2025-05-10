@@ -1,7 +1,8 @@
 from pymysql import cursors
 
-from ..database.connection import get_db
+from ..database import get_db
 from ..entities import Session
+from datetime import datetime
 
 
 class SessionMapper:
@@ -24,7 +25,7 @@ class SessionMapper:
 
 
     @staticmethod
-    def get_session_by_id(session_id, db_session=None):
+    def get_session_by_id(session_id: int, db_session=None):
         """
         Retrieve a session by its ID from the database.
 
@@ -43,7 +44,7 @@ class SessionMapper:
 
 
     @staticmethod
-    def create_session(data, db_session=None):
+    def create_session(data: dict, db_session=None):
         """
         Create a new session in the database.
 
@@ -67,7 +68,7 @@ class SessionMapper:
 
 
     @staticmethod
-    def update_session(session_id, data, db_session=None):
+    def update_session(session_id: int, data: dict, db_session=None):
         """
         Update an existing session in the database.
 
@@ -81,6 +82,14 @@ class SessionMapper:
         """
         db = db_session or get_db()
         cursor = db.cursor(cursors.DictCursor) # type: ignore
+        for key, value in data.items():
+            if isinstance(value, str):
+                try:
+                    data[key] = datetime.strptime(value, '%a, %d %b %Y %H:%M:%S GMT')
+                except ValueError:
+                    pass
+            if isinstance(value, datetime):
+                data[key] = value.strftime('%Y-%m-%d %H:%M:%S')
         statement = """
             UPDATE sessions 
             SET user_id = %s, token = %s, role = %s, created_at = %s, expires_at = %s
@@ -92,7 +101,7 @@ class SessionMapper:
 
 
     @staticmethod
-    def delete_session(session_id, db_session=None):
+    def delete_session(session_id: int, db_session=None):
         """
         Delete a session by its ID.
 

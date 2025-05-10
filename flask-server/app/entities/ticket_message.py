@@ -1,8 +1,6 @@
-from dataclasses import dataclass
 from datetime import datetime
 
 
-@dataclass
 class TicketMessage:
     """
     Represents a message in a support ticket.
@@ -15,18 +13,32 @@ class TicketMessage:
         sent_at (datetime, optional): The timestamp when the message was sent.
     """
     def __init__(
-            self,
-            ticket_id: int,
-            message: str,
-            sender_id: int,
-            sent_at: datetime | None = None,
-            message_id: int | None = None
+        self,
+        ticket_id: int,
+        message: str,
+        sender_id: int,
+        sent_at: datetime | None = None,
+        message_id: int | None = None
     ):
+        # Type checks for required attributes
+        if not isinstance(ticket_id, int):
+            raise TypeError("ticket_id must be an int")
+        if not isinstance(sender_id, int):
+            raise TypeError("sender_id must be an int")
+        if not isinstance(message, str):
+            raise TypeError("message must be a str")
+
+        # Type checks for optional attributes
+        if sent_at is not None and not isinstance(sent_at, (datetime, str)):
+            raise TypeError("sent_at must be a datetime or None")
+        if message_id is not None and not isinstance(message_id, int):
+            raise TypeError("message_id must be an int or None")
+
         self.message_id = message_id
         self.ticket_id = ticket_id
         self.sender_id = sender_id
         self.message = message
-        self.sent_at = sent_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.sent_at = sent_at or datetime.now()
 
     def to_dict(self):
         """Converts the ticket message object to a dictionary representation."""
@@ -35,5 +47,5 @@ class TicketMessage:
             "ticket_id": self.ticket_id,
             "sender_id": self.sender_id,
             "message": self.message,
-            "sent_at": self.sent_at.strftime("%Y-%m-%d %H:%M:%S")
+            "sent_at": self.sent_at
         }

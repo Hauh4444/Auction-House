@@ -1,7 +1,7 @@
 // Built In Modules
 @use "sass:map";
 // Custom Variables
-@use "@/assets/variables.modules.scss" as *;
+@use "@/assets/variables/variables.modules.scss" as *;
 
 .sellerProfilePage {
     .mainPage {
@@ -77,13 +77,6 @@
                     }
                 }
             }
-        }
-        .productUploadCard {
-            width: 70%;
-            margin: 0 auto 50px auto;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px map.get($theme-colors, mainColor4);
-            background-color: map.get($theme-colors, mainColor1);
         }
     }
 }

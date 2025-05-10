@@ -1,13 +1,13 @@
 from pymysql import cursors
 from datetime import datetime
 
-from ..database.connection import get_db
+from ..database import get_db
 from ..entities import Review
 
 
 class ReviewMapper:
     @staticmethod
-    def get_all_reviews(args, db_session=None):
+    def get_all_reviews(args: dict, db_session=None):
         """
         Retrieve all reviews with optional filtering
 
@@ -46,7 +46,7 @@ class ReviewMapper:
 
 
     @staticmethod
-    def get_review_by_id(review_id, db_session=None):
+    def get_review_by_id(review_id: int, db_session=None):
         """
         Retrieve a review by its ID.
 
@@ -65,7 +65,7 @@ class ReviewMapper:
 
 
     @staticmethod
-    def create_review(data, db_session=None):
+    def create_review(data: dict, db_session=None):
         """
         Create a new review in the database.
 
@@ -99,7 +99,7 @@ class ReviewMapper:
 
 
     @staticmethod
-    def update_review(review_id, data, db_session=None):
+    def update_review(review_id: int, data: dict, db_session=None):
         """
         Update an existing review.
 
@@ -113,9 +113,17 @@ class ReviewMapper:
         """
         db = db_session or get_db()
         cursor = db.cursor(cursors.DictCursor) # type: ignore
+        for key, value in data.items():
+            if isinstance(value, str):
+                try:
+                    data[key] = datetime.strptime(value, '%a, %d %b %Y %H:%M:%S GMT')
+                except ValueError:
+                    pass
+            if isinstance(value, datetime):
+                data[key] = value.strftime('%Y-%m-%d %H:%M:%S')
         set_clause = ", ".join([f"{key} = %s" for key in data if key not in ["review_id", "updated_at"]])
         values = [data.get(key) for key in data if key not in ["review_id", "updated_at"]]
-        values.append(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+        values.append(datetime.now())
         values.append(review_id)
         statement = f"UPDATE reviews SET {set_clause}, updated_at = %s WHERE review_id = %s"
         cursor.execute(statement, values)
@@ -124,7 +132,7 @@ class ReviewMapper:
 
 
     @staticmethod
-    def delete_review(review_id, db_session=None):
+    def delete_review(review_id: int, db_session=None):
         """
         Delete a review by its ID.
 

@@ -25,7 +25,7 @@ def get_all_listings(db_session=None):
 
 # GET /api/listings/{id}/
 @bp.route("/<int:listing_id>/", methods=["GET"])
-def get_listing(listing_id, db_session=None):
+def get_listing(listing_id: int, db_session=None):
     """
     Retrieve a single listing by its ID.
 
@@ -62,7 +62,7 @@ def create_listing(db_session=None):
 # PUT /api/listings/{id}/
 @bp.route("/<int:listing_id>/", methods=["PUT"])
 @login_required
-def update_listing(listing_id, db_session=None):
+def update_listing(listing_id: int, db_session=None):
     """
     Update an existing listing by its ID.
 
@@ -83,7 +83,7 @@ def update_listing(listing_id, db_session=None):
 # DELETE /api/listings/{id}/
 @bp.route("/<int:listing_id>/", methods=["DELETE"])
 @login_required
-def deleteListing(listing_id, db_session=None):
+def deleteListing(listing_id: int, db_session=None):
     """
     Delete a listing by its ID.
 

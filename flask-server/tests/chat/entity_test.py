@@ -59,13 +59,11 @@ def test_chat_to_dict():
     assert isinstance(chat_dict["created_at"], datetime)
 
 
-# noinspection PyArgumentList
 def test_chat_missing_required_fields():
     with pytest.raises(expected_exception=TypeError):
         Chat()
 
 
-# noinspection PyTypeChecker
 def test_chat_invalid_types():
     with pytest.raises(expected_exception=TypeError):
         Chat(

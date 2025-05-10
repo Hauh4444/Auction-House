@@ -1,6 +1,6 @@
 from pymysql import cursors
 
-from ..database.connection import get_db
+from ..database import get_db
 from ..entities import Bid
 
 
@@ -24,7 +24,7 @@ class BidMapper:
 
 
     @staticmethod
-    def get_bid_by_id(bid_id, db_session=None):
+    def get_bid_by_id(bid_id: int, db_session=None):
         """
         Retrieve a bid by its ID.
 
@@ -43,7 +43,7 @@ class BidMapper:
 
     
     @staticmethod
-    def create_bid(data, db_session=None):
+    def create_bid(data: dict, db_session=None):
         """
         Create a new category in the database.
 
@@ -57,7 +57,7 @@ class BidMapper:
         db = db_session or get_db()
         cursor = db.cursor(cursors.DictCursor) # type: ignore
         statement = """
-            INSERT INTO categories 
+            INSERT INTO bids 
             (listing_id, user_id, amount, created_at) 
             VALUES (%s, %s, %s, %s)
         """

@@ -1,8 +1,8 @@
 from pymysql import cursors
 
-from ..database.connection import get_db
+from ..database import get_db
 from ..entities import Category
-
+from datetime import datetime
 
 class CategoryMapper:
     @staticmethod
@@ -24,7 +24,7 @@ class CategoryMapper:
 
 
     @staticmethod
-    def get_category_by_id(category_id, db_session=None):
+    def get_category_by_id(category_id: int, db_session=None):
         """
         Retrieve a category by its ID.
 
@@ -43,7 +43,7 @@ class CategoryMapper:
 
 
     @staticmethod
-    def create_category(data, db_session=None):
+    def create_category(data: dict, db_session=None):
         """
         Create a new category in the database.
 
@@ -67,7 +67,7 @@ class CategoryMapper:
 
 
     @staticmethod
-    def update_category(category_id, data, db_session=None):
+    def update_category(category_id: int, data: dict, db_session=None):
         """
         Update an existing category.
 
@@ -81,6 +81,14 @@ class CategoryMapper:
         """
         db = db_session or get_db()
         cursor = db.cursor(cursors.DictCursor) # type: ignore
+        for key, value in data.items():
+            if isinstance(value, str):
+                try:
+                    data[key] = datetime.strptime(value, '%a, %d %b %Y %H:%M:%S GMT')
+                except ValueError:
+                    pass
+            if isinstance(value, datetime):
+                data[key] = value.strftime('%Y-%m-%d %H:%M:%S')
         set_clause = ", ".join([f"{key} = %s" for key in data if key not in ["category_id", "created_at"]])
         values = [data.get(key) for key in data if key not in ["category_id", "created_at"]]
         values.append(category_id)
@@ -91,7 +99,7 @@ class CategoryMapper:
 
 
     @staticmethod
-    def delete_category(category_id, db_session=None):
+    def delete_category(category_id: int, db_session=None):
         """
         Delete a category by its ID.
 
