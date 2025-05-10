@@ -1,17 +1,5 @@
 # Flask Server
 
-## TODO
-
-- Code Review
-    - Routes
-        - Write & Log Checks for if Data Contains all Necessary Values
-    - Data Mappers
-        - SQL Statement Consistency
-        - SQL Injection Vulnerabilities
-    - Documentation
-- Fix Tests
-- Order & Delivery API
-
 ## Setup
 
 1. In a terminal, change to the `flask-server` directory.

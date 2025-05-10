@@ -1,6 +1,6 @@
 [project]
 name = "Auction House"
-version = "0.6.0"
+version = "1.0.0"
 description = "Auction House"
 requires-python = ">= 3.12"
 

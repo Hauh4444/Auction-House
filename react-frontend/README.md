@@ -1,21 +1,5 @@
 # React Frontend
 
-## TODO
-
-- Manage Listings
-- Review 
-- Friends
-- History
-  - Transactions
-  - Deliveries
-  - Orders
-- List
-  - Create
-  - Update
-  - Delete
-- About
-- Contact
-
 ## Setup
 
 1. Ensure you have [Node.js](https://nodejs.org/en/download) installed on your machine.
