@@ -7,7 +7,7 @@
 - Database: MySQL
 - Third Party Services: MailerSend, Stripe, PostHog, Ozeki (Optional)
 
-## Screenshots
+## Some Screenshots
 
 Click to view:
 
