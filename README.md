@@ -9,12 +9,14 @@
 
 ## Screenshots
 
-![Home page](./screenshots/home-page.png)
-![Search Page](./screenshots/search-page.png)
-![Auction Page](./screenshots/auction-page.png)
-![Cart Page](./screenshots/cart-page.png)
-![Auth Page](./screenshots/auth-page.png)
-![Account Nav Page](./screenshots/account-nav-page.png)
+Click to view:
+
+- [Home Page](./screenshots/home-page.png)
+- [Search Page](./screenshots/search-page.png)
+- [Auction Page](./screenshots/auction-page.png)
+- [Cart Page](./screenshots/cart-page.png)
+- [Auth Page](./screenshots/auth-page.png)
+- [Account Nav Page](./screenshots/account-nav-page.png)
 
 ## Setup
 
