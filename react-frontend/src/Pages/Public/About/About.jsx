@@ -1,5 +1,5 @@
 // External Libraries
-import { Container, Typography, List, ListItem, ListItemText } from "@mui/material";
+import { List, ListItem, ListItemText } from "@mui/material";
 
 // Internal Modules
 import Header from "@/Components/Header/Header";

@@ -2,6 +2,7 @@ from flask import jsonify, Response
 from flask_login import current_user
 
 from ..data_mappers import SupportTicketMapper, TicketMessageMapper
+from ..utils.logger import setup_logger
 
 logger = setup_logger(name="support_ticket_logger", log_file="logs/support_ticket.log")
 

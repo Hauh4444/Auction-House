@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 import uuid
 
 from ..data_mappers import SessionMapper
+from ..utils.logger import setup_logger
 
 logger = setup_logger(name="session_logger", log_file="logs/session.log")
 

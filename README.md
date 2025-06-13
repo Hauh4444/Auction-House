@@ -1,4 +1,20 @@
-# Auction House
+# Auction House/Ecommerce System
+
+## Tech Stack
+
+- Frontend: React, SASS, Material UI
+- Backend: Flask (Python), Socket.IO
+- Database: MySQL
+- Third Party Services: MailerSend, Stripe, PostHog, Ozeki (Optional)
+
+## Screenshots
+
+![Home page](./screenshots/home-page.png)
+![Search Page](./screenshots/search-page.png)
+![Auction Page](./screenshots/auction-page.png)
+![Cart Page](./screenshots/cart-page.png)
+![Auth Page](./screenshots/auth-page.png)
+![Account Nav Page](./screenshots/account-nav-page.png)
 
 ## Setup
 
@@ -38,11 +54,44 @@
 1. In a terminal, change to the `react-frontend` directory.
 2. Run the `npm test` command to run tests.
 
+### React Environment Variables
+
+Create a `.env` file in `react-frontend/` with the following format:
+```dotenv
+VITE_FRONTEND_URL=http://localhost:5173 (or whatever frontend url)
+VITE_BACKEND_API_URL=http://127.0.0.1:5000/api (or whatever backend api url)
+VITE_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
+VITE_PUBLIC_POSTHOG_KEY=your_public_posthog_key
+VITE_PUBLIC_POSTHOG_HOST=your_public_posthog_host
+FAST_REFRESH=false
+```
+
 ### Flask Backend
 
 1. In a terminal, change to the `flask-server` directory.
 2. Run the `.venv/Scripts/activate` command to activate the virtual environment.
 3. Run the `python -m app.main` command to run the Flask server.
+
+## Flask Environment Variables
+
+Create a `.env` file in `flask-server/` with the following format:
+```dotenv
+PROJECT_ROOT=./
+MAIL_DEFAULT_SENDER=your_mailersend_default_sender
+ENCRYPTED_MAILERSEND_API_TOKEN=your_encrypted_mailersend_api_token
+CIPHER_ENCRYPTION_KEY=your_cipher_encryption_key
+SECRET_KEY=your_secret_key
+FLASK_CONFIG=app.config.DevelopmentConfig
+LIMITER_STORAGE_URI=memory://
+FRONTEND_URL=http://localhost:5173 (or whatever frontend url)
+BACKEND_MODEL_URL=http://127.0.0.1:5000/static/models (or whatever backend url with /static/models)
+DB_HOST=your_mysql_host
+DB_USER=your_mysql_user
+DB_PASSWORD=your_mysql_password
+DB=your_mysql_db
+STRIPE_SECRET_KEY=your_stripe_secret_key
+STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
+```
 
 ### Flask Testing
 

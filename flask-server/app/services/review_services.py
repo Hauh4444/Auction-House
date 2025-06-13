@@ -1,6 +1,7 @@
 from flask import jsonify, Response
 
 from ..data_mappers import ReviewMapper
+from ..utils.logger import setup_logger
 
 logger = setup_logger(name="review_logger", log_file="logs/review.log")
 

@@ -2,6 +2,7 @@ from flask import jsonify, Response
 from flask_login import current_user
 
 from ..data_mappers import UserMapper, ProfileMapper
+from ..utils.logger import setup_logger
 
 logger = setup_logger(name="user_logger", log_file="logs/user.log")
 

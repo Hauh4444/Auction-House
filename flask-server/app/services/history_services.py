@@ -4,6 +4,7 @@ from flask_login import current_user
 import stripe
 
 from ..data_mappers import OrderMapper, ListingMapper, TransactionMapper, DeliveryMapper, SupportTicketMapper, ReviewMapper
+from ..utils.logger import setup_logger
 
 logger = setup_logger(name="user_history_logger", log_file="logs/user_history.log")
 
